@@ -5536,9 +5536,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 7
-  m_AngularDrag: 0.05
-  m_GravityScale: 8
+  m_LinearDrag: 6.5
+  m_AngularDrag: 0
+  m_GravityScale: 18
   m_Material: {fileID: 6200000, guid: c760c8ec9f08f9c4ba3fe09401412696, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -5573,7 +5573,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 80
-  jumpHeight: 2000
+  jumpHeight: 500
+  jumpFalloff: 1800
   walkAction: {fileID: 2156130203312526529, guid: fd04459890e791843a48243064f9151b, type: 3}
   jumpAction: {fileID: 8155338115105704411, guid: fd04459890e791843a48243064f9151b, type: 3}
   belowCheckAction: {fileID: -5631806235618937037, guid: fd04459890e791843a48243064f9151b, type: 3}

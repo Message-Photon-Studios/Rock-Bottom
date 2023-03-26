@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float movementSpeed;
     [SerializeField] float jumpHeight;
+    [SerializeField] float jumpFalloff;
     [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction;
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
@@ -64,8 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     void JumpCancel()
     {
-        if(body.velocity.y > 0)
-            body.velocity = new Vector2(body.velocity.x, 0);
+        jump = 0;
     }
 
     void CheckBelowStart()
@@ -91,7 +91,11 @@ public class PlayerMovement : MonoBehaviour
         else if(walkDir > 0 && spriteRenderer.flipX) Flip();
         float movement = movementSpeed * walkDir;
         Vector2 velocity = new Vector2(movement, jump);
-        jump = 0;
+        if(jump > 0)
+            jump -= jumpFalloff * Time.fixedDeltaTime;
+        else if(jump < 0)
+            jump = 0;
+
         body.AddForce(velocity);
 
         if(airTime > 1f)
