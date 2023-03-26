@@ -9,9 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpHeight;
     [SerializeField] InputActionReference walkAction, jumpAction;
     [SerializeField] Rigidbody2D body;
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Transform focusPoing;
 
     private float jump;
-
     private void OnEnable() {
         jumpAction.action.performed += (_) => {Jump();};
     }
@@ -30,22 +31,25 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        Vector3 pos = transform.position;
-        Gizmos.DrawSphere(pos, 1);
-    }
-
     void Jump()
     {
         jump = jumpHeight;
     }
 
     private void FixedUpdate() {
-        float movement = movementSpeed * walkAction.action.ReadValue<float>();
+        float walkDir = walkAction.action.ReadValue<float>();
+        if(walkDir < 0 && !spriteRenderer.flipX) Flip();
+        else if(walkDir > 0 && spriteRenderer.flipX) Flip();
+        float movement = movementSpeed * walkDir;
         Vector2 velocity = new Vector2(movement, jump);
         jump = 0;
         body.AddForce(velocity);
+    }
+
+    private void Flip()
+    {
+        spriteRenderer.flipX = !spriteRenderer.flipX;
+        focusPoing.localPosition = new Vector3(-focusPoing.localPosition.x, focusPoing.localPosition.y, focusPoing.localPosition.z);
     }
 
     void Test(int test)
