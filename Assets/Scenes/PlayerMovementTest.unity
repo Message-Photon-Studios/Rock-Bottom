@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 279728873}
   - component: {fileID: 279728875}
   - component: {fileID: 279728874}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5337,7 +5337,7 @@ GameObject:
   - component: {fileID: 1211380175}
   - component: {fileID: 1211380178}
   - component: {fileID: 1211380180}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5428,7 +5428,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 5
   m_AngularDrag: 0.05
-  m_GravityScale: 10
+  m_GravityScale: 8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -5462,13 +5462,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694d81906fab42941ad9d4bdb5e18553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 100
-  jumpHeight: 2000
+  movementSpeed: 70
+  jumpHeight: 1800
   walkAction: {fileID: 2156130203312526529, guid: fd04459890e791843a48243064f9151b, type: 3}
   jumpAction: {fileID: 8155338115105704411, guid: fd04459890e791843a48243064f9151b, type: 3}
   body: {fileID: 1211380177}
   spriteRenderer: {fileID: 1211380175}
   focusPoing: {fileID: 1728486870}
+  collider: {fileID: 1211380178}
 --- !u!114 &1211380180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5996,7 +5997,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1728486870}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CameraFocus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
