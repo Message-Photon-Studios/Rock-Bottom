@@ -7,25 +7,37 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float movementSpeed;
     [SerializeField] float jumpHeight;
-    [SerializeField] InputActionReference walkAction, jumpAction;
+    [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction;
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
-    [SerializeField] Transform focusPoing;
+    [SerializeField] Transform focusPoint;
+    [SerializeField] float checkBelowPoint;
     [SerializeField] CapsuleCollider2D collider;
 
+
+    private float airTime;
+
+    private float focusPointNormalY;
     private bool doubleJumpActive = false;
     private float jump;
     private void OnEnable() {
-        jumpAction.action.performed += (_) => {Jump();};
+        jumpAction.action.started += (_) => {Jump();};
+        jumpAction.action.canceled += (_) => {JumpCancel();};
+        belowCheckAction.action.started += (_) => {CheckBelowStart();};
+        belowCheckAction.action.canceled += (_) => {CheckBelowCancel();};
+
     }
 
     private void OnDisable() {
-        jumpAction.action.performed -= (_) => {Jump();};
+        jumpAction.action.started -= (_) => {Jump();};
+        jumpAction.action.canceled -= (_) => {JumpCancel();};
+        belowCheckAction.action.started -= (_) => {CheckBelowStart();};
+        belowCheckAction.action.canceled -= (_) => {CheckBelowCancel();};
     }
 
     void Start()
     {
-
+        focusPointNormalY = focusPoint.localPosition.y;
     }
 
     void Update()
@@ -50,6 +62,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void JumpCancel()
+    {
+        if(body.velocity.y > 0)
+            body.velocity = new Vector2(body.velocity.x, 0);
+    }
+
+    void CheckBelowStart()
+    {
+        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkBelowPoint, focusPoint.localPosition.z);
+    }
+
+    void CheckBelowCancel()
+    {
+        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, focusPointNormalY, focusPoint.localPosition.z);
+    }
+
+
     private bool IsGrounded()
     {  
         return  Physics2D.Raycast(transform.position+Vector3.right* collider.size.x/2, Vector2.down, 1f, 3) ||
@@ -65,16 +94,31 @@ public class PlayerMovement : MonoBehaviour
         jump = 0;
         body.AddForce(velocity);
 
-        if(doubleJumpActive && IsGrounded())
+        if(airTime > 1f)
         {
-            doubleJumpActive = false;
+            CheckBelowStart();
+            if(IsGrounded())
+            {
+                CheckBelowCancel();
+            }
         }
+
+        if(IsGrounded())
+        {
+            airTime = 0;
+            if(doubleJumpActive) doubleJumpActive = false;
+    
+        } else
+        {
+            airTime += Time.fixedDeltaTime;
+        }
+
     }
 
     private void Flip()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
-        focusPoing.localPosition = new Vector3(-focusPoing.localPosition.x, focusPoing.localPosition.y, focusPoing.localPosition.z);
+        focusPoint.localPosition = new Vector3(-focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
     }
 
 
