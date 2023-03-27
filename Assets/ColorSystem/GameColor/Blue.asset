@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5e0c4a50922e434d8fc1b0355d31d3b, type: 3}
+  m_Name: Blue
+  m_EditorClassIdentifier: 
+  color: {r: 0.25244746, g: 0.50241196, b: 0.8773585, a: 1}
+  description: Slows the enemy down
+  colorEffect: {fileID: 0}
+  mixes:
+  - mixWith: {fileID: 11400000, guid: a43a3607f70897249a36fdff7162cc2a, type: 2}
+    mixTo: {fileID: 11400000, guid: 515b8e0cc06f688409aca84476871b24, type: 2}
+  - mixWith: {fileID: 11400000, guid: a5087b0e29c5b414795753d6fe24755a, type: 2}
+    mixTo: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
+  - mixWith: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
+    mixTo: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
+  - mixWith: {fileID: 11400000, guid: 515b8e0cc06f688409aca84476871b24, type: 2}
+    mixTo: {fileID: 11400000, guid: 515b8e0cc06f688409aca84476871b24, type: 2}
+  - mixWith: {fileID: 11400000, guid: aab7a3fd5f4b5c04fb45da55783d8aa1, type: 2}
+    mixTo: {fileID: 11400000, guid: aab7a3fd5f4b5c04fb45da55783d8aa1, type: 2}
+  - mixWith: {fileID: 11400000, guid: fb4a5352fdc867147b0b07d399cd221d, type: 2}
+    mixTo: {fileID: 11400000, guid: aab7a3fd5f4b5c04fb45da55783d8aa1, type: 2}
