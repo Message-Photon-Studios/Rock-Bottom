@@ -103,16 +103,17 @@ public class PlayerMovement : MonoBehaviour
         if(walkDir < 0 && !spriteRenderer.flipX) Flip();
         else if(walkDir > 0 && spriteRenderer.flipX) Flip();
         movement = movementSpeed * walkDir;
-        //Vector2 velocity = new Vector2(movement, jump);
+
         if(jump > 0)
             jump -= jumpFalloff * Time.fixedDeltaTime;
         else if(jump < 0)
             jump = 0;
 
         
-        if(airTime > 1f)
+        if(airTime > .8f)
         {
-            CheckBelowStart();
+            if(body.velocity.y < 0)
+                CheckBelowStart();
             if(IsGrounded())
             {
                 CheckBelowCancel();
