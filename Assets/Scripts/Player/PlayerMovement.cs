@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float movementSpeed;
-    [SerializeField] float jumpHeight;
+    [SerializeField] float jumpPower;
+    [SerializeField] float jumpJetpack;
     [SerializeField] float jumpFalloff;
     [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction;
     [SerializeField] Rigidbody2D body;
@@ -50,16 +51,17 @@ public class PlayerMovement : MonoBehaviour
     {
         if(IsGrounded())
         {
-            Debug.Log("Grounded");
-            jump = jumpHeight;
+            body.AddForce(Vector2.up * jumpPower);
+            jump = jumpJetpack;
             doubleJumpActive = false;
             return;
         }
 
         if(!doubleJumpActive)
         {
+            body.AddForce(Vector2.up * jumpPower);
             doubleJumpActive = true;
-            jump = jumpHeight;
+            jump = jumpJetpack;
         }
     }
 
