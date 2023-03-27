@@ -59,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(!doubleJumpActive)
         {
+            body.velocity = new Vector2(body.velocity.x, 0);
             body.AddForce(Vector2.up * jumpPower);
             doubleJumpActive = true;
             jump = jumpJetpack;
