@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,17 +10,32 @@ public class RoomManager : MonoBehaviour
     public int maxDepth;
     [Range(1, 4)]
     public int maxBranchesPerRoom;
-    [Range(0f, 1f)]
+    [Range(0.02f, 1f)]
     public float probability;
     [Range(0f, 1f)]
     public float probabilityFalloff;
     [Range(0f, 1f)] 
     public float branchingBias;
 
+    [Space(10)]
+
+    [Range(0f, 1f)]
+    public float bigRoomProbability;
+    [Range(1f, 100f)]
+    public int bigRoomMinDistance;
+
     public void init()
     {
         levelGen = new LevelGenerator();
-        levelGen.generateMainStructure(probability, probabilityFalloff, maxDepth, minRoomCount, maxBranchesPerRoom, branchingBias);
+        levelGen.generateMainStructure(
+            probability, 
+            probabilityFalloff, 
+            maxDepth, 
+            minRoomCount, 
+            maxBranchesPerRoom, 
+            branchingBias,
+            bigRoomProbability,
+            bigRoomMinDistance);
     }
 
     public void reset()
