@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Transform focusPoint;
     [SerializeField] float checkBelowPoint;
-    [SerializeField] CapsuleCollider2D collider;
+    [SerializeField] CapsuleCollider2D playerCollider;
 
 
     private float airTime;
@@ -88,14 +88,14 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrounded()
     {  
-        return  Physics2D.Raycast(transform.position+Vector3.right* collider.size.x/2, Vector2.down, 1f, 3) ||
-                Physics2D.Raycast(transform.position-Vector3.right* collider.size.x/2, Vector2.down, 1f, 3);
+        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3) ||
+                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3);
     }
 
     private bool HitCeling ()
     {
-        return Physics2D.Raycast(transform.position+Vector3.right* collider.size.x/2, Vector2.up, 1f, 3) ||
-                Physics2D.Raycast(transform.position-Vector3.right* collider.size.x/2, Vector2.up, 1f, 3);
+        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, 3) ||
+                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, 3);
     }
 
     private void FixedUpdate() {
