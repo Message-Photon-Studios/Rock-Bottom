@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float movementSpeed;
     [SerializeField] float jumpPower;
+    [SerializeField] float leapPower;
     [SerializeField] float jumpJetpack;
     [SerializeField] float jumpFalloff;
     [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction;
@@ -20,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private float airTime;
 
     private float focusPointNormalY;
+    float movement = 0;
     private bool doubleJumpActive = false;
     private float jump;
     private void OnEnable() {
@@ -51,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(IsGrounded())
         {
+             body.AddForce(new Vector2(movement, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
             doubleJumpActive = false;
@@ -59,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(!doubleJumpActive)
         {
+             body.AddForce(new Vector2(movement*leapPower, 0));
             body.velocity = new Vector2(body.velocity.x, 0);
             body.AddForce(Vector2.up * jumpPower);
             doubleJumpActive = true;
@@ -88,19 +92,24 @@ public class PlayerMovement : MonoBehaviour
                 Physics2D.Raycast(transform.position-Vector3.right* collider.size.x/2, Vector2.down, 1f, 3);
     }
 
+    private bool HitCeling ()
+    {
+        return Physics2D.Raycast(transform.position+Vector3.right* collider.size.x/2, Vector2.up, 1f, 3) ||
+                Physics2D.Raycast(transform.position-Vector3.right* collider.size.x/2, Vector2.up, 1f, 3);
+    }
+
     private void FixedUpdate() {
         float walkDir = walkAction.action.ReadValue<float>();
         if(walkDir < 0 && !spriteRenderer.flipX) Flip();
         else if(walkDir > 0 && spriteRenderer.flipX) Flip();
-        float movement = movementSpeed * walkDir;
-        Vector2 velocity = new Vector2(movement, jump);
+        movement = movementSpeed * walkDir;
+        //Vector2 velocity = new Vector2(movement, jump);
         if(jump > 0)
             jump -= jumpFalloff * Time.fixedDeltaTime;
         else if(jump < 0)
             jump = 0;
 
-        body.AddForce(velocity);
-
+        
         if(airTime > 1f)
         {
             CheckBelowStart();
@@ -113,13 +122,21 @@ public class PlayerMovement : MonoBehaviour
         if(IsGrounded())
         {
             airTime = 0;
+            body.velocity = new Vector2(movement, body.velocity.y);
             if(doubleJumpActive) doubleJumpActive = false;
     
         } else
         {
+            body.AddForce(new Vector2(movement*10, 0));
             airTime += Time.fixedDeltaTime;
-        }
 
+            if(HitCeling())
+            {
+                jump = 0;
+            }
+        }
+       
+        body.AddForce(new Vector2(0,jump));
     }
 
     private void Flip()
