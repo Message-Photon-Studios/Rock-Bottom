@@ -6,17 +6,19 @@ using UnityEngine.InputSystem;
 
 public class ColorInventory : MonoBehaviour
 {
+    [SerializeField] int startColorSlots;
     [SerializeField] List<ColorSlot> colorSlots;
     
     [SerializeField] int activeSlot;
     [SerializeField] InputActionReference changeRightActions;
+    [SerializeField] Image[] images;
     
 
     void Start()
     {
-        foreach (ColorSlot slot in colorSlots)
+        for (int i = 0; i < startColorSlots; i++)
         {
-            slot.Init();
+            colorSlots[i].Init(images[i]);
         }
     }
 
@@ -78,6 +80,25 @@ public class ColorInventory : MonoBehaviour
     {
         return colorSlots[activeSlot];
     }
+
+    public void AddColorSlot()
+    {
+        colorSlots.Add(new ColorSlot());
+        colorSlots[colorSlots.Count-1].Init(images[colorSlots.Count-1]);
+    }
+
+    public void RemoveColorSlot()
+    {
+        colorSlots.RemoveAt(colorSlots.Count-1);
+        if(activeSlot >= colorSlots.Count) 
+            activeSlot = colorSlots.Count-1;
+        images[colorSlots.Count].transform.parent.gameObject.SetActive(false);
+    }
+
+    public void ResetColorSlots()
+    {
+        
+    }
 }
 
 [System.Serializable]
@@ -89,9 +110,12 @@ public struct ColorSlot
     [SerializeField] public int charge;
     [SerializeField] public GameColor gameColor;
 
-    public void Init()
+    public void Init(Image setImage)
     {
+        image = setImage;
         imageScale = image.rectTransform.sizeDelta.y;
+        image.transform.parent.gameObject.SetActive(true);
+        image.gameObject.SetActive(true);
         SetGameColor(gameColor);
         SetCharge(charge);
     }
