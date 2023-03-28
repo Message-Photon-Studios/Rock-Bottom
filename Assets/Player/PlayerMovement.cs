@@ -16,6 +16,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform focusPoint;
     [SerializeField] float checkBelowPoint;
     [SerializeField] CapsuleCollider2D playerCollider;
+    [SerializeField] Sprite normalSprite;
+    [SerializeField] Sprite jumpSprite;
+    [SerializeField] Sprite fallSprite;
 
 
     private float airTime;
@@ -122,6 +125,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrounded())
         {
+            spriteRenderer.sprite = normalSprite;
             airTime = 0;
             body.velocity = new Vector2(movement, body.velocity.y);
             if(doubleJumpActive) doubleJumpActive = false;
@@ -135,9 +139,18 @@ public class PlayerMovement : MonoBehaviour
             {
                 jump = 0;
             }
+
+            if(body.velocity.y > 0f)
+            {
+                spriteRenderer.sprite = jumpSprite;
+            } else
+            {
+                spriteRenderer.sprite = fallSprite;
+            }
         }
        
         body.AddForce(new Vector2(0,jump));
+
     }
 
     private void Flip()

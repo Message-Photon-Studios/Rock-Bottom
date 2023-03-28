@@ -5536,9 +5536,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 2
-  m_LinearDrag: 6.5
+  m_LinearDrag: 8
   m_AngularDrag: 0
-  m_GravityScale: 16
+  m_GravityScale: 10
   m_Material: {fileID: 6200000, guid: c760c8ec9f08f9c4ba3fe09401412696, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -5573,9 +5573,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 11
-  jumpPower: 1400
-  leapPower: 70
-  jumpJetpack: 650
+  jumpPower: 1600
+  leapPower: 100
+  jumpJetpack: 700
   jumpFalloff: 2100
   walkAction: {fileID: 2156130203312526529, guid: fd04459890e791843a48243064f9151b, type: 3}
   jumpAction: {fileID: 8155338115105704411, guid: fd04459890e791843a48243064f9151b, type: 3}
@@ -5585,6 +5585,9 @@ MonoBehaviour:
   focusPoint: {fileID: 1728486870}
   checkBelowPoint: -3
   playerCollider: {fileID: 1211380178}
+  normalSprite: {fileID: 21300000, guid: 6d083a32c29bf8241ab24aba012cd2e9, type: 3}
+  jumpSprite: {fileID: 21300000, guid: c893a016276abbf4a8d154a704e770a9, type: 3}
+  fallSprite: {fileID: 21300000, guid: 943c7f0dc3c624842bfcb59dafb05760, type: 3}
 --- !u!114 &1211380180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5770,8 +5773,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9a7b7bc95fa99f4088c2631bd03f32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
-  verticalSpeed: 4
+  speed: 3
+  verticalSpeed: 2
   focusPoint: {fileID: 1728486870}
 --- !u!1 &1243171044
 GameObject:
