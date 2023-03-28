@@ -4862,10 +4862,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694d81906fab42941ad9d4bdb5e18553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 11
-  jumpPower: 1400
-  leapPower: 70
-  jumpJetpack: 650
+  movementSpeed: 10
+  jumpPower: 1500
+  leapPower: 150
+  jumpJetpack: 600
   jumpFalloff: 2100
   walkAction: {fileID: 2156130203312526529, guid: fd04459890e791843a48243064f9151b, type: 3}
   jumpAction: {fileID: 8155338115105704411, guid: fd04459890e791843a48243064f9151b, type: 3}
@@ -4875,6 +4875,9 @@ MonoBehaviour:
   focusPoint: {fileID: 468746528245736198}
   checkBelowPoint: -3
   playerCollider: {fileID: 468746527930208002}
+  normalSprite: {fileID: 21300000, guid: 6d083a32c29bf8241ab24aba012cd2e9, type: 3}
+  jumpSprite: {fileID: 21300000, guid: c893a016276abbf4a8d154a704e770a9, type: 3}
+  fallSprite: {fileID: 21300000, guid: 943c7f0dc3c624842bfcb59dafb05760, type: 3}
 --- !u!50 &468746527930208001
 Rigidbody2D:
   serializedVersion: 4
@@ -4888,9 +4891,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 2
-  m_LinearDrag: 6.5
+  m_LinearDrag: 8
   m_AngularDrag: 0
-  m_GravityScale: 16
+  m_GravityScale: 10
   m_Material: {fileID: 6200000, guid: c760c8ec9f08f9c4ba3fe09401412696, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -5018,7 +5021,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468746528245736197}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 0.7, z: -10}
+  m_LocalPosition: {x: 2.59, y: 0.7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
