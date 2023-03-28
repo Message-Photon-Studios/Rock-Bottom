@@ -20,9 +20,20 @@ public class ColorInventory : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
+    }
+
+    void OnDisable()
+    {
+        changeRightActions.action.performed -= (dir) => {RotateActive((int)dir.ReadValue<float>()); };
+    }
+
     public void RotateActive(int dir)
     {
         activeSlot = (colorSlots.Count+activeSlot+dir)%colorSlots.Count;
+        Debug.Log(ActiveSlot().gameColor);
     }
 
     public ColorEffect UseActiveColorEffect()

@@ -53,6 +53,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ColorChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""636a6326-c3a5-4cd9-9e23-8968c83874b0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -110,6 +119,39 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""CheckBelow"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""4af7eef6-a987-4548-a97b-c7e75cbad123"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ColorChange"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Negative"",
+                    ""id"": ""f946b3e5-1eb2-4ba2-ae1c-a5f9370e4e13"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ColorChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Positive"",
+                    ""id"": ""36ed0a74-31fd-4e59-9ab7-4721e868ee8b"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ColorChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -121,6 +163,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_CheckBelow = m_Player.FindAction("CheckBelow", throwIfNotFound: true);
+        m_Player_ColorChange = m_Player.FindAction("ColorChange", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,6 +226,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Walk;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_CheckBelow;
+    private readonly InputAction m_Player_ColorChange;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -190,6 +234,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Walk => m_Wrapper.m_Player_Walk;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @CheckBelow => m_Wrapper.m_Player_CheckBelow;
+        public InputAction @ColorChange => m_Wrapper.m_Player_ColorChange;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -208,6 +253,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @CheckBelow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckBelow;
                 @CheckBelow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckBelow;
                 @CheckBelow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckBelow;
+                @ColorChange.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColorChange;
+                @ColorChange.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColorChange;
+                @ColorChange.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColorChange;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -221,6 +269,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @CheckBelow.started += instance.OnCheckBelow;
                 @CheckBelow.performed += instance.OnCheckBelow;
                 @CheckBelow.canceled += instance.OnCheckBelow;
+                @ColorChange.started += instance.OnColorChange;
+                @ColorChange.performed += instance.OnColorChange;
+                @ColorChange.canceled += instance.OnColorChange;
             }
         }
     }
@@ -230,5 +281,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnWalk(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnCheckBelow(InputAction.CallbackContext context);
+        void OnColorChange(InputAction.CallbackContext context);
     }
 }
