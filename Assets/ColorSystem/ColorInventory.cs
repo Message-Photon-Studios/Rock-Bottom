@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class ColorInventory : MonoBehaviour
 {
-    [SerializeField] int startColorSlots;
+    int startColorSlots;
     [SerializeField] List<ColorSlot> colorSlots;
     
     [SerializeField] int activeSlot;
@@ -16,6 +16,7 @@ public class ColorInventory : MonoBehaviour
 
     void Start()
     {
+        startColorSlots = colorSlots.Count;
         for (int i = 0; i < startColorSlots; i++)
         {
             colorSlots[i].Init(images[i]);
@@ -97,7 +98,9 @@ public class ColorInventory : MonoBehaviour
 
     public void ResetColorSlots()
     {
-        
+        RemoveAllColors();
+        while(colorSlots.Count > startColorSlots)
+            RemoveColorSlot();
     }
 }
 
