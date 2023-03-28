@@ -469,6 +469,32 @@ public class LevelGenerator
         createStartEndPoints();
         defineBigRooms(bigRoomP, bigRoomDistance);
         createScene();
+        addEmptyBlackness();
+    }
+
+    private void addEmptyBlackness()
+    {
+        var minX = graph.nodes.Min(node => node.pos.x) - 2;
+        var maxX = graph.nodes.Max(node => node.pos.x) + 2;
+        var minY = graph.nodes.Min(node => node.pos.y) - 2;
+        var maxY = graph.nodes.Max(node => node.pos.y) + 2;
+        var blackSpaceHolder = GameObject.Find("BlackSpaceHolder");
+        if (blackSpaceHolder != null)
+            Object.DestroyImmediate(blackSpaceHolder);
+        blackSpaceHolder = new GameObject("BlackSpaceHolder");
+        var backgrounds = Resources.LoadAll("RoomRoster/special/background/outside");
+        for (var x = minX; x <= maxX; x++)
+        {
+            for (var y = minY; y <= maxY; y++)
+            {
+                if (graph.nodes.Exists(node => node.pos.x == x && node.pos.y == y))
+                    continue;
+                var emptyBlackness = PrefabUtility.InstantiatePrefab(backgrounds[Random.Range(0, backgrounds.Length)]) as GameObject;
+                emptyBlackness.transform.position = new Vector3(x * 20, y * 20, 0);
+                emptyBlackness.transform.parent = blackSpaceHolder.transform;
+            }
+        }
+        SceneManager.MoveGameObjectToScene(blackSpaceHolder, SceneManager.GetActiveScene());
     }
 
     private void createStartEndPoints()
