@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable() {
         jumpAction.action.started += (_) => {Jump();};
         jumpAction.action.canceled += (_) => {JumpCancel();};
-        belowCheckAction.action.started += (_) => {CheckBelowStart();};
+        belowCheckAction.action.performed += (_) => {CheckBelowStart();};
         belowCheckAction.action.canceled += (_) => {CheckBelowCancel();};
 
     }
