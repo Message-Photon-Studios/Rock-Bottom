@@ -250,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &279728873
 Transform:
   m_ObjectHideFlags: 0
@@ -5657,6 +5657,7 @@ GameObject:
   - component: {fileID: 1211380175}
   - component: {fileID: 1211380178}
   - component: {fileID: 1211380180}
+  - component: {fileID: 1211380181}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -5792,12 +5793,10 @@ MonoBehaviour:
   belowCheckAction: {fileID: -5631806235618937037, guid: fd04459890e791843a48243064f9151b, type: 3}
   body: {fileID: 1211380177}
   spriteRenderer: {fileID: 1211380175}
+  playerAnimator: {fileID: 1211380181}
   focusPoint: {fileID: 1728486870}
   checkBelowPoint: -3
   playerCollider: {fileID: 1211380178}
-  normalSprite: {fileID: 21300000, guid: 6d083a32c29bf8241ab24aba012cd2e9, type: 3}
-  jumpSprite: {fileID: 21300000, guid: c893a016276abbf4a8d154a704e770a9, type: 3}
-  fallSprite: {fileID: 21300000, guid: 943c7f0dc3c624842bfcb59dafb05760, type: 3}
 --- !u!114 &1211380180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5828,6 +5827,26 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!95 &1211380181
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211380174}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dffa28e313c2ee14ead9d1b67a35513b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &1229946001
 GameObject:
   m_ObjectHideFlags: 0

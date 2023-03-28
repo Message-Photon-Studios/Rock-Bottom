@@ -13,12 +13,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction;
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Animator playerAnimator;
     [SerializeField] Transform focusPoint;
     [SerializeField] float checkBelowPoint;
     [SerializeField] CapsuleCollider2D playerCollider;
-    [SerializeField] Sprite normalSprite;
-    [SerializeField] Sprite jumpSprite;
-    [SerializeField] Sprite fallSprite;
+    //[SerializeField] Sprite normalSprite;
+    //[SerializeField] Sprite jumpSprite;
+    //[SerializeField] Sprite fallSprite;
 
 
     private float airTime;
@@ -125,13 +126,16 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrounded())
         {
-            spriteRenderer.sprite = normalSprite;
+            playerAnimator.SetInteger("velocityY", 0);
             airTime = 0;
             body.velocity = new Vector2(movement, body.velocity.y);
             if(doubleJumpActive) doubleJumpActive = false;
+            if(!playerAnimator.GetBool("walking") && body.velocity.x != 0) playerAnimator.SetBool("walking", true);
+            else if(playerAnimator.GetBool("walking") && body.velocity.x == 0) playerAnimator.SetBool("walking", false);
     
         } else
         {
+            if(playerAnimator.GetBool("walking")) playerAnimator.SetBool("walking", false);
             body.AddForce(new Vector2(movement*10, 0));
             airTime += Time.fixedDeltaTime;
 
@@ -142,10 +146,10 @@ public class PlayerMovement : MonoBehaviour
 
             if(body.velocity.y > 0f)
             {
-                spriteRenderer.sprite = jumpSprite;
+                playerAnimator.SetInteger("velocityY", 1);
             } else
             {
-                spriteRenderer.sprite = fallSprite;
+                playerAnimator.SetInteger("velocityY", -1);
             }
         }
        
