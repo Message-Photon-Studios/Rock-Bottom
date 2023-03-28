@@ -2,26 +2,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
 using Gizmos = UnityEngine.Gizmos;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+
+public enum RoomType
+{
+    Big,
+    Tall,
+    Long,
+    Normal,
+    Start,
+    End
+}
 
 public class DungeonGraph
 {
 
     public List<DungeonNode> nodes;
     public List<DungeonBigNode> bigNodes;
+    public List<DungeonTallNode> tallNodes;
+    public List<DungeonLongNode> longNodes;
     public List<DungeonNode> drawnNodes;
     public class DungeonNode
     {
         public int depth;
         public DungeonGraph parent;
         public DungeonNode[] connections;
-        public bool inCompoundRoom;
+        public RoomType roomType = RoomType.Normal;
         public Vector2 pos;
 
         public int layoutCode
@@ -33,7 +43,7 @@ public class DungeonGraph
                 if (connections[1] != null) _layoutCode += 4;
                 if (connections[2] != null) _layoutCode += 2;
                 if (connections[3] != null) _layoutCode += 1;
-                return _layoutCode;;
+                return _layoutCode;
             }
         }
         public bool explored;
@@ -108,11 +118,31 @@ public class DungeonGraph
             {
                 if (node == null)
                     continue;
+                Gizmos.color = roomType switch
+                {
+                    RoomType.Big => Color.cyan,
+                    RoomType.Tall => Color.blue,
+                    RoomType.Long => Color.magenta,
+                    RoomType.Normal => Color.white,
+                    RoomType.Start => Color.green,
+                    RoomType.End => Color.red,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
                 Gizmos.DrawLine(pos * 20 + Vector2.one * 10, (node.pos + pos) * 10 + Vector2.one * 10);
                 if (parent.drawnNodes.Exists(elem => node.pos == elem.pos))
                     continue;
                 node.draw();
             }
+            Gizmos.color = roomType switch
+            {
+                RoomType.Big => Color.cyan,
+                RoomType.Tall => Color.blue,
+                RoomType.Long => Color.magenta,
+                RoomType.Normal => Color.white,
+                RoomType.Start => Color.green,
+                RoomType.End => Color.red,
+                _ => throw new ArgumentOutOfRangeException()
+            };
             Gizmos.DrawSphere(pos * 20 + Vector2.one * 10, 2f);
         }
     }
@@ -152,8 +182,82 @@ public class DungeonGraph
 
         public void draw()
         {
-            Gizmos.color = layoutCode == 255 ? Color.red : Color.green;
+            Gizmos.color = Color.cyan;
             Gizmos.DrawSphere(members[0].pos * 20 + Vector2.one * 20, 4f);
+            Gizmos.color = Color.white;
+        }
+    }
+
+    public class DungeonTallNode
+    {
+        public DungeonNode[] members;
+        public bool mirrored;
+
+        public Vector2 pos => members[0].pos;
+
+        public int layoutCode
+        {
+            get
+            {
+                var _layoutCode = 0;
+                if (members[1].connections[3] != null) _layoutCode += 32; //topDoor
+                if (members[0].connections[1] != null) _layoutCode += 16; //bottomDoor
+                if (members[1].connections[0] != null) _layoutCode += 8;  //leftTopDoor
+                if (members[0].connections[0] != null) _layoutCode += 4;  //leftBottomDoor 
+                if (members[1].connections[2] != null) _layoutCode += 2;  //rightTopDoor
+                if (members[0].connections[2] != null) _layoutCode += 1;  //rightBottomDoor
+                return _layoutCode;
+            }
+        }
+
+        public DungeonTallNode(
+            DungeonNode bottom, 
+            DungeonNode top)
+        {
+            members = new[] { bottom, top };
+        }
+
+        public void draw()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(members[0].pos * 20 + new Vector2(10f, 20f), 4f);
+            Gizmos.color = Color.white;
+        }
+    }
+
+    public class DungeonLongNode
+    {
+        public DungeonNode[] members;
+        public bool mirrored;
+
+        public Vector2 pos => members[0].pos;
+
+        public int layoutCode
+        {
+            get
+            {
+                var _layoutCode = 0;
+                if (members[0].connections[0] != null) _layoutCode += 32;
+                if (members[1].connections[2] != null) _layoutCode += 16;
+                if (members[0].connections[3] != null) _layoutCode += 8;
+                if (members[1].connections[3] != null) _layoutCode += 4;
+                if (members[0].connections[1] != null) _layoutCode += 2;
+                if (members[1].connections[1] != null) _layoutCode += 1;
+                return _layoutCode;
+            }
+        }
+
+        public DungeonLongNode(
+            DungeonNode left,
+            DungeonNode right)
+        {
+            members = new[] { left, right };
+        }
+
+        public void draw()
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawSphere(members[0].pos * 20 + new Vector2(20f, 10f), 4f);
             Gizmos.color = Color.white;
         }
     }
@@ -164,6 +268,8 @@ public class DungeonGraph
     {
         nodes = new List<DungeonNode>();
         bigNodes = new List<DungeonBigNode>();
+        longNodes = new List<DungeonLongNode>();
+        tallNodes = new List<DungeonTallNode>();
         drawnNodes = new List<DungeonNode>();
         root = new DungeonNode(pos, this);
         nodes.Add(root);
@@ -177,9 +283,18 @@ public class DungeonGraph
         {
             bigNode.draw();
         }
-    }
 
-    //TODO
+        foreach (var longNode in longNodes)
+        {
+            longNode.draw();
+        }
+
+        foreach (var tallNode in tallNodes)
+        {
+            tallNode.draw();
+        }
+    }
+    
     public void findBigRooms()
     {
         foreach (var node in nodes)
@@ -191,19 +306,44 @@ public class DungeonGraph
             neighbors[3] = nodes.Find(elem => elem.pos == node.pos + Vector2.right + Vector2.up);
             
             //Left, down, right, up
-            if ((neighbors[1] != null && neighbors[2] != null && neighbors[3] != null) && 
-                (neighbors[0].connections[2] != null) && 
-                (neighbors[1].connections[3] != null) &&
-                (neighbors[3].connections[0] != null) &&
-                (neighbors[2].connections[1] != null))
-                bigNodes.Add(new DungeonBigNode(neighbors[0], neighbors[1], neighbors[2], neighbors[3]));
+            if ((neighbors[1] == null || neighbors[2] == null || neighbors[3] == null) ||
+                (neighbors[0].connections[2] == null) ||
+                (neighbors[1].connections[3] == null) ||
+                (neighbors[3].connections[0] == null) ||
+                (neighbors[2].connections[1] == null)) 
+                continue;
+            bigNodes.Add(new DungeonBigNode(neighbors[0], neighbors[1], neighbors[2], neighbors[3]));
+        }
+
+        foreach (var node in nodes)
+        {
+            var neighbors = new DungeonNode[2];
+            neighbors[0] = node;
+            neighbors[1] = nodes.Find(elem => elem.pos == node.pos + Vector2.right);
+            if (neighbors[1] == null || neighbors[1].roomType != RoomType.Normal || neighbors[1].connections[0] == null) 
+                continue;
+            longNodes.Add(new DungeonLongNode(neighbors[0], neighbors[1]));
+        }
+
+        foreach (var node in nodes)
+        {
+            var neighbors = new DungeonNode[2];
+            neighbors[0] = node;
+            neighbors[1] = nodes.Find(elem => elem.pos == node.pos + Vector2.up);
+            if (neighbors[1] == null || neighbors[1].roomType != RoomType.Normal || neighbors[1].connections[1] == null) 
+                continue;
+            tallNodes.Add(new DungeonTallNode(neighbors[0], neighbors[1]));
         }
     }
-
-    //TODO
+    
     public void filterBigRooms(float p, int minDistance)
     {
         var prefabs = Resources.LoadAll<BigRoomData>("RoomRoster/big").ToList();
+        bigNodes = bigNodes.FindAll(bigNode =>
+            bigNode.members[0].roomType == RoomType.Normal &&
+            bigNode.members[1].roomType == RoomType.Normal &&
+            bigNode.members[2].roomType == RoomType.Normal &&
+            bigNode.members[3].roomType == RoomType.Normal);
         bigNodes = bigNodes.FindAll(bigNode =>
         {
             return Random.Range(0, 100) < p * 100 && prefabs.Exists(prefab => prefab.layoutCode == bigNode.layoutCode || prefab.mirroredLayoutCode == bigNode.layoutCode);
@@ -213,8 +353,8 @@ public class DungeonGraph
             var bigNode = bigNodes[i];
             var tooClose = bigNodes
                 .FindAll(otherBigNode => Mathf.Abs(bigNode.pos.x - otherBigNode.pos.x) < minDistance + 1 && 
-                                         Mathf.Abs(bigNode.pos.y - otherBigNode.pos.y) < minDistance + 1)
-                .Where(otherBigNode => bigNode != otherBigNode);
+                                         Mathf.Abs(bigNode.pos.y - otherBigNode.pos.y) < minDistance + 1 &&
+                                         bigNode != otherBigNode);
 
             foreach (var otherBigNode in tooClose)
             {
@@ -222,6 +362,74 @@ public class DungeonGraph
                 if (bigNodes.IndexOf(otherBigNode) < i)
                     i--;
             }
+        }
+
+        foreach (var bigNode in bigNodes)
+        {
+            bigNode.members[0].roomType = RoomType.Big;
+            bigNode.members[1].roomType = RoomType.Big;
+            bigNode.members[2].roomType = RoomType.Big;
+            bigNode.members[3].roomType = RoomType.Big;
+        }
+    }
+
+    public void filterLongRooms(float p, int minDistance)
+    {
+        var prefabs = Resources.LoadAll<LongRoomData>("RoomRoster/long").ToList();
+        longNodes = longNodes.FindAll(elem => elem.members[0].roomType == RoomType.Normal && elem.members[1].roomType == RoomType.Normal);
+        longNodes = longNodes.FindAll(longNode =>
+        {
+            return Random.Range(0, 100) < p * 100 && prefabs.Exists(prefab => prefab.layoutCode == longNode.layoutCode || prefab.mirroredLayoutCode == longNode.layoutCode);
+        });
+        for (var i = 0; i < longNodes.Count; i++)
+        {
+            var longNode = longNodes[i];
+            var tooClose = longNodes
+                .FindAll(otherLongNode => Mathf.Abs(longNode.pos.x - otherLongNode.pos.x) < minDistance + 1 &&
+                                          Mathf.Abs(longNode.pos.y - otherLongNode.pos.y) < minDistance &&
+                                          longNode != otherLongNode);
+            foreach (var otherLongNode in tooClose)
+            {
+                longNodes.Remove(otherLongNode);
+                if (longNodes.IndexOf(otherLongNode) < i)
+                    i--;
+            }
+        }
+
+        foreach (var longNode in longNodes)
+        {
+            longNode.members[0].roomType = RoomType.Long;
+            longNode.members[1].roomType = RoomType.Long;
+        }
+    }
+
+    public void filterTallRooms(float p, int minDistance)
+    {
+        var prefabs = Resources.LoadAll<TallRoomData>("RoomRoster/tall").ToList();
+        tallNodes = tallNodes.FindAll(elem => elem.members[0].roomType == RoomType.Normal && elem.members[1].roomType == RoomType.Normal);
+        tallNodes = tallNodes.FindAll(tallNode =>
+        {
+            return Random.Range(0, 100) < p * 100 && prefabs.Exists(prefab => prefab.layoutCode == tallNode.layoutCode || prefab.mirroredLayoutCode == tallNode.layoutCode);
+        });
+        for (var i = 0; i < tallNodes.Count; i++)
+        {
+            var tallNode = tallNodes[i];
+            var tooClose = tallNodes
+                .FindAll(otherTallNode => Mathf.Abs(tallNode.pos.x - otherTallNode.pos.x) < minDistance &&
+                                          Mathf.Abs(tallNode.pos.y - otherTallNode.pos.y) < minDistance + 1 &&
+                                          tallNode != otherTallNode);
+            foreach (var otherTallNode in tooClose)
+            {
+                tallNodes.Remove(otherTallNode);
+                if (tallNodes.IndexOf(otherTallNode) < i)
+                    i--;
+            }
+        }
+
+        foreach (var tallNode in tallNodes)
+        {
+            tallNode.members[0].roomType = RoomType.Tall;
+            tallNode.members[1].roomType = RoomType.Tall;
         }
     }
 }
@@ -258,20 +466,41 @@ public class LevelGenerator
             var origin = Array.Find(dungeonNode.connections, conn => conn != null);
             dungeonNode.generateRandomly(p, pFall, dungeonNode.depth, dungeonNode.depth + maxDepth, maxBranches, origin);
         }
+        createStartEndPoints();
         defineBigRooms(bigRoomP, bigRoomDistance);
         createScene();
     }
 
-    public void createScene()
+    private void createStartEndPoints()
     {
-        var roomHolder = GameObject.Find("RoomHolder");
-        if (roomHolder != null)
-            Object.DestroyImmediate(roomHolder);
-        roomHolder = new GameObject("RoomHolder");
+        var startNodes = graph.nodes.FindAll(node => node.pos.y == graph.nodes.Min(elem => elem.pos.y));
+        var startNode = startNodes[Random.Range(0, startNodes.Count)];
+        var newStartNode = new DungeonGraph.DungeonNode(startNode.pos + Vector2.down, graph){ roomType = RoomType.Start };
+        startNode.connections[1] = newStartNode;
+        newStartNode.connections[3] = startNode;
+        graph.nodes.Add(newStartNode);
+        var endNodes = graph.nodes.FindAll(node => node.pos.y == graph.nodes.Max(elem => elem.pos.y));
+        var endNode = endNodes[Random.Range(0, endNodes.Count)];
+        var newEndNode = new DungeonGraph.DungeonNode(endNode.pos + Vector2.up, graph){ roomType = RoomType.End };
+        endNode.connections[3] = newEndNode;
+        newEndNode.connections[1] = endNode;
+        graph.nodes.Add(newEndNode);
+    }
+
+    private GameObject createNormalRooms()
+    {
+        var normalRoomHolder = new GameObject("NormalRoomHolder");
         var prefabs = Resources.LoadAll<RoomData>("RoomRoster/normal");
-        foreach (var node in graph.nodes.FindAll(elem => !elem.inCompoundRoom))
+        var startPrefabs = Resources.LoadAll<RoomData>("RoomRoster/special/start");
+        var endPrefabs = Resources.LoadAll<RoomData>("RoomRoster/special/end");
+        foreach (var node in graph.nodes.FindAll(elem => elem.roomType is RoomType.Normal or RoomType.Start or RoomType.End))
         {
-            var filteredPrefabs = prefabs.Where(prefab => prefab.layoutCode == node.layoutCode).ToArray();
+            var filteredPrefabs = node.roomType switch
+            {
+                RoomType.Start => startPrefabs.Where(prefab => prefab.layoutCode == node.layoutCode).ToArray(),
+                RoomType.End => endPrefabs.Where(prefab => prefab.layoutCode == node.layoutCode).ToArray(),
+                _ => prefabs.Where(prefab => prefab.layoutCode == node.layoutCode).ToArray()
+            };
             var idx = Random.Range(0, filteredPrefabs.Length);
             var prefab = filteredPrefabs[idx];
             var room = PrefabUtility.InstantiatePrefab(prefab.gameObject) as GameObject;
@@ -279,14 +508,15 @@ public class LevelGenerator
             room.gameObject.SetActive(true);
             room.transform.position = node.pos * 20;
             room.name = prefab.name + " | " + node.pos;
-            room.transform.parent = roomHolder.transform;
+            room.transform.parent = normalRoomHolder.transform;
         }
-        SceneManager.MoveGameObjectToScene(roomHolder, SceneManager.GetActiveScene());
 
-        var bigRoomHolder = GameObject.Find("BigRoomHolder");
-        if (bigRoomHolder != null)
-            Object.DestroyImmediate(bigRoomHolder);
-        bigRoomHolder = new GameObject("BigRoomHolder");
+        return normalRoomHolder;
+    }
+
+    private GameObject createBigRoomHolder()
+    {
+        var bigRoomHolder = new GameObject("BigRoomHolder");
         var bigPrefabs = Resources.LoadAll<BigRoomData>("RoomRoster/big");
         foreach (var bigNode in graph.bigNodes)
         {
@@ -316,15 +546,107 @@ public class LevelGenerator
             room.name = prefab.name + " | " + bigNode.pos;
             room.transform.parent = bigRoomHolder.transform;
         }
+
+        return bigRoomHolder;
+    }
+
+    private GameObject createLongRoomHolder()
+    {
+        var longRoomHolder = new GameObject("LongRoomHolder");
+        var longPrefabs = Resources.LoadAll<LongRoomData>("RoomRoster/long");
+        foreach (var longNode in graph.longNodes)
+        {
+            var filteredPrefabs = longPrefabs
+                .Where(prefab => 
+                    prefab.layoutCode == longNode.layoutCode || 
+                    prefab.mirroredLayoutCode == longNode.layoutCode)
+                .ToArray();
+            var idx = Random.Range(0, filteredPrefabs.Length);
+            var prefab = filteredPrefabs[idx];
+            if (prefab.mirroredLayoutCode == longNode.layoutCode)
+            {
+                if (prefab.layoutCode != longNode.layoutCode)
+                    longNode.mirrored = true;
+                else
+                    longNode.mirrored = Random.Range(0, 2) == 0;
+            }
+            var room = PrefabUtility.InstantiatePrefab(prefab.gameObject) as GameObject;
+            if (room == null) continue;
+            room.gameObject.SetActive(true);
+            room.transform.position = longNode.pos * 20;
+            if (longNode.mirrored)
+            {
+                room.transform.localScale = new Vector3(-1, 1, 1);
+                room.transform.position += new Vector3(40, 0, 0);
+            }
+            room.name = prefab.name + " | " + longNode.pos;
+            room.transform.parent = longRoomHolder.transform;
+        }
+
+        return longRoomHolder;
+    }
+
+    private GameObject createTallRoomHolder()
+    {
+        var tallRoomHolder = new GameObject("TallRoomHolder");
+        var tallPrefabs = Resources.LoadAll<TallRoomData>("RoomRoster/tall");
+        foreach (var tallNode in graph.tallNodes)
+        {
+            var filteredPrefabs = tallPrefabs
+                .Where(prefab => 
+                    prefab.layoutCode == tallNode.layoutCode || 
+                    prefab.mirroredLayoutCode == tallNode.layoutCode)
+                .ToArray();
+            var idx = Random.Range(0, filteredPrefabs.Length);
+            var prefab = filteredPrefabs[idx];
+            if (prefab.mirroredLayoutCode == tallNode.layoutCode)
+            {
+                if (prefab.layoutCode != tallNode.layoutCode)
+                    tallNode.mirrored = true;
+                else
+                    tallNode.mirrored = Random.Range(0, 2) == 0;
+            }
+            var room = PrefabUtility.InstantiatePrefab(prefab.gameObject) as GameObject;
+            if (room == null) continue;
+            room.gameObject.SetActive(true);
+            room.transform.position = tallNode.pos * 20;
+            if (tallNode.mirrored)
+            {
+                room.transform.localScale = new Vector3(-1, 1, 1);
+                room.transform.position += new Vector3(20, 0, 0);
+            }
+            room.name = prefab.name + " | " + tallNode.pos;
+            room.transform.parent = tallRoomHolder.transform;
+        }
+
+        return tallRoomHolder;
+    }
+
+    private void createScene()
+    {
+        var roomHolder = GameObject.Find("RoomHolder");
+        if (roomHolder != null)
+            Object.DestroyImmediate(roomHolder);
+        roomHolder = new GameObject("RoomHolder");
+
+        var normalRoomHolder = createNormalRooms();
+        var bigRoomHolder = createBigRoomHolder();
+        var longRoomHolder = createLongRoomHolder();
+        var tallRoomHolder = createTallRoomHolder();
+
+        normalRoomHolder.transform.parent = roomHolder.transform;
+        bigRoomHolder.transform.parent = roomHolder.transform;
+        longRoomHolder.transform.parent = roomHolder.transform;
+        tallRoomHolder.transform.parent = roomHolder.transform;
+
+        SceneManager.MoveGameObjectToScene(roomHolder, SceneManager.GetActiveScene());
     }
     
-    public void defineBigRooms(float p = 1f, int minDistance = 1)
+    private void defineBigRooms(float p = 1f, int minDistance = 1)
     {
         graph.findBigRooms();
         graph.filterBigRooms(p, minDistance);
-        foreach (var member in graph.bigNodes.SelectMany(node => node.members))
-        {
-            member.inCompoundRoom = true;
-        }
+        graph.filterTallRooms(p, minDistance);
+        graph.filterLongRooms(p, minDistance);
     }
 }
