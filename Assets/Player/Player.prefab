@@ -4823,6 +4823,7 @@ GameObject:
   - component: {fileID: 468746527930208000}
   - component: {fileID: 468746527930208003}
   - component: {fileID: 468746527930208001}
+  - component: {fileID: 1731711828163631322}
   - component: {fileID: 468746527930208031}
   - component: {fileID: 468746527930208002}
   - component: {fileID: 468746527930208004}
@@ -4898,6 +4899,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &1731711828163631322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468746527930208030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0d420a6adfa514c97c8e3aba09c228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeSpells:
+  - {fileID: 0}
+  spellActions:
+  - {fileID: 2377138631872693329, guid: fd04459890e791843a48243064f9151b, type: 3}
+  spriteRenderer: {fileID: 468746527930208031}
+  colorInventory: {fileID: 0}
 --- !u!212 &468746527930208031
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -62,6 +62,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpellSlot1"",
+                    ""type"": ""Button"",
+                    ""id"": ""f9219bd8-ca41-4fc9-91a4-b0663cedb52e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -251,6 +260,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""ColorChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37d90592-c749-4817-91ba-e30edc2d3d95"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""SpellSlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -291,6 +311,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_CheckBelow = m_Player.FindAction("CheckBelow", throwIfNotFound: true);
         m_Player_ColorChange = m_Player.FindAction("ColorChange", throwIfNotFound: true);
+        m_Player_SpellSlot1 = m_Player.FindAction("SpellSlot1", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -354,6 +375,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_CheckBelow;
     private readonly InputAction m_Player_ColorChange;
+    private readonly InputAction m_Player_SpellSlot1;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -362,6 +384,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @CheckBelow => m_Wrapper.m_Player_CheckBelow;
         public InputAction @ColorChange => m_Wrapper.m_Player_ColorChange;
+        public InputAction @SpellSlot1 => m_Wrapper.m_Player_SpellSlot1;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -383,6 +406,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @ColorChange.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColorChange;
                 @ColorChange.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColorChange;
                 @ColorChange.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColorChange;
+                @SpellSlot1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpellSlot1;
+                @SpellSlot1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpellSlot1;
+                @SpellSlot1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpellSlot1;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -399,6 +425,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @ColorChange.started += instance.OnColorChange;
                 @ColorChange.performed += instance.OnColorChange;
                 @ColorChange.canceled += instance.OnColorChange;
+                @SpellSlot1.started += instance.OnSpellSlot1;
+                @SpellSlot1.performed += instance.OnSpellSlot1;
+                @SpellSlot1.canceled += instance.OnSpellSlot1;
             }
         }
     }
@@ -427,5 +456,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnCheckBelow(InputAction.CallbackContext context);
         void OnColorChange(InputAction.CallbackContext context);
+        void OnSpellSlot1(InputAction.CallbackContext context);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Handles the impact of color spells
 /// </summary>
+[RequireComponent(typeof(Collider2D))]
 public abstract class ColorSpell : MonoBehaviour
 {
     /// <summary>
@@ -26,6 +27,7 @@ public abstract class ColorSpell : MonoBehaviour
     /// The maximum lifetime of the projectile
     /// </summary>
     [SerializeField] float lifeTime;
+
     protected ColorEffect colorEffect;
     protected float power;
     protected GameObject player;

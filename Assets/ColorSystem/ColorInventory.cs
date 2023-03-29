@@ -50,7 +50,7 @@ public class ColorInventory : MonoBehaviour
     /// Returns the color effect from the active color slot
     /// </summary>
     /// <returns></returns>
-    public ColorEffect UseActiveColorEffect()
+    public ColorEffect GetActiveColorEffect()
     {
         if(ActiveSlot().charge > 0)
         {
