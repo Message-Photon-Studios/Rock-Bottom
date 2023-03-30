@@ -125,6 +125,24 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DefaultAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""376b0d1a-1f6d-4313-b0fc-8d7f3031f39d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba16ae19-c792-4e75-a54b-d1e20b66999e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -765,6 +783,127 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""RotateColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""d1438064-f0c5-4edc-b853-f1b5024f007f"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""06dd7dd3-408d-433d-9890-aea1910e620f"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""8e459c03-b24b-4e73-9c11-940489a9762b"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1796cd03-0303-45ac-9602-2d1ec04db6cd"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""DefaultAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b705d1e1-cd0f-486d-a5d5-830813744d97"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DefaultAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1aeca01e-7b60-49d9-be86-f8ddfcd8a525"",
+                    ""path"": ""<XInputController>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController"",
+                    ""action"": ""DefaultAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1882e2af-d634-42c3-8d3e-ae68f1c98ca1"",
+                    ""path"": ""<DualShockGamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation"",
+                    ""action"": ""DefaultAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""045045a8-9a65-4316-8aff-f94753dad8a5"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""678ce0bc-3942-411c-9df3-a467aa81f520"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d38f664-573d-4b4c-9e74-f0cd939f7903"",
+                    ""path"": ""<XInputController>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""33d0a202-8eb8-4c75-bda4-4c2dc56715de"",
+                    ""path"": ""<DualShockGamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -834,6 +973,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Map = m_Player.FindAction("Map", throwIfNotFound: true);
         m_Player_RotateColor = m_Player.FindAction("RotateColor", throwIfNotFound: true);
+        m_Player_DefaultAttack = m_Player.FindAction("DefaultAttack", throwIfNotFound: true);
+        m_Player_SpecialAttack = m_Player.FindAction("SpecialAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -904,6 +1045,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Map;
     private readonly InputAction m_Player_RotateColor;
+    private readonly InputAction m_Player_DefaultAttack;
+    private readonly InputAction m_Player_SpecialAttack;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -919,6 +1062,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Map => m_Wrapper.m_Player_Map;
         public InputAction @RotateColor => m_Wrapper.m_Player_RotateColor;
+        public InputAction @DefaultAttack => m_Wrapper.m_Player_DefaultAttack;
+        public InputAction @SpecialAttack => m_Wrapper.m_Player_SpecialAttack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -961,6 +1106,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RotateColor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
                 @RotateColor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
                 @RotateColor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
+                @DefaultAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefaultAttack;
+                @DefaultAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefaultAttack;
+                @DefaultAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefaultAttack;
+                @SpecialAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -998,6 +1149,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RotateColor.started += instance.OnRotateColor;
                 @RotateColor.performed += instance.OnRotateColor;
                 @RotateColor.canceled += instance.OnRotateColor;
+                @DefaultAttack.started += instance.OnDefaultAttack;
+                @DefaultAttack.performed += instance.OnDefaultAttack;
+                @DefaultAttack.canceled += instance.OnDefaultAttack;
+                @SpecialAttack.started += instance.OnSpecialAttack;
+                @SpecialAttack.performed += instance.OnSpecialAttack;
+                @SpecialAttack.canceled += instance.OnSpecialAttack;
             }
         }
     }
@@ -1051,5 +1208,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
         void OnRotateColor(InputAction.CallbackContext context);
+        void OnDefaultAttack(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
     }
 }

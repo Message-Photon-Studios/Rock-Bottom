@@ -4915,12 +4915,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0d420a6adfa514c97c8e3aba09c228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeSpells:
-  - {fileID: 0}
-  spellActions:
-  - {fileID: 2377138631872693329, guid: fd04459890e791843a48243064f9151b, type: 3}
+  activeSpells: []
+  spellActions: []
   spriteRenderer: {fileID: 468746527930208031}
-  colorInventory: {fileID: 0}
+  colorInventory: {fileID: 2907638193198340670}
 --- !u!114 &2907638193198340670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4933,11 +4931,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f52fbe53cb41994d8a51040781a40e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorBuff: 0
-  colorSlots: []
+  colorBuff: 2
+  colorSlots:
+  - image: {fileID: 0}
+    imageScale: 0
+    maxCapacity: 0
+    charge: 0
+    gameColor: {fileID: 0}
+  - image: {fileID: 0}
+    imageScale: 0
+    maxCapacity: 0
+    charge: 0
+    gameColor: {fileID: 0}
+  - image: {fileID: 0}
+    imageScale: 0
+    maxCapacity: 0
+    charge: 0
+    gameColor: {fileID: 0}
+  - image: {fileID: 0}
+    imageScale: 0
+    maxCapacity: 0
+    charge: 0
+    gameColor: {fileID: 0}
   activeSlot: 0
-  changeRightActions: {fileID: 0}
-  images: []
+  changeRightActions: {fileID: -386362132723774860, guid: fd04459890e791843a48243064f9151b, type: 3}
+  images:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!212 &468746527930208031
 SpriteRenderer:
   m_ObjectHideFlags: 0
