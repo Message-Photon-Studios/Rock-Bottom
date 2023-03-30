@@ -71,18 +71,36 @@ public class ColorInventory : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns the color effect from the active color slot
+    /// Returns the color effect from the active color slot and decreases its charge with 1
     /// </summary>
     /// <returns></returns>
-    public ColorEffect GetActiveColorEffect()
+    public GameColor UseActiveColor()
     {
         if(ActiveSlot().charge > 0)
         {
-            ActiveSlot().SetCharge(ActiveSlot().charge -1);
-            onColorUpdated?.Invoke();
-            return ActiveSlot().gameColor.colorEffect;
-        }
 
+            onColorUpdated?.Invoke();
+            
+            GameColor ret = ActiveSlot().gameColor;
+
+            int charge = ActiveSlot().charge - 1;
+            ActiveSlot().SetCharge(charge);
+
+            return ret;
+            
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Returns the color effect from the active color slot
+    /// </summary>
+    public GameColor CheckActveColor()
+    {
+        if(ActiveSlot().charge > 0)
+        {
+            return ActiveSlot().gameColor;
+        }
         return null;
     }
 
@@ -204,7 +222,7 @@ public class ColorInventory : MonoBehaviour
 /// Defines the traits of a color slot
 /// </summary>
 [System.Serializable]
-public struct ColorSlot
+public class ColorSlot
 {
     [SerializeField] public Image image ;
     [SerializeField] float imageScale;

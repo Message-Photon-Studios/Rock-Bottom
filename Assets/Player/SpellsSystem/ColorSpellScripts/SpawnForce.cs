@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class SpawnForce : MonoBehaviour
+public class SpawnForce : SpellMover
 {
     public Vector2 spawnForce;
-    void OnEnable()
+    public override void Init (int lookDir)
     {
-        GetComponent<Rigidbody2D>().AddForce(spawnForce);
+        GetComponent<Rigidbody2D>().AddForce(spawnForce*new Vector2(lookDir, 1));
     }
 }

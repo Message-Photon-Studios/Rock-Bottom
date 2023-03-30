@@ -32,11 +32,19 @@ public abstract class ColorSpell : MonoBehaviour
     protected float power;
     protected GameObject player;
 
-    public void Initi(ColorEffect colorEffect, float power, GameObject player)
+    public int lookDir {get; protected set;}
+
+    public void Initi(ColorEffect colorEffect, float power, GameObject player, int lookDir)
     {
         this.colorEffect = colorEffect;
         this.power = power;
         this.player = player;
+        this.lookDir = lookDir; //TODO: Flip sprites
+
+        foreach (SpellMover mover in gameObject.GetComponents<SpellMover>())
+        {
+            mover.Init(lookDir);
+        }
     }
 
     void OnEnable()
