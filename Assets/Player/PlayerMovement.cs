@@ -10,21 +10,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float leapPower;
     [SerializeField] float jumpJetpack;
     [SerializeField] float jumpFalloff;
-    [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction;
+    [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction, aboveCheckAction, rightCheckAction, leftCheckAction;
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator playerAnimator;
     [SerializeField] Transform focusPoint;
-    [SerializeField] float checkBelowPoint;
+    [SerializeField] Vector2 checkPoints;
     [SerializeField] CapsuleCollider2D playerCollider;
     //[SerializeField] Sprite normalSprite;
     //[SerializeField] Sprite jumpSprite;
     //[SerializeField] Sprite fallSprite;
-
-
     private float airTime;
 
-    private float focusPointNormalY;
+    public MovementRoot movementRoot = new MovementRoot(new string[0]);
+    private Vector2 focusPointNormal;
     float movement = 0;
     private bool doubleJumpActive = false;
     private float jump;
@@ -32,20 +31,31 @@ public class PlayerMovement : MonoBehaviour
         jumpAction.action.started += (_) => {Jump();};
         jumpAction.action.canceled += (_) => {JumpCancel();};
         belowCheckAction.action.performed += (_) => {CheckBelowStart();};
-        belowCheckAction.action.canceled += (_) => {CheckBelowCancel();};
-
+        belowCheckAction.action.canceled += (_) => {CheckCancel();};
+        aboveCheckAction.action.started += (_) => {CheckAboveStart();};
+        aboveCheckAction.action.canceled += (_) => {CheckCancel();};
+        rightCheckAction.action.started += (_) => {CheckRightStart();};
+        rightCheckAction.action.canceled += (_) => {CheckCancel();};
+        leftCheckAction.action.started += (_) => {CheckLeftStart();};
+        leftCheckAction.action.canceled += (_) => {CheckCancel();};
     }
 
     private void OnDisable() {
         jumpAction.action.started -= (_) => {Jump();};
         jumpAction.action.canceled -= (_) => {JumpCancel();};
         belowCheckAction.action.started -= (_) => {CheckBelowStart();};
-        belowCheckAction.action.canceled -= (_) => {CheckBelowCancel();};
+        belowCheckAction.action.canceled -= (_) => {CheckCancel();};
+        aboveCheckAction.action.started -= (_) => {CheckAboveStart();};
+        aboveCheckAction.action.canceled -= (_) => {CheckCancel();};
+        rightCheckAction.action.started -= (_) => {CheckRightStart();};
+        rightCheckAction.action.canceled -= (_) => {CheckCancel();};
+        leftCheckAction.action.started -= (_) => {CheckLeftStart();};
+        leftCheckAction.action.canceled -= (_) => {CheckCancel();};
     }
 
     void Start()
     {
-        focusPointNormalY = focusPoint.localPosition.y;
+        focusPointNormal = focusPoint.localPosition;
     }
 
     void Update()
@@ -55,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
+        if(movementRoot.rooted) return;
+
         if(IsGrounded())
         {
              body.AddForce(new Vector2(movement, 0));
@@ -81,12 +93,34 @@ public class PlayerMovement : MonoBehaviour
 
     void CheckBelowStart()
     {
-        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkBelowPoint, focusPoint.localPosition.z);
+        movementRoot.SetRoot("CameraCheck", true);
+        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, -checkPoints.y, focusPoint.localPosition.z);
     }
 
-    void CheckBelowCancel()
+    void CheckAboveStart()
     {
-        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, focusPointNormalY, focusPoint.localPosition.z);
+        movementRoot.SetRoot("CameraCheck", true);
+        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkPoints.y, focusPoint.localPosition.z);
+    }
+
+    void CheckRightStart()
+    {
+        movementRoot.SetRoot("CameraCheck", true);
+        focusPoint.localPosition = new Vector3(checkPoints.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
+    }
+
+    void CheckLeftStart()
+    {
+        movementRoot.SetRoot("CameraCheck", true);
+        focusPoint.localPosition = new Vector3(checkPoints.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
+        Flip(false);
+    }
+
+    void CheckCancel()
+    {
+        focusPoint.localPosition = new Vector3(((focusPoint.localPosition.x<0)?-1:1) * focusPointNormal.x, focusPointNormal.y, focusPoint.localPosition.z);
+        movementRoot.SetRoot("CameraCheck", false);
+        Flip(true);
     }
 
 
@@ -104,8 +138,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate() {
         float walkDir = walkAction.action.ReadValue<float>();
-        if(walkDir < 0 && !spriteRenderer.flipX) Flip();
-        else if(walkDir > 0 && spriteRenderer.flipX) Flip();
+        if(walkDir < 0 && !spriteRenderer.flipX) Flip(false);
+        else if(walkDir > 0 && spriteRenderer.flipX) Flip(true);
         movement = movementSpeed * walkDir;
 
         if(jump > 0)
@@ -120,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
                 CheckBelowStart();
             if(IsGrounded())
             {
-                CheckBelowCancel();
+                CheckCancel();
             }
         }
 
@@ -128,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
         {
             playerAnimator.SetInteger("velocityY", 0);
             airTime = 0;
-            body.velocity = new Vector2(movement, body.velocity.y);
+            if(!movementRoot.rooted) body.velocity = new Vector2(movement, body.velocity.y);
             if(doubleJumpActive) doubleJumpActive = false;
             if(!playerAnimator.GetBool("walking") && body.velocity.x != 0) playerAnimator.SetBool("walking", true);
             else if(playerAnimator.GetBool("walking") && body.velocity.x == 0) playerAnimator.SetBool("walking", false);
@@ -153,15 +187,46 @@ public class PlayerMovement : MonoBehaviour
             }
         }
        
-        body.AddForce(new Vector2(0,jump));
+        if(!movementRoot.rooted)
+            body.AddForce(new Vector2(0,jump));
 
     }
 
-    private void Flip()
+    private void Flip(bool right)
     {
-        spriteRenderer.flipX = !spriteRenderer.flipX;
-        focusPoint.localPosition = new Vector3(-focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
+        spriteRenderer.flipX = !right;
+        focusPoint.localPosition = new Vector3((right)?1:-1 *  focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
     }
 
+}
 
+public struct MovementRoot
+{
+    public bool rooted {get; private set;}
+    private List<string> effects;
+
+    public MovementRoot(string[] rootEffects)
+    {
+        effects = new List<string>();
+        rooted = false;
+
+        for (int i = 0; i < rootEffects.Length; i++)
+        {
+            SetRoot(rootEffects[i], true);
+        }
+    }
+    public void SetRoot(string effect, bool root)
+    {
+        if(root)
+        {
+            if(!effects.Exists(effector => effector.Equals(effect)))
+                effects.Add(effect);
+        } else
+        {
+            if(effects.Exists(effect => effect.Equals(effect)))
+                effects.Remove(effect);
+        }
+
+        rooted = effects.Count > 0;
+    }
 }
