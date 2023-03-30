@@ -13,9 +13,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction;
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Animator playerAnimator;
     [SerializeField] Transform focusPoint;
     [SerializeField] float checkBelowPoint;
     [SerializeField] CapsuleCollider2D playerCollider;
+    //[SerializeField] Sprite normalSprite;
+    //[SerializeField] Sprite jumpSprite;
+    //[SerializeField] Sprite fallSprite;
 
 
     private float airTime;
@@ -27,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable() {
         jumpAction.action.started += (_) => {Jump();};
         jumpAction.action.canceled += (_) => {JumpCancel();};
-        belowCheckAction.action.started += (_) => {CheckBelowStart();};
+        belowCheckAction.action.performed += (_) => {CheckBelowStart();};
         belowCheckAction.action.canceled += (_) => {CheckBelowCancel();};
 
     }
@@ -122,12 +126,16 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrounded())
         {
+            playerAnimator.SetInteger("velocityY", 0);
             airTime = 0;
             body.velocity = new Vector2(movement, body.velocity.y);
             if(doubleJumpActive) doubleJumpActive = false;
+            if(!playerAnimator.GetBool("walking") && body.velocity.x != 0) playerAnimator.SetBool("walking", true);
+            else if(playerAnimator.GetBool("walking") && body.velocity.x == 0) playerAnimator.SetBool("walking", false);
     
         } else
         {
+            if(playerAnimator.GetBool("walking")) playerAnimator.SetBool("walking", false);
             body.AddForce(new Vector2(movement*10, 0));
             airTime += Time.fixedDeltaTime;
 
@@ -135,9 +143,18 @@ public class PlayerMovement : MonoBehaviour
             {
                 jump = 0;
             }
+
+            if(body.velocity.y > 0f)
+            {
+                playerAnimator.SetInteger("velocityY", 1);
+            } else
+            {
+                playerAnimator.SetInteger("velocityY", -1);
+            }
         }
        
         body.AddForce(new Vector2(0,jump));
+
     }
 
     private void Flip()
