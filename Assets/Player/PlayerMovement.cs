@@ -10,20 +10,22 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float leapPower;
     [SerializeField] float jumpJetpack;
     [SerializeField] float jumpFalloff;
-    [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction, aboveCheckAction, rightCheckAction, leftCheckAction;
+    [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction, aboveCheckAction, lockCamera;
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator playerAnimator;
     [SerializeField] Transform focusPoint;
-    [SerializeField] Vector2 checkPoints;
+    [SerializeField] float checkPointY;
     [SerializeField] CapsuleCollider2D playerCollider;
     //[SerializeField] Sprite normalSprite;
     //[SerializeField] Sprite jumpSprite;
     //[SerializeField] Sprite fallSprite;
     private float airTime;
 
+    public int lookDir {get; private set;} = 1;
+
     public MovementRoot movementRoot = new MovementRoot(new string[0]);
-    private Vector2 focusPointNormal;
+    private float focusPointNormalY;
     float movement = 0;
     private bool doubleJumpActive = false;
     private float jump;
@@ -34,10 +36,8 @@ public class PlayerMovement : MonoBehaviour
         belowCheckAction.action.canceled += (_) => {CheckCancel();};
         aboveCheckAction.action.started += (_) => {CheckAboveStart();};
         aboveCheckAction.action.canceled += (_) => {CheckCancel();};
-        rightCheckAction.action.started += (_) => {CheckRightStart();};
-        rightCheckAction.action.canceled += (_) => {CheckCancel();};
-        leftCheckAction.action.started += (_) => {CheckLeftStart();};
-        leftCheckAction.action.canceled += (_) => {CheckCancel();};
+        lockCamera.action.started += (_) => {movementRoot.SetRoot("CameraRoot", true);};
+        lockCamera.action.canceled += (_) => {movementRoot.SetRoot("CameraRoot", false);};
     }
 
     private void OnDisable() {
@@ -47,22 +47,14 @@ public class PlayerMovement : MonoBehaviour
         belowCheckAction.action.canceled -= (_) => {CheckCancel();};
         aboveCheckAction.action.started -= (_) => {CheckAboveStart();};
         aboveCheckAction.action.canceled -= (_) => {CheckCancel();};
-        rightCheckAction.action.started -= (_) => {CheckRightStart();};
-        rightCheckAction.action.canceled -= (_) => {CheckCancel();};
-        leftCheckAction.action.started -= (_) => {CheckLeftStart();};
-        leftCheckAction.action.canceled -= (_) => {CheckCancel();};
+        lockCamera.action.started -= (_) => {movementRoot.SetRoot("CameraRoot", true);};
+        lockCamera.action.canceled -= (_) => {movementRoot.SetRoot("CameraRoot", false);};
     }
 
     void Start()
     {
-        focusPointNormal = focusPoint.localPosition;
+        focusPointNormalY = focusPoint.localPosition.y;
     }
-
-    void Update()
-    {
-        
-    }
-
     void Jump()
     {
         if(movementRoot.rooted) return;
@@ -93,34 +85,17 @@ public class PlayerMovement : MonoBehaviour
 
     void CheckBelowStart()
     {
-        movementRoot.SetRoot("CameraCheck", true);
-        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, -checkPoints.y, focusPoint.localPosition.z);
+        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, -checkPointY, focusPoint.localPosition.z);
     }
 
     void CheckAboveStart()
     {
-        movementRoot.SetRoot("CameraCheck", true);
-        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkPoints.y, focusPoint.localPosition.z);
-    }
-
-    void CheckRightStart()
-    {
-        movementRoot.SetRoot("CameraCheck", true);
-        focusPoint.localPosition = new Vector3(checkPoints.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
-    }
-
-    void CheckLeftStart()
-    {
-        movementRoot.SetRoot("CameraCheck", true);
-        focusPoint.localPosition = new Vector3(checkPoints.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
-        Flip(false);
+        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkPointY, focusPoint.localPosition.z);
     }
 
     void CheckCancel()
     {
-        focusPoint.localPosition = new Vector3(((focusPoint.localPosition.x<0)?-1:1) * focusPointNormal.x, focusPointNormal.y, focusPoint.localPosition.z);
-        movementRoot.SetRoot("CameraCheck", false);
-        Flip(true);
+        focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, focusPointNormalY, focusPoint.localPosition.z);
     }
 
 
@@ -138,8 +113,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate() {
         float walkDir = walkAction.action.ReadValue<float>();
-        if(walkDir < 0 && !spriteRenderer.flipX) Flip(false);
-        else if(walkDir > 0 && spriteRenderer.flipX) Flip(true);
+
+        if(walkDir < 0 && lookDir > 0 ) Flip();
+        else if(walkDir > 0 && lookDir < 0) Flip();
         movement = movementSpeed * walkDir;
 
         if(jump > 0)
@@ -192,10 +168,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void Flip(bool right)
+    private void Flip()
     {
-        spriteRenderer.flipX = !right;
-        focusPoint.localPosition = new Vector3((right)?1:-1 *  focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
+        spriteRenderer.flipX = !spriteRenderer.flipX;
+        lookDir = (!spriteRenderer.flipX)?1:-1 ;
+        focusPoint.localPosition = new Vector3(-focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
     }
 
 }
