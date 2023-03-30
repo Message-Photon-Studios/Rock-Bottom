@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 /// <summary>
 /// Keeps track of the colors that the player has gathered. 
@@ -11,11 +12,33 @@ public class ColorInventory : MonoBehaviour
 {
     int startColorSlots;
     [SerializeField] float colorBuff;
-    [SerializeField] List<ColorSlot> colorSlots;
-    [SerializeField] int activeSlot;
+
+    /// <summary>
+    /// The existing color slots that the player have
+    /// </summary>
+    [SerializeField] public List<ColorSlot> colorSlots;
+
+    /// <summary>
+    /// The index of the active color
+    /// </summary>
+    [SerializeField] public int activeSlot;
     [SerializeField] InputActionReference changeRightActions;
     [SerializeField] Image[] images;
     
+    /// <summary>
+    /// Called when the active color slot is changed
+    /// </summary>
+    public UnityAction<int> onSlotChanged;
+
+    /// <summary>
+    /// Called when the the color in the active color slot is updated
+    /// </summary>
+    public UnityAction onColorUpdated;
+
+    /// <summary>
+    /// Called when the number of color slots is changed
+    /// </summary>
+    public UnityAction onColorSlotsChanged;
 
     void Start()
     {
@@ -44,6 +67,7 @@ public class ColorInventory : MonoBehaviour
     {
         activeSlot = (colorSlots.Count+activeSlot+dir)%colorSlots.Count;
         Debug.Log(ActiveSlot().gameColor);
+        onSlotChanged?.Invoke(activeSlot);
     }
 
     /// <summary>
@@ -55,6 +79,7 @@ public class ColorInventory : MonoBehaviour
         if(ActiveSlot().charge > 0)
         {
             ActiveSlot().SetCharge(ActiveSlot().charge -1);
+            onColorUpdated?.Invoke();
             return ActiveSlot().gameColor.colorEffect;
         }
 
@@ -105,6 +130,8 @@ public class ColorInventory : MonoBehaviour
 
         colorSlots[activeSlot].SetCharge(setAmount);
         colorSlots[activeSlot].SetGameColor(setColor);
+
+        onColorUpdated?.Invoke();
     }
 
     /// <summary>
@@ -116,6 +143,8 @@ public class ColorInventory : MonoBehaviour
         {
             item.RemoveColor();
         }
+
+        onColorUpdated?.Invoke();
     }
 
     /// <summary>
@@ -124,6 +153,7 @@ public class ColorInventory : MonoBehaviour
     public void RemoveActiveColor()
     {
         ActiveSlot().RemoveColor();
+        onColorUpdated?.Invoke();
     }
 
     /// <summary>
@@ -142,6 +172,7 @@ public class ColorInventory : MonoBehaviour
     {
         colorSlots.Add(new ColorSlot());
         colorSlots[colorSlots.Count-1].Init(images[colorSlots.Count-1]);
+        onColorSlotsChanged?.Invoke();
     }
 
     /// <summary>
@@ -153,6 +184,7 @@ public class ColorInventory : MonoBehaviour
         if(activeSlot >= colorSlots.Count) 
             activeSlot = colorSlots.Count-1;
         images[colorSlots.Count].transform.parent.gameObject.SetActive(false);
+        onColorSlotsChanged?.Invoke();
     }
 
     /// <summary>
@@ -163,6 +195,8 @@ public class ColorInventory : MonoBehaviour
         RemoveAllColors();
         while(colorSlots.Count > startColorSlots)
             RemoveColorSlot();
+        onColorSlotsChanged?.Invoke();
+        onColorUpdated?.Invoke();
     }
 }
 
