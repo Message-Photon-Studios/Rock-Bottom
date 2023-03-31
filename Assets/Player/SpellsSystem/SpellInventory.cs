@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// This class handles the spells that the player has access to
+/// </summary>
 public class SpellInventory : MonoBehaviour
 {
-    [SerializeField] GameObject defaultColorSpell;
-    [SerializeField] GameColor[] allColors;
+    [SerializeField] GameObject defaultColorSpell; //The default spell that the player will use for the colors 
+    [SerializeField] GameColor[] allColors; //All the colors in the game
     [SerializeField] ColorInventory colorInventory;
-    Dictionary<GameColor, GameObject> colorSpellDict = new Dictionary<GameColor, GameObject>();
+    Dictionary<GameColor, GameObject> colorSpellDict = new Dictionary<GameColor, GameObject>(); //This dictionary keeps track of what color spell is assigned to each game color
 
     private void Start() 
     {

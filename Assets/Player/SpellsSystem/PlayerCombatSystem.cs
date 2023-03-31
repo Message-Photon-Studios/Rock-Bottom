@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// This class handles the players attack actions and spawn the color spells
+/// </summary>
 public class PlayerCombatSystem : MonoBehaviour
 {
-    [SerializeField] Transform spellSpawnPoint;
-    [SerializeField] InputActionReference specialAttackAction;
+    [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
+    [SerializeField] InputActionReference defaultAttackAction, specialAttackAction; 
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] SpellInventory spellInventory;
@@ -14,9 +17,10 @@ public class PlayerCombatSystem : MonoBehaviour
     private void OnEnable() {
         specialAttackAction.action.performed += (_) =>{SpecialAttack();};
     }
-
+    
     private void SpecialAttack()
     {
+
         GameObject obj = spellInventory.GetColorSpell();
         GameColor color = colorInventory.UseActiveColor();
 

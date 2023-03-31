@@ -34,6 +34,13 @@ public abstract class ColorSpell : MonoBehaviour
 
     public int lookDir {get; protected set;}
 
+    /// <summary>
+    /// Needs to be called after the spell is instantiated
+    /// </summary>
+    /// <param name="colorEffect">The color effect of the spell</param>
+    /// <param name="power">The total power of the spell</param>
+    /// <param name="player">The player object</param>
+    /// <param name="lookDir">The direction the spell should face horizontally</param>
     public void Initi(ColorEffect colorEffect, float power, GameObject player, int lookDir)
     {
         this.colorEffect = colorEffect;
@@ -67,5 +74,9 @@ public abstract class ColorSpell : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This is called when the spell should do its effect
+    /// </summary>
+    /// <param name="other"></param>
     protected abstract void Impact(Collision2D other);
 }
