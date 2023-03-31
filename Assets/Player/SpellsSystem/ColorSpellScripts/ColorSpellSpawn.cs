@@ -31,7 +31,7 @@ public class ColorSpellSpawn : ColorSpell
         foreach (GameObject spawnPrefab in spawnPrefabs)
         {
             GameObject obj = GameObject.Instantiate(spawnPrefab, transform.position, transform.rotation) as GameObject;
-            obj.GetComponent<ColorSpell>().Initi(colorEffect, power*powerScale, player);
+            obj.GetComponent<ColorSpell>().Initi(colorEffect, power*powerScale, player, lookDir);
         }
     }
 }
