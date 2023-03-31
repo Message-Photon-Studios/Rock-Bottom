@@ -15,7 +15,8 @@ public enum RoomType
     Long,
     Normal,
     Start,
-    End
+    End,
+    Special
 }
 
 public class DungeonGraph
@@ -126,6 +127,7 @@ public class DungeonGraph
                     RoomType.Normal => Color.white,
                     RoomType.Start => Color.green,
                     RoomType.End => Color.red,
+                    RoomType.Special => Color.yellow,
                     _ => throw new ArgumentOutOfRangeException()
                 };
                 Gizmos.DrawLine(pos * 20 + Vector2.one * 10, (node.pos + pos) * 10 + Vector2.one * 10);
@@ -141,6 +143,7 @@ public class DungeonGraph
                 RoomType.Normal => Color.white,
                 RoomType.Start => Color.green,
                 RoomType.End => Color.red,
+                RoomType.Special => Color.yellow,
                 _ => throw new ArgumentOutOfRangeException()
             };
             Gizmos.DrawSphere(pos * 20 + Vector2.one * 10, 2f);
