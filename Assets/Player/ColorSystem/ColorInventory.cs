@@ -10,7 +10,7 @@ using UnityEngine.Events;
 /// </summary>
 public class ColorInventory : MonoBehaviour
 {
-    int startColorSlots;
+    int startColorSlots; //The number of starting color slots that the player has
     [SerializeField] float colorBuff;
 
     /// <summary>
@@ -24,6 +24,8 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] public int activeSlot;
     [SerializeField] InputActionReference changeRightActions;
     [SerializeField] Image[] images;
+
+    #region Actions for UI
     
     /// <summary>
     /// Called when the active color slot is changed
@@ -39,6 +41,10 @@ public class ColorInventory : MonoBehaviour
     /// Called when the number of color slots is changed
     /// </summary>
     public UnityAction onColorSlotsChanged;
+    
+    #endregion
+
+    #region Setup
 
     void Start()
     {
@@ -59,6 +65,10 @@ public class ColorInventory : MonoBehaviour
         changeRightActions.action.performed -= (dir) => {RotateActive((int)dir.ReadValue<float>()); };
     }
 
+    #endregion
+
+    #region Active color slot
+
     /// <summary>
     /// Changes the active color slot by rotating in a direction
     /// </summary>
@@ -71,20 +81,51 @@ public class ColorInventory : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns the color effect from the active color slot
+    /// Returns the color effect from the active color slot and decreases its charge with 1
     /// </summary>
     /// <returns></returns>
-    public ColorEffect GetActiveColorEffect()
+    public GameColor UseActiveColor()
     {
         if(ActiveSlot().charge > 0)
         {
-            ActiveSlot().SetCharge(ActiveSlot().charge -1);
-            onColorUpdated?.Invoke();
-            return ActiveSlot().gameColor.colorEffect;
-        }
 
+            onColorUpdated?.Invoke();
+            
+            GameColor ret = ActiveSlot().gameColor;
+
+            int charge = ActiveSlot().charge - 1;
+            ActiveSlot().SetCharge(charge);
+
+            return ret;
+            
+        }
         return null;
     }
+
+    /// <summary>
+    /// Returns the active color slot
+    /// </summary>
+    /// <returns></returns>
+    private ColorSlot ActiveSlot()
+    {
+        return colorSlots[activeSlot];
+    }
+
+    /// <summary>
+    /// Returns the color effect from the active color slot
+    /// </summary>
+    public GameColor CheckActveColor()
+    {
+        if(ActiveSlot().charge > 0)
+        {
+            return ActiveSlot().gameColor;
+        }
+        return null;
+    }
+
+    #endregion
+
+    #region Color buff
 
     /// <summary>
     /// Returns the color buff of the specified color. Returns 1 if no color buff exists.
@@ -103,7 +144,7 @@ public class ColorInventory : MonoBehaviour
 
         return 0;
     }
-    
+
     /// <summary>
     /// Gets the color buff for the active slots color- Returns 1 if no color buff exists.
     /// </summary>
@@ -112,6 +153,9 @@ public class ColorInventory : MonoBehaviour
     {
         return GetColorBuff(ActiveSlot().gameColor);
     }
+    #endregion
+
+    #region Add and remove colors
 
     /// <summary>
     /// Adds color to the active color slott. Mixes the colors if color already exist there
@@ -156,14 +200,9 @@ public class ColorInventory : MonoBehaviour
         onColorUpdated?.Invoke();
     }
 
-    /// <summary>
-    /// Returns the active color slot
-    /// </summary>
-    /// <returns></returns>
-    private ColorSlot ActiveSlot()
-    {
-        return colorSlots[activeSlot];
-    }
+    #endregion
+
+    #region Add and remove color slots
 
     /// <summary>
     /// Adds a color slot. Can't add more color slots than the UI has specified
@@ -198,13 +237,17 @@ public class ColorInventory : MonoBehaviour
         onColorSlotsChanged?.Invoke();
         onColorUpdated?.Invoke();
     }
+
+    #endregion
 }
+
+#region Color slot
 
 /// <summary>
 /// Defines the traits of a color slot
 /// </summary>
 [System.Serializable]
-public struct ColorSlot
+public class ColorSlot
 {
     [SerializeField] public Image image ;
     [SerializeField] float imageScale;
@@ -248,3 +291,5 @@ public struct ColorSlot
         SetCharge(0);
     }
 }
+
+# endregion

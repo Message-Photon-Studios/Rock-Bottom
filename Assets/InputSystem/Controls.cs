@@ -55,18 +55,90 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ColorChange"",
+                    ""name"": ""CheckAbove"",
                     ""type"": ""Button"",
-                    ""id"": ""636a6326-c3a5-4cd9-9e23-8968c83874b0"",
+                    ""id"": ""595926fd-bd32-4c52-b611-61e69044088d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpellSlot1"",
+                    ""name"": ""CheckRoot"",
                     ""type"": ""Button"",
-                    ""id"": ""f9219bd8-ca41-4fc9-91a4-b0663cedb52e"",
+                    ""id"": ""adf4ab43-8659-40e9-ab5c-d46d2f0c3877"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DropDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d1c586c-efe5-46b3-a455-927d2af4b744"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e844f64-9f17-456c-bd29-bc6cb4929508"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""47491215-df11-4aca-9eba-041301e59a6c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""09d7c39f-4763-404d-b8d0-25e015f2bf9b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Map"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8b3c6c7-d7c2-4151-ac55-a35bd9aee80b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateColor"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8009a59-ec35-4ad8-af65-70be44888e7c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DefaultAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""376b0d1a-1f6d-4313-b0fc-8d7f3031f39d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba16ae19-c792-4e75-a54b-d1e20b66999e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -91,7 +163,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -102,7 +174,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -124,7 +196,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XboxController"",
+                    ""groups"": ""XboxController;PlayStation"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -135,7 +207,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XboxController"",
+                    ""groups"": ""XboxController;PlayStation"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -157,7 +229,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XboxController"",
+                    ""groups"": ""XboxController;PlayStation"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -168,7 +240,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XboxController"",
+                    ""groups"": ""XboxController;PlayStation"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -179,7 +251,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -197,78 +269,639 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""63f29d66-2887-4092-a7dd-5c96cfc12b5a"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""id"": ""90866b31-3252-4745-bcbc-25b35e5ec7a3"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""CheckBelow"",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6d60e877-35b0-4cfc-b694-c8981c5442d0"",
-                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""id"": ""05f71816-30a8-4e1d-8868-7060c2ebb7df"",
+                    ""path"": ""<DualShockGamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XboxController"",
-                    ""action"": ""CheckBelow"",
+                    ""groups"": ""PlayStation"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9b91fe21-7825-46d9-95a2-a94d7f8bdc1e"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": ""Hold"",
+                    ""id"": ""cf9429f2-978b-4373-8c70-d1c6f3f84604"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""c3944a61-fe87-418e-b00d-75fb9ade14dc"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""CheckBelow"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""5f2317be-221c-4fa2-8b0c-4a9ca409b023"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
+                    ""action"": ""CheckBelow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""fed6fbda-fbed-4fcb-abc2-5e4bad5a32f5"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""CheckBelow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""32a211b9-ed18-4bc6-a567-3ddcfbe0012a"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CheckBelow"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""2ce66c94-6240-442d-a0ec-cf8044fe4d6a"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController;PlayStation"",
+                    ""action"": ""CheckBelow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""83de5027-58c5-4bd9-88d9-01a069cd4df3"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController;PlayStation"",
+                    ""action"": ""CheckBelow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""3566dbab-ba70-4672-8be5-b1e7c5b1d03b"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CheckBelow"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""964c78df-8352-47d0-a8d6-bbfd7af839d2"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""CheckBelow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""bbc83f4e-fdce-489f-a6a0-024265d2cf96"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""CheckBelow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""4b637ed3-c9e4-4575-9964-3b6a9504089f"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CheckAbove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""ef98a8b2-99db-4c9a-ae94-446bb500f687"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
+                    ""action"": ""CheckAbove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""955f4395-f9cb-43f7-ac41-12ca91f1653a"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""CheckAbove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""a49d798d-f09f-4dff-8150-cb083314e852"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CheckAbove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""e275b1da-74a4-469c-9c5b-98d65747652a"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""CheckAbove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""d1f8b445-71f6-430e-966c-7c9e4bba83df"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""CheckAbove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""f19c8de5-cfce-4641-bda5-25938ffb3e8a"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CheckAbove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""71c05f7c-793d-4566-a3b1-2bf48c2fa2e4"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""CheckAbove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""2a968090-987f-4fa9-bb38-6791c14bb3ff"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""CheckAbove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e7c1d50-2e08-4e90-8208-19841e0f39e8"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""DropDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c9fecd2-7dbc-457f-8182-1deec7dca788"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""DropDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25406eb6-7cd6-4a69-a78a-748baf2fa0c2"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""DropDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db383ce0-9e86-4512-a454-ea7694436215"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f385c929-4bed-4b89-abb5-b29e36ab8c0c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e53a8371-1a7d-4516-a612-6260542d2ff1"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6921a633-ec04-4f63-9168-ece00a1128a5"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37edd7e4-33d1-4b57-82c3-e4c0635fa6c7"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a36b31b-88a7-4f85-b0c3-8e9d7c4893dd"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7069d62b-5cae-47cd-bacd-2456f85234eb"",
+                    ""path"": ""<DualShockGamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""356bb390-c7f5-42d2-9131-f7b8624c8f50"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26fb1f0b-0a18-47ab-b61b-fb54c145ac89"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""290eacc3-2404-4ce9-a978-892b804c7dc8"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bece66ab-c252-4eab-a8b5-38e4fb006e3a"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
+                    ""action"": ""Map"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6a359c2-bb3d-4778-a7fb-d6640d7b687d"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""Map"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b57c0832-75c8-4dd1-bba3-3ba703e9ffab"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""CheckRoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""17b100e5-b9aa-4ddb-b8cf-39255d2b5c62"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""CheckRoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""1D Axis"",
-                    ""id"": ""4af7eef6-a987-4548-a97b-c7e75cbad123"",
+                    ""id"": ""7da012b6-69b7-4797-9016-00b625ec6651"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ColorChange"",
+                    ""action"": ""RotateColor"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Negative"",
-                    ""id"": ""f946b3e5-1eb2-4ba2-ae1c-a5f9370e4e13"",
+                    ""name"": ""negative"",
+                    ""id"": ""10f1aa0d-fe8f-40f0-b613-5b6f8f78c311"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ColorChange"",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""RotateColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Positive"",
-                    ""id"": ""36ed0a74-31fd-4e59-9ab7-4721e868ee8b"",
+                    ""name"": ""positive"",
+                    ""id"": ""aecaa0fb-c0f5-403a-a360-07ddd9e43642"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""81d2d6be-958f-46cb-b40a-e4f8e9dc9e42"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ColorChange"",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""c5272695-e9fc-4928-8446-bb7c44d8f6cb"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""a8b76dfc-66c9-43a9-bb33-ec6973035c06"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""d1438064-f0c5-4edc-b853-f1b5024f007f"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""06dd7dd3-408d-433d-9890-aea1910e620f"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""8e459c03-b24b-4e73-9c11-940489a9762b"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""8216f537-33d1-455f-abc4-e8aff644f14e"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""bc147ba3-aafa-4c3e-bce4-2c3230dc8b89"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""RotateColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""d0cb0e7a-e965-4e8f-a955-a48f9f66229c"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""RotateColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
-                    ""id"": ""37d90592-c749-4817-91ba-e30edc2d3d95"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""id"": ""1796cd03-0303-45ac-9602-2d1ec04db6cd"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""DefaultAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b705d1e1-cd0f-486d-a5d5-830813744d97"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""SpellSlot1"",
+                    ""action"": ""DefaultAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1aeca01e-7b60-49d9-be86-f8ddfcd8a525"",
+                    ""path"": ""<XInputController>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController"",
+                    ""action"": ""DefaultAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1882e2af-d634-42c3-8d3e-ae68f1c98ca1"",
+                    ""path"": ""<DualShockGamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation"",
+                    ""action"": ""DefaultAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""045045a8-9a65-4316-8aff-f94753dad8a5"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""678ce0bc-3942-411c-9df3-a467aa81f520"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d38f664-573d-4b4c-9e74-f0cd939f7903"",
+                    ""path"": ""<XInputController>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController"",
+                    ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""33d0a202-8eb8-4c75-bda4-4c2dc56715de"",
+                    ""path"": ""<DualShockGamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation"",
+                    ""action"": ""SpecialAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -302,6 +935,28 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Keyboard"",
+            ""bindingGroup"": ""Keyboard"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""PlayStation"",
+            ""bindingGroup"": ""PlayStation"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<DualShockGamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -310,8 +965,16 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_CheckBelow = m_Player.FindAction("CheckBelow", throwIfNotFound: true);
-        m_Player_ColorChange = m_Player.FindAction("ColorChange", throwIfNotFound: true);
-        m_Player_SpellSlot1 = m_Player.FindAction("SpellSlot1", throwIfNotFound: true);
+        m_Player_CheckAbove = m_Player.FindAction("CheckAbove", throwIfNotFound: true);
+        m_Player_CheckRoot = m_Player.FindAction("CheckRoot", throwIfNotFound: true);
+        m_Player_DropDown = m_Player.FindAction("DropDown", throwIfNotFound: true);
+        m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+        m_Player_Map = m_Player.FindAction("Map", throwIfNotFound: true);
+        m_Player_RotateColor = m_Player.FindAction("RotateColor", throwIfNotFound: true);
+        m_Player_DefaultAttack = m_Player.FindAction("DefaultAttack", throwIfNotFound: true);
+        m_Player_SpecialAttack = m_Player.FindAction("SpecialAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -374,8 +1037,16 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Walk;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_CheckBelow;
-    private readonly InputAction m_Player_ColorChange;
-    private readonly InputAction m_Player_SpellSlot1;
+    private readonly InputAction m_Player_CheckAbove;
+    private readonly InputAction m_Player_CheckRoot;
+    private readonly InputAction m_Player_DropDown;
+    private readonly InputAction m_Player_Menu;
+    private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_Inventory;
+    private readonly InputAction m_Player_Map;
+    private readonly InputAction m_Player_RotateColor;
+    private readonly InputAction m_Player_DefaultAttack;
+    private readonly InputAction m_Player_SpecialAttack;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -383,8 +1054,16 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Walk => m_Wrapper.m_Player_Walk;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @CheckBelow => m_Wrapper.m_Player_CheckBelow;
-        public InputAction @ColorChange => m_Wrapper.m_Player_ColorChange;
-        public InputAction @SpellSlot1 => m_Wrapper.m_Player_SpellSlot1;
+        public InputAction @CheckAbove => m_Wrapper.m_Player_CheckAbove;
+        public InputAction @CheckRoot => m_Wrapper.m_Player_CheckRoot;
+        public InputAction @DropDown => m_Wrapper.m_Player_DropDown;
+        public InputAction @Menu => m_Wrapper.m_Player_Menu;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
+        public InputAction @Map => m_Wrapper.m_Player_Map;
+        public InputAction @RotateColor => m_Wrapper.m_Player_RotateColor;
+        public InputAction @DefaultAttack => m_Wrapper.m_Player_DefaultAttack;
+        public InputAction @SpecialAttack => m_Wrapper.m_Player_SpecialAttack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -403,12 +1082,36 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @CheckBelow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckBelow;
                 @CheckBelow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckBelow;
                 @CheckBelow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckBelow;
-                @ColorChange.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColorChange;
-                @ColorChange.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColorChange;
-                @ColorChange.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnColorChange;
-                @SpellSlot1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpellSlot1;
-                @SpellSlot1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpellSlot1;
-                @SpellSlot1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpellSlot1;
+                @CheckAbove.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckAbove;
+                @CheckAbove.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckAbove;
+                @CheckAbove.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckAbove;
+                @CheckRoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckRoot;
+                @CheckRoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckRoot;
+                @CheckRoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckRoot;
+                @DropDown.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropDown;
+                @DropDown.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropDown;
+                @DropDown.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropDown;
+                @Menu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
+                @Menu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
+                @Menu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
+                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                @Map.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMap;
+                @Map.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMap;
+                @Map.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMap;
+                @RotateColor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
+                @RotateColor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
+                @RotateColor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
+                @DefaultAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefaultAttack;
+                @DefaultAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefaultAttack;
+                @DefaultAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefaultAttack;
+                @SpecialAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -422,12 +1125,36 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @CheckBelow.started += instance.OnCheckBelow;
                 @CheckBelow.performed += instance.OnCheckBelow;
                 @CheckBelow.canceled += instance.OnCheckBelow;
-                @ColorChange.started += instance.OnColorChange;
-                @ColorChange.performed += instance.OnColorChange;
-                @ColorChange.canceled += instance.OnColorChange;
-                @SpellSlot1.started += instance.OnSpellSlot1;
-                @SpellSlot1.performed += instance.OnSpellSlot1;
-                @SpellSlot1.canceled += instance.OnSpellSlot1;
+                @CheckAbove.started += instance.OnCheckAbove;
+                @CheckAbove.performed += instance.OnCheckAbove;
+                @CheckAbove.canceled += instance.OnCheckAbove;
+                @CheckRoot.started += instance.OnCheckRoot;
+                @CheckRoot.performed += instance.OnCheckRoot;
+                @CheckRoot.canceled += instance.OnCheckRoot;
+                @DropDown.started += instance.OnDropDown;
+                @DropDown.performed += instance.OnDropDown;
+                @DropDown.canceled += instance.OnDropDown;
+                @Menu.started += instance.OnMenu;
+                @Menu.performed += instance.OnMenu;
+                @Menu.canceled += instance.OnMenu;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+                @Inventory.started += instance.OnInventory;
+                @Inventory.performed += instance.OnInventory;
+                @Inventory.canceled += instance.OnInventory;
+                @Map.started += instance.OnMap;
+                @Map.performed += instance.OnMap;
+                @Map.canceled += instance.OnMap;
+                @RotateColor.started += instance.OnRotateColor;
+                @RotateColor.performed += instance.OnRotateColor;
+                @RotateColor.canceled += instance.OnRotateColor;
+                @DefaultAttack.started += instance.OnDefaultAttack;
+                @DefaultAttack.performed += instance.OnDefaultAttack;
+                @DefaultAttack.canceled += instance.OnDefaultAttack;
+                @SpecialAttack.started += instance.OnSpecialAttack;
+                @SpecialAttack.performed += instance.OnSpecialAttack;
+                @SpecialAttack.canceled += instance.OnSpecialAttack;
             }
         }
     }
@@ -450,12 +1177,38 @@ public partial class @Controls : IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_XboxControllerSchemeIndex];
         }
     }
+    private int m_KeyboardSchemeIndex = -1;
+    public InputControlScheme KeyboardScheme
+    {
+        get
+        {
+            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
+            return asset.controlSchemes[m_KeyboardSchemeIndex];
+        }
+    }
+    private int m_PlayStationSchemeIndex = -1;
+    public InputControlScheme PlayStationScheme
+    {
+        get
+        {
+            if (m_PlayStationSchemeIndex == -1) m_PlayStationSchemeIndex = asset.FindControlSchemeIndex("PlayStation");
+            return asset.controlSchemes[m_PlayStationSchemeIndex];
+        }
+    }
     public interface IPlayerActions
     {
         void OnWalk(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnCheckBelow(InputAction.CallbackContext context);
-        void OnColorChange(InputAction.CallbackContext context);
-        void OnSpellSlot1(InputAction.CallbackContext context);
+        void OnCheckAbove(InputAction.CallbackContext context);
+        void OnCheckRoot(InputAction.CallbackContext context);
+        void OnDropDown(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
+        void OnMap(InputAction.CallbackContext context);
+        void OnRotateColor(InputAction.CallbackContext context);
+        void OnDefaultAttack(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
     }
 }
