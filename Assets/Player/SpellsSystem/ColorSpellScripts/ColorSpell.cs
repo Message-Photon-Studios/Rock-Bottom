@@ -28,6 +28,11 @@ public abstract class ColorSpell : MonoBehaviour
     /// </summary>
     [SerializeField] float lifeTime;
 
+    /// <summary>
+    /// The animation event that this spell uses
+    /// </summary>
+    [SerializeField] string animationTrigger;
+
     protected ColorEffect colorEffect;
     protected float power;
     protected GameObject player;
@@ -79,4 +84,13 @@ public abstract class ColorSpell : MonoBehaviour
     /// </summary>
     /// <param name="other"></param>
     protected abstract void Impact(Collision2D other);
+
+    /// <summary>
+    /// Returns the name of the animation trigger that should be used by this spell.
+    /// </summary>
+    /// <returns></returns>
+    public string GetAnimationTrigger()
+    {
+        return animationTrigger;
+    }
 }

@@ -14,16 +14,19 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] SpellInventory spellInventory;
+    [SerializeField] Animator animator;
     
+    private bool attacking;
+
     #region Setup
     private void OnEnable() {
-        specialAttackAction.action.performed += (_) =>{SpecialAttack();};
+        specialAttackAction.action.performed += (_) =>{SpecialAttackAnimation();};
         defaultAttackAction.action.performed += (_) =>{DefaultAttack();};
     }
 
     private void OnDisable()
     {
-        specialAttackAction.action.performed -= (_) =>{SpecialAttack();};
+        specialAttackAction.action.performed -= (_) =>{animator.SetTrigger("SpecialAttackHand");};
         defaultAttackAction.action.performed -= (_) =>{DefaultAttack();};
     }
     #endregion
@@ -38,7 +41,22 @@ public class PlayerCombatSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles the players special attack
+    /// Plays the animation for the special attack
+    /// </summary>
+    private void SpecialAttackAnimation()
+    {
+        GameObject obj = spellInventory.GetColorSpell();
+        if(obj == null) return;
+        if(attacking) return;
+        if(playerMovement.airTime > 0) return;
+        attacking = true;
+        string anim = obj.GetComponent<ColorSpell>().GetAnimationTrigger();
+        animator.SetTrigger(anim);
+        playerMovement.movementRoot.SetRoot("attackRoot", true);
+    }
+
+    /// <summary>
+    /// Handles the players special attack. Called by animation event
     /// </summary>
     private void SpecialAttack()
     {
@@ -52,5 +70,13 @@ public class PlayerCombatSystem : MonoBehaviour
         GameObject spell = GameObject.Instantiate(obj, transform.position + spawnPoint, transform.rotation) as GameObject;
         spell.GetComponent<ColorSpell>().Initi(color.colorEffect, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
     }
-    
+
+    /// <summary>
+    /// Removes the attack root. Called by animation event
+    /// </summary>
+    private void RemoveAttackRoot()
+    {
+        attacking = false;
+        playerMovement.movementRoot.SetRoot("attackRoot", false);
+    }
 }
