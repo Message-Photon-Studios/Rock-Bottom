@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &806439297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 806439298}
+  m_Layer: 3
+  m_Name: SpellSpawnpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &806439298
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806439297}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.08, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 468746527930208000}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &468746526980713528
 GameObject:
   m_ObjectHideFlags: 0
@@ -4823,6 +4854,9 @@ GameObject:
   - component: {fileID: 468746527930208000}
   - component: {fileID: 468746527930208003}
   - component: {fileID: 468746527930208001}
+  - component: {fileID: 8210922060710586880}
+  - component: {fileID: 1731711828163631322}
+  - component: {fileID: 2907638193198340670}
   - component: {fileID: 468746527930208031}
   - component: {fileID: 468746527930208002}
   - component: {fileID: 468746527930208004}
@@ -4848,6 +4882,7 @@ Transform:
   m_Children:
   - {fileID: 468746528245736198}
   - {fileID: 468746526980713529}
+  - {fileID: 806439298}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4901,6 +4936,87 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &8210922060710586880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468746527930208030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f103e0ae6722fd74bad3f78153d7d42e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellSpawnPoint: {fileID: 806439298}
+  defaultAttackAction: {fileID: 4469551230878750276, guid: fd04459890e791843a48243064f9151b, type: 3}
+  specialAttackAction: {fileID: 8536812167366974807, guid: fd04459890e791843a48243064f9151b, type: 3}
+  playerMovement: {fileID: 468746527930208003}
+  colorInventory: {fileID: 2907638193198340670}
+  spellInventory: {fileID: 1731711828163631322}
+--- !u!114 &1731711828163631322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468746527930208030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0d420a6adfa514c97c8e3aba09c228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultColorSpell: {fileID: 3321278458073070463, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
+  allColors:
+  - {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
+  - {fileID: 11400000, guid: aab7a3fd5f4b5c04fb45da55783d8aa1, type: 2}
+  - {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
+  - {fileID: 11400000, guid: fb4a5352fdc867147b0b07d399cd221d, type: 2}
+  - {fileID: 11400000, guid: 515b8e0cc06f688409aca84476871b24, type: 2}
+  - {fileID: 11400000, guid: a43a3607f70897249a36fdff7162cc2a, type: 2}
+  - {fileID: 11400000, guid: a5087b0e29c5b414795753d6fe24755a, type: 2}
+  colorInventory: {fileID: 2907638193198340670}
+--- !u!114 &2907638193198340670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468746527930208030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f52fbe53cb41994d8a51040781a40e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorBuff: 2
+  colorSlots:
+  - image: {fileID: 0}
+    imageScale: 0
+    maxCapacity: 6
+    charge: 0
+    gameColor: {fileID: 0}
+  - image: {fileID: 0}
+    imageScale: 0
+    maxCapacity: 6
+    charge: 0
+    gameColor: {fileID: 0}
+  - image: {fileID: 0}
+    imageScale: 0
+    maxCapacity: 6
+    charge: 0
+    gameColor: {fileID: 0}
+  - image: {fileID: 0}
+    imageScale: 0
+    maxCapacity: 6
+    charge: 0
+    gameColor: {fileID: 0}
+  activeSlot: 0
+  changeRightActions: {fileID: -386362132723774860, guid: fd04459890e791843a48243064f9151b, type: 3}
+  images:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!212 &468746527930208031
 SpriteRenderer:
   m_ObjectHideFlags: 0
