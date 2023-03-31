@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 /// <summary>
 /// This class handles the players attack actions and spawn the color spells
 /// </summary>
@@ -13,11 +14,32 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] SpellInventory spellInventory;
-
+    
+    #region Setup
     private void OnEnable() {
         specialAttackAction.action.performed += (_) =>{SpecialAttack();};
+        defaultAttackAction.action.performed += (_) =>{DefaultAttack();};
     }
-    
+
+    private void OnDisable()
+    {
+        specialAttackAction.action.performed -= (_) =>{SpecialAttack();};
+        defaultAttackAction.action.performed -= (_) =>{DefaultAttack();};
+    }
+    #endregion
+
+    /// <summary>
+    /// Handles the players default attack
+    /// </summary>
+    private void DefaultAttack()
+    {
+        Debug.Log("Default attack");
+        //TODO
+    }
+
+    /// <summary>
+    /// Handles the players special attack
+    /// </summary>
     private void SpecialAttack()
     {
 
