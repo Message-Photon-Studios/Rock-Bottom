@@ -55,7 +55,7 @@ public class CustomRoomEditor : Editor
         var room = (CustomRoom)target;
         var ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
         // Divide the ray origin by 6 and round to the nearest integer
-        var newCoords = new Vector2Int(Mathf.RoundToInt(ray.origin.x / 12), Mathf.RoundToInt(ray.origin.y / 12));
+        var newCoords = new Vector2Int(Mathf.RoundToInt(ray.origin.x / 8), Mathf.RoundToInt(ray.origin.y / 8));
         room.selectedNode = newCoords;
     }
 

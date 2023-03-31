@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class LevelGenManager : MonoBehaviour
 {
-    private LevelGeneration2 levelGen;
+    private LevelGenerator levelGen;
 
     public int size;
 
     public void init()
     {
-        levelGen = new LevelGeneration2();
+        levelGen = new LevelGenerator();
         levelGen.generate(size);
     }
 
     public void reset()
     {
-        levelGen = new LevelGeneration2();
+        levelGen = new LevelGenerator();
         levelGen?.initGeneration();
     }
 

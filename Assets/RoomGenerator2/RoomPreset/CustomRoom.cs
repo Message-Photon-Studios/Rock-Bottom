@@ -49,30 +49,6 @@ public class RoomNodeHolder : SerializableDictionary<Vector2, RoomNode>
 
         return doors;
     }
-    public RoomNodeHolder getFlipped()
-    {
-        var newHolder = new RoomNodeHolder();
-        var maxX = this.Max(node => node.Key.x);
-
-        foreach (var node in this)
-        {
-            var newNode = new RoomNode
-            {
-                // Set the correct doors
-                doors =
-                {
-                    [0] = node.Value.doors[2],
-                    [2] = node.Value.doors[0],
-                    [1] = node.Value.doors[1],
-                    [3] = node.Value.doors[3]
-                }
-            };
-
-            // Adapt the coordinates by negating x and shifting the room and add the value
-            newHolder[new Vector2(maxX - node.Key.x, node.Key.y)] = newNode;
-        }
-        return newHolder;
-    }
 }
 
 [Serializable]
@@ -94,14 +70,13 @@ public class CustomRoom : MonoBehaviour
     [HideInInspector]
     public Vector2 selectedNode;
 
-    public void draw(Vector2 shift, bool flipped)
+    public void draw(Vector2 shift)
     {
-        var nodes = flipped ? roomNodes.getFlipped() : roomNodes;
-        foreach (var node in nodes)
+        foreach (var node in roomNodes)
         {
             Gizmos.color = node.Key == selectedNode ? Color.yellow : Color.white;
             Gizmos.DrawSphere((shift + node.Key) * 8f, 1f);
-            var neighbors = nodes.getNeighbors(node.Key);
+            var neighbors = roomNodes.getNeighbors(node.Key);
             for (var i = 0; i < neighbors.Length; i++)
             {
                 switch (displayMode)
@@ -134,7 +109,7 @@ public class CustomRoom : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        draw(Vector2.zero, false);
+        draw(Vector2.zero);
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
 
