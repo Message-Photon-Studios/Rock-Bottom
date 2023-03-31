@@ -10,12 +10,14 @@ using UnityEngine.InputSystem;
 public class PlayerCombatSystem : MonoBehaviour
 {
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
-    [SerializeField] InputActionReference defaultAttackAction, specialAttackAction; 
+    [SerializeField] Transform defaultAttackHitbox; //The transform for the default attacks hitbox
+    [SerializeField] Vector2 defaultAttackOffset; //The offset that the default attack will be set to
+    [SerializeField] InputActionReference defaultAttackAction, specialAttackAction, verticalLookDir; 
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] SpellInventory spellInventory;
     [SerializeField] Animator animator;
-    
+
     private bool attacking;
 
     #region Setup
@@ -37,7 +39,11 @@ public class PlayerCombatSystem : MonoBehaviour
     private void DefaultAttack()
     {
         Debug.Log("Default attack");
-        //TODO
+        float vertical = verticalLookDir.action.ReadValue<float>();
+        float offsetX = (vertical == 0)? defaultAttackOffset.x * playerMovement.lookDir: 0;
+        float offsetY = defaultAttackOffset.y * vertical;
+        defaultAttackHitbox.position = new Vector3(transform.position.x + offsetX, transform.position.y + offsetY, transform.position.z);
+        defaultAttackHitbox.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -77,6 +83,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private void RemoveAttackRoot()
     {
         attacking = false;
+        defaultAttackHitbox.gameObject.SetActive(false);
         playerMovement.movementRoot.SetRoot("attackRoot", false);
     }
 }
