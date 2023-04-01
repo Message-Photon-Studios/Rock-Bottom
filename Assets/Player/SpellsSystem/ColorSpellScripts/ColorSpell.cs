@@ -33,7 +33,7 @@ public abstract class ColorSpell : MonoBehaviour
     /// </summary>
     [SerializeField] string animationTrigger;
 
-    protected ColorEffect colorEffect;
+    protected GameColor gameColor;
     protected float power;
     protected GameObject player;
 
@@ -42,13 +42,13 @@ public abstract class ColorSpell : MonoBehaviour
     /// <summary>
     /// Needs to be called after the spell is instantiated
     /// </summary>
-    /// <param name="colorEffect">The color effect of the spell</param>
+    /// <param name="gameColor">The color effect of the spell</param>
     /// <param name="power">The total power of the spell</param>
     /// <param name="player">The player object</param>
     /// <param name="lookDir">The direction the spell should face horizontally</param>
-    public void Initi(ColorEffect colorEffect, float power, GameObject player, int lookDir)
+    public void Initi(GameColor gameColor, float power, GameObject player, int lookDir)
     {
-        this.colorEffect = colorEffect;
+        this.gameColor = gameColor;
         this.power = power;
         this.player = player;
         this.lookDir = lookDir; //TODO: Flip sprites
