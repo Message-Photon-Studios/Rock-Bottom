@@ -12,7 +12,6 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] GameColor color; //The color of the enemy
     [SerializeField] int colorAmmount; //The ammount of color you will get when absorbing the color from the enemy
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
-    
     private float normalMovementSpeed; //The normal movement speed of the enemy
     private float movementSpeedTimer; 
 
@@ -82,7 +81,7 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
-    #region Enemyy Color
+    #region Enemy Color
 
     /// <summary>
     /// Return what color this enemy has and how much, then remove the color form the enemy.
