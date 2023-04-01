@@ -94,9 +94,9 @@ public class EnemyStats : MonoBehaviour
     {
         GameColor ret = color;
         int ammount = colorAmmount;
-        if (ammount == 0) ret = null;
+        if (colorAmmount == 0) ret = null;
         color = null;
-        ammount = 0;
+        colorAmmount = 0;
         return (ret, ammount);
     }
 

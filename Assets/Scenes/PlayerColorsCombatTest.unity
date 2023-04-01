@@ -1105,9 +1105,11 @@ GameObject:
   - component: {fileID: 1137768968}
   - component: {fileID: 1137768967}
   - component: {fileID: 1137768966}
+  - component: {fileID: 1137768970}
+  - component: {fileID: 1137768969}
   m_Layer: 0
   m_Name: crystal-sword-idle-Sheet_0
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1199,6 +1201,38 @@ Transform:
   m_Father: {fileID: 678747663}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1137768969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137768965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  color: {fileID: 11400000, guid: a43a3607f70897249a36fdff7162cc2a, type: 2}
+  colorAmmount: 2
+  movementSpeed: 10
+--- !u!58 &1137768970
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137768965}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.64
 --- !u!1 &1148083589
 GameObject:
   m_ObjectHideFlags: 0
