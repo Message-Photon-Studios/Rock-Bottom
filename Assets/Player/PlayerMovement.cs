@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float movementSpeed; // Base movement speed for the player in air and on ground
     [SerializeField] float jumpPower; //The initial boost power for the jump. Increasing this will increse the jumpheight and jump speed but decrease controll
     [SerializeField] float leapPower; //This detemines the extra forward speed of the double jump
+    [SerializeField] float wallJumpPower;
     [SerializeField] float jumpJetpack; //A small extra power over time for the jump that alows the player to controll the height of the jump
     [SerializeField] float jumpFalloff; //The falloff power of the jump jetpack
 
@@ -96,16 +97,20 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrounded())
         {
-             body.AddForce(new Vector2(movement, 0));
+            body.AddForce(new Vector2(movement, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
             doubleJumpActive = false;
             return;
-        }
-
-        if(!doubleJumpActive)
+        } else if(IsGrappeling())
         {
-             body.AddForce(new Vector2(movement*leapPower, 0));
+            bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
+            body.AddForce(new Vector2(wallRight?-1:1*wallJumpPower, 0));
+            body.AddForce(Vector2.up * jumpPower);
+            jump = jumpJetpack;
+        } else if(!doubleJumpActive)
+        {
+            body.AddForce(new Vector2(movement*leapPower, 0));
             body.velocity = new Vector2(body.velocity.x, 0);
             body.AddForce(Vector2.up * jumpPower);
             doubleJumpActive = true;
@@ -153,6 +158,14 @@ public class PlayerMovement : MonoBehaviour
         return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, 3) ||
                 Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, 3);
     }
+
+    private bool IsGrappeling()
+    {
+        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3) ||
+                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3)) &&
+                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3) && movement > 0)  ||
+                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, 1f, 3) && movement < 0));
+    }
     #endregion
 
     private void FixedUpdate() {
@@ -181,6 +194,7 @@ public class PlayerMovement : MonoBehaviour
         if(IsGrounded())
         {
             playerAnimator.SetInteger("velocityY", 0);
+
             airTime = 0;
             fallTime = 0;
             if(!movementRoot.rooted) body.velocity = new Vector2(movement, body.velocity.y);
@@ -208,6 +222,21 @@ public class PlayerMovement : MonoBehaviour
                 fallTime += Time.fixedDeltaTime;
             }
         }
+
+        if(IsGrappeling())
+        {
+            playerAnimator.SetBool("grapple", true);
+            fallTime = 0;
+            airTime = 0;
+            CheckCancel();
+            if(body.velocity.y < 0)
+            {
+                body.velocity = new Vector2(body.velocity.x, 0);
+            }
+        } else
+        {
+            playerAnimator.SetBool("grapple", false);
+        }
        
         if(!movementRoot.rooted)
             body.AddForce(new Vector2(0,jump));
@@ -225,6 +254,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
 }
+
+#region Movement Root
 
 /// <summary>
 /// A struct that propperly keeps track of wheter the player is rooted. 
@@ -277,3 +308,5 @@ public struct MovementRoot
         effects = new List<string>();
     }
 }
+
+#endregion
