@@ -22,6 +22,7 @@ public class EnemyStats : MonoBehaviour
     private float comboTime = 1; //The timelimit for the next move of a combo
     private float comboTimer = 0;
     private GameColor comboColor; //The color that currently affects the enemy in a combo
+    [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
     private List<(float damage, float timer)> damageOverTime = new List<(float damage, float time)>(); //Damage dealt over time
     
