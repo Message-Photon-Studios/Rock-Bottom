@@ -5,7 +5,6 @@ using UnityEngine;
 /// <summary>
 /// The color effects handle the effect that the color spell will have when impacting the enemy. 
 /// </summary>
-[CreateAssetMenu(fileName = "ColorEffect")]
 public abstract class ColorEffect : ScriptableObject
 {
     [SerializeField] protected float damage;
