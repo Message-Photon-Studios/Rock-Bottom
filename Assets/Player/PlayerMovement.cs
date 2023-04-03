@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         } else if(IsGrappeling())
         {
             bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
-            body.AddForce(new Vector2(wallRight?-1:1*wallJumpPower, 0));
+            body.AddForce(new Vector2((wallRight?-1:1)*wallJumpPower, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
         } else if(!doubleJumpActive)
