@@ -14,7 +14,8 @@ public class GreenColorEffect : ColorEffect
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
-        instantiatedParticles.GetComponent<ParticleSystem>().time = time*2;
+        var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
+        main.duration = time*2;
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
         Destroy(instantiatedParticles, time);
         enemy.DamageOverTime(damageOverTime * power, time);
