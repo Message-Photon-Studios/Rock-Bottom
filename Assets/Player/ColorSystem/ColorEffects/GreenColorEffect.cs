@@ -13,6 +13,10 @@ public class GreenColorEffect : ColorEffect
     public override void Apply(GameObject enemyObj, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
+        GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
+        instantiatedParticles.GetComponent<ParticleSystem>().time = time*2;
+        instantiatedParticles.GetComponent<ParticleSystem>().Play();
+        Destroy(instantiatedParticles, time);
         enemy.DamageOverTime(damageOverTime * power, time);
         enemy.DamageEnemy(damage);
     }

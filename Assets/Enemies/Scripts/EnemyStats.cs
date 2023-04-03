@@ -67,7 +67,8 @@ public class EnemyStats : MonoBehaviour
         {
             for (int i = 0; i < damageOverTime.Count; i++)
             {
-                DamageEnemy(damageOverTime[i].damage * Time.deltaTime);
+                float damage = damageOverTime[i].damage * Time.deltaTime;
+                DamageEnemy(damage);
                 damageOverTime[i] = (damageOverTime[i].damage, damageOverTime[i].timer - Time.deltaTime);
                 if(damageOverTime[i].timer <= 0)
                 {

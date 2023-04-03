@@ -10,8 +10,11 @@ public class YellowColorEffect : ColorEffect
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject obj in objs)
         {
-            if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < effectRange)
+            if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange,2))
             {
+                GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
+                Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
+                instantiatedParticles.GetComponent<ParticleSystem>().Play();
                 obj.GetComponent<EnemyStats>().DamageEnemy(damage*power);
             }
         }

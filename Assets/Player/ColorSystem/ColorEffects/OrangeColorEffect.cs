@@ -14,7 +14,13 @@ public class OrangeColorEffect : ColorEffect
         {
             if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < effectRange)
             {
+                GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
+                instantiatedParticles.GetComponent<ParticleSystem>().time = time*2;
+                instantiatedParticles.GetComponent<ParticleSystem>().Play();
+                Destroy(instantiatedParticles, time);
+
                 obj.GetComponent<EnemyStats>().DamageOverTime(damageOverTime*power, time);
+
             }
         }
 

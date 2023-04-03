@@ -64,18 +64,20 @@ public abstract class ColorSpell : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if(destroyOnImpact) 
         {
             Impact(other);
             Destroy(gameObject);
+            return;
         }
 
-        if(other.collider.CompareTag("Enemy"))
+        if(other.CompareTag("Enemy"))
         {
             Impact(other);
             if(destroyOnHit) Destroy(gameObject);
+            return;
         }
     }
 
@@ -83,7 +85,7 @@ public abstract class ColorSpell : MonoBehaviour
     /// This is called when the spell should do its effect
     /// </summary>
     /// <param name="other"></param>
-    protected abstract void Impact(Collision2D other);
+    protected abstract void Impact(Collider2D other);
 
     /// <summary>
     /// Returns the name of the animation trigger that should be used by this spell.
