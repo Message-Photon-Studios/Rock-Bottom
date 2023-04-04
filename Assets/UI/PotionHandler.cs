@@ -49,23 +49,23 @@ public class PotionHandler : MonoBehaviour
     }
 
     private void MoveSlotTo(RectTransform rect, int current, int dir) {
-        
+
         if(current == 0 && dir == 1) {
-            rect.anchoredPosition = slotPositions[1];
+            rect.anchoredPosition = slotPositions[5];
         } else if( current == 0) {
-            rect.anchoredPosition = slotPositions[5];
-        } else if(current == 1 && dir == 1){
-            rect.anchoredPosition = slotPositions[3];
-        } else if(current == 1) {
-            rect.anchoredPosition = slotPositions[0];
-        } else if(current == 2 && dir == 1) {
-            rect.anchoredPosition = slotPositions[5];
-        } else if(current == 2) {
             rect.anchoredPosition = slotPositions[1];
-        } else if(current == 3 && dir == 1) {
+        } else if(current == 1 && dir == 1){
             rect.anchoredPosition = slotPositions[0];
-        } else if(current == 3) {
+        } else if(current == 1) {
             rect.anchoredPosition = slotPositions[3];
+        } else if(current == 2 && dir == 1) {
+            rect.anchoredPosition = slotPositions[1];
+        } else if(current == 2) {
+            rect.anchoredPosition = slotPositions[5];
+        } else if(current == 3 && dir == 1) {
+            rect.anchoredPosition = slotPositions[3];
+        } else if(current == 3) {
+            rect.anchoredPosition = slotPositions[0];
         } 
     }
 
@@ -74,7 +74,6 @@ public class PotionHandler : MonoBehaviour
 /// </summary>
 /// <param name="active"></param>
     private void RotateSlots(int active, int dir) {
-//slot0Pos = (colorSlots.Count+slot0Pos)%colorSlots.Count;
 
         for(int i = 0; i < slots.Count; i++) {
             MoveSlotTo(slots[i], i, dir);
@@ -97,7 +96,6 @@ public class PotionHandler : MonoBehaviour
 
     private void ActiveColorChanged(int newSlot, int dir) {
         activeSlot = newSlot;
-        Debug.Log(dir);
         RotateSlots(newSlot, dir);
     }
 
