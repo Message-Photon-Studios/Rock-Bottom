@@ -59,7 +59,7 @@ public class ColorInventory : MonoBehaviour
     void OnEnable()
     {
         changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
-        AddColorSlot();
+        //AddColorSlot();
     }
 
     void OnDisable()
