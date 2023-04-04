@@ -205,7 +205,8 @@ public class PlayerMovement : MonoBehaviour
         } else
         {
             if(playerAnimator.GetBool("walking")) playerAnimator.SetBool("walking", false);
-            body.AddForce(new Vector2(movement*10, 0));
+            if(!movementRoot.rooted)
+                body.AddForce(new Vector2(movement*10, 0));
             airTime += Time.fixedDeltaTime;
 
             if(HitCeling())
