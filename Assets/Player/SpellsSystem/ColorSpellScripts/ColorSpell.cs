@@ -28,7 +28,12 @@ public abstract class ColorSpell : MonoBehaviour
     /// </summary>
     [SerializeField] float lifeTime;
 
-    protected ColorEffect colorEffect;
+    /// <summary>
+    /// The animation event that this spell uses
+    /// </summary>
+    [SerializeField] string animationTrigger;
+
+    protected GameColor gameColor;
     protected float power;
     protected GameObject player;
 
@@ -37,13 +42,13 @@ public abstract class ColorSpell : MonoBehaviour
     /// <summary>
     /// Needs to be called after the spell is instantiated
     /// </summary>
-    /// <param name="colorEffect">The color effect of the spell</param>
+    /// <param name="gameColor">The color effect of the spell</param>
     /// <param name="power">The total power of the spell</param>
     /// <param name="player">The player object</param>
     /// <param name="lookDir">The direction the spell should face horizontally</param>
-    public void Initi(ColorEffect colorEffect, float power, GameObject player, int lookDir)
+    public void Initi(GameColor gameColor, float power, GameObject player, int lookDir)
     {
-        this.colorEffect = colorEffect;
+        this.gameColor = gameColor;
         this.power = power;
         this.player = player;
         this.lookDir = lookDir; //TODO: Flip sprites
@@ -59,18 +64,20 @@ public abstract class ColorSpell : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if(destroyOnImpact) 
         {
             Impact(other);
             Destroy(gameObject);
+            return;
         }
 
-        if(other.collider.CompareTag("Enemy"))
+        if(other.CompareTag("Enemy"))
         {
             Impact(other);
             if(destroyOnHit) Destroy(gameObject);
+            return;
         }
     }
 
@@ -78,5 +85,14 @@ public abstract class ColorSpell : MonoBehaviour
     /// This is called when the spell should do its effect
     /// </summary>
     /// <param name="other"></param>
-    protected abstract void Impact(Collision2D other);
+    protected abstract void Impact(Collider2D other);
+
+    /// <summary>
+    /// Returns the name of the animation trigger that should be used by this spell.
+    /// </summary>
+    /// <returns></returns>
+    public string GetAnimationTrigger()
+    {
+        return animationTrigger;
+    }
 }

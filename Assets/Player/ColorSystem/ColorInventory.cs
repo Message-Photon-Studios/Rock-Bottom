@@ -30,7 +30,7 @@ public class ColorInventory : MonoBehaviour
     /// <summary>
     /// Called when the active color slot is changed
     /// </summary>
-    public UnityAction<int> onSlotChanged;
+    public UnityAction<int, int> onSlotChanged;
 
     /// <summary>
     /// Called when the the color in the active color slot is updated
@@ -77,7 +77,7 @@ public class ColorInventory : MonoBehaviour
     {
         activeSlot = (colorSlots.Count+activeSlot+dir)%colorSlots.Count;
         Debug.Log(ActiveSlot().gameColor);
-        onSlotChanged?.Invoke(activeSlot);
+        onSlotChanged?.Invoke(activeSlot, dir);
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ public class ColorInventory : MonoBehaviour
             }
         }
 
-        return 0;
+        return 1;
     }
 
     /// <summary>

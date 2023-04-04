@@ -26,12 +26,12 @@ public class ColorSpellSpawn : ColorSpell
         }
     }
     
-    protected override void Impact(Collision2D other)
+    protected override void Impact(Collider2D other)
     {
         foreach (GameObject spawnPrefab in spawnPrefabs)
         {
             GameObject obj = GameObject.Instantiate(spawnPrefab, transform.position, transform.rotation) as GameObject;
-            obj.GetComponent<ColorSpell>().Initi(colorEffect, power*powerScale, player, lookDir);
+            obj.GetComponent<ColorSpell>().Initi(gameColor, power*powerScale, player, lookDir);
         }
     }
 }

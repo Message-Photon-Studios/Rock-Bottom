@@ -143,6 +143,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""VerticalLook"",
+                    ""type"": ""Button"",
+                    ""id"": ""a4a92d5c-de41-442b-bd68-bc976497f297"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -904,6 +913,105 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""SpecialAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""3441a9a4-7d07-41f4-b558-1e5aad08104a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=10),Clamp(min=-1,max=1)"",
+                    ""groups"": """",
+                    ""action"": ""VerticalLook"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""222075df-3959-41c2-958d-bd7576732112"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
+                    ""action"": ""VerticalLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""7aa5b206-51d4-4ff9-8efd-8097667935ad"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse;Keyboard"",
+                    ""action"": ""VerticalLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""94388655-e606-4516-b45d-03aedc265dc1"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=10),Clamp(min=-1,max=1)"",
+                    ""groups"": """",
+                    ""action"": ""VerticalLook"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""7d6c6b96-0b02-4b5b-b922-2b5f66f93406"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""VerticalLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""9828e0ab-3db4-4c08-82e4-f670d10a1672"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""VerticalLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""df854b3e-cc1c-4d20-a75c-7f3882fa564c"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": ""AxisDeadzone(min=0.5),Scale(factor=10),Clamp(min=-1,max=1)"",
+                    ""groups"": """",
+                    ""action"": ""VerticalLook"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""d6eccdf5-8276-4aa5-a9d0-3ac82e66fede"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""VerticalLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""93a42891-4e1a-4fa3-a3af-8bacde878a0e"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""VerticalLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -975,6 +1083,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_RotateColor = m_Player.FindAction("RotateColor", throwIfNotFound: true);
         m_Player_DefaultAttack = m_Player.FindAction("DefaultAttack", throwIfNotFound: true);
         m_Player_SpecialAttack = m_Player.FindAction("SpecialAttack", throwIfNotFound: true);
+        m_Player_VerticalLook = m_Player.FindAction("VerticalLook", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1047,6 +1156,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RotateColor;
     private readonly InputAction m_Player_DefaultAttack;
     private readonly InputAction m_Player_SpecialAttack;
+    private readonly InputAction m_Player_VerticalLook;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -1064,6 +1174,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @RotateColor => m_Wrapper.m_Player_RotateColor;
         public InputAction @DefaultAttack => m_Wrapper.m_Player_DefaultAttack;
         public InputAction @SpecialAttack => m_Wrapper.m_Player_SpecialAttack;
+        public InputAction @VerticalLook => m_Wrapper.m_Player_VerticalLook;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1112,6 +1223,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @SpecialAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
                 @SpecialAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
                 @SpecialAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
+                @VerticalLook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalLook;
+                @VerticalLook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalLook;
+                @VerticalLook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalLook;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1155,6 +1269,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @SpecialAttack.started += instance.OnSpecialAttack;
                 @SpecialAttack.performed += instance.OnSpecialAttack;
                 @SpecialAttack.canceled += instance.OnSpecialAttack;
+                @VerticalLook.started += instance.OnVerticalLook;
+                @VerticalLook.performed += instance.OnVerticalLook;
+                @VerticalLook.canceled += instance.OnVerticalLook;
             }
         }
     }
@@ -1210,5 +1327,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnRotateColor(InputAction.CallbackContext context);
         void OnDefaultAttack(InputAction.CallbackContext context);
         void OnSpecialAttack(InputAction.CallbackContext context);
+        void OnVerticalLook(InputAction.CallbackContext context);
     }
 }
