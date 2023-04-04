@@ -59,7 +59,6 @@ public class ColorInventory : MonoBehaviour
     void OnEnable()
     {
         changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
-        //AddColorSlot();
     }
 
     void OnDisable()
@@ -212,7 +211,6 @@ public class ColorInventory : MonoBehaviour
     public void AddColorSlot()
     {
         colorSlots.Add(new ColorSlot());
-        //colorSlots[colorSlots.Count-1].Init(images[colorSlots.Count-1]);
         onColorSlotsChanged?.Invoke();
     }
 
@@ -253,7 +251,7 @@ public class ColorSlot
 {
     [SerializeField] public Image image ;
     [SerializeField] float imageScale;
-    [SerializeField] public int maxCapacity;
+    [SerializeField] public int maxCapacity = 6;
     [SerializeField] public int charge;
     [SerializeField] public GameColor gameColor;
 

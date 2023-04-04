@@ -29,6 +29,7 @@ public class PotionHandler : MonoBehaviour
     {
     }
 
+//TODO Comments on the code
     private void OnEnable() {
         colorSlots = colorInventory.colorSlots;
         activeSlot = colorInventory.activeSlot;
@@ -42,12 +43,12 @@ public class PotionHandler : MonoBehaviour
         colorInventory.onSlotChanged += ActiveColorChanged;
         colorInventory.onColorSlotsChanged += SlotAmountUpdated;
 
-        slotPositions.Add(new Vector2(0, 0));
-        slotPositions.Add(new Vector2(-225, 65));
-        slotPositions.Add(new Vector2(-165, 180));
-        slotPositions.Add(new Vector2(0, 200));
-        slotPositions.Add(new Vector2(165, 180));
-        slotPositions.Add(new Vector2(225, 65));
+        slotPositions.Add(slot0.anchoredPosition);
+        slotPositions.Add(slot1.anchoredPosition);
+        slotPositions.Add(slot2.anchoredPosition);
+        slotPositions.Add(slot3.anchoredPosition);
+        slotPositions.Add(slot4.anchoredPosition);
+        slotPositions.Add(slot5.anchoredPosition);
 
         SlotAmountUpdated();
     }
@@ -150,6 +151,8 @@ public class PotionHandler : MonoBehaviour
         colorSlots = colorInventory.colorSlots;
         slots = new List<RectTransform>();
 
+        
+
         foreach(RectTransform slot in setOf6) {
             slot.gameObject.SetActive(false);
         }
@@ -177,7 +180,7 @@ public class PotionHandler : MonoBehaviour
                 setOf5[i].gameObject.SetActive(true);
             }
         }
-        
+
         if(colorSlots.Count == 6) {
             for(int i = 0; i<7; i++) {
                 slots.Add(setOf6[i]);
