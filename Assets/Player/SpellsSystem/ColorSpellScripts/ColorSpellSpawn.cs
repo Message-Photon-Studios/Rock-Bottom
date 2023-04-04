@@ -26,7 +26,7 @@ public class ColorSpellSpawn : ColorSpell
         }
     }
     
-    protected override void Impact(Collision2D other)
+    protected override void Impact(Collider2D other)
     {
         foreach (GameObject spawnPrefab in spawnPrefabs)
         {

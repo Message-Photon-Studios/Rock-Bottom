@@ -8,9 +8,9 @@ using UnityEngine;
 public class ColorSpellImpact : ColorSpell
 {
     
-    protected override void Impact(Collision2D other)
+    protected override void Impact(Collider2D other)
     {
-        if(other.collider.CompareTag("Enemy"))
+        if(other.CompareTag("Enemy"))
         {
             EnemyStats enemy = other.gameObject.GetComponent<EnemyStats>();
 
@@ -18,10 +18,22 @@ public class ColorSpellImpact : ColorSpell
 
             enemy.SetComboColor(comboColor);
 
-            if(comboColor.name == "Brown") enemy.SetComboColor(null);
+            if(comboColor != gameColor)
+            {
+                enemy.currentCombo *= 2;
+                if(enemy.currentCombo == 0) enemy.currentCombo = 1;
 
-            gameColor.colorEffect.Apply(other.gameObject, player, power*powerScale);
-            if(comboColor != gameColor && enemy != null) comboColor.colorEffect.Apply(other.gameObject, player,power*powerScale);
+                if(comboColor.name == "Brown" ) 
+                {
+                    enemy.SetComboColor(null);
+                    float comboDamage = player.GetComponent<PlayerCombatSystem>().comboBaseDamage * enemy.currentCombo;
+                    enemy.currentCombo = 0;
+                    enemy.DamageEnemy(comboDamage);
+                }
+            }
+
+
+            if(enemy != null) gameColor.colorEffect.Apply(other.gameObject, player, power*powerScale);
 
         }
     }
