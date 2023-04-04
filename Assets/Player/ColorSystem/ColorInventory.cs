@@ -49,15 +49,17 @@ public class ColorInventory : MonoBehaviour
     void Start()
     {
         startColorSlots = colorSlots.Count;
+        /*
         for (int i = 0; i < startColorSlots; i++)
         {
             colorSlots[i].Init(images[i]);
-        }
+        } */
     }
 
     void OnEnable()
     {
         changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
+        AddColorSlot();
     }
 
     void OnDisable()
@@ -210,7 +212,7 @@ public class ColorInventory : MonoBehaviour
     public void AddColorSlot()
     {
         colorSlots.Add(new ColorSlot());
-        colorSlots[colorSlots.Count-1].Init(images[colorSlots.Count-1]);
+        //colorSlots[colorSlots.Count-1].Init(images[colorSlots.Count-1]);
         onColorSlotsChanged?.Invoke();
     }
 
