@@ -118,7 +118,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1dd204a55e67044e8c4b75a10622fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnForce: {x: 400, y: 0}
+  spawnForce: {x: 800, y: 0}
 --- !u!114 &3321278458073070407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerScale: 1
-  destroyOnImpact: 0
+  destroyOnImpact: 1
   destroyOnHit: 0
-  lifeTime: 2
+  lifeTime: 1
+  animationTrigger: handSpell
