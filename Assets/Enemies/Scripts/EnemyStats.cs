@@ -41,6 +41,7 @@ public class EnemyStats : MonoBehaviour
             {
                 comboTimer = 0;
                 comboColor = null;
+                currentCombo = 0;
             }
         }
 
