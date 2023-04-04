@@ -9,9 +9,10 @@ using UnityEngine.Events;
 public class EnemyStats : MonoBehaviour
 {
     [SerializeField] float health; //The health of the enemy
-    [SerializeField] GameColor color; //The color of the enemy
-    [SerializeField] int colorAmmount; //The ammount of color you will get when absorbing the color from the enemy
+    [SerializeField] GameColor color; //The colorMat of the enemy
+    [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
+    [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
 
     private float normalMovementSpeed; //The normal movement speed of the enemy
     private float movementSpeedTimer; 
@@ -21,7 +22,7 @@ public class EnemyStats : MonoBehaviour
 
     private float comboTime = 1; //The timelimit for the next move of a combo
     private float comboTimer = 0;
-    private GameColor comboColor; //The color that currently affects the enemy in a combo
+    private GameColor comboColor; //The colorMat that currently affects the enemy in a combo
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
     private List<(float damage, float timer)> damageOverTime = new List<(float damage, float time)>(); //Damage dealt over time
@@ -30,6 +31,7 @@ public class EnemyStats : MonoBehaviour
     void OnEnable()
     {
         normalMovementSpeed = movementSpeed;
+        GetComponent<SpriteRenderer>().material = color.colorMat;
     }
 
     void Update()
@@ -125,9 +127,9 @@ public class EnemyStats : MonoBehaviour
     #endregion
 
     #region Enemy Color
-
+    
     /// <summary>
-    /// Return what color this enemy has and how much, then remove the color form the enemy.
+    /// Return what colorMat this enemy has and how much, then remove the colorMat form the enemy.
     /// </summary>
     /// <param name="color"></param>
     /// <param name="AbsorbColor("></param>
@@ -139,11 +141,12 @@ public class EnemyStats : MonoBehaviour
         if (colorAmmount == 0) ret = null;
         color = null;
         colorAmmount = 0;
+        GetComponent<SpriteRenderer>().material = defaultColor;
         return (ret, ammount);
     }
 
     /// <summary>
-    /// Check what color this enemy has
+    /// Check what colorMat this enemy has
     /// </summary>
     /// <returns></returns>
     public GameColor GetColor()
@@ -156,7 +159,7 @@ public class EnemyStats : MonoBehaviour
     #region Combo Color
 
     /// <summary>
-    /// Sets the combo color for the player
+    /// Sets the combo colorMat for the player
     /// </summary>
     /// <param name="comboColor"></param>
     public void SetComboColor(GameColor comboColor)
@@ -166,7 +169,7 @@ public class EnemyStats : MonoBehaviour
     }
 
     /// <summary>
-    /// Get the current combo color of the player
+    /// Get the current combo colorMat of the player
     /// </summary>
     /// <returns></returns>
     public GameColor GetComboColor()
