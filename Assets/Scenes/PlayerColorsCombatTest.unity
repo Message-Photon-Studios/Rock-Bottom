@@ -1032,10 +1032,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1137768968}
   - component: {fileID: 1137768969}
+  - component: {fileID: 1137768971}
   - component: {fileID: 1137768967}
   - component: {fileID: 1137768966}
   - component: {fileID: 1137768970}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Crystal_Sword
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1162,6 +1163,28 @@ CircleCollider2D:
   m_Offset: {x: 0.3, y: -0.3}
   serializedVersion: 2
   m_Radius: 0.34
+--- !u!114 &1137768971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137768965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1291f1979121ddc4b8ae3d3f80ad6d07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCollisionDamage: 20
+  playerCollisionForce: 3000
+  stats: {fileID: 0}
+  player: {fileID: 0}
+  attackTrigger:
+    radius: 0.5
+    offset: {x: -0.4, y: 0}
+    color: {r: 1, g: 0, b: 0, a: 1}
+  swordDamage: 20
+  swordForce: 3000
 --- !u!1 &1148083589
 GameObject:
   m_ObjectHideFlags: 0

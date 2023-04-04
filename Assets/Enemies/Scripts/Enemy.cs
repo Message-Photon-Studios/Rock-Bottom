@@ -6,66 +6,29 @@ using UnityEditor;
 [RequireComponent(typeof(EnemyStats), typeof(SpriteRenderer), typeof(Collider2D))]
 public abstract class Enemy : MonoBehaviour
 {
-    [SerializeField] float detectionDistance;
-    [SerializeField] float disengagementDistance;
-    [SerializeField] float attackRange;
-    [SerializeField] Vector2 attackRangeOffset;
-    [SerializeField] float playerCollisionDamage = 20;
+    [SerializeField] float playerCollisionDamage = 10;
     [SerializeField] float playerCollisionForce = 3000;
     private float rootTimer = 0;
-    protected EnemyStats stats;
+    [SerializeField] protected EnemyStats stats;
+    protected Animator animator;
     private SpriteRenderer spriteRenderer;
     private Collider2D myCollider;
-    protected bool playerDetected = false;
-    protected PlayerStats player;
-    protected int lookDir {get; private set;} = -1;
-    private float _movementDir;
-    protected float movementDir 
-    {
-        get{ return _movementDir; }
-        set
-        {
-            if(_movementDir < 0 != value < 0)
-            {
-                SwitchDirection();
-            }
-
-            _movementDir = value;
-        }
-    }
+    [SerializeField] protected PlayerStats player;
     private void Start()
     {
         stats = GetComponent<EnemyStats>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
     }
     void OnValidate()
     {
         myCollider = GetComponent<Collider2D>();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-        if(!playerDetected && !stats.IsAsleep() && ((Vector2)player.transform.position -GetPosition()).sqrMagnitude < Mathf.Pow(detectionDistance, 2) &&
-            Physics2D.Raycast(GetPosition(), (Vector2)player.transform.position - GetPosition()))
-        {
-            playerDetected = true;
-            PlayerDetected();
-        }
-
-        if(playerDetected && !stats.IsAsleep() && ((Vector2)player.transform.position - GetPosition()).sqrMagnitude < Mathf.Pow(disengagementDistance, 2))
-        {
-            playerDetected = false;
-            Disengage();
-        }
-
-        if(playerDetected && !stats.IsAsleep() && ((Vector2)player.transform.position + attackRangeOffset - GetPosition()).sqrMagnitude < Mathf.Pow(attackRange, 2) &&
-            Physics2D.Raycast(GetPosition() + attackRangeOffset, (Vector2)player.transform.position+ attackRangeOffset - GetPosition()))
-        {
-            AttackPlayer();
-        }
-
         if(rootTimer > 0)
         {
             rootTimer -= Time.deltaTime;
@@ -77,15 +40,6 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Handles.color = Color.yellow;
-        Handles.DrawWireDisc(GetPosition(), transform.forward, detectionDistance);
-        Handles.color = Color.green;
-        Handles.DrawWireDisc(GetPosition(), transform.forward, disengagementDistance);
-        Handles.color = Color.red;
-        Handles.DrawWireDisc(GetPosition() + attackRangeOffset, transform.forward, attackRange);
-    }
     void OnCollisionEnter2D(Collision2D other)
     {
         if(other.collider.CompareTag("Player"))
@@ -97,31 +51,39 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    public virtual void PlayerDetected()
-    {
-
-    }
-
-    public virtual void Disengage()
-    {
-
-    }
-
-    public virtual void AttackPlayer()
-    {
-
-    }
-
     protected Vector2 GetPosition()
     {
         return new Vector2(transform.position.x, transform.position.y) + myCollider.offset;
     }
 
-    private void SwitchDirection()
+    protected void SwitchDirection()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
-        lookDir *= -1;
         myCollider.offset = new Vector2(-myCollider.offset.x, myCollider.offset.y);
-        attackRangeOffset = new Vector2(-attackRangeOffset.x, attackRangeOffset.y);
+    }
+
+    protected bool CheckTrigger(Trigger trigger)
+    {
+        var hit = Physics2D.Raycast(GetPosition() + trigger.offset, (Vector2)player.transform.position - trigger.offset - GetPosition(), trigger.radius);
+        return (!stats.IsAsleep() && hit.collider != null && hit.collider.CompareTag("Player"));
+    }
+}
+
+[System.Serializable]
+public struct Trigger
+{
+    [SerializeField] public float radius;
+    [SerializeField] public Vector2 offset;
+    [SerializeField] private Color color;
+
+    public void Flip()
+    {
+        offset = new Vector2(-offset.x, offset.y);
+    }
+    
+    public void DrawTrigger(Vector2 position)
+    {
+        Handles.color = color;
+        Handles.DrawWireDisc(position+offset, Vector3.forward, radius);
     }
 }
