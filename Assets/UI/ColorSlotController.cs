@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Script for handling all the UI features of the ColorSlotUI.
 /// </summary>
-public class PotionHandler : MonoBehaviour
+public class ColorSlotController : MonoBehaviour
 {
     //The players ColorInventory, used to access UnityActions and information.
     [SerializeField] ColorInventory colorInventory;
