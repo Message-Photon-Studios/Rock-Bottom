@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 namespace BehaviourTree
 {
+    /// <summary>
+    /// The selector will retun success after it has found a successfull child. The selector will evaluate the success of the children in order.
+    /// The selector will return failure if no successful childs are found. 
+    /// </summary>
     public class Selector : Node
     {
         public Selector () : base() {}

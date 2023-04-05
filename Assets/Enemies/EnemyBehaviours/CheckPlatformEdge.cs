@@ -8,6 +8,11 @@ public class CheckPlatformEdge : Node
     EnemyStats stats;
     float legPos;
 
+    /// <summary>
+    /// The CheckPlatformEdge will return success if a wall, enemy or edge is found near the enemy
+    /// </summary>
+    /// <param name="stats"></param>
+    /// <param name="legPos">The distace from the enemys center to a leg check</param>
     public CheckPlatformEdge(EnemyStats stats, float legPos)
     {
         this.stats = stats;
@@ -19,6 +24,7 @@ public class CheckPlatformEdge : Node
                     !Physics2D.Raycast(stats.GetPosition() - Vector2.right* legPos, Vector2.down, 1f, ~LayerMask.GetMask("Enemy", "Player")) ||
                     Physics2D.Raycast(stats.GetPosition() + Vector2.right * legPos, Vector2.right, 1f, ~LayerMask.GetMask("Player")) ||
                     Physics2D.Raycast(stats.GetPosition() - Vector2.right * legPos, Vector2.left, 1f, ~LayerMask.GetMask("Player"));
-        return (test)?NodeState.SUCCESS:NodeState.FAILURE;
+        state = (test)?NodeState.SUCCESS:NodeState.FAILURE;
+        return state;
     }
 }

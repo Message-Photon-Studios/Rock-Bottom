@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace BehaviourTree
 {
+    /// <summary>
+    /// The sequence will evaluate each child in order. It will return succes if all children are successful. It will return faliure if it finds a failed child. 
+    /// </summary>
     public class Sequence : Node
     {
         public Sequence () : base() {}

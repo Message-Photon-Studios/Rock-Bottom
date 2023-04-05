@@ -4,6 +4,9 @@ using UnityEngine;
 using BehaviourTree;
 using UnityEditor;
 
+/// <summary>
+/// This is the ai for the Crystoffer enemy
+/// </summary>
 public class CrystalSwordEnemy : Enemy
 {   
     [SerializeField] Trigger attackTrigger;
@@ -24,7 +27,7 @@ public class CrystalSwordEnemy : Enemy
             new Sequence(new List<Node>{
                 new CheckBool("attack", false),
                 new CheckPlayerArea(stats, player, attackTrigger),
-                new PlayAttack(animator, "attack")
+                new AnimationTrigger(animator, "attack")
                 }),
             new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .6f, "attack", "walk")
             });

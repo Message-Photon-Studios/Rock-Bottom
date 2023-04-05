@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace BehaviourTree
 {
+    /// <summary>
+    /// A behiour node in a behaviour tree
+    /// </summary>
     public enum NodeState
     {
         RUNNING,
@@ -12,9 +15,22 @@ namespace BehaviourTree
 
     public class Node
     {
+        /// <summary>
+        /// The current state of the node
+        /// </summary>
         protected NodeState state;
+
+        /// <summary>
+        /// The parent of this node
+        /// </summary>
         public Node parent;
-        protected List<Node> children = new List<Node>();
+
+        /// <summary>
+        /// The children of this node
+        /// </summary>
+        /// <typeparam name="Node"></typeparam>
+        /// <returns></returns>
+        protected List<Node> children {get; private set;} = new List<Node>();
 
         private Dictionary<string, object> dataContext = new Dictionary<string, object>();
 
@@ -31,19 +47,33 @@ namespace BehaviourTree
             }
         }
 
-        private void Attach(Node node)
+        private void Attach(Node node) //Attaches the node correctly
         {
             node.parent = this;
             children.Add(node);
         }
 
+        /// <summary>
+        /// This method evaluates the node and returns the nodes state afterwards
+        /// </summary>
+        /// <returns></returns>
         public virtual NodeState Evaluate() => NodeState.FAILURE;
 
+        /// <summary>
+        /// Sets the data for this node
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void SetData(string key, object value)
         {
             dataContext[key] = value;
         }
 
+        /// <summary>
+        /// Gets data from this or parent nodes if possibe
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public object GetData(string key)
         {
             object value = null;
@@ -64,6 +94,11 @@ namespace BehaviourTree
             return null;
         }
 
+        /// <summary>
+        /// Cleares the data from this or parent nodes
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public bool ClearData(string key)
         {
             if(dataContext.ContainsKey(key))

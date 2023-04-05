@@ -8,6 +8,11 @@ public class DamagePlayer : Node
     PlayerStats player;
     float damage;
     
+    /// <summary>
+    /// The DamagePlayer damages the player with the specified damage and then returns success
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="damage"></param>
     public DamagePlayer (PlayerStats player, float damage)
     {
         this.player = player;
@@ -16,6 +21,7 @@ public class DamagePlayer : Node
     public override NodeState Evaluate()
     {
         player.DamagePlayer(damage);
-        return NodeState.SUCCESS;
+        state = NodeState.SUCCESS;
+        return state;
     }
 }

@@ -4,12 +4,15 @@ using UnityEngine;
 using UnityEditor;
 using BehaviourTree;
 
+/// <summary>
+/// This class is an abstract class extended by all enemy AIs. It haves important general functionallity and variables used by all enemy AI. 
+/// </summary>
 [RequireComponent(typeof(EnemyStats), typeof(SpriteRenderer), typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class Enemy : BehaviourTree.Tree
 {
-    [SerializeField] float playerCollisionDamage = 10;
-    [SerializeField] float playerCollisionForce = 2000;
+    [SerializeField] float playerCollisionDamage = 10; //The damage that will be dealt to the player if they walk into the enemy
+    [SerializeField] float playerCollisionForce = 2000; //The force that will be added to the player if they walk into the enemy
     private float rootTimer = 0;
     protected EnemyStats stats;
     protected Animator animator;
@@ -17,7 +20,15 @@ public abstract class Enemy : BehaviourTree.Tree
     private SpriteRenderer spriteRenderer;
     private Collider2D myCollider;
     protected PlayerStats player;
+
+    /// <summary>
+    /// Add triggers to this list if tou want them to be flipped in sync with the enemy
+    /// </summary>
+    /// <typeparam name="Trigger"></typeparam>
+    /// <returns></returns>
     protected List<Trigger> triggersToFlip = new List<Trigger>();
+
+    #region Setup and Updates
     private void OnEnable()
     {
         stats = GetComponent<EnemyStats>();
@@ -49,6 +60,9 @@ public abstract class Enemy : BehaviourTree.Tree
         if(body.velocity.x != 0 && ((body.velocity.x < 0) != (!spriteRenderer.flipX))) SwitchDirection();
     }
 
+    #endregion
+
+    #region  Collision with player
     void OnCollisionEnter2D(Collision2D other)
     {
         if(other.collider.CompareTag("Player"))
@@ -60,6 +74,9 @@ public abstract class Enemy : BehaviourTree.Tree
             rootTimer = 0.35f;
         }
     }
+    #endregion
+    
+    #region Switches the players direction
     protected void SwitchDirection()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
@@ -69,18 +86,35 @@ public abstract class Enemy : BehaviourTree.Tree
             trigger.Flip();
         }
     }
+    #endregion
+    
+    #region Data setters
 
+    /// <summary>
+    /// Sets a bool in the behaviour tree root to true.
+    /// </summary>
+    /// <param name="name"></param>
     public void SetBoolTrue(string name)
     {
         root.SetData(name, true);
     }
 
+    /// <summary>
+    /// Sets a bool in the behaviour tree root to false
+    /// </summary>
+    /// <param name="name"></param>
     public void SetBoolFalse(string name)
     {
         root.SetData(name, false);
     }
+
+    #endregion
 }
 
+#region Trigger
+/// <summary>
+/// A small class that handles triggers
+/// </summary>
 [System.Serializable]
 public class Trigger
 {
@@ -99,3 +133,4 @@ public class Trigger
         Handles.DrawWireDisc(position+offset, Vector3.forward, radius);
     }
 }
+#endregion
