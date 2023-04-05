@@ -23,7 +23,6 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     [SerializeField] public int activeSlot;
     [SerializeField] InputActionReference changeRightActions;
-    [SerializeField] Image[] images;
 
     #region Actions for UI
     
@@ -217,7 +216,6 @@ public class ColorInventory : MonoBehaviour
         colorSlots.RemoveAt(colorSlots.Count-1);
         if(activeSlot >= colorSlots.Count) 
             activeSlot = colorSlots.Count-1;
-        images[colorSlots.Count].transform.parent.gameObject.SetActive(false);
         onColorSlotsChanged?.Invoke();
     }
 
