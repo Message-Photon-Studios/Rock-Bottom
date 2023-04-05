@@ -30,7 +30,7 @@ public class NormalAttack : Node
         if(test != null && (bool) test)
         {
             player.DamagePlayer(damage);
-            player.GetComponent<Rigidbody2D>().AddForce(((Vector2)player.transform.position + Vector2.up*0.5f - attackTrigger.offset - stats.GetPosition()) * force);
+            player.GetComponent<Rigidbody2D>().AddForce(((Vector2)player.transform.position + Vector2.up - attackTrigger.offset - stats.GetPosition()).normalized * force);
             return NodeState.SUCCESS;
         }
 
