@@ -23,14 +23,13 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     [SerializeField] public int activeSlot;
     [SerializeField] InputActionReference changeRightActions;
-    [SerializeField] Image[] images;
 
     #region Actions for UI
     
     /// <summary>
     /// Called when the active color slot is changed
     /// </summary>
-    public UnityAction<int, int> onSlotChanged;
+    public UnityAction<int> onSlotChanged;
 
     /// <summary>
     /// Called when the the color in the active color slot is updated
@@ -49,10 +48,6 @@ public class ColorInventory : MonoBehaviour
     void Start()
     {
         startColorSlots = colorSlots.Count;
-        for (int i = 0; i < startColorSlots; i++)
-        {
-            colorSlots[i].Init(images[i]);
-        }
     }
 
     void OnEnable()
@@ -77,7 +72,7 @@ public class ColorInventory : MonoBehaviour
     {
         activeSlot = (colorSlots.Count+activeSlot+dir)%colorSlots.Count;
         Debug.Log(ActiveSlot().gameColor);
-        onSlotChanged?.Invoke(activeSlot, dir);
+        onSlotChanged?.Invoke(dir);
     }
 
     /// <summary>
@@ -210,7 +205,6 @@ public class ColorInventory : MonoBehaviour
     public void AddColorSlot()
     {
         colorSlots.Add(new ColorSlot());
-        colorSlots[colorSlots.Count-1].Init(images[colorSlots.Count-1]);
         onColorSlotsChanged?.Invoke();
     }
 
@@ -222,7 +216,6 @@ public class ColorInventory : MonoBehaviour
         colorSlots.RemoveAt(colorSlots.Count-1);
         if(activeSlot >= colorSlots.Count) 
             activeSlot = colorSlots.Count-1;
-        images[colorSlots.Count].transform.parent.gameObject.SetActive(false);
         onColorSlotsChanged?.Invoke();
     }
 
@@ -251,7 +244,7 @@ public class ColorSlot
 {
     [SerializeField] public Image image ;
     [SerializeField] float imageScale;
-    [SerializeField] public int maxCapacity;
+    [SerializeField] public int maxCapacity = 6;
     [SerializeField] public int charge;
     [SerializeField] public GameColor gameColor;
 
