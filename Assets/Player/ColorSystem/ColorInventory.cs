@@ -49,11 +49,6 @@ public class ColorInventory : MonoBehaviour
     void Start()
     {
         startColorSlots = colorSlots.Count;
-        /*
-        for (int i = 0; i < startColorSlots; i++)
-        {
-            colorSlots[i].Init(images[i]);
-        } */
     }
 
     void OnEnable()
