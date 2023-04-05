@@ -25,14 +25,14 @@ public class PlayerCombatSystem : MonoBehaviour
     #region Setup
     private void OnEnable() {
         specialAttackAction.action.performed += (_) =>{SpecialAttackAnimation();};
-        defaultAttackAction.action.performed += (_) =>{DefaultAttack();};
+        defaultAttackAction.action.performed += (_) =>{animator.SetTrigger("defaultAttack");};
         defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
     }
 
     private void OnDisable()
     {
-        specialAttackAction.action.performed -= (_) =>{animator.SetTrigger("SpecialAttackHand");};
-        defaultAttackAction.action.performed -= (_) =>{DefaultAttack();};
+        specialAttackAction.action.performed -= (_) =>{SpecialAttackAnimation();};
+        defaultAttackAction.action.performed -= (_) =>{animator.SetTrigger("defaultAttack");};
         defaultAttackHitbox.onDefaultHit -= EnemyHitDefault;
     }
     #endregion
