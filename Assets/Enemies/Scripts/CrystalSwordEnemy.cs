@@ -21,7 +21,7 @@ public class CrystalSwordEnemy : Enemy
         Node root = new Selector(new List<Node>{
             new Sequence(new List<Node>{
                 new CheckBool("attackDone", false),
-                new NormalAttack("swordAttack", player, swordDamage, swordForce, attackTrigger, stats),
+                new NormalAttack("swordAttack", player, swordDamage, swordForce, 0.5f, attackTrigger, stats),
                 new SetParentVariable("attackDone", true, 2)
             }),
             new Sequence(new List<Node>{
