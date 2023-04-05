@@ -8,7 +8,7 @@ public class GameColor : ScriptableObject
     /// <summary>
     /// The actual color of the GameColor
     /// </summary>
-    [SerializeField] public Color color;
+    [SerializeField] public Material colorMat;
 
     /// <summary>
     /// A description of the color
