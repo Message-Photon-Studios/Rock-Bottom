@@ -6,14 +6,16 @@ using BehaviourTree;
 public class CheckBool : Node
 {
     string boolName;
-    public CheckBool (string boolName)
+    bool equals;
+    public CheckBool (string boolName, bool equals)
     {
         this.boolName = boolName;
+        this.equals = equals;
     }
     public override NodeState Evaluate()
     {
         var test = GetData(boolName);
         if(test == null) return NodeState.FAILURE;
-        return (bool)test?NodeState.SUCCESS:NodeState.FAILURE;
+        return ((bool)test == equals)?NodeState.SUCCESS:NodeState.FAILURE;
     }
 }

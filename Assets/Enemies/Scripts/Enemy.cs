@@ -5,6 +5,7 @@ using UnityEditor;
 using BehaviourTree;
 
 [RequireComponent(typeof(EnemyStats), typeof(SpriteRenderer), typeof(Collider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public abstract class Enemy : BehaviourTree.Tree
 {
     [SerializeField] float playerCollisionDamage = 10;
@@ -12,9 +13,11 @@ public abstract class Enemy : BehaviourTree.Tree
     private float rootTimer = 0;
     protected EnemyStats stats;
     protected Animator animator;
+    protected Rigidbody2D body; 
     private SpriteRenderer spriteRenderer;
     private Collider2D myCollider;
     protected PlayerStats player;
+    protected List<Trigger> triggersToFlip = new List<Trigger>();
     private void OnEnable()
     {
         stats = GetComponent<EnemyStats>();
@@ -22,6 +25,7 @@ public abstract class Enemy : BehaviourTree.Tree
         spriteRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
+        body = GetComponent<Rigidbody2D>();
     }
     void OnValidate()
     {
@@ -41,6 +45,8 @@ public abstract class Enemy : BehaviourTree.Tree
                 player.GetComponent<PlayerMovement>().movementRoot.SetRoot("enemyCollision", false);
             }
         }
+
+        if(body.velocity.x != 0 && ((body.velocity.x < 0) != (!spriteRenderer.flipX))) SwitchDirection();
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -57,6 +63,10 @@ public abstract class Enemy : BehaviourTree.Tree
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
         myCollider.offset = new Vector2(-myCollider.offset.x, myCollider.offset.y);
+        foreach (Trigger trigger in triggersToFlip)
+        {
+            trigger.Flip();
+        }
     }
 
     public void SetBoolTrue(string name)
@@ -71,7 +81,7 @@ public abstract class Enemy : BehaviourTree.Tree
 }
 
 [System.Serializable]
-public struct Trigger
+public class Trigger
 {
     [SerializeField] public float radius;
     [SerializeField] public Vector2 offset;
