@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BehaviourTree;
+using UnityEditor;
 
 public class CrystalSwordEnemy : Enemy
 {   
@@ -15,7 +16,11 @@ public class CrystalSwordEnemy : Enemy
     {
         
         Node root = new Selector(new List<Node>{
-            new NormalAttack("swordAttack", player, swordDamage, swordForce, attackTrigger, stats),
+            new Sequence(new List<Node>{
+                new CheckBool("attackDone", false),
+                new NormalAttack("swordAttack", player, swordDamage, swordForce, attackTrigger, stats),
+                new SetParentVariable("attackDone", true, 2)
+            }),
             new Sequence(new List<Node>{
                 new CheckBool("attack", false),
                 new CheckPlayerArea(stats, player, attackTrigger),
@@ -25,11 +30,15 @@ public class CrystalSwordEnemy : Enemy
             });
         
         root.SetData("attack", false);
+        root.SetData("attackDone", false);
+        root.SetData("swordAttack", false);
         triggersToFlip.Add(attackTrigger);
         return root;
     }
 
     private void OnDrawGizmosSelected() {
         attackTrigger.DrawTrigger(stats.GetPosition());
+        Handles.color = Color.yellow;
+        Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
     }
 }

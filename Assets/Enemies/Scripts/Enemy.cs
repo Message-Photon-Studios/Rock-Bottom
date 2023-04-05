@@ -53,10 +53,11 @@ public abstract class Enemy : BehaviourTree.Tree
     {
         if(other.collider.CompareTag("Player"))
         {
-            other.rigidbody.AddForce(((Vector2)other.transform.position + Vector2.up - stats.GetPosition()).normalized * playerCollisionForce);
+            other.rigidbody.AddForce(((Vector2)other.transform.position + Vector2.up * 0.5f - stats.GetPosition()).normalized * playerCollisionForce);
+            body.velocity = new Vector2(0, body.velocity.y);
             other.gameObject.GetComponent<PlayerStats>().DamagePlayer(playerCollisionDamage);
             other.gameObject.GetComponent<PlayerMovement>().movementRoot.SetRoot("enemyCollision", true);
-            rootTimer = 0.5f;
+            rootTimer = 0.35f;
         }
     }
     protected void SwitchDirection()

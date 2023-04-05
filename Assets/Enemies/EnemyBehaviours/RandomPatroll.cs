@@ -36,7 +36,6 @@ public class RandomPatroll : Node
     public override NodeState Evaluate()
     {
         var attacking = GetData(attackBool);
-        Debug.Log(attacking);
         if(stats.IsAsleep() || (attacking != null && (bool)attacking)) return NodeState.FAILURE;
 
         if(idleTimer > 0)

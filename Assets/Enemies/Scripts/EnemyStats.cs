@@ -6,7 +6,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Important stats for an enemy.
 /// </summary>
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class EnemyStats : MonoBehaviour
 {
     [SerializeField] float health; //The health of the enemy
@@ -27,6 +27,8 @@ public class EnemyStats : MonoBehaviour
     private GameColor comboColor; //The color that currently affects the enemy in a combo
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
+    private Animator animator;
+
     private List<(float damage, float timer)> damageOverTime = new List<(float damage, float time)>(); //Damage dealt over time
     
     #region Setup and Timers
@@ -34,6 +36,7 @@ public class EnemyStats : MonoBehaviour
     {
         normalMovementSpeed = movementSpeed;
         myCollider = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
     }
 
     void OnValidate()
@@ -120,7 +123,17 @@ public class EnemyStats : MonoBehaviour
     public void KillEnemy()
     {
         //TODO
-        Debug.Log(gameObject.name + " died. Enemy deaths not implemented");
+        Debug.Log(gameObject.name + " died");
+        animator.SetBool("dead", true);
+        SleepEnemy(10);
+    }
+    
+    /// <summary>
+    /// Delets the enemy
+    /// </summary>
+    public void DeleteEnemy()
+    {
+        Destroy(gameObject);
     }
 
     /// <summary>
