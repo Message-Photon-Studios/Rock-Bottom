@@ -49,13 +49,13 @@ public class PotionHandler : MonoBehaviour
         colorInventory.onSlotChanged += ActiveColorChanged;
         colorInventory.onColorSlotsChanged += SlotAmountUpdated;
 
-        //Get positions of the UI slots.
-        slotPositions.Add(slot0.anchoredPosition);
-        slotPositions.Add(slot1.anchoredPosition);
-        slotPositions.Add(slot2.anchoredPosition);
-        slotPositions.Add(slot3.anchoredPosition);
-        slotPositions.Add(slot4.anchoredPosition);
-        slotPositions.Add(slot5.anchoredPosition);
+        //Get positions of the containers for the UI slots.
+        slotPositions.Add(((RectTransform)slot0.parent).anchoredPosition);
+        slotPositions.Add(((RectTransform)slot1.parent).anchoredPosition);
+        slotPositions.Add(((RectTransform)slot2.parent).anchoredPosition);
+        slotPositions.Add(((RectTransform)slot3.parent).anchoredPosition);
+        slotPositions.Add(((RectTransform)slot4.parent).anchoredPosition);
+        slotPositions.Add(((RectTransform)slot5.parent).anchoredPosition);
 
         SlotAmountUpdated();
     }
@@ -128,7 +128,7 @@ public class PotionHandler : MonoBehaviour
     }
 
 /// <summary>
-/// Moves the different slots around when cycling colors according to direction. 
+/// Moves the different containers for slots around when cycling colors according to direction. 
 /// Q=CounterClockwise=-1, E=Clockwise=1.
 /// Also keeps the Slots[] sorted so that the active color is slots[0].
 /// </summary>
@@ -136,7 +136,7 @@ public class PotionHandler : MonoBehaviour
     private void RotateSlots(int dir) {
 
         for(int i = 0; i < slots.Count; i++) {
-            MoveSlotTo(slots[i], i, dir);
+            MoveSlotTo((RectTransform)slots[i].parent, i, dir);
         }
 
         if(dir == 1) { 
@@ -165,7 +165,7 @@ public class PotionHandler : MonoBehaviour
 
     /// <summary>
     /// When amount of color slots is updated, change UI components to new amount accordingly.
-    /// This deactivates slots that currently aren't used and initializes images for used slots.
+    /// This deactivates containers for slots that currently aren't used and initializes images for used slots.
     /// </summary>
     private void SlotAmountUpdated() {
         colorSlots = colorInventory.colorSlots;
@@ -174,14 +174,14 @@ public class PotionHandler : MonoBehaviour
         
 
         foreach(RectTransform slot in setOf6) {
-            slot.gameObject.SetActive(false);
+            slot.parent.gameObject.SetActive(false);
         }
 
         if(colorSlots.Count == 3) {
             for(int i = 0; i<3; i++) {
                 slots.Add(setOf3[i]);
                 colorSlots[i].Init(setOf3[i].GetComponent<Image>());
-                setOf3[i].gameObject.SetActive(true);
+                setOf3[i].parent.gameObject.SetActive(true);
             }
         }
 
@@ -189,7 +189,7 @@ public class PotionHandler : MonoBehaviour
             for(int i = 0; i<4; i++) {
                 slots.Add(setOf4[i]);
                 colorSlots[i].Init(setOf4[i].GetComponent<Image>());
-                setOf4[i].gameObject.SetActive(true);
+                setOf4[i].parent.gameObject.SetActive(true);
             }
         }
 
@@ -197,7 +197,7 @@ public class PotionHandler : MonoBehaviour
             for(int i = 0; i<5; i++) {
                 slots.Add(setOf5[i]);
                 colorSlots[i].Init(setOf5[i].GetComponent<Image>());
-                setOf5[i].gameObject.SetActive(true);
+                setOf5[i].parent.gameObject.SetActive(true);
             }
         }
 
@@ -205,7 +205,7 @@ public class PotionHandler : MonoBehaviour
             for(int i = 0; i<6; i++) {
                 slots.Add(setOf6[i]);
                 colorSlots[i].Init(setOf6[i].GetComponent<Image>());
-                setOf6[i].gameObject.SetActive(true);
+                setOf6[i].parent.gameObject.SetActive(true);
             }
         }
     }
