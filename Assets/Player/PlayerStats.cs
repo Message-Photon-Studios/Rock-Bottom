@@ -8,12 +8,24 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] float health = 100;
+    [SerializeField] float hitInvincibilityTime;
     float maxHealth;
+    float invincibilityTimer = 0;
 
     void OnEnable()
     {
         //TODO: Check so this doesnt cause a problem when changing scene.
         maxHealth = health;
+    }
+
+    void Update()
+    {
+        if(invincibilityTimer >= 0)
+        {
+            invincibilityTimer -= Time.deltaTime;
+            if(invincibilityTimer < 0)
+                invincibilityTimer = 0;
+        }
     }
 
     /// <summary>
@@ -22,7 +34,9 @@ public class PlayerStats : MonoBehaviour
     /// <param name="damage"></param>
     public void DamagePlayer(float damage)
     {
+        if(invincibilityTimer > 0) return;
         health -= damage;
+        invincibilityTimer = hitInvincibilityTime;
         if(health <= 0)
         {
             KillPlayer();

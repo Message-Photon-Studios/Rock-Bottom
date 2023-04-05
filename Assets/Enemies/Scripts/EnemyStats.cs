@@ -6,12 +6,15 @@ using UnityEngine.Events;
 /// <summary>
 /// Important stats for an enemy.
 /// </summary>
+[RequireComponent(typeof(Collider2D))]
 public class EnemyStats : MonoBehaviour
 {
     [SerializeField] float health; //The health of the enemy
     [SerializeField] GameColor color; //The color of the enemy
     [SerializeField] int colorAmmount; //The ammount of color you will get when absorbing the color from the enemy
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
+
+    private Collider2D myCollider;  
 
     private float normalMovementSpeed; //The normal movement speed of the enemy
     private float movementSpeedTimer; 
@@ -30,6 +33,12 @@ public class EnemyStats : MonoBehaviour
     void OnEnable()
     {
         normalMovementSpeed = movementSpeed;
+        myCollider = GetComponent<Collider2D>();
+    }
+
+    void OnValidate()
+    {
+        myCollider = GetComponent<Collider2D>();
     }
 
     void Update()
@@ -198,6 +207,16 @@ public class EnemyStats : MonoBehaviour
     {
         return movementSpeed;
     }
+
+    #endregion
+
+    #region Position
+
+    public Vector2 GetPosition()
+    {
+        return new Vector2(transform.position.x, transform.position.y) + myCollider.offset;
+    }
+
 
     #endregion
 
