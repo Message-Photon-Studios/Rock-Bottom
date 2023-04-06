@@ -12,12 +12,14 @@ public class PlayerHpController : MonoBehaviour
         playerStats.onMaxHealthChanged += MaxHpChanged;
         playerStats.onHealthChanged += HpChanged;
         playerStats.onPlayerDied += PlayerDied;
+        gameObject.SetActive(true);
     }
 
     private void OnDisable() {
         playerStats.onMaxHealthChanged -= MaxHpChanged;
         playerStats.onHealthChanged -= HpChanged;
         playerStats.onPlayerDied -= PlayerDied;
+        gameObject.SetActive(false);
     }
 
     private void MaxHpChanged(float newMaxHp) {
@@ -32,6 +34,6 @@ public class PlayerHpController : MonoBehaviour
     }
 
     private void PlayerDied() {
-        
+        gameObject.SetActive(false);
     }
 }
