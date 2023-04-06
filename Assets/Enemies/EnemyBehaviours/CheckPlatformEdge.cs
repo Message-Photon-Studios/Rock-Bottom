@@ -22,8 +22,8 @@ public class CheckPlatformEdge : Node
     {
         bool test = !Physics2D.Raycast(stats.GetPosition() + Vector2.right* legPos, Vector2.down, 1f, ~LayerMask.GetMask("Enemy", "Player")) ||
                     !Physics2D.Raycast(stats.GetPosition() - Vector2.right* legPos, Vector2.down, 1f, ~LayerMask.GetMask("Enemy", "Player")) ||
-                    Physics2D.Raycast(stats.GetPosition() + Vector2.right * legPos, Vector2.right, 1f, ~LayerMask.GetMask("Player")) ||
-                    Physics2D.Raycast(stats.GetPosition() - Vector2.right * legPos, Vector2.left, 1f, ~LayerMask.GetMask("Player"));
+                    Physics2D.Raycast(stats.GetPosition() + Vector2.right * legPos, Vector2.right, .2f, ~LayerMask.GetMask("Player")) ||
+                    Physics2D.Raycast(stats.GetPosition() - Vector2.right * legPos, Vector2.left, .2f, ~LayerMask.GetMask("Player"));
         state = (test)?NodeState.SUCCESS:NodeState.FAILURE;
         return state;
     }
