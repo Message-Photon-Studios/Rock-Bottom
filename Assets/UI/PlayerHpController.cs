@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerHpController : MonoBehaviour
 {
+    // The players stats, used to access relevant UnityActions.
     [SerializeField] PlayerStats playerStats;
+    // The UI component for the health bar.
     [SerializeField] Slider healthSlider;
 
     private void OnEnable() {
@@ -22,6 +24,11 @@ public class PlayerHpController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// When max hp is changed, update sliders max value.
+    /// If current health is higher than max health, also update current value.
+    /// </summary>
+    /// <param name="newMaxHp"></param> Float with new max hp.
     private void MaxHpChanged(float newMaxHp) {
         healthSlider.maxValue = newMaxHp;
         if(healthSlider.maxValue < healthSlider.value) {
@@ -29,10 +36,17 @@ public class PlayerHpController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// When hp is changed, update slider;
+    /// </summary>
+    /// <param name="newHp"></param> Float with value to update. 
     private void HpChanged(float newHp) {
         healthSlider.value = newHp;
     }
 
+    /// <summary>
+    /// When player dies, hide the health bar.
+    /// </summary>
     private void PlayerDied() {
         gameObject.SetActive(false);
     }
