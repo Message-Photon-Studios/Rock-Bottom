@@ -8,6 +8,7 @@ public class NormalAttack : Node
     PlayerStats player;
     float damage;
     float force;
+    float rootTime;
     string attackName;
     Trigger attackTrigger;
     EnemyStats stats;
@@ -20,10 +21,11 @@ public class NormalAttack : Node
     /// <param name="player"></param>
     /// <param name="damage"> The damage that the attack will apply to the player.</param>
     /// <param name="force"> The force that will be applied to the player if the attack lands.</param>
+    /// <param name="rootTime"> The time that the player will be rooted after it is hit by the attack.</param> 
     /// <param name="attackTrigger"> The area where the player needs to be to make the attack land.</param>
     /// <param name="stats"></param>
     /// <returns></returns>
-    public NormalAttack (string attackName, PlayerStats player, float damage, float force, Trigger attackTrigger, EnemyStats stats) : 
+    public NormalAttack (string attackName, PlayerStats player, float damage, float force, float rootTime, Trigger attackTrigger, EnemyStats stats) : 
         base(new List<Node>{new CheckPlayerArea(stats, player, attackTrigger)})
     {
         this.attackName = attackName;
@@ -31,6 +33,7 @@ public class NormalAttack : Node
         this.player = player;
         this.damage = damage;
         this.attackTrigger = attackTrigger;
+        this.rootTime = rootTime;
         this.stats = stats;
     }
     public override NodeState Evaluate()
@@ -46,6 +49,7 @@ public class NormalAttack : Node
         {
             player.DamagePlayer(damage);
             player.GetComponent<Rigidbody2D>().AddForce(((Vector2)player.transform.position + Vector2.up * 0.5f - attackTrigger.offset - stats.GetPosition()).normalized * force);
+            player.GetComponent<PlayerMovement>().movementRoot.SetRoot(stats.gameObject.name + attackName, rootTime);
             state = NodeState.SUCCESS;
             return state;
         }

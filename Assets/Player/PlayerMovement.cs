@@ -169,6 +169,8 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     private void FixedUpdate() {
+        movementRoot.UpdateTimers();
+
         float walkDir = walkAction.action.ReadValue<float>();
 
         if(walkDir < 0 && lookDir > 0 ) Flip();
@@ -261,17 +263,17 @@ public class PlayerMovement : MonoBehaviour
 /// <summary>
 /// A struct that propperly keeps track of wheter the player is rooted. 
 /// </summary>
-public struct MovementRoot
+public class MovementRoot
 {
     /// <summary>
     /// If it is true then the player should be rooted. 
     /// </summary>
     public bool rooted {get; private set;}
-    private List<string> effects;
+    private Dictionary<string, float> effects;
 
     public MovementRoot(string[] rootEffects)
     {
-        effects = new List<string>();
+        effects = new Dictionary<string, float>();
         rooted = false;
 
         for (int i = 0; i < rootEffects.Length; i++)
@@ -289,12 +291,54 @@ public struct MovementRoot
     {
         if(root)
         {
-            if(!effects.Exists(effector => effector.Equals(effect)))
-                effects.Add(effect);
+            if(!effects.ContainsKey(effect))
+                effects.Add(effect, -1);
         } else
         {
-            if(effects.Exists(effect => effect.Equals(effect)))
+            if(effects.ContainsKey(effect))
                 effects.Remove(effect);
+        }
+
+        rooted = effects.Count > 0;
+    }
+
+    /// <summary>
+    /// Add a timed root. The root will be automaticaly removed after the time has ended.
+    /// If a root with the same name exists then then this time will be added to it.
+    /// </summary>
+    /// <param name="effect"></param>
+    /// <param name="time"></param>
+    public void SetRoot(string effect, float time)
+    {
+        if(!effects.ContainsKey(effect))
+            effects.Add(effect, time);
+        else
+            effects[effect] += time;
+        rooted = effects.Count > 0;
+    }
+
+    /// <summary>
+    /// Updates the timed roots
+    /// </summary>
+    public void UpdateTimers()
+    {
+        Dictionary<string, float> temp = new Dictionary<string, float>(effects);
+
+
+        foreach (KeyValuePair<string, float> effect in temp)
+        {
+            if (effect.Value > 0)
+            {
+                float newTime = effect.Value - Time.deltaTime;
+                if (newTime <= 0)
+                {
+                    effects.Remove(effect.Key);
+                }
+                else
+                {
+                    effects[effect.Key] = newTime;
+                }
+            }
         }
 
         rooted = effects.Count > 0;
@@ -306,7 +350,7 @@ public struct MovementRoot
     public void UnrootCompletely()
     {
         rooted = false;
-        effects = new List<string>();
+        effects = new Dictionary<string, float>();
     }
 }
 
