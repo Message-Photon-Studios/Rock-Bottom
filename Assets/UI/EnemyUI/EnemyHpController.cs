@@ -9,6 +9,7 @@ public class EnemyHpController : MonoBehaviour
     [SerializeField] Slider healthSliderLeft;
     [SerializeField] Slider healthSliderRight;
 
+    //TODO hook up UnityActions to local functions
     private void OnEnable() {
         gameObject.SetActive(true);
     }
