@@ -33,6 +33,7 @@ public class PlayerStats : MonoBehaviour
         //TODO: Check so this doesnt cause a problem when changing scene.
         maxHealth = health;
         onMaxHealthChanged?.Invoke(maxHealth);
+        onHealthChanged?.Invoke(health);
     }
 
     void Update()
