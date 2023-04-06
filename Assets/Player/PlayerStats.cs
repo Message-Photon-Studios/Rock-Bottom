@@ -10,6 +10,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] float health = 100;
     [SerializeField] float hitInvincibilityTime;
+    [SerializeField] GameManager gameManager;
     float maxHealth;
     float invincibilityTimer = 0;
 
@@ -97,5 +98,7 @@ public class PlayerStats : MonoBehaviour
         //TODO
         Debug.Log("Player died. Player deaths not implemented");
         onPlayerDied?.Invoke();
+        
+        gameManager.EndLevel();
     }
 }

@@ -29,7 +29,7 @@ public class CrystalSwordEnemy : Enemy
                 new CheckPlayerArea(stats, player, attackTrigger),
                 new AnimationTrigger(animator, "attack")
                 }),
-            new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .6f, "attack", "walk")
+            new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .4f, "attack", "walk")
             });
         
         root.SetData("attack", false);
