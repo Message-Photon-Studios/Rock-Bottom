@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Handles the player stats
@@ -12,10 +13,26 @@ public class PlayerStats : MonoBehaviour
     float maxHealth;
     float invincibilityTimer = 0;
 
+    /// <summary>
+    /// This event fires when the player health is changed. The float is the new health.
+    /// </summary>
+    public UnityAction<float> onHealthChanged;
+    
+    /// <summary>
+    /// This event fires when the players max health is set or changed. The float is the new max health
+    /// </summary>
+    public UnityAction<float> onMaxHealthChanged;
+
+    /// <summary>
+    /// The player died
+    /// </summary>
+    public UnityAction onPlayerDied;
+
     void OnEnable()
     {
         //TODO: Check so this doesnt cause a problem when changing scene.
         maxHealth = health;
+        onMaxHealthChanged?.Invoke(maxHealth);
     }
 
     void Update()
@@ -41,6 +58,7 @@ public class PlayerStats : MonoBehaviour
         {
             KillPlayer();
         }
+        onHealthChanged?.Invoke(health);
     }
 
     /// <summary>
@@ -51,6 +69,24 @@ public class PlayerStats : MonoBehaviour
     {
         health += healing;
         if(health > maxHealth) health = maxHealth;
+        onHealthChanged?.Invoke(health);
+    }
+
+    /// <summary>
+    /// Returns the players current health
+    /// </summary>
+    public float GetHealth()
+    {
+        return health;
+    }
+
+    /// <summary>
+    /// Returns the players max health. 
+    /// </summary>
+    /// <returns></returns>
+    public float GetMaxHealth()
+    {
+        return maxHealth;
     }
 
     /// <summary>
@@ -60,5 +96,6 @@ public class PlayerStats : MonoBehaviour
     {
         //TODO
         Debug.Log("Player died. Player deaths not implemented");
+        onPlayerDied?.Invoke();
     }
 }
