@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelGenManager : MonoBehaviour
 {
+    public static float ROOMSIZE = 4*.9f;
     private LevelGenerator levelGen;
 
     public int size;
