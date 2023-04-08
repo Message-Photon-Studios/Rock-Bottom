@@ -51,7 +51,13 @@ public abstract class ColorSpell : MonoBehaviour
         this.gameColor = gameColor;
         this.power = power;
         this.player = player;
-        this.lookDir = lookDir; //TODO: Flip sprites
+        this.lookDir = lookDir;
+        // Get the sprite renderer of the object and flip the x axis if needed
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = lookDir == -1;
+        }
 
         foreach (SpellMover mover in gameObject.GetComponents<SpellMover>())
         {
