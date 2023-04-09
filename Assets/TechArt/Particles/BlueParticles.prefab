@@ -26,9 +26,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8348774640412834800}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.007, y: 0.56, z: 1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -668,7 +668,7 @@ ParticleSystem:
     radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
-    m_Rotation: {x: 0, y: 0, z: 0}
+    m_Rotation: {x: -90, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
@@ -973,7 +973,7 @@ ParticleSystem:
     m_BurstCount: 0
     m_Bursts: []
   SizeModule:
-    enabled: 0
+    enabled: 1
     curve:
       serializedVersion: 2
       minMaxState: 1
@@ -985,20 +985,29 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 0
-          outSlope: 1
+          inSlope: 26.427153
+          outSlope: 26.427153
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
+          outWeight: 0.30018452
+        - serializedVersion: 3
+          time: 0.096074656
+          value: 1
+          inSlope: 0.23621821
+          outSlope: 0.23621821
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 1
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 1
-          outSlope: 0
+          inSlope: 0.04993088
+          outSlope: 0.04993088
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.33333334
+          inWeight: 0.17964147
           outWeight: 0.33333334
         m_PreInfinity: 2
         m_PostInfinity: 2
