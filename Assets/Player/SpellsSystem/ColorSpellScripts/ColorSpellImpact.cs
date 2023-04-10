@@ -37,12 +37,13 @@ public class ColorSpellImpact : ColorSpell
 
 
             if(enemy != null) gameColor.colorEffect.Apply(other.gameObject, player, power*powerScale);
-            var instantiatedParticles = GameObject.Instantiate(onImpactParticles, transform.position, transform.rotation);
-            
-            // Change the particle color to the color of the spell
-            var main = instantiatedParticles.main;
-            main.startColor = gameColor.colorMat.color;
-            instantiatedParticles.Play();
         }
+
+        var instantiatedParticles = GameObject.Instantiate(onImpactParticles, transform.position, transform.rotation);
+        // Change the particle color to the color of the spell
+        var main = instantiatedParticles.main;
+        main.startColor = gameColor.colorMat.color;
+        instantiatedParticles.Play();
+        Destroy(instantiatedParticles.gameObject, instantiatedParticles.main.duration * 2);
     }
 }

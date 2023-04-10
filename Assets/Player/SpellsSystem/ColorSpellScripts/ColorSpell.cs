@@ -52,15 +52,15 @@ public abstract class ColorSpell : MonoBehaviour
         this.power = power;
         this.player = player;
         this.lookDir = lookDir;
-        // Get the sprite renderer of the object and flip the x axis if needed
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+        var spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             spriteRenderer.flipX = lookDir == -1;
         }
         spriteRenderer.material = gameColor.colorMat;
-        // Get the child particle object
-        ParticleSystem ballTray = GetComponentInChildren<ParticleSystem>();
+        
+        var ballTray = GetComponentInChildren<ParticleSystem>();
         if (ballTray != null)
         {
             var main = ballTray.main;
