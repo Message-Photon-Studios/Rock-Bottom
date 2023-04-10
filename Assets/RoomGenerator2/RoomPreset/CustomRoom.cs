@@ -75,7 +75,7 @@ public class CustomRoom : MonoBehaviour
         foreach (var node in roomNodes)
         {
             Gizmos.color = node.Key == selectedNode ? Color.yellow : Color.white;
-            Gizmos.DrawSphere((shift + node.Key) * 8f, 1f);
+            Gizmos.DrawSphere((shift + node.Key) * 2*LevelGenManager.ROOMSIZE, 1f);
             var neighbors = roomNodes.getNeighbors(node.Key);
             for (var i = 0; i < neighbors.Length; i++)
             {
@@ -92,15 +92,15 @@ public class CustomRoom : MonoBehaviour
                             else
                                 continue;
                         }
-                        var firstCorner = (shift + node.Key) * 8f + (dirVectors[i] + sideToDirVectors[i]) * 4f;
-                        var secondCorner = (shift + node.Key) * 8f + (dirVectors[i] - sideToDirVectors[i]) * 4f;
+                        var firstCorner = (shift + node.Key) * 2*LevelGenManager.ROOMSIZE + (dirVectors[i] + sideToDirVectors[i]) * LevelGenManager.ROOMSIZE;
+                        var secondCorner = (shift + node.Key) * 2*LevelGenManager.ROOMSIZE + (dirVectors[i] - sideToDirVectors[i]) * LevelGenManager.ROOMSIZE;
                         Gizmos.DrawLine(firstCorner, secondCorner);
                         break;
                     case DisplayMode.Connections when neighbors[i] != null:
                         if (!node.Value.doors[i])
                             continue;
                         Gizmos.color = neighbors[i] == null ? Color.green : Color.white;
-                        Gizmos.DrawLine((shift + node.Key) * 8f, (shift + node.Key) * 8f + dirVectors[i] * 4f);
+                        Gizmos.DrawLine((shift + node.Key) * 2*LevelGenManager.ROOMSIZE, (shift + node.Key) * 2*LevelGenManager.ROOMSIZE + dirVectors[i] * LevelGenManager.ROOMSIZE);
                         break;
                 }
             }

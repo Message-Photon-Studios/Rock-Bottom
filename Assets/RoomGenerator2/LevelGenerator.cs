@@ -169,8 +169,8 @@ public class DungeonGraph
                     && !nodes[neighborPos].doors[CustomRoom.mirrorDir[i]])
                 {
                     Gizmos.color = Color.red;
-                    var firstCorner = node.Key * 8f + (CustomRoom.dirVectors[i] + CustomRoom.sideToDirVectors[i]) * 4f;
-                    var secondCorner = node.Key * 8f + (CustomRoom.dirVectors[i] - CustomRoom.sideToDirVectors[i]) * 4f;
+                    var firstCorner = node.Key * 2*LevelGenManager.ROOMSIZE + (CustomRoom.dirVectors[i] + CustomRoom.sideToDirVectors[i]) * LevelGenManager.ROOMSIZE;
+                    var secondCorner = node.Key * 2*LevelGenManager.ROOMSIZE + (CustomRoom.dirVectors[i] - CustomRoom.sideToDirVectors[i]) * LevelGenManager.ROOMSIZE;
                     Gizmos.DrawLine(firstCorner, secondCorner);
                 }
             }
@@ -233,7 +233,7 @@ public class LevelGenerator
         foreach (var room in graph.rooms)
         {
             // Instantiate the room
-            var roomObj = Object.Instantiate(room.Item2, room.Item1 * 8f, Quaternion.identity);
+            var roomObj = Object.Instantiate(room.Item2, room.Item1 * 2 * LevelGenManager.ROOMSIZE, Quaternion.identity);
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
         }

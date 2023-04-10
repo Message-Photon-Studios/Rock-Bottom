@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Handles the player stats
@@ -8,12 +9,42 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] float health = 100;
+    [SerializeField] float hitInvincibilityTime;
+    [SerializeField] GameManager gameManager;
     float maxHealth;
+    float invincibilityTimer = 0;
+
+    /// <summary>
+    /// This event fires when the player health is changed. The float is the new health.
+    /// </summary>
+    public UnityAction<float> onHealthChanged;
+    
+    /// <summary>
+    /// This event fires when the players max health is set or changed. The float is the new max health
+    /// </summary>
+    public UnityAction<float> onMaxHealthChanged;
+
+    /// <summary>
+    /// The player died
+    /// </summary>
+    public UnityAction onPlayerDied;
 
     void OnEnable()
     {
         //TODO: Check so this doesnt cause a problem when changing scene.
         maxHealth = health;
+        onMaxHealthChanged?.Invoke(maxHealth);
+        onHealthChanged?.Invoke(health);
+    }
+
+    void Update()
+    {
+        if(invincibilityTimer >= 0)
+        {
+            invincibilityTimer -= Time.deltaTime;
+            if(invincibilityTimer < 0)
+                invincibilityTimer = 0;
+        }
     }
 
     /// <summary>
@@ -22,11 +53,14 @@ public class PlayerStats : MonoBehaviour
     /// <param name="damage"></param>
     public void DamagePlayer(float damage)
     {
+        if(invincibilityTimer > 0) return;
         health -= damage;
+        invincibilityTimer = hitInvincibilityTime;
         if(health <= 0)
         {
             KillPlayer();
         }
+        onHealthChanged?.Invoke(health);
     }
 
     /// <summary>
@@ -37,6 +71,24 @@ public class PlayerStats : MonoBehaviour
     {
         health += healing;
         if(health > maxHealth) health = maxHealth;
+        onHealthChanged?.Invoke(health);
+    }
+
+    /// <summary>
+    /// Returns the players current health
+    /// </summary>
+    public float GetHealth()
+    {
+        return health;
+    }
+
+    /// <summary>
+    /// Returns the players max health. 
+    /// </summary>
+    /// <returns></returns>
+    public float GetMaxHealth()
+    {
+        return maxHealth;
     }
 
     /// <summary>
@@ -46,5 +98,8 @@ public class PlayerStats : MonoBehaviour
     {
         //TODO
         Debug.Log("Player died. Player deaths not implemented");
+        onPlayerDied?.Invoke();
+        
+        gameManager.EndLevel();
     }
 }
