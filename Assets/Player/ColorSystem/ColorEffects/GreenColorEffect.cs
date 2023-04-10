@@ -18,6 +18,8 @@ public class GreenColorEffect : ColorEffect
         main.duration = time*2;
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
         Destroy(instantiatedParticles, time);
+        // Set enemy as parent of the particle system
+        instantiatedParticles.transform.parent = enemyObj.transform;
         enemy.DamageOverTime(damageOverTime * power, time);
         enemy.DamageEnemy(damage);
     }
