@@ -6,9 +6,14 @@ using UnityEngine;
 public class GameColor : ScriptableObject
 {
     /// <summary>
-    /// The actual color of the GameColor
+    /// The actual color shader of the GameColor
     /// </summary>
     [SerializeField] public Material colorMat;
+
+    /// <summary>
+    /// The color of the GameColor without taking bloom into account
+    /// </summary>
+    [SerializeField] public Color plainColor;
 
     /// <summary>
     /// A description of the color

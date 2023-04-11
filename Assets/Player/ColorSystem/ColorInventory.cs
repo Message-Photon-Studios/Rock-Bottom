@@ -274,7 +274,7 @@ public class ColorSlot
     {
         if(set == null) return;
         gameColor = set;
-        image.color = gameColor.colorMat.color;
+        image.color = gameColor.plainColor;
     }
 
     public void RemoveColor()

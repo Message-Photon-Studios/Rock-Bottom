@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 /// <summary>
 /// Effects all the impacted enemies with the color effect
@@ -42,7 +39,7 @@ public class ColorSpellImpact : ColorSpell
         var instantiatedParticles = GameObject.Instantiate(onImpactParticles, transform.position, transform.rotation);
         // Change the particle color to the color of the spell
         var main = instantiatedParticles.main;
-        main.startColor = gameColor.colorMat.color;
+        main.startColor = gameColor.plainColor;
         instantiatedParticles.Play();
         Destroy(instantiatedParticles.gameObject, instantiatedParticles.main.duration * 2);
     }
