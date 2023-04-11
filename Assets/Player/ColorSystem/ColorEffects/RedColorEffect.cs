@@ -17,6 +17,8 @@ public class RedColorEffect : ColorEffect
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
         Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
+        // Set enemy as parent of the particle system
+        instantiatedParticles.transform.parent = enemyObj.transform;
 
         enemy.DamageEnemy(damage*power);
         player.HealPlayer(healing*power);
