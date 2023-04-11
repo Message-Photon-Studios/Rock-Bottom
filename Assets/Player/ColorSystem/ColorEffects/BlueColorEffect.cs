@@ -16,6 +16,8 @@ public class BlueColorEffect : ColorEffect
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
         Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
+        // Set enemy as parent of the particle system
+        instantiatedParticles.transform.parent = enemyObj.transform;
         enemy.ChangeSpeed(enemy.GetSpeed() / slow, duration*power);
         enemy.DamageEnemy(damage*power);
     }

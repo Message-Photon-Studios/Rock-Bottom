@@ -19,6 +19,8 @@ public class OrangeColorEffect : ColorEffect
                 main.duration = time*2;
                 instantiatedParticles.GetComponent<ParticleSystem>().Play();
                 Destroy(instantiatedParticles, time);
+                // Set enemy as parent of the particle system
+                instantiatedParticles.transform.parent = enemyObj.transform;
 
                 obj.GetComponent<EnemyStats>().DamageOverTime(damageOverTime*power, time);
 
