@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using System;
 
 /// <summary>
 /// This class handles the players attack actions and spawn the color spells
@@ -19,20 +19,25 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] SpellInventory spellInventory;
     [SerializeField] Animator animator;
-
     private bool attacking;
+
+    Action<InputAction.CallbackContext> specialAttackHandler;
+    Action<InputAction.CallbackContext> defaultAttackHandler;
 
     #region Setup
     private void OnEnable() {
-        specialAttackAction.action.performed += (_) =>{SpecialAttackAnimation();};
-        defaultAttackAction.action.performed += (_) =>{animator.SetTrigger("defaultAttack");};
+        specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
+        defaultAttackHandler = (InputAction.CallbackContext ctx) => {animator.SetTrigger("defaultAttack");};
+
+        specialAttackAction.action.performed += specialAttackHandler;
+        defaultAttackAction.action.performed += defaultAttackHandler;
         defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
     }
 
     private void OnDisable()
     {
-        specialAttackAction.action.performed -= (_) =>{SpecialAttackAnimation();};
-        defaultAttackAction.action.performed -= (_) =>{animator.SetTrigger("defaultAttack");};
+        specialAttackAction.action.performed -= specialAttackHandler;
+        defaultAttackAction.action.performed -= defaultAttackHandler;
         defaultAttackHitbox.onDefaultHit -= EnemyHitDefault;
     }
     #endregion
