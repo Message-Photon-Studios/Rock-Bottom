@@ -51,7 +51,24 @@ public abstract class ColorSpell : MonoBehaviour
         this.gameColor = gameColor;
         this.power = power;
         this.player = player;
-        this.lookDir = lookDir; //TODO: Flip sprites
+        this.lookDir = lookDir;
+
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = lookDir == -1;
+        }
+        spriteRenderer.material = gameColor.colorMat;
+        
+        var ballTray = GetComponentInChildren<ParticleSystem>();
+        if (ballTray != null)
+        {
+            var main = ballTray.main;
+            main.startColor = gameColor.colorMat.color;
+            ballTray.Play();
+        }
+        // Initialize the spell movers
+        
 
         foreach (SpellMover mover in gameObject.GetComponents<SpellMover>())
         {

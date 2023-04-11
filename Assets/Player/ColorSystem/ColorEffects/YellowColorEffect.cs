@@ -16,6 +16,8 @@ public class YellowColorEffect : ColorEffect
                 Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
                 instantiatedParticles.GetComponent<ParticleSystem>().Play();
                 obj.GetComponent<EnemyStats>().DamageEnemy(damage*power);
+                // Set enemy as parent of the particle system
+                instantiatedParticles.transform.parent = enemyObj.transform;
             }
         }
     }
