@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -38,6 +39,22 @@ public class DungeonGraph
         this.parent = parent;
     }
 
+    public bool isTopDoorSuitable(Vector2 door)
+    {
+        for (var i = 0; i < 4; i++)
+        {
+            if (i == (int)Direction.Down)
+                continue;
+            // Check if the graph contains a node adjacent to the door
+            if (!nodes.ContainsKey(door + CustomRoom.dirVectors[i]))
+                continue;
+            if (!nodes[door + CustomRoom.dirVectors[i]].doors[CustomRoom.mirrorDir[i]]) 
+                continue;
+            return false;
+        }
+        return true;
+    }
+
     public bool areDoorsBlocked(List<(Vector2, Direction)> doors, Vector2 shift, RoomNodeHolder room)
     {
         foreach (var door in doors)
@@ -56,17 +73,30 @@ public class DungeonGraph
                 continue;
             return true;
         }
-
+        
         // Check that no node is blocking any open door in the graph
-        foreach (var node in room)
+        foreach (var door in parent.remainingDoors)
         {
-            var pos = node.Key + shift;
-            foreach (var door in parent.remainingDoors)
+            var doorNeighborLocal = door.Item1 + CustomRoom.dirVectors[(int)door.Item2] - shift;
+            if (room.ContainsKey(doorNeighborLocal) && !room[doorNeighborLocal].doors[CustomRoom.mirrorDir[(int)door.Item2]])
+                return true;
+        }
+
+        // Check that it does not obstruct the top door either
+        {
+            var doorNeighborLocal = parent.topDoor + Vector2.up - shift;
+            if (room.ContainsKey(doorNeighborLocal))
             {
-                // If the door is going to be occupied by a node and it's not open, it's blocking it
-                var doorNeighbor = door.Item1 + CustomRoom.dirVectors[(int)door.Item2];
-                if (doorNeighbor == pos && !node.Value.doors[CustomRoom.mirrorDir[(int)door.Item2]])
+                if (!room[doorNeighborLocal].doors[CustomRoom.mirrorDir[(int)Direction.Down]])
                     return true;
+
+                // Check that there is a new door to use as future potential door
+                foreach (var door in doors.Where(door => door.Item2 == Direction.Up))
+                {
+                    if (isTopDoorSuitable(door.Item1))
+                        return false;
+                }
+                return true;
             }
         }
         return false;
@@ -176,6 +206,25 @@ public class DungeonGraph
             }
         }
     }
+
+    public bool validate()
+    {
+        foreach (var node in nodes)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                var neighborPos = node.Key + CustomRoom.dirVectors[i];
+                if (node.Value.doors[i] 
+                    && nodes.ContainsKey(neighborPos)
+                    && !nodes[neighborPos].doors[CustomRoom.mirrorDir[i]])
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
 
 public class LevelGenerator
@@ -204,7 +253,7 @@ public class LevelGenerator
     public void generate(int size)
     {
         var tries = 0;
-        do 
+        do
         {
             tries++;
             if (tries > 20)
@@ -212,11 +261,14 @@ public class LevelGenerator
                 Debug.LogError("Failed to generate level");
                 return;
             }
-            initGeneration();
-        } 
-        while (!tryGenerate(size));
 
-        endGeneration();
+            initGeneration();
+            var res = tryGenerate(size);
+            if (!res) 
+                continue;
+
+            endGeneration();
+        } while (!graph.validate());
         insertPrefabs();
     }
 
@@ -298,6 +350,15 @@ public class LevelGenerator
             .Where(door => door.Item2 == Direction.Up)
             .OrderBy(door => door.Item1.y)
             .ToList();
+
+        for (var i = 0; i < topDoors.Count; i++)
+        {
+            if (graph.isTopDoorSuitable(topDoors[i].Item1 + CustomRoom.dirVectors[(int)Direction.Up])) 
+                continue;
+
+            topDoors.RemoveAt(i);
+            i--;
+        }
         if (topDoors.Count > 0 && topDoors.Last().Item1.y > topDoor.y)
         {
             remainingDoors.Add((topDoor, Direction.Up));
@@ -315,7 +376,7 @@ public class LevelGenerator
             var (finished, success) = nextRoom(size);
             if (finished)
             {
-                return graph.nodes.Count >= size ? true : false;
+                return graph.nodes.Count >= size;
             }
             if (!success) 
                 return false;
