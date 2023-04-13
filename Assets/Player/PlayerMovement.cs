@@ -23,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
     * jumpFalloff will decrease the time and the power of the jetpack. This does also work in reverse for decreasing variables.
     */
 
-    [SerializeField] float fallTimeCamera; //The time the player needs to fall untill the camera moves to checking below the player
     [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction, aboveCheckAction, lockCamera; //Input actiuons for controlling the movement and camera checks
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
@@ -183,6 +182,7 @@ public class PlayerMovement : MonoBehaviour
             jump = 0;
 
         
+        /*
         if(fallTime > fallTimeCamera)
         {
             if(body.velocity.y < 0)
@@ -191,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 CheckCancel();
             }
-        }
+        }*/
 
         if(IsGrounded())
         {

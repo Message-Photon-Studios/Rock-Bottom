@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CameraFocus : MonoBehaviour
 {
-    [SerializeField] float maxYdist;
+    [SerializeField] float maxYpos;
+    [SerializeField] float minYpos;
     [SerializeField] float maxXspeed;
     [SerializeField] Transform aim;
     [SerializeField] PlayerMovement playerMovement;
@@ -29,7 +30,7 @@ public class CameraFocus : MonoBehaviour
         {
             y = aim.position.y;
             fallCamera = false;
-        } else if(Mathf.Abs(transform.position.y - aim.position.y) > maxYdist || fallCamera)
+        } else if(transform.position.y-aim.position.y > maxYpos || aim.position.y - transform.position.y < minYpos || fallCamera)
         {
             y = aim.position.y;
             fallCamera = true;
