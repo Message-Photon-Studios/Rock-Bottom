@@ -181,18 +181,6 @@ public class PlayerMovement : MonoBehaviour
         else if(jump < 0)
             jump = 0;
 
-        
-        /*
-        if(fallTime > fallTimeCamera)
-        {
-            if(body.velocity.y < 0)
-                CheckBelowStart();
-            if(IsGrounded())
-            {
-                CheckCancel();
-            }
-        }*/
-
         if(IsGrounded())
         {
             playerAnimator.SetInteger("velocityY", 0);
