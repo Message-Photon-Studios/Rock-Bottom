@@ -6,11 +6,12 @@ using UnityEngine.UI;
 public class PlayerHpController : MonoBehaviour
 {
     // The players stats, used to access relevant UnityActions.
-    [SerializeField] PlayerStats playerStats;
+    PlayerStats playerStats;
     // The UI component for the health bar.
     [SerializeField] Slider healthSlider;
 
     private void OnEnable() {
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         playerStats.onMaxHealthChanged += MaxHpChanged;
         playerStats.onHealthChanged += HpChanged;
         playerStats.onPlayerDied += PlayerDied;
