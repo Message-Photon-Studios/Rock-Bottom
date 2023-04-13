@@ -5,7 +5,7 @@ using UnityEngine;
 public class CustomRoomEditor : Editor
 {
     public Direction newNodeDir, doorDir;
-/*
+
     public override void OnInspectorGUI()
     {
         var room = (CustomRoom)target;
@@ -15,7 +15,7 @@ public class CustomRoomEditor : Editor
         room.selectedNode = EditorGUILayout.Vector2Field("Selected Node", room.selectedNode);
 
         EditorGUILayout.Space();
-        
+
         if (GUILayout.Button("Delete selected node"))
         {
             room.deleteNode();
@@ -58,7 +58,6 @@ public class CustomRoomEditor : Editor
         var newCoords = new Vector2Int(Mathf.RoundToInt(ray.origin.x / 8), Mathf.RoundToInt(ray.origin.y / 8));
         room.selectedNode = newCoords;
     }
-    */
 
     // Update is called once per frame
     void Update()

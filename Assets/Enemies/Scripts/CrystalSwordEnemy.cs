@@ -39,10 +39,9 @@ public class CrystalSwordEnemy : Enemy
         return root;
     }
 
-    /*
     private void OnDrawGizmosSelected() {
         attackTrigger.DrawTrigger(stats.GetPosition());
         Handles.color = Color.yellow;
         Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
-    }*/
+    }
 }
