@@ -24,6 +24,8 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] public int activeSlot;
     [SerializeField] InputActionReference changeRightActions;
 
+    [SerializeField] Material defaultColor;
+
     #region Actions for UI
     
     /// <summary>
@@ -53,11 +55,15 @@ public class ColorInventory : MonoBehaviour
     void OnEnable()
     {
         changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
+        onColorUpdated += updateBrushColor;
+        onSlotChanged += (dir) => { updateBrushColor(); };
     }
 
     void OnDisable()
     {
         changeRightActions.action.performed -= (dir) => {RotateActive((int)dir.ReadValue<float>()); };
+        onColorUpdated -= updateBrushColor;
+        onSlotChanged -= (dir) => { updateBrushColor(); };
     }
 
     #endregion
@@ -90,6 +96,9 @@ public class ColorInventory : MonoBehaviour
 
             int charge = ActiveSlot().charge - 1;
             ActiveSlot().SetCharge(charge);
+
+            if (charge == 0)
+                onColorUpdated?.Invoke();
 
             return ret;
             
@@ -193,6 +202,14 @@ public class ColorInventory : MonoBehaviour
     {
         ActiveSlot().RemoveColor();
         onColorUpdated?.Invoke();
+    }
+
+    private void updateBrushColor()
+    {
+        // brush.
+        GetComponent<SpriteRenderer>().material = 
+            ActiveSlot().gameColor != null && ActiveSlot().charge > 0 ? 
+                ActiveSlot().gameColor.colorMat : defaultColor;
     }
 
     #endregion
