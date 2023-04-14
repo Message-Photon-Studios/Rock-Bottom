@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Important stats for an enemy.
@@ -30,6 +31,17 @@ public class EnemyStats : MonoBehaviour
 
     private List<(float damage, float timer)> damageOverTime = new List<(float damage, float time)>(); //Damage dealt over time
     
+
+    /// <summary>
+    /// This event fires when the enemys health is changed. The float is the new health.
+    /// </summary>
+    public UnityAction<float> onHealthChanged;
+
+    /// <summary>
+    /// The enemy died
+    /// </summary>
+    public UnityAction onEnemyDeath;
+
     #region Setup and Timers
     void OnEnable()
     {
@@ -37,6 +49,7 @@ public class EnemyStats : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         GetComponent<SpriteRenderer>().material = color.colorMat;
+        onHealthChanged?.Invoke(health);
     }
 
     void OnValidate()
@@ -105,6 +118,7 @@ public class EnemyStats : MonoBehaviour
     {
         health -= damage;
         WakeEnemy();
+        onHealthChanged?.Invoke(health);
         if(health <= 0) KillEnemy();
     }
 
@@ -129,6 +143,7 @@ public class EnemyStats : MonoBehaviour
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
         SleepEnemy(10);
+        onEnemyDeath?.Invoke();
     }
     
     /// <summary>
