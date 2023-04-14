@@ -52,15 +52,19 @@ public class RandomPatroll : Node
     public override NodeState Evaluate()
     {
         var stopped = GetData(stopBool);
-        if(stats.IsAsleep() || (stopped != null && (bool)stopped)) return NodeState.FAILURE;
+        if(stats.IsAsleep() || (stopped != null && (bool)stopped)) 
+        {
+            state = NodeState.FAILURE;
+            return state;
+        }
 
         if(idleTimer > 0)
         {
+            animator.SetBool(walkAnimation, false);
             idleTimer -= Time.deltaTime;
             if(idleTimer < 0)
             {
                 idleTimer = 0;
-                animator.SetBool(walkAnimation, true);
             }
             state = NodeState.RUNNING;
             return state;
@@ -77,7 +81,10 @@ public class RandomPatroll : Node
         }
         else if(atEdge)
             patrollPoint = patrollStart;
+        else if(Mathf.Abs(stats.GetPosition().x - patrollStart) > patrollDistance)
+            patrollPoint = patrollStart;
 
+        animator.SetBool(walkAnimation, true);
         body.AddForce(new Vector2(((patrollPoint < stats.GetPosition().x)?-1:1)*stats.GetSpeed()*patrollSpeedFactor, 0)*Time.deltaTime);
         state = NodeState.RUNNING;
         return state;
