@@ -45,7 +45,6 @@ public class PlatformChase : Node
         var stopped = GetData(stopBool);
         if(stats.IsAsleep() || (stopped != null && (bool)stopped))
         {
-            Debug.Log("stopped");
             state = NodeState.FAILURE;
             return state;
         }
@@ -54,11 +53,9 @@ public class PlatformChase : Node
         bool atEdgeLeft = (children[1].Evaluate() == NodeState.SUCCESS);
         if((atEdgeRight && player.position.x > stats.GetPosition().x) || (atEdgeLeft && player.position.x < stats.GetPosition().x))
         {
-            Debug.Log("At edge");
             animator.SetBool(walkAnimation, false);
         } else
         {
-            Debug.Log("chase");
             animator.SetBool(walkAnimation, true);
             chasePos = player.position.x;
             body.AddForce(new Vector2(((chasePos < stats.GetPosition().x)?-1:1)*stats.GetSpeed()*chaseSpeedFactor, 0)*Time.deltaTime);
