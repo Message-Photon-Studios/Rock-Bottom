@@ -126,6 +126,8 @@ public class EnemyStats : MonoBehaviour
         //TODO
         Debug.Log(gameObject.name + " died");
         animator.SetBool("dead", true);
+        GetComponent<Rigidbody2D>().simulated = false;
+        GetComponent<Collider2D>().enabled = false;
         SleepEnemy(10);
     }
     

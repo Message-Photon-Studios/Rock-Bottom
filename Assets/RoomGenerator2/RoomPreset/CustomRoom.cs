@@ -106,13 +106,13 @@ public class CustomRoom : MonoBehaviour
             }
         }
     }
-
+    /*
     private void OnDrawGizmos()
     {
         draw(Vector2.zero);
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
-    }
-
+    }*/
+    
     public void deleteNode()
     {
         if (!roomNodes.ContainsKey(selectedNode))
