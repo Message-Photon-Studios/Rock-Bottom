@@ -8,25 +8,24 @@ public class EnemyHpController : MonoBehaviour
     // The UI component for the enemy health bar.
     [SerializeField] Slider healthSliderLeft;
     [SerializeField] Slider healthSliderRight;
+    [SerializeField] EnemyStats enemy;
 
-    //TODO hook up UnityActions to local functions
     private void OnEnable() {
         gameObject.SetActive(true);
+        enemy.onHealthChanged +=  HpChanged;
+        enemy.onEnemyDeath += EnemyDied;
+
+        healthSliderLeft.maxValue = enemy.GetHealth();
+        healthSliderRight.maxValue = enemy.GetHealth();
+
+        healthSliderLeft.gameObject.SetActive(false);
+        healthSliderRight.gameObject.SetActive(false);
     }
 
     private void OnDisable() {
         gameObject.SetActive(false);
-    }
-
-    /// <summary>
-    /// When max hp is changed, update sliders max value.
-    /// If current health is higher than max health, also update current value.
-    /// </summary>
-    /// <param name="newMaxHp"></param> Float with new max hp.
-    private void MaxHpChanged(float newMaxHp) {
-        healthSliderLeft.maxValue = newMaxHp;
-        healthSliderRight.maxValue = newMaxHp;
-        IsAtFullhealth();
+        enemy.onHealthChanged -=  HpChanged;
+        enemy.onEnemyDeath -= EnemyDied;
     }
 
     /// <summary>
@@ -36,15 +35,9 @@ public class EnemyHpController : MonoBehaviour
     private void HpChanged(float newHp) {
         healthSliderLeft.value = newHp;
         healthSliderRight.value = newHp;
-        IsAtFullhealth();
-    }
 
-    private void IsAtFullhealth() {
-        if(healthSliderLeft.maxValue == healthSliderLeft.value) {
-            gameObject.SetActive(false);
-        } else {
-            gameObject.SetActive(true);
-        }
+        healthSliderLeft.gameObject.SetActive(true);
+        healthSliderRight.gameObject.SetActive(true);
     }
 
     /// <summary>
