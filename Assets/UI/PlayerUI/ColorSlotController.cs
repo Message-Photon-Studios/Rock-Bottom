@@ -58,6 +58,8 @@ public class ColorSlotController : MonoBehaviour
         slotPositions.Add(((RectTransform)slot5.parent).anchoredPosition);
 
         SlotAmountUpdated();
+        RotateSlots(1);
+        RotateSlots(-1);
     }
 
     //When turning off UI, detatch UnityActions from local functions. 
