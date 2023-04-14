@@ -78,53 +78,64 @@ public class ColorSlotController : MonoBehaviour
     private void MoveSlotTo(RectTransform rect, int current, int dir) {
 
         if(current == 0 && dir == 1) { // nr0 going counter clockwise
-            if(slots.Count == 3) {rect.anchoredPosition = slotPositions[4]; rect.SetSiblingIndex(2);}
-            else {rect.anchoredPosition = slotPositions[5]; rect.SetSiblingIndex(4);}
+            if(slots.Count == 3) {MovingSlot(rect, 4, 2);}
+            else {MovingSlot(rect, 5, 4);}
         } else if( current == 0) { //nr0 going clockwise
-            if(slots.Count == 3) {rect.anchoredPosition = slotPositions[2]; rect.SetSiblingIndex(1);}
-            else {rect.anchoredPosition = slotPositions[1]; rect.SetSiblingIndex(3);}
+            if(slots.Count == 3) {MovingSlot(rect, 2, 1);}
+            else {MovingSlot(rect, 1, 3);}
         }
         
          else if(current == 1 && dir == 1){  //nr1 going counter clockwise
-            rect.anchoredPosition = slotPositions[0]; rect.SetSiblingIndex(5);
+            MovingSlot(rect, 0, 5);
         } else if(current == 1) { //nr1 going clockwise
-            if(slots.Count == 3) {rect.anchoredPosition = slotPositions[4]; rect.SetSiblingIndex(2);}
-            if(slots.Count == 4) {rect.anchoredPosition = slotPositions[3]; rect.SetSiblingIndex(0);}
-            if(slots.Count == 5 || slots.Count == 6) {rect.anchoredPosition = slotPositions[2]; rect.SetSiblingIndex(1);}
+            if(slots.Count == 3) {MovingSlot(rect, 4, 2);}
+            if(slots.Count == 4) {MovingSlot(rect, 3, 0);}
+            if(slots.Count == 5 || slots.Count == 6) {MovingSlot(rect, 2, 1);}
         }
         
          else if(current == 2 && dir == 1) { //nr2 going counter clockwise
-            if(slots.Count == 3) {rect.anchoredPosition = slotPositions[2]; rect.SetSiblingIndex(1);}
-            else {rect.anchoredPosition = slotPositions[1]; rect.SetSiblingIndex(3);}
+            if(slots.Count == 3) {MovingSlot(rect, 2, 1);}
+            else {MovingSlot(rect, 1, 3);}
         } else if(current == 2) { //nr2 going clockwise
-            if(slots.Count == 3) {rect.anchoredPosition = slotPositions[0]; rect.SetSiblingIndex(5);}
-            if(slots.Count == 4) {rect.anchoredPosition = slotPositions[5]; rect.SetSiblingIndex(4);}
-            if(slots.Count == 5) {rect.anchoredPosition = slotPositions[4]; rect.SetSiblingIndex(2);}
-            if(slots.Count == 6) {rect.anchoredPosition = slotPositions[3]; rect.SetSiblingIndex(0);}
+            if(slots.Count == 3) {MovingSlot(rect, 0, 5);}
+            if(slots.Count == 4) {MovingSlot(rect, 5, 4);}
+            if(slots.Count == 5) {MovingSlot(rect, 4, 2);}
+            if(slots.Count == 6) {MovingSlot(rect,3, 0);}
         }
         
          else if(current == 3 && dir == 1) { //nr3 going counter clockwise
-            if(slots.Count == 4) {rect.anchoredPosition = slotPositions[3]; rect.SetSiblingIndex(0);}
-            if(slots.Count == 5 || slots.Count == 6) {rect.anchoredPosition = slotPositions[2]; rect.SetSiblingIndex(1);}
+            if(slots.Count == 4) {MovingSlot(rect, 3, 0);}
+            if(slots.Count == 5 || slots.Count == 6) {MovingSlot(rect, 2, 1);}
         } else if(current == 3) { //nr3 going clockwise
-            if(slots.Count == 4) {rect.anchoredPosition = slotPositions[0]; rect.SetSiblingIndex(5);}
-            if(slots.Count == 5) {rect.anchoredPosition = slotPositions[5]; rect.SetSiblingIndex(4);}
-            if(slots.Count == 6) {rect.anchoredPosition = slotPositions[4]; rect.SetSiblingIndex(2);}
+            if(slots.Count == 4) {MovingSlot(rect, 0, 5);}
+            if(slots.Count == 5) {MovingSlot(rect, 5, 4);}
+            if(slots.Count == 6) {MovingSlot(rect, 4, 2);}
         } 
 
         else if(current == 4 && dir == 1) { //nr4 going counter clockwise
-            if(slots.Count == 5) {rect.anchoredPosition = slotPositions[4]; rect.SetSiblingIndex(2);}
-            if(slots.Count == 6) {rect.anchoredPosition = slotPositions[3]; rect.SetSiblingIndex(0);}
+            if(slots.Count == 5) {MovingSlot(rect, 4, 2);}
+            if(slots.Count == 6) {MovingSlot(rect, 3, 0);}
         } else if(current == 4) { //nr4 going clockwise
-            if(slots.Count == 5) {rect.anchoredPosition = slotPositions[0]; rect.SetSiblingIndex(5);}
-            if(slots.Count == 6) {rect.anchoredPosition = slotPositions[5]; rect.SetSiblingIndex(4);}
+            if(slots.Count == 5) {MovingSlot(rect, 0, 5);}
+            if(slots.Count == 6) {MovingSlot(rect, 5, 4);}
         }
 
         else if(current == 5 && dir == 1) { //nr5 going counter clockwise
-            rect.anchoredPosition = slotPositions[4]; rect.SetSiblingIndex(2);
+            MovingSlot(rect, 4, 2);
         } else if(current == 5) { //nr5 going clockwise
-            rect.anchoredPosition = slotPositions[0]; rect.SetSiblingIndex(5);
+            MovingSlot(rect, 0, 5);
         }
+    }
+
+    private void MovingSlot(RectTransform rect, int pos, int layer) {
+        rect.anchoredPosition = slotPositions[pos]; 
+        rect.SetSiblingIndex(layer); 
+
+        float scale = 1f;
+        if(pos == 5 || pos == 1) scale = 0.7f;
+        if(pos == 4 || pos == 2) scale = 0.6f;
+        if(pos == 3) scale = 0.6f;
+        rect.transform.localScale = new Vector3(scale, scale, scale);
     }
 
 /// <summary>
