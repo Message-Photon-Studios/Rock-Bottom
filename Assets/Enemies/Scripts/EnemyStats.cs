@@ -31,7 +31,7 @@ public class EnemyStats : MonoBehaviour
 
     private List<(float damage, float timer)> damageOverTime = new List<(float damage, float time)>(); //Damage dealt over time
     
-
+    private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the new health.
     /// </summary>
@@ -105,6 +105,32 @@ public class EnemyStats : MonoBehaviour
                 }
             }
         }
+
+        if(burning.timer > 0)
+        {
+            DamageEnemy(burning.damage * Time.deltaTime);
+            float timer = burning.timer;
+            timer -= Time.deltaTime;
+            burning.timer = timer;
+
+            //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
+
+            if(timer <= 0)
+            {
+                burning = (0, 0, 0, null, null);
+                return;
+            }
+
+            foreach(GameObject obj in burning.burnable)
+            {
+                if(obj == null) return;
+                float dist = Vector2.Distance(transform.position, obj.transform.position);
+                if(dist < burning.range)
+                {
+                    obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles);
+                }
+            }
+        }
     }
 
     #endregion
@@ -130,6 +156,29 @@ public class EnemyStats : MonoBehaviour
     public void DamageOverTime(float damage, float timer)
     {
         damageOverTime.Add((damage, timer));
+    }
+
+    /// <summary>
+    /// Adds a burning effect to the enemy
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="timer"></param>
+    /// <param name="range"></param>
+    /// <param name="burnParticles"></param>
+    public void BurnDamage(float damage, float timer, float range, GameObject burnParticles)
+    {
+        if(timer <= 0) return;
+        if(burning.timer > 0) return;
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
+        burning = (damage, timer, range, burnParticles, objs);
+
+        GameObject instantiatedParticles = GameObject.Instantiate(burnParticles, transform.position, transform.rotation);
+        var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
+        main.duration = timer;
+        instantiatedParticles.GetComponent<ParticleSystem>().Play();
+        Destroy(instantiatedParticles, timer*1.2f);
+        // Set enemy as parent of the particle system
+        instantiatedParticles.transform.parent = gameObject.transform;
     }
 
     /// <summary>

@@ -8,17 +8,39 @@ public class YellowColorEffect : ColorEffect
     public override void Apply(GameObject enemyObj, GameObject playerObj, float power)
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
+        List<GameObject> affected = new List<GameObject>();
         foreach (GameObject obj in objs)
         {
             if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange,2))
             {
-                GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
-                Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
-                instantiatedParticles.GetComponent<ParticleSystem>().Play();
-                obj.GetComponent<EnemyStats>().DamageEnemy(damage*power);
-                // Set enemy as parent of the particle system
-                instantiatedParticles.transform.parent = enemyObj.transform;
+                AffectObject(obj);
             }
+        }
+
+        for (int i = 0; i < affected.Count; i++)
+        {
+            foreach (GameObject obj in objs)
+            {
+                if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange,2))
+                {
+                    AffectObject(obj);
+                }
+            }
+
+        }
+
+
+        void AffectObject(GameObject obj)
+        {
+            if(affected.Contains(obj)) return;
+            GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
+            Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
+            instantiatedParticles.GetComponent<ParticleSystem>().Play();
+            obj.GetComponent<EnemyStats>().DamageEnemy(damage*power);
+            // Set enemy as parent of the particle system
+            instantiatedParticles.transform.parent = enemyObj.transform;
+            affected.Add(obj);
+
         }
     }
 }
