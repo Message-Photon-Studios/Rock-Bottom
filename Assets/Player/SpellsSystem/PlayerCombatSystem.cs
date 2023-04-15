@@ -76,7 +76,7 @@ public class PlayerCombatSystem : MonoBehaviour
         GameObject obj = spellInventory.GetColorSpell();
         if(obj == null) return;
         if(attacking) return;
-        if(playerMovement.airTime > 0) return;
+        //if(playerMovement.airTime > 0) return;
         attacking = true;
         string anim = obj.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
