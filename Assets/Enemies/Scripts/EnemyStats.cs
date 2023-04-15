@@ -21,7 +21,7 @@ public class EnemyStats : MonoBehaviour
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0; 
-
+    GameObject sleepParticles;
     private float comboTime = 1; //The timelimit for the next move of a combo
     private float comboTimer = 0;
     private GameColor comboColor; //The colorMat that currently affects the enemy in a combo
@@ -191,7 +191,7 @@ public class EnemyStats : MonoBehaviour
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
-        SleepEnemy(10);
+        SleepEnemy(10, null);
         onEnemyDeath?.Invoke();
     }
     
@@ -307,10 +307,20 @@ public class EnemyStats : MonoBehaviour
     /// Sets the enemy to asleep for the specified time
     /// </summary>
     /// <param name="timer"></param>
-    public void SleepEnemy(float timer)
+    public void SleepEnemy(float timer, GameObject particles)
     {
         sleepTimer = timer;
         enemySleep = true;
+        if(particles){        
+            GameObject instantiatedParticles = GameObject.Instantiate(particles, transform.position, transform.rotation);
+            var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
+            main.duration = timer;
+            instantiatedParticles.GetComponent<ParticleSystem>().Play();
+            Destroy(instantiatedParticles, timer*1.2f);
+            // Set enemy as parent of the particle system
+            instantiatedParticles.transform.parent = transform;
+            sleepParticles = instantiatedParticles;
+        }
     }
 
     /// <summary>
@@ -320,6 +330,12 @@ public class EnemyStats : MonoBehaviour
     {
         enemySleep = false;
         sleepTimer = 0;
+        if(sleepParticles)
+        {
+            sleepParticles.GetComponent<ParticleSystem>().Stop();
+            GameObject.Destroy(sleepParticles, 1f);
+        }
+
     }
 
     /// <summary>
