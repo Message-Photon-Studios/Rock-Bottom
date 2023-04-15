@@ -29,7 +29,7 @@ public class EnemyStats : MonoBehaviour
 
     private Animator animator;
 
-    private List<(float damage, float timer)> damageOverTime = new List<(float damage, float time)>(); //Damage dealt over time
+    private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
     
     private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
     /// <summary>
@@ -91,16 +91,23 @@ public class EnemyStats : MonoBehaviour
             }
         }
 
-        if(damageOverTime.Count > 0)
+        if(poisonEffects.Count > 0)
         {
-            for (int i = 0; i < damageOverTime.Count; i++)
+            for (int i = 0; i < poisonEffects.Count; i++)
             {
-                float damage = damageOverTime[i].damage * Time.deltaTime;
-                DamageEnemy(damage);
-                damageOverTime[i] = (damageOverTime[i].damage, damageOverTime[i].timer - Time.deltaTime);
-                if(damageOverTime[i].timer <= 0)
+                float damage = poisonEffects[i].damage * Time.deltaTime;
+                if (damage >= health)
                 {
-                    damageOverTime.RemoveAt(i);
+                    poisonEffects.RemoveAt(i);
+                    i--;
+                    continue;
+                }
+                
+                DamageEnemy(damage);
+                poisonEffects[i] = (poisonEffects[i].damage, poisonEffects[i].timer - Time.deltaTime);
+                if(poisonEffects[i].timer <= 0)
+                {
+                    poisonEffects.RemoveAt(i);
                     i--;
                 }
             }
@@ -153,9 +160,9 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     /// <param name="damage"></param>
     /// <param name="timer"></param>
-    public void DamageOverTime(float damage, float timer)
+    public void PoisonDamage(float damage, float timer)
     {
-        damageOverTime.Add((damage, timer));
+        poisonEffects.Add((damage, timer));
     }
 
     /// <summary>

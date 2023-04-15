@@ -28,7 +28,7 @@ public class GreenColorEffect : ColorEffect
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
 
-        enemy.DamageOverTime(damageOverTime * power, useTime);
+        enemy.PoisonDamage(damageOverTime * power, useTime);
         enemy.DamageEnemy(damage);
     }
 }
