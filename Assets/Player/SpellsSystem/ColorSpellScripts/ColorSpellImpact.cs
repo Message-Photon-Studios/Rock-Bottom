@@ -33,7 +33,7 @@ public class ColorSpellImpact : ColorSpell
             }
 
 
-            if(enemy != null) gameColor.colorEffect.Apply(other.gameObject, player, power*powerScale);
+            if(enemy != null) gameColor.colorEffect.Apply(other.gameObject, transform.position, player, power*powerScale);
         }
 
         var instantiatedParticles = GameObject.Instantiate(onImpactParticles, transform.position, transform.rotation);

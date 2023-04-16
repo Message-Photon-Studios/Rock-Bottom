@@ -5,7 +5,7 @@ using UnityEngine;
 public class YellowColorEffect : ColorEffect
 {
     [SerializeField] float effectRange;
-    public override void Apply(GameObject enemyObj, GameObject playerObj, float power)
+    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
         List<GameObject> affected = new List<GameObject>();

@@ -16,5 +16,5 @@ public abstract class ColorEffect : ScriptableObject
     /// <param name="enemyObj"></param>
     /// <param name="playerObj"></param>
     /// <param name="power"></param>
-    public abstract void Apply(GameObject enemyObj, GameObject playerObj, float power);
+    public abstract void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power);
 }

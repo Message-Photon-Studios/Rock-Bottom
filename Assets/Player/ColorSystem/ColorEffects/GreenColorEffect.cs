@@ -10,7 +10,7 @@ public class GreenColorEffect : ColorEffect
 {
     [SerializeField] float damageOverTime;
     [SerializeField] float time;
-    public override void Apply(GameObject enemyObj, GameObject playerObj, float power)
+    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
