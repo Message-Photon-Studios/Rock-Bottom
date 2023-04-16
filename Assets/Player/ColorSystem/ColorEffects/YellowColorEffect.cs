@@ -13,7 +13,7 @@ public class YellowColorEffect : ColorEffect
         foreach (GameObject obj in objs)
         {
             if(obj == null) continue;
-            if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange,2))
+            if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange*power,2))
             {
                 AffectObject(obj);
             }
@@ -25,7 +25,7 @@ public class YellowColorEffect : ColorEffect
             {
                 if(obj == null) continue;
                 if(affected[i] == null) continue;
-                if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange,2))
+                if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange*power,2))
                 {
                     AffectObject(obj);
                 }
