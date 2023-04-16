@@ -5,6 +5,7 @@ using UnityEngine;
 public class YellowColorEffect : ColorEffect
 {
     [SerializeField] float effectRange;
+    [SerializeField] float force;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
@@ -39,11 +40,11 @@ public class YellowColorEffect : ColorEffect
             GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
             Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
             instantiatedParticles.GetComponent<ParticleSystem>().Play();
-            obj.GetComponent<EnemyStats>().DamageEnemy(damage*power);
             // Set enemy as parent of the particle system
             instantiatedParticles.transform.parent = enemyObj.transform;
             affected.Add(obj);
-
+            obj?.GetComponent<Rigidbody2D>()?.AddForce((enemyObj.transform.position - obj.transform.position).normalized * force);
+            obj.GetComponent<EnemyStats>().DamageEnemy(damage*power);
         }
     }
 }
