@@ -21,6 +21,7 @@ public class EnemyStats : MonoBehaviour
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0; 
+    private float sleepDamageBonus = 1.2f; //The extra damage dealt to a slept enemy
     GameObject sleepParticles;
     private float comboTime = 1; //The timelimit for the next move of a combo
     private float comboTimer = 0;
@@ -149,8 +150,14 @@ public class EnemyStats : MonoBehaviour
     /// <param name="damage"></param>
     public void DamageEnemy(float damage)
     {
+        if(enemySleep)
+        {
+            damage *= sleepDamageBonus;
+            WakeEnemy();
+        }
+
         health -= damage;
-        WakeEnemy();
+
         onHealthChanged?.Invoke(health);
         if(health <= 0) KillEnemy();
     }
