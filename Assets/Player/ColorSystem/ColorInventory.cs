@@ -50,20 +50,23 @@ public class ColorInventory : MonoBehaviour
     void Start()
     {
         startColorSlots = colorSlots.Count;
-    }
+    }   
+
+    UnityAction<int> slotChangedBrush; 
 
     void OnEnable()
     {
+        slotChangedBrush = (int dir) => {updateBrushColor();}; 
         changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
         onColorUpdated += updateBrushColor;
-        onSlotChanged += (dir) => { updateBrushColor(); };
+        onSlotChanged += slotChangedBrush;
     }
 
     void OnDisable()
     {
         changeRightActions.action.performed -= (dir) => {RotateActive((int)dir.ReadValue<float>()); };
         onColorUpdated -= updateBrushColor;
-        onSlotChanged -= (dir) => { updateBrushColor(); };
+        onSlotChanged -= slotChangedBrush;
     }
 
     #endregion

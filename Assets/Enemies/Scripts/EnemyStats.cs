@@ -46,6 +46,7 @@ public class EnemyStats : MonoBehaviour
     #region Setup and Timers
     void OnEnable()
     {
+        color = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
         normalMovementSpeed = movementSpeed;
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();

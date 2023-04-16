@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 /// <summary>
 /// This class controls the players movement and keeps track of player states such as it being rooted, falling or in the air. 
@@ -54,28 +55,41 @@ public class PlayerMovement : MonoBehaviour
     float movement = 0;
     private bool doubleJumpActive = false;
     private float jump;
+    
+    Action<InputAction.CallbackContext> movementRootTrue;
+    Action<InputAction.CallbackContext> movementRootFalse;
+    Action<InputAction.CallbackContext> checkBelow;
+    Action<InputAction.CallbackContext> checkAbove;
+    Action<InputAction.CallbackContext> checkCancle;
+
 
     #region Setup
     private void OnEnable() {
-        jumpAction.action.started += (_) => {Jump();};
-        jumpAction.action.canceled += (_) => {JumpCancel();};
-        belowCheckAction.action.performed += (_) => {CheckBelowStart();};
-        belowCheckAction.action.canceled += (_) => {CheckCancel();};
-        aboveCheckAction.action.started += (_) => {CheckAboveStart();};
-        aboveCheckAction.action.canceled += (_) => {CheckCancel();};
-        lockCamera.action.started += (_) => {movementRoot.SetRoot("CameraRoot", true);};
-        lockCamera.action.canceled += (_) => {movementRoot.SetRoot("CameraRoot", false);};
+        movementRootTrue = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", true);};
+        movementRootFalse = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", false);};
+        checkBelow = (InputAction.CallbackContext ctx) => {CheckBelowStart();};
+        checkAbove = (InputAction.CallbackContext ctx) => {CheckAboveStart();};
+        checkCancle = (InputAction.CallbackContext ctx) => {CheckCancel();};
+        
+        jumpAction.action.started += Jump;
+        jumpAction.action.canceled += JumpCancel;
+        belowCheckAction.action.performed += checkBelow;
+        belowCheckAction.action.canceled += checkCancle;
+        aboveCheckAction.action.started += checkAbove;
+        aboveCheckAction.action.canceled += checkCancle;
+        lockCamera.action.started += movementRootTrue;
+        lockCamera.action.canceled += movementRootFalse;
     }
 
     private void OnDisable() {
-        jumpAction.action.started -= (_) => {Jump();};
-        jumpAction.action.canceled -= (_) => {JumpCancel();};
-        belowCheckAction.action.started -= (_) => {CheckBelowStart();};
-        belowCheckAction.action.canceled -= (_) => {CheckCancel();};
-        aboveCheckAction.action.started -= (_) => {CheckAboveStart();};
-        aboveCheckAction.action.canceled -= (_) => {CheckCancel();};
-        lockCamera.action.started -= (_) => {movementRoot.SetRoot("CameraRoot", true);};
-        lockCamera.action.canceled -= (_) => {movementRoot.SetRoot("CameraRoot", false);};
+        jumpAction.action.started -= Jump;
+        jumpAction.action.canceled -= JumpCancel;
+        belowCheckAction.action.started -= checkBelow;
+        belowCheckAction.action.canceled -= checkCancle;
+        aboveCheckAction.action.started -= checkAbove;
+        aboveCheckAction.action.canceled -= checkCancle;
+        lockCamera.action.started -= movementRootTrue;
+        lockCamera.action.canceled -= movementRootFalse;
     }
 
     void Start()
@@ -90,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Make the character jump or double jump
     /// </summary>
-    void Jump()
+    void Jump(InputAction.CallbackContext ctx)
     {
         if(movementRoot.rooted) return;
 
@@ -120,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Cancels the jump
     /// </summary>
-    void JumpCancel()
+    void JumpCancel(InputAction.CallbackContext ctx)
     {
         jump = 0;
     }
@@ -130,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
     #region Camera Check
     void CheckBelowStart()
     {
+        if(focusPoint == null) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, -checkPointY, focusPoint.localPosition.z);
     }
 
