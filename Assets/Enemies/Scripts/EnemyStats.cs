@@ -205,7 +205,7 @@ public class EnemyStats : MonoBehaviour
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
-        SleepEnemy(10, null);
+        SleepEnemy(10, 1, null);
         onEnemyDeath?.Invoke();
     }
     
@@ -321,8 +321,13 @@ public class EnemyStats : MonoBehaviour
     /// Sets the enemy to asleep for the specified time
     /// </summary>
     /// <param name="timer"></param>
-    public void SleepEnemy(float timer, GameObject particles)
+    public void SleepEnemy(float timer, float sleepPower, GameObject particles)
     {
+        if(sleepTimer > 0)
+        {
+            if(sleepDamageBonus < sleepPower) sleepDamageBonus = sleepPower;
+        } else sleepDamageBonus = sleepPower;
+
         sleepTimer = timer;
         enemySleep = true;
         if(particles){        

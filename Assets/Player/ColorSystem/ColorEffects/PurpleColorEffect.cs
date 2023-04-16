@@ -9,10 +9,11 @@ using UnityEngine;
 public class PurpleColorEffect : ColorEffect
 {
     [SerializeField] float sleepTime;
+    [SerializeField] float sleepDamageBonus;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         enemy.DamageEnemy(damage * power);
-        if(enemy != null) enemy.SleepEnemy(sleepTime * power, particles);
+        if(enemy != null) enemy.SleepEnemy(sleepTime * power, sleepDamageBonus * power, particles);
     }
 }
