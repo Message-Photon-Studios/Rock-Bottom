@@ -9,7 +9,8 @@ using UnityEngine;
 public class RedColorEffect : ColorEffect
 {
     [SerializeField] float healing;
-    public override void Apply(GameObject enemyObj, GameObject playerObj, float power)
+    [SerializeField] float force;
+    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         PlayerStats player = playerObj.GetComponent<PlayerStats>();
@@ -20,6 +21,7 @@ public class RedColorEffect : ColorEffect
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
 
+        enemy?.GetComponent<Rigidbody2D>()?.AddForce((impactPoint- (Vector2)enemy.transform.position).normalized * force);
         enemy.DamageEnemy(damage*power);
         player.HealPlayer(healing*power);
     }

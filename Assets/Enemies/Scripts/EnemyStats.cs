@@ -21,7 +21,8 @@ public class EnemyStats : MonoBehaviour
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0; 
-
+    private float sleepDamageBonus = 1.2f; //The extra damage dealt to a slept enemy
+    GameObject sleepParticles;
     private float comboTime = 1; //The timelimit for the next move of a combo
     private float comboTimer = 0;
     private GameColor comboColor; //The colorMat that currently affects the enemy in a combo
@@ -29,9 +30,9 @@ public class EnemyStats : MonoBehaviour
 
     private Animator animator;
 
-    private List<(float damage, float timer)> damageOverTime = new List<(float damage, float time)>(); //Damage dealt over time
+    private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
     
-
+    private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the new health.
     /// </summary>
@@ -91,17 +92,50 @@ public class EnemyStats : MonoBehaviour
             }
         }
 
-        if(damageOverTime.Count > 0)
+        if(poisonEffects.Count > 0)
         {
-            for (int i = 0; i < damageOverTime.Count; i++)
+            for (int i = 0; i < poisonEffects.Count; i++)
             {
-                float damage = damageOverTime[i].damage * Time.deltaTime;
-                DamageEnemy(damage);
-                damageOverTime[i] = (damageOverTime[i].damage, damageOverTime[i].timer - Time.deltaTime);
-                if(damageOverTime[i].timer <= 0)
+                float damage = poisonEffects[i].damage * Time.deltaTime;
+                if (damage >= health)
                 {
-                    damageOverTime.RemoveAt(i);
+                    poisonEffects.RemoveAt(i);
                     i--;
+                    continue;
+                }
+                
+                DamageEnemy(damage);
+                poisonEffects[i] = (poisonEffects[i].damage, poisonEffects[i].timer - Time.deltaTime);
+                if(poisonEffects[i].timer <= 0)
+                {
+                    poisonEffects.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        if(burning.timer > 0)
+        {
+            DamageEnemy(burning.damage * Time.deltaTime);
+            float timer = burning.timer;
+            timer -= Time.deltaTime;
+            burning.timer = timer;
+
+            //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
+
+            if(timer <= 0)
+            {
+                burning = (0, 0, 0, null, null);
+                return;
+            }
+
+            foreach(GameObject obj in burning.burnable)
+            {
+                if(obj == null) return;
+                float dist = Vector2.Distance(transform.position, obj.transform.position);
+                if(dist < burning.range)
+                {
+                    obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles);
                 }
             }
         }
@@ -116,8 +150,14 @@ public class EnemyStats : MonoBehaviour
     /// <param name="damage"></param>
     public void DamageEnemy(float damage)
     {
+        if(enemySleep)
+        {
+            damage *= sleepDamageBonus;
+            WakeEnemy();
+        }
+
         health -= damage;
-        WakeEnemy();
+
         onHealthChanged?.Invoke(health);
         if(health <= 0) KillEnemy();
     }
@@ -127,9 +167,32 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     /// <param name="damage"></param>
     /// <param name="timer"></param>
-    public void DamageOverTime(float damage, float timer)
+    public void PoisonDamage(float damage, float timer)
     {
-        damageOverTime.Add((damage, timer));
+        poisonEffects.Add((damage, timer));
+    }
+
+    /// <summary>
+    /// Adds a burning effect to the enemy
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="timer"></param>
+    /// <param name="range"></param>
+    /// <param name="burnParticles"></param>
+    public void BurnDamage(float damage, float timer, float range, GameObject burnParticles)
+    {
+        if(timer <= 0) return;
+        if(burning.timer > 0) return;
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
+        burning = (damage, timer, range, burnParticles, objs);
+
+        GameObject instantiatedParticles = GameObject.Instantiate(burnParticles, transform.position, transform.rotation);
+        var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
+        main.duration = timer;
+        instantiatedParticles.GetComponent<ParticleSystem>().Play();
+        Destroy(instantiatedParticles, timer*1.2f);
+        // Set enemy as parent of the particle system
+        instantiatedParticles.transform.parent = gameObject.transform;
     }
 
     /// <summary>
@@ -142,7 +205,7 @@ public class EnemyStats : MonoBehaviour
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
-        SleepEnemy(10);
+        SleepEnemy(10, 1, null);
         onEnemyDeath?.Invoke();
     }
     
@@ -239,6 +302,15 @@ public class EnemyStats : MonoBehaviour
     {
         return movementSpeed;
     }
+    
+    /// <summary>
+    /// Return the normal movement speed without any effects of this enemy
+    /// </summary>
+    /// <returns></returns>
+    public float GetNormalMovementSpeed()
+    {
+        return normalMovementSpeed;
+    }
 
     #endregion
 
@@ -258,10 +330,25 @@ public class EnemyStats : MonoBehaviour
     /// Sets the enemy to asleep for the specified time
     /// </summary>
     /// <param name="timer"></param>
-    public void SleepEnemy(float timer)
+    public void SleepEnemy(float timer, float sleepPower, GameObject particles)
     {
+        if(sleepTimer > 0)
+        {
+            if(sleepDamageBonus < sleepPower) sleepDamageBonus = sleepPower;
+        } else sleepDamageBonus = sleepPower;
+
         sleepTimer = timer;
         enemySleep = true;
+        if(particles){        
+            GameObject instantiatedParticles = GameObject.Instantiate(particles, transform.position, transform.rotation);
+            var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
+            main.duration = timer;
+            instantiatedParticles.GetComponent<ParticleSystem>().Play();
+            Destroy(instantiatedParticles, timer*1.2f);
+            // Set enemy as parent of the particle system
+            instantiatedParticles.transform.parent = transform;
+            sleepParticles = instantiatedParticles;
+        }
     }
 
     /// <summary>
@@ -271,6 +358,12 @@ public class EnemyStats : MonoBehaviour
     {
         enemySleep = false;
         sleepTimer = 0;
+        if(sleepParticles)
+        {
+            sleepParticles.GetComponent<ParticleSystem>().Stop();
+            GameObject.Destroy(sleepParticles, 1f);
+        }
+
     }
 
     /// <summary>

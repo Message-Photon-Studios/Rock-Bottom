@@ -10,17 +10,25 @@ public class GreenColorEffect : ColorEffect
 {
     [SerializeField] float damageOverTime;
     [SerializeField] float time;
-    public override void Apply(GameObject enemyObj, GameObject playerObj, float power)
+    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
         var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
-        main.duration = time*2;
+
+        float useTime = time;
+        if(enemy.GetHealth() <= damageOverTime*power*time)
+        {
+            useTime = enemy.GetHealth()/damageOverTime*power-1;
+        }
+
+        main.duration = useTime;
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
-        Destroy(instantiatedParticles, time);
+        Destroy(instantiatedParticles, useTime*1.2f);
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
-        enemy.DamageOverTime(damageOverTime * power, time);
+
+        enemy.PoisonDamage(damageOverTime * power, useTime);
         enemy.DamageEnemy(damage);
     }
 }
