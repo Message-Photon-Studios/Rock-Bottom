@@ -302,6 +302,15 @@ public class EnemyStats : MonoBehaviour
     {
         return movementSpeed;
     }
+    
+    /// <summary>
+    /// Return the normal movement speed without any effects of this enemy
+    /// </summary>
+    /// <returns></returns>
+    public float GetNormalMovementSpeed()
+    {
+        return normalMovementSpeed;
+    }
 
     #endregion
 
