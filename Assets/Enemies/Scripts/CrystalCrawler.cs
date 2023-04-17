@@ -23,12 +23,19 @@ public class CrystalCrawler : Enemy
         
         Node root = new Selector(new List<Node>{
             new Sequence(new List<Node>{
+                new CheckPlayerArea(stats, player, damageTrigger),
+                new SetParentVariable("enableJump", false, 2)
+            }),
+            
+            new Sequence(new List<Node>{
+                new CheckBool("enableJump", true),
                 new CheckGrounded(stats, legPos),
                 new Selector(new List<Node>{
                     new CheckPlayerArea(stats, player, attackTrigger),
                     new CheckPlayerArea(stats, player, attackBottomTrigger)
                 }),
                 new EnemyJump(stats, body, jumpForce, forwardJumpForce),
+                new SetParentVariable("enableJump", false, 2),
                 new SetParentVariable("enableDamage", true, 2)
             }),
 
@@ -36,6 +43,12 @@ public class CrystalCrawler : Enemy
                 new CheckBool("attackDone", false),
                 new NormalAttack("enableDamage", player, attackDamage, attackForce, 0.5f, damageTrigger, stats),
                 new SetParentVariable("attackDone", true, 2)
+            }),
+
+            new Sequence(new List<Node>{
+                new CheckBool("enableJump", false),
+                new Wait(2),
+                new SetParentVariable("enableJump", true, 2)
             }),
 
             new Sequence(new List<Node>{
@@ -57,6 +70,8 @@ public class CrystalCrawler : Enemy
         root.SetData("attack", false);
         root.SetData("attackDone", false);
         root.SetData("swordAttack", false);
+        root.SetData("enableJump", true);
+
         triggersToFlip.Add(attackTrigger);
         triggersToFlip.Add(viewTrigger);
         triggersToFlip.Add(damageTrigger);
