@@ -70,6 +70,7 @@ public abstract class Enemy : BehaviourTree.Tree
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
         myCollider.offset = new Vector2(-myCollider.offset.x, myCollider.offset.y);
+        stats.lookDir = -stats.lookDir;
         foreach (Trigger trigger in triggersToFlip)
         {
             trigger.Flip();

@@ -16,6 +16,11 @@ public class EnemyStats : MonoBehaviour
     private Collider2D myCollider;  
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
 
+    /// <summary>
+    /// The direction that the enemy is looking
+    /// </summary>
+    public float lookDir = -1;
+
     private float normalMovementSpeed; //The normal movement speed of the enemy
     private float movementSpeedTimer; 
 
@@ -350,6 +355,8 @@ public class EnemyStats : MonoBehaviour
             instantiatedParticles.transform.parent = transform;
             sleepParticles = instantiatedParticles;
         }
+
+        animator.SetBool("sleep", true);
     }
 
     /// <summary>
@@ -365,6 +372,7 @@ public class EnemyStats : MonoBehaviour
             GameObject.Destroy(sleepParticles, 1f);
         }
 
+        animator.SetBool("sleep", false); //TODO make animation event
     }
 
     /// <summary>
