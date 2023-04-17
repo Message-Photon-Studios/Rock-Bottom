@@ -43,10 +43,8 @@ public abstract class Enemy : BehaviourTree.Tree
         myCollider = GetComponent<Collider2D>();
     }
 
-    protected override void Update()
+    protected virtual void Update()
     {
-        base.Update();
-
         if(Mathf.Abs(body.velocity.x) > .1f && ((body.velocity.x < 0) != (!spriteRenderer.flipX))) SwitchDirection();
     }
 
