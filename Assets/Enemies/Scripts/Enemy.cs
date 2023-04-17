@@ -116,10 +116,12 @@ public class Trigger
         offset = new Vector2(-offset.x, offset.y);
     }
     
+#if UNITY_EDITOR
     public void DrawTrigger(Vector2 position)
     {
         Handles.color = color;
         Handles.DrawWireDisc(position+offset, Vector3.forward, radius);
     }
+#endif
 }
 #endregion

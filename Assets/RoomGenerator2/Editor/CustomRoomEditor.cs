@@ -5,7 +5,7 @@ using UnityEngine;
 public class CustomRoomEditor : Editor
 {
     public Direction newNodeDir, doorDir;
-
+#if UNITY_EDITOR
     public override void OnInspectorGUI()
     {
         var room = (CustomRoom)target;
@@ -39,7 +39,7 @@ public class CustomRoomEditor : Editor
             room.toggleDoor(doorDir);
         }
     }
-
+#endif
     // Start is called before the first frame update
     void Start()
     {
