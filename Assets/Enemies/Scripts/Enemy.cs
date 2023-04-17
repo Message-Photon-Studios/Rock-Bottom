@@ -12,7 +12,7 @@ using BehaviourTree;
 public abstract class Enemy : BehaviourTree.Tree
 {
     [SerializeField] float playerCollisionDamage = 10; //The damage that will be dealt to the player if they walk into the enemy
-    [SerializeField] float playerCollisionForce = 2000; //The force that will be added to the player if they walk into the enemy
+    [SerializeField] Vector2 playerCollisionForce = new Vector2(2000, 0.5f); //The force that will be added to the player if they walk into the enemy
     protected EnemyStats stats;
     protected Animator animator;
     protected Rigidbody2D body; 
@@ -57,7 +57,7 @@ public abstract class Enemy : BehaviourTree.Tree
     {
         if(other.collider.CompareTag("Player"))
         {
-            other.rigidbody.AddForce(((Vector2)other.transform.position + Vector2.up * 0.5f - stats.GetPosition()).normalized * playerCollisionForce);
+            other.rigidbody.AddForce(Vector2.up * playerCollisionForce.y + ((Vector2)player.transform.position-stats.GetPosition()) * Vector2.right * playerCollisionForce.x);
             body.velocity = new Vector2(0, body.velocity.y);
             other.gameObject.GetComponent<PlayerStats>().DamagePlayer(playerCollisionDamage);
             other.gameObject.GetComponent<PlayerMovement>().movementRoot.SetRoot(gameObject.name + "enemyCollision", 0.35f);

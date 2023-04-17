@@ -8,6 +8,7 @@ public class CrystalCrawler : Enemy
 {
     [SerializeField] Trigger viewTrigger;
     [SerializeField] Trigger attackTrigger;
+    [SerializeField] Trigger attackBottomTrigger;
     [SerializeField] Trigger damageTrigger;
     [SerializeField] float attackDamage;
     [SerializeField] float attackForce;
@@ -23,7 +24,10 @@ public class CrystalCrawler : Enemy
         Node root = new Selector(new List<Node>{
             new Sequence(new List<Node>{
                 new CheckGrounded(stats, legPos),
-                new CheckPlayerArea(stats, player, attackTrigger),
+                new Selector(new List<Node>{
+                    new CheckPlayerArea(stats, player, attackTrigger),
+                    new CheckPlayerArea(stats, player, attackBottomTrigger)
+                }),
                 new EnemyJump(stats, body, jumpForce, forwardJumpForce),
                 new SetParentVariable("enableDamage", true, 2)
             }),
@@ -56,6 +60,7 @@ public class CrystalCrawler : Enemy
         triggersToFlip.Add(attackTrigger);
         triggersToFlip.Add(viewTrigger);
         triggersToFlip.Add(damageTrigger);
+        triggersToFlip.Add(attackBottomTrigger);
         return root;
     }
 
@@ -69,6 +74,7 @@ public class CrystalCrawler : Enemy
         attackTrigger.DrawTrigger(stats.GetPosition());
         viewTrigger.DrawTrigger(stats.GetPosition());
         damageTrigger.DrawTrigger(stats.GetPosition());
+        attackBottomTrigger.DrawTrigger(stats.GetPosition());
         Handles.color = Color.yellow;
         Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
     }
