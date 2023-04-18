@@ -41,7 +41,7 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// The sprite used for this spell
     /// </summary>
-    [SerializeField] Sprite spellSprite;
+    [SerializeField] BottleSprite spellSprite;
     protected GameColor gameColor;
     protected float power;
     protected GameObject player;
@@ -160,8 +160,17 @@ public class ColorSpell : MonoBehaviour
     /// Returns the sprite of this color spell
     /// </summary>
     /// <returns></returns>
-    public Sprite GetSprite()
+    public BottleSprite GetSprite()
     {
         return spellSprite;
     }
+}
+/// <summary>
+/// This struct keeps track of all sprites for a bottle
+/// </summary>
+public struct BottleSprite
+{
+    public Sprite bigSprite;
+    public Sprite mediumSprite;
+    public Sprite smallSprite;
 }
