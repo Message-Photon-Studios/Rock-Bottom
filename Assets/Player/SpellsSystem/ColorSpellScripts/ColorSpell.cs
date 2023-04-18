@@ -38,6 +38,10 @@ public class ColorSpell : MonoBehaviour
     /// </summary>
     [SerializeField] SpellImpact[] onImpact;
 
+    /// <summary>
+    /// The sprite used for this spell
+    /// </summary>
+    [SerializeField] Sprite spellSprite;
     protected GameColor gameColor;
     protected float power;
     protected GameObject player;
@@ -129,18 +133,35 @@ public class ColorSpell : MonoBehaviour
         return animationTrigger;
     }
 
+    /// <summary>
+    /// Returns the color of this color spell
+    /// </summary>
+    /// <returns></returns>
     public GameColor GetColor()
     {
         return gameColor;
     }
 
+    /// <summary>
+    /// Returns the total power of this color spell
+    /// </summary>
+    /// <returns></returns>
     public float GetPower()
     {
         return power;
     }
-
+    
     public GameObject GetPlayerObj()
     {
         return player;
+    }
+
+    /// <summary>
+    /// Returns the sprite of this color spell
+    /// </summary>
+    /// <returns></returns>
+    public Sprite GetSprite()
+    {
+        return spellSprite;
     }
 }

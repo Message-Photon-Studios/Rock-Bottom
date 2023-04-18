@@ -4856,7 +4856,6 @@ GameObject:
   - component: {fileID: 468746527930208003}
   - component: {fileID: 468746527930208001}
   - component: {fileID: 8210922060710586880}
-  - component: {fileID: 1731711828163631322}
   - component: {fileID: 2907638193198340670}
   - component: {fileID: 468746527930208031}
   - component: {fileID: 468746527930208002}
@@ -4975,30 +4974,7 @@ MonoBehaviour:
   verticalLookDir: {fileID: 7816966763905407227, guid: fd04459890e791843a48243064f9151b, type: 3}
   playerMovement: {fileID: 468746527930208003}
   colorInventory: {fileID: 2907638193198340670}
-  spellInventory: {fileID: 1731711828163631322}
   animator: {fileID: 5589058685384803136}
---- !u!114 &1731711828163631322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468746527930208030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b0d420a6adfa514c97c8e3aba09c228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultColorSpell: {fileID: 3321278458073070463, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
-  allColors:
-  - {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
-  - {fileID: 11400000, guid: aab7a3fd5f4b5c04fb45da55783d8aa1, type: 2}
-  - {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
-  - {fileID: 11400000, guid: fb4a5352fdc867147b0b07d399cd221d, type: 2}
-  - {fileID: 11400000, guid: 515b8e0cc06f688409aca84476871b24, type: 2}
-  - {fileID: 11400000, guid: a43a3607f70897249a36fdff7162cc2a, type: 2}
-  - {fileID: 11400000, guid: a5087b0e29c5b414795753d6fe24755a, type: 2}
-  colorInventory: {fileID: 2907638193198340670}
 --- !u!114 &2907638193198340670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5018,22 +4994,27 @@ MonoBehaviour:
     maxCapacity: 12
     charge: 0
     gameColor: {fileID: 0}
+    colorSpell: {fileID: 0}
   - image: {fileID: 0}
     imageScale: 0
     maxCapacity: 12
     charge: 0
     gameColor: {fileID: 0}
+    colorSpell: {fileID: 0}
   - image: {fileID: 0}
     imageScale: 0
     maxCapacity: 12
     charge: 0
     gameColor: {fileID: 0}
+    colorSpell: {fileID: 0}
   - image: {fileID: 0}
     imageScale: 0
     maxCapacity: 12
     charge: 0
     gameColor: {fileID: 0}
+    colorSpell: {fileID: 0}
   activeSlot: 0
+  defaultSpell: {fileID: -7692674297862362138, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
   changeRightActions: {fileID: -386362132723774860, guid: fd04459890e791843a48243064f9151b, type: 3}
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
 --- !u!212 &468746527930208031

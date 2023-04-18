@@ -17,7 +17,6 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] InputActionReference defaultAttackAction, specialAttackAction, verticalLookDir; 
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
-    [SerializeField] SpellInventory spellInventory;
     [SerializeField] Animator animator;
     private bool attacking;
 
@@ -68,17 +67,18 @@ public class PlayerCombatSystem : MonoBehaviour
         colorInventory.AddColor(absorb, ammount);
     }
 
+    private GameObject currentSpell = null;
     /// <summary>
     /// Plays the animation for the special attack
     /// </summary>
     private void SpecialAttackAnimation()
     {
-        GameObject obj = spellInventory.GetColorSpell();
-        if(obj == null) return;
+        currentSpell= colorInventory.GetActiveColorSpell().gameObject;
+        if(currentSpell == null) return;
         if(attacking) return;
         //if(playerMovement.airTime > 0) return;
         attacking = true;
-        string anim = obj.GetComponent<ColorSpell>().GetAnimationTrigger();
+        string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
         playerMovement.movementRoot.SetRoot("attackRoot", true);
     }
@@ -88,14 +88,13 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpecialAttack()
     {
-
-        GameObject obj = spellInventory.GetColorSpell();
         GameColor color = colorInventory.UseActiveColor();
 
-        if(obj == null) return;
+        if(currentSpell == null) return;
 
-        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+obj.transform.position.x) * playerMovement.lookDir, obj.transform.position.y+spellSpawnPoint.localPosition.y);
-        GameObject spell = GameObject.Instantiate(obj, transform.position + spawnPoint, transform.rotation) as GameObject;
+        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+currentSpell.transform.position.x) * playerMovement.lookDir, 
+                                        currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
+        GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
         spell.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
     }
 
