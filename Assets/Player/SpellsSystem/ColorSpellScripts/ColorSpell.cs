@@ -6,12 +6,12 @@ using UnityEngine;
 /// Handles the impact of color spells
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
-public abstract class ColorSpell : MonoBehaviour
+public class ColorSpell : MonoBehaviour
 {
     /// <summary>
     /// Scales the power for this specific color spell
     /// </summary>
-    [SerializeField] protected float powerScale;
+    [SerializeField] protected float powerScale = 1;
 
     /// <summary>
     /// The projectile will be destroyed on impact with any object
@@ -33,6 +33,11 @@ public abstract class ColorSpell : MonoBehaviour
     /// </summary>
     [SerializeField] string animationTrigger;
 
+    /// <summary>
+    /// The things that will trigger on impact
+    /// </summary>
+    [SerializeField] SpellImpact[] onImpact;
+
     protected GameColor gameColor;
     protected float power;
     protected GameObject player;
@@ -49,7 +54,7 @@ public abstract class ColorSpell : MonoBehaviour
     public void Initi(GameColor gameColor, float power, GameObject player, int lookDir)
     {
         this.gameColor = gameColor;
-        this.power = power;
+        this.power = power*powerScale;
         this.player = player;
         this.lookDir = lookDir;
 
@@ -73,6 +78,11 @@ public abstract class ColorSpell : MonoBehaviour
         foreach (SpellMover mover in gameObject.GetComponents<SpellMover>())
         {
             mover.Init(lookDir);
+        }
+
+        foreach(SpellImpact impact in onImpact)
+        {
+            impact.Init(this);
         }
     }
 
@@ -102,7 +112,13 @@ public abstract class ColorSpell : MonoBehaviour
     /// This is called when the spell should do its effect
     /// </summary>
     /// <param name="other"></param>
-    protected abstract void Impact(Collider2D other);
+    void Impact(Collider2D other)
+    {
+        foreach (SpellImpact impact in onImpact)
+        {
+            impact.Impact(other);
+        }
+    }
 
     /// <summary>
     /// Returns the name of the animation trigger that should be used by this spell.
@@ -111,5 +127,20 @@ public abstract class ColorSpell : MonoBehaviour
     public string GetAnimationTrigger()
     {
         return animationTrigger;
+    }
+
+    public GameColor GetColor()
+    {
+        return gameColor;
+    }
+
+    public float GetPower()
+    {
+        return power;
+    }
+
+    public GameObject GetPlayerObj()
+    {
+        return player;
     }
 }

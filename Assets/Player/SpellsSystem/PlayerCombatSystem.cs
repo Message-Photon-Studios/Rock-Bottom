@@ -94,7 +94,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
         if(obj == null) return;
 
-        Vector3 spawnPoint = new Vector3(spellSpawnPoint.localPosition.x * playerMovement.lookDir, spellSpawnPoint.localPosition.y);
+        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+obj.transform.position.x) * playerMovement.lookDir, obj.transform.position.y+spellSpawnPoint.localPosition.y);
         GameObject spell = GameObject.Instantiate(obj, transform.position + spawnPoint, transform.rotation) as GameObject;
         spell.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
     }
