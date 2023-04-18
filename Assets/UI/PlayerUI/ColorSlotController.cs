@@ -86,7 +86,7 @@ public class ColorSlotController : MonoBehaviour
     /// </summary>
     /// <param name="dir"></param> Direction to rotate in.
     private void ActiveColorChanged(int dir) {
-       RotateSlots(dir*-1);
+       RotateSlots(dir);
     }
     #endregion
 }
