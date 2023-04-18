@@ -230,6 +230,7 @@ public class DungeonGraph
 public class LevelGenerator
 {
     public DungeonGraph graph;
+    public Minimap minimap;
     private List<CustomRoom> normalRooms;
     private List<CustomRoom> closingRooms;
 
@@ -270,6 +271,8 @@ public class LevelGenerator
             endGeneration();
         } while (!graph.validate());
         insertPrefabs();
+
+        minimap = new Minimap(graph);
     }
 
     private void insertPrefabs()
