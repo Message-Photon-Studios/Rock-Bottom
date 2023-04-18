@@ -53,7 +53,7 @@ public class ColorSlotController : MonoBehaviour
     #region SlotMovement
 /// <summary>
 /// Moves the different containers for slots around and change scale when cycling colors according to direction. 
-/// Q=Clockwise=1, E=CounterClockwise=-1.
+/// Q=CounterClockwise=1, E=Clockwise=-1.
 /// Also keeps the slotList[] sorted so that the active color is slotList[0].
 /// </summary>
 /// <param name="dir"></param> Which direction the slots are rotating in.
@@ -86,7 +86,7 @@ public class ColorSlotController : MonoBehaviour
     /// </summary>
     /// <param name="dir"></param> Direction to rotate in.
     private void ActiveColorChanged(int dir) {
-       RotateSlots(dir);
+       RotateSlots(dir*-1);
     }
     #endregion
 }
