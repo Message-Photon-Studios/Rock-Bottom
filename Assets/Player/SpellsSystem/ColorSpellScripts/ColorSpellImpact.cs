@@ -12,11 +12,16 @@ public class ColorSpellImpact : SpellImpact
     {
         if(other.CompareTag("Enemy"))
         {
+            GameObject test = Physics2D.Raycast(transform.position, other.transform.position-transform.position,1000, ~LayerMask.GetMask("Spell")).collider.gameObject;
+            if(test.name != other.name) 
+                return;
+
             EnemyStats enemy = other.gameObject.GetComponent<EnemyStats>();
 
             GameColor comboColor = spell.GetColor().MixColor(enemy.GetComboColor());
 
             enemy.SetComboColor(comboColor);
+            
 
             if(comboColor != spell.GetColor())
             {
