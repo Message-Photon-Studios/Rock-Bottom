@@ -76,6 +76,7 @@ public class PlayerCombatSystem : MonoBehaviour
         currentSpell= colorInventory.GetActiveColorSpell().gameObject;
         if(currentSpell == null) return;
         if(attacking) return;
+        if(!colorInventory.CheckActveColor()) return;
         //if(playerMovement.airTime > 0) return;
         attacking = true;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
@@ -95,7 +96,7 @@ public class PlayerCombatSystem : MonoBehaviour
         Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+currentSpell.transform.position.x) * playerMovement.lookDir, 
                                         currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
         GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
-        spell.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
+        spell?.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
     }
 
     /// <summary>
