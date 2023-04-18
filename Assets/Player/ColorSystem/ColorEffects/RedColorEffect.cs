@@ -21,7 +21,7 @@ public class RedColorEffect : ColorEffect
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
 
-        enemy?.GetComponent<Rigidbody2D>()?.AddForce((impactPoint- (Vector2)enemy.transform.position).normalized * force);
+        enemy?.GetComponent<Rigidbody2D>()?.AddForce((player.transform.position- enemy.transform.position).normalized * force);
         enemy.DamageEnemy(damage*power);
         player.HealPlayer(healing*power);
     }
