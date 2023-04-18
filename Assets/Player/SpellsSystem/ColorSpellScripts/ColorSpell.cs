@@ -160,7 +160,7 @@ public class ColorSpell : MonoBehaviour
     /// Returns the sprite of this color spell
     /// </summary>
     /// <returns></returns>
-    public BottleSprite GetSprite()
+    public BottleSprite GetBottleSprite()
     {
         return spellSprite;
     }
