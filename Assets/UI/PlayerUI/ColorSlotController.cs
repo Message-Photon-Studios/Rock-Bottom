@@ -39,10 +39,12 @@ public class ColorSlotController : MonoBehaviour
             slotPositions.Add(((RectTransform)rect).anchoredPosition);
             slotScales.Add(rect.transform.localScale);
         }
-
+        
         //Init every color
+        var materials = Resources.LoadAll<Material>("Bottles/Materials");
         for(int i = 0; i < slotList.Count; i++) {
-            Image frameImage = slotList[i].GetChild(1).GetComponent<Image>();
+            Image frameImage = slotList[i].GetChild(0).GetChild(0).GetComponent<Image>();
+            frameImage.material = materials[i];
             ColorSlot slot = colorSlots[i];
             if (slot.gameColor != null)
                 frameImage.material.SetColor("_Color", slot.gameColor.plainColor);
@@ -79,7 +81,7 @@ public class ColorSlotController : MonoBehaviour
     #region UnityActions
     //When a color is updated, call this.
     private void ColorUpdate() {
-        Image frameImage = slotList[colorInventory.activeSlot].GetChild(1).GetComponent<Image>();
+        Image frameImage = slotList[colorInventory.activeSlot].GetChild(0).GetChild(0).GetComponent<Image>();
         ColorSlot slot = colorInventory.colorSlots[colorInventory.activeSlot];
         if (slot.gameColor != null)
                 frameImage.material.SetColor("_Color", slot.gameColor.plainColor);
