@@ -23,12 +23,9 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     [SerializeField] public int activeSlot;
 
-    /// <summary>
-    /// The default spell that will be used if the active slot doesn't have a spell attached
-    /// </summary>
     [SerializeField] public ColorSpell defaultSpell;
     [SerializeField] InputActionReference changeRightActions;
-    [SerializeField] Material defaultColor;
+    [SerializeField] public Material defaultColor;
 
     #region Actions for UI
     
@@ -102,15 +99,13 @@ public class ColorInventory : MonoBehaviour
         if(ActiveSlot().charge > 0)
         {
 
-            onColorUpdated?.Invoke();
             
             GameColor ret = ActiveSlot().gameColor;
 
             int charge = ActiveSlot().charge - 1;
             ActiveSlot().SetCharge(charge);
-
-            if (charge == 0)
-                onColorUpdated?.Invoke();
+            
+            onColorUpdated?.Invoke();
 
             return ret;
             
@@ -194,7 +189,7 @@ public class ColorInventory : MonoBehaviour
     public void AddColor(GameColor color, int amount)
     {
         GameColor setColor;
-        if(ActiveSlot().gameColor != null)
+        if(ActiveSlot().charge > 0)
             setColor = ActiveSlot().gameColor.MixColor(color);
         else
             setColor = color;
@@ -232,9 +227,7 @@ public class ColorInventory : MonoBehaviour
     private void updateBrushColor()
     {
         // brush.
-        GetComponent<SpriteRenderer>().material = 
-            ActiveSlot().gameColor != null && ActiveSlot().charge > 0 ? 
-                ActiveSlot().gameColor.colorMat : defaultColor;
+        GetComponent<SpriteRenderer>().material = ActiveSlot().charge > 0 ? ActiveSlot().gameColor.colorMat : defaultColor;
     }
 
     #endregion
@@ -339,7 +332,6 @@ public class ColorInventory : MonoBehaviour
 [System.Serializable]
 public class ColorSlot
 {
-    [SerializeField] public Image image ;
     [SerializeField] float imageScale;
     [SerializeField] public int maxCapacity = 6;
     [SerializeField] public int charge;
@@ -347,10 +339,6 @@ public class ColorSlot
     [SerializeField] public ColorSpell colorSpell;
     public void Init(Image setImage)
     {
-        image = setImage;
-        imageScale = image.rectTransform.sizeDelta.y;
-        image.transform.parent.gameObject.SetActive(true);
-        image.gameObject.SetActive(true);
         SetGameColor(gameColor);
         SetCharge(charge);
     }
@@ -358,26 +346,14 @@ public class ColorSlot
     public void SetCharge(int set)
     {
         charge = set;
-        if(charge <= 0)
-        {
-            gameColor = null;
-            image.color = Color.white;
-        }
-
-        image.rectTransform.sizeDelta = new Vector2(image.rectTransform.sizeDelta.x, imageScale*((float)charge/maxCapacity));
-
     }
     public void SetGameColor(GameColor set) 
     {
-        if(set == null) return;
         gameColor = set;
-        image.color = gameColor.plainColor;
     }
 
     public void RemoveColor()
     {
-        gameColor = null;
-        image.color = Color.white;
         SetCharge(0);
     }
 }

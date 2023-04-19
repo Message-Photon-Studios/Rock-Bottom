@@ -17,7 +17,9 @@ public class ColorSlotController : MonoBehaviour
     List<Vector2> slotPositions = new List<Vector2>();
     //Scale of all UI containers for slots
     List<Vector3> slotScales = new List<Vector3>();
-    //Different sets of slots used for different amount of color slots the player has.
+    // Spline to animate the filling effect of the color slots
+    public AnimationCurve fillCurve;
+
 
     # region Setup
     /// <summary>
@@ -34,13 +36,19 @@ public class ColorSlotController : MonoBehaviour
 
         //fetch each colorSlots position and scale and save it.
         foreach(RectTransform rect in slotList) {
-            slotPositions.Add(((RectTransform)rect.parent).anchoredPosition);
-            slotScales.Add(rect.parent.transform.localScale);
+            slotPositions.Add(((RectTransform)rect).anchoredPosition);
+            slotScales.Add(rect.transform.localScale);
         }
 
         //Init every color
         for(int i = 0; i < slotList.Count; i++) {
-            colorSlots[i].Init(slotList[i].GetComponent<Image>());
+            Image frameImage = slotList[i].GetChild(1).GetComponent<Image>();
+            ColorSlot slot = colorSlots[i];
+            if (slot.gameColor != null)
+                frameImage.material.SetColor("_Color", slot.gameColor.plainColor);
+            else
+                frameImage.material.SetColor("_Color", colorInventory.defaultColor.GetColor("_Color"));
+            frameImage.material.SetFloat("_fill", slot.charge / slot.maxCapacity);
         }
     }
 
@@ -59,26 +67,40 @@ public class ColorSlotController : MonoBehaviour
 /// <param name="dir"></param> Which direction the slots are rotating in.
     private void RotateSlots(int dir) {
         for(int i = 0; i < slotList.Count; i++) {
-            int x = (i + dir+slotList.Count)%(slotList.Count);
-            RectTransform rect = (RectTransform)slotList[i].parent;
-            rect.anchoredPosition = slotPositions[x]; 
-            rect.transform.localScale = slotScales[x];
-        }
-
-        if(dir == -1) { 
-            RectTransform temp = slotList[0];
-            slotList.Remove(slotList[0]);
-            slotList.Insert(slotList.Count, temp);
-        } else if(dir == 1) {
-            RectTransform temp = slotList[slotList.Count-1];
-            slotList.Remove(slotList[slotList.Count-1]);
-            slotList.Insert(0, temp);
+            int trueIndex = (i + slotList.Count - colorInventory.activeSlot) % slotList.Count;
+            Debug.Log(trueIndex);
+            RectTransform rect = slotList[i];
+            rect.anchoredPosition = slotPositions[trueIndex];
+            rect.transform.localScale = slotScales[trueIndex];
         }
     }
     #endregion
+
     #region UnityActions
-    //When a color is updated, call this. Currently not used.
+    //When a color is updated, call this.
     private void ColorUpdate() {
+        Image frameImage = slotList[colorInventory.activeSlot].GetChild(1).GetComponent<Image>();
+        ColorSlot slot = colorInventory.colorSlots[colorInventory.activeSlot];
+        if (slot.gameColor != null)
+                frameImage.material.SetColor("_Color", slot.gameColor.plainColor);
+            else
+                frameImage.material.SetColor("_Color", colorInventory.defaultColor.GetColor("_Color"));
+        StartCoroutine(fillSlotGradually(frameImage));
+    }
+
+    private IEnumerator  fillSlotGradually(Image frame)
+    {
+        ColorSlot color = colorSlots[colorInventory.activeSlot];
+        float prevValue = frame.material.GetFloat("_fill");
+        float newValue = color.charge / (float) color.maxCapacity;
+
+        for (float i = 0; i < 1; i += 0.01f)
+        {
+            float curvePoint = fillCurve.Evaluate(i);
+            float value = prevValue + ((newValue - prevValue) * curvePoint);
+            frame.material.SetFloat("_fill", value);
+            yield return new WaitForSeconds(0.005f);
+        }
     }
 
     /// <summary>
@@ -86,7 +108,7 @@ public class ColorSlotController : MonoBehaviour
     /// </summary>
     /// <param name="dir"></param> Direction to rotate in.
     private void ActiveColorChanged(int dir) {
-       RotateSlots(dir*-1);
+       RotateSlots(dir);
     }
     #endregion
 }

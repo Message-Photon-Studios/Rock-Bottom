@@ -25,9 +25,7 @@ public class UIController : MonoBehaviour
             colorSlotContainer.SetActive(false);
         }
 
-        if(colorInventory.colorSlots.Count == 3) {colorSlotContainers[0].SetActive(true);}
-        if(colorInventory.colorSlots.Count == 4) {colorSlotContainers[1].SetActive(true);}
-        if(colorInventory.colorSlots.Count == 5) {colorSlotContainers[2].SetActive(true);}
-        if(colorInventory.colorSlots.Count == 6) {colorSlotContainers[3].SetActive(true);}
+        var initialSlotCount = 3;
+        colorSlotContainers[colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
     }
 }
