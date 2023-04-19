@@ -79,6 +79,7 @@ public class ColorSlotController : MonoBehaviour
     #region UnityActions
     //When a color is updated, call this. Currently not used.
     private void ColorUpdate() {
+
     }
 
     /// <summary>

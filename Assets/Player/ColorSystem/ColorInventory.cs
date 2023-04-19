@@ -262,7 +262,6 @@ public class ColorInventory : MonoBehaviour
 [System.Serializable]
 public class ColorSlot
 {
-    [SerializeField] public Image image ;
     [SerializeField] float imageScale;
     [SerializeField] public int maxCapacity = 6;
     [SerializeField] public int charge;
@@ -270,10 +269,6 @@ public class ColorSlot
 
     public void Init(Image setImage)
     {
-        image = setImage;
-        imageScale = image.rectTransform.sizeDelta.y;
-        image.transform.parent.gameObject.SetActive(true);
-        image.gameObject.SetActive(true);
         SetGameColor(gameColor);
         SetCharge(charge);
     }
@@ -284,23 +279,17 @@ public class ColorSlot
         if(charge <= 0)
         {
             gameColor = null;
-            image.color = Color.white;
         }
-
-        image.rectTransform.sizeDelta = new Vector2(image.rectTransform.sizeDelta.x, imageScale*((float)charge/maxCapacity));
-
     }
     public void SetGameColor(GameColor set) 
     {
         if(set == null) return;
         gameColor = set;
-        image.color = gameColor.plainColor;
     }
 
     public void RemoveColor()
     {
         gameColor = null;
-        image.color = Color.white;
         SetCharge(0);
     }
 }
