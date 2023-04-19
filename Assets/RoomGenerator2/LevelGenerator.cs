@@ -181,7 +181,7 @@ public class DungeonGraph
         }
         return remainingDoors;
     }
-
+#if UNITY_EDITOR
     public void draw()
     {
         foreach (var (position, room) in rooms)
@@ -206,6 +206,7 @@ public class DungeonGraph
             }
         }
     }
+#endif
 
     public bool validate()
     {

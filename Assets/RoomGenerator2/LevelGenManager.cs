@@ -25,10 +25,11 @@ public class LevelGenManager : MonoBehaviour
     {
         levelGen?.stepGenerate(size);
     }
-
+#if UNITY_EDITOR
     void OnDrawGizmos() 
     {
         levelGen?.graph.draw();
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
+#endif
 }
