@@ -18,7 +18,7 @@ public class RunForward : Node
 
     public override NodeState Evaluate()
     {
-        body.AddForce(new Vector2(stats.lookDir * stats.GetSpeed() * speedFactor, 0f));
+        body.AddForce(new Vector2(stats.lookDir * stats.GetSpeed() * speedFactor, 0f)*Time.fixedDeltaTime);
         state = NodeState.SUCCESS;
         return state; 
     }
