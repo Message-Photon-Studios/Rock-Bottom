@@ -24,7 +24,7 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] public int activeSlot;
     [SerializeField] InputActionReference changeRightActions;
 
-    [SerializeField] Material defaultColor;
+    [SerializeField] public Material defaultColor;
 
     #region Actions for UI
     
@@ -93,15 +93,13 @@ public class ColorInventory : MonoBehaviour
         if(ActiveSlot().charge > 0)
         {
 
-            onColorUpdated?.Invoke();
             
             GameColor ret = ActiveSlot().gameColor;
 
             int charge = ActiveSlot().charge - 1;
             ActiveSlot().SetCharge(charge);
-
-            if (charge == 0)
-                onColorUpdated?.Invoke();
+            
+            onColorUpdated?.Invoke();
 
             return ret;
             
@@ -172,7 +170,7 @@ public class ColorInventory : MonoBehaviour
     public void AddColor(GameColor color, int amount)
     {
         GameColor setColor;
-        if(ActiveSlot().gameColor != null)
+        if(ActiveSlot().charge > 0)
             setColor = ActiveSlot().gameColor.MixColor(color);
         else
             setColor = color;
@@ -210,9 +208,7 @@ public class ColorInventory : MonoBehaviour
     private void updateBrushColor()
     {
         // brush.
-        GetComponent<SpriteRenderer>().material = 
-            ActiveSlot().gameColor != null && ActiveSlot().charge > 0 ? 
-                ActiveSlot().gameColor.colorMat : defaultColor;
+        GetComponent<SpriteRenderer>().material = ActiveSlot().charge > 0 ? ActiveSlot().gameColor.colorMat : defaultColor;
     }
 
     #endregion
@@ -276,20 +272,14 @@ public class ColorSlot
     public void SetCharge(int set)
     {
         charge = set;
-        if(charge <= 0)
-        {
-            gameColor = null;
-        }
     }
     public void SetGameColor(GameColor set) 
     {
-        if(set == null) return;
         gameColor = set;
     }
 
     public void RemoveColor()
     {
-        gameColor = null;
         SetCharge(0);
     }
 }
