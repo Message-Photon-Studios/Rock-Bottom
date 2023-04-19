@@ -103,6 +103,7 @@ public class ColorSlotController : MonoBehaviour
             frame.material.SetFloat("_fill", value);
             yield return new WaitForSeconds(0.005f);
         }
+        frame.material.SetFloat("_fill", color.charge / (float) color.maxCapacity);
     }
 
     /// <summary>
