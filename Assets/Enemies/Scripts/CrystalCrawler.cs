@@ -118,11 +118,12 @@ public class CrystalCrawler : Enemy
         base.Update();
         animator.SetInteger("velocityY", (int)body.velocity.y);
     }
-
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         viewTrigger.DrawTrigger(stats.GetPosition());
         damageTrigger.DrawTrigger(stats.GetPosition());
         Handles.color = Color.yellow;
         Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
     }
+#endif
 }
