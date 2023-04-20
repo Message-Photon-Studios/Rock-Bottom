@@ -38,7 +38,6 @@ public class EnemyHpController : MonoBehaviour
 
         healthSliderLeft.gameObject.SetActive(true);
         healthSliderRight.gameObject.SetActive(true);
-        Debug.Log("hello");
     }
 
     /// <summary>
