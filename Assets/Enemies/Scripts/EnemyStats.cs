@@ -56,7 +56,6 @@ public class EnemyStats : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         GetComponent<SpriteRenderer>().material = color.colorMat;
-        onHealthChanged?.Invoke(health);
     }
 
     void OnValidate()
