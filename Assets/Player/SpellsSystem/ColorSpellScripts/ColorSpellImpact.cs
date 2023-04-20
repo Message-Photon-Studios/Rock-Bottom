@@ -38,7 +38,7 @@ public class ColorSpellImpact : SpellImpact
             }
 
 
-            if(enemy != null) spell.GetColor().colorEffect.Apply(other.gameObject, transform.position, spell.GetPlayerObj(), spell.GetPower());
+            if(enemy != null) spell.GetColor().ApplyColorEffect(other.gameObject, transform.position, spell.GetPlayerObj(), spell.GetPower());
         }
 
         var instantiatedParticles = GameObject.Instantiate(onImpactParticles, transform.position, transform.rotation);
