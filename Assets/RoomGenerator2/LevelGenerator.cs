@@ -17,7 +17,7 @@ public class Door
         this.pos = pos;
         this.dir = dir;
         this.room = room;
-        this.doorsInRoom = doorsInRoom;
+        this.doorsInRoom = room.repeatable ? 0 : doorsInRoom;
     }
 }
 
@@ -163,7 +163,7 @@ public class DungeonGraph
             break;
         }
 
-        return !found ? (-1, new Vector2()) : (failedTries, door);
+        return !found ? (-1, new Vector2()) : (failedTries + (room.repeatable ? 2 : 0), door);
     }
 
     public List<Door> placeRoom(Vector2 graphPos, Vector2 doorPos, Direction doorDir, CustomRoom prefab)
@@ -344,13 +344,32 @@ public class LevelGenerator
     private (bool, bool) nextRoom(int size)
     {
         // If we are out of rooms but still have to continue, we refill the normal room list
-        if (normalRooms.Count == 0)
+        if (normalRooms.All(room => room.repeatable))
         {
             normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").ToList();
         }
 
         // Get a random element from the list and remove it
-        var nextPos = remainingDoors[Random.Range(0, remainingDoors.Count)];
+        var weightedDoors = new List<Door>();
+        foreach (var door in remainingDoors)
+        {
+            switch (door.doorsInRoom)
+            {
+                case 2:
+                    for (var i = 0; i < LevelGenManager.twoDoorRoomBias; i++)
+                        weightedDoors.Add(door);
+                    break;
+                case 3:
+                    for (var i = 0; i < LevelGenManager.threeDoorRoomBias; i++)
+                        weightedDoors.Add(door);
+                    break;
+                default:
+                    weightedDoors.Add(door);
+                    break;
+            }
+        }
+
+        var nextPos = weightedDoors[Random.Range(0, weightedDoors.Count)];
         remainingDoors.Remove(nextPos);
         var (room, entrance) = getRoom(size - graph.size, nextPos);
         if (room == null)
@@ -364,7 +383,7 @@ public class LevelGenerator
             .ToList();
 
         // If it's a normal room, we remove so it does not repeat
-        if (normalRooms.Contains(room))
+        if (normalRooms.Contains(room) && !room.repeatable)
         {
             normalRooms.Remove(room);
             usedRooms.Add(room);
@@ -472,6 +491,10 @@ public class LevelGenerator
             rooms = normalRooms
                 .Concat(usedRooms)
                 .ToList();
+        }
+        else if (door.room.repeatable)
+        {
+            rooms = rooms.Where(room => !room.repeatable).ToList();
         }
         rooms = rooms.Where(room => room.name != door.room.name).ToList();
         // Shuffle filtered rooms

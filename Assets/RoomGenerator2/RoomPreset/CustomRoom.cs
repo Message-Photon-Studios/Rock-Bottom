@@ -46,7 +46,8 @@ public class CustomRoom : MonoBehaviour
     public static readonly Vector2[] dirVectors = { Vector2.left, Vector2.down, Vector2.right, Vector2.up };
     public static readonly Vector2[] sideToDirVectors = { Vector2.down, Vector2.right, Vector2.up, Vector2.left };
     public static readonly int[] mirrorDir = { 2, 3, 0, 1 };
-    
+
+    public bool repeatable;
     public RoomNodeHolder roomNodes;
 
     public DisplayMode displayMode;
