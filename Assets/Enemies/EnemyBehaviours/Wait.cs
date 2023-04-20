@@ -9,6 +9,12 @@ public class Wait : Node
 
     float timer;
     float lastUpdate;
+
+    /// <summary>
+    /// Only returns success after the timer has run out. After it returns success the timer resets. 
+    /// Will return failure when the timer has not run out.
+    /// </summary>
+    /// <param name="waitForSeconds"></param>
     public Wait(float waitForSeconds)
     {
         this.waitForSeconds = waitForSeconds;

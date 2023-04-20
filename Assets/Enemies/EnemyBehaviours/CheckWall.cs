@@ -9,6 +9,12 @@ public class CheckWall : Node
     float distance;
     Vector2 direction;
 
+    /// <summary>
+    /// Retuns success if the enemy sees a wall in the given direction. The direction will in the X axis when the enemy turns.
+    /// </summary>
+    /// <param name="stats"></param>
+    /// <param name="direction"></param>
+    /// <param name="distance"></param>
     public CheckWall(EnemyStats stats, Vector2 direction, float distance)
     {
         this.stats = stats;

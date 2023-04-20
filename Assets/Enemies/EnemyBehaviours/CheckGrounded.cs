@@ -7,6 +7,12 @@ public class CheckGrounded : Node
 {
     EnemyStats stats;
     float legPos;
+
+    /// <summary>
+    /// Returns success if the enemy is grounded
+    /// </summary>
+    /// <param name="stats"></param>
+    /// <param name="legPos"></param>
     public CheckGrounded (EnemyStats stats, float legPos)
     {
         this.stats = stats;

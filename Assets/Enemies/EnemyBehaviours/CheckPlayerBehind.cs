@@ -8,6 +8,11 @@ public class CheckPlayerBehind : Node
     Transform player;
     EnemyStats stats;
 
+    /// <summary>
+    /// Returns success if the player is behind the enemy
+    /// </summary>
+    /// <param name="stats"></param>
+    /// <param name="player"></param>
     public CheckPlayerBehind(EnemyStats stats, PlayerStats player)
     {
         this.stats = stats;

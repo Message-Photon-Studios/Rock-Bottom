@@ -10,7 +10,7 @@ public class AnimationBool : Node
     bool setTo;
 
     /// <summary>
-    /// Activates the specified animation trigger on the animator and then returns success.
+    /// Sets a specific animation bool on the animator
     /// </summary>
     /// <param name="animator"></param>
     /// <param name="triggerName"></param>

@@ -11,6 +11,13 @@ public class EnemyJump : Node
     float jumpForce;
     float forwardForce;
 
+    /// <summary>
+    /// Makes the enemy jump
+    /// </summary>
+    /// <param name="stats"></param>
+    /// <param name="body"></param>
+    /// <param name="jumpForce"></param>
+    /// <param name="forwardForce"></param>
     public EnemyJump(EnemyStats stats, Rigidbody2D body, float jumpForce, float forwardForce)
     {
         this.stats = stats;

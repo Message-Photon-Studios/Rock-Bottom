@@ -9,6 +9,11 @@ public class RunForward : Node
     Rigidbody2D body;
     float speedFactor;
 
+    /// <summary>
+    /// This node makes the enemy run forward as long as it isn't asleep.
+    /// </summary>
+    /// <param name="stats"></param>
+    /// <param name="speedFactor">This is multiplied with the enemy movement speed.</param>
     public RunForward(EnemyStats stats, float speedFactor)
     {
         this.stats = stats;
@@ -18,6 +23,12 @@ public class RunForward : Node
 
     public override NodeState Evaluate()
     {
+        if(stats.IsAsleep())
+        {
+            state = NodeState.FAILURE;
+            return state;
+        }
+
         body.AddForce(new Vector2(stats.lookDir * stats.GetSpeed() * speedFactor, 0f)*Time.fixedDeltaTime);
         state = NodeState.SUCCESS;
         return state; 

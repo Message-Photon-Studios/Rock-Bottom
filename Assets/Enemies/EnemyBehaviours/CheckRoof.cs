@@ -12,6 +12,10 @@ public class CheckRoof : Node
         this.stats = stats;
     }
 
+    /// <summary>
+    /// Returns success if the enemy has a roof above it
+    /// </summary>
+    /// <returns></returns>
     public override NodeState Evaluate()
     {
         bool test = Physics2D.Raycast(stats.GetPosition(), Vector2.up, 2f, ~LayerMask.GetMask("Enemy", "Player", "Spell"));

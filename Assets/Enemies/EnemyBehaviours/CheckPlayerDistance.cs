@@ -10,6 +10,13 @@ public class CheckPlayerDistance : Node
     float minDistanceSqr;
     float maxDistanceSqr;
 
+    /// <summary>
+    /// Returns success if the player is within the distance range specified
+    /// </summary>
+    /// <param name="stats"></param>
+    /// <param name="player"></param>
+    /// <param name="minDistance"></param>
+    /// <param name="maxDistance"></param>
     public CheckPlayerDistance(EnemyStats stats, PlayerStats player, float minDistance, float maxDistance)
     {
         this.stats = stats;
