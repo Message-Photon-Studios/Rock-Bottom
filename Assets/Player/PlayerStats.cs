@@ -43,7 +43,11 @@ public class PlayerStats : MonoBehaviour
         {
             invincibilityTimer -= Time.deltaTime;
             if(invincibilityTimer < 0)
+            {
                 invincibilityTimer = 0;
+                Physics2D.IgnoreLayerCollision(3,6,false);
+            }
+                
         }
     }
 
@@ -54,6 +58,7 @@ public class PlayerStats : MonoBehaviour
     public void DamagePlayer(float damage)
     {
         if(invincibilityTimer > 0) return;
+        Physics2D.IgnoreLayerCollision(3,6);
         health -= damage;
         invincibilityTimer = hitInvincibilityTime;
         if(health <= 0)
@@ -100,6 +105,6 @@ public class PlayerStats : MonoBehaviour
         Debug.Log("Player died. Player deaths not implemented");
         onPlayerDied?.Invoke();
         
-        gameManager.EndLevel();
+        gameManager?.EndLevel();
     }
 }
