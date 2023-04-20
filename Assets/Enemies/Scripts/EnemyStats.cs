@@ -93,7 +93,7 @@ public class EnemyStats : MonoBehaviour
             if(sleepTimer <= 0)
             {
                 sleepTimer = 0;
-                WakeEnemy();
+                WakeEnemyAnimation();
             }
         }
 
@@ -158,7 +158,7 @@ public class EnemyStats : MonoBehaviour
         if(enemySleep)
         {
             damage *= sleepDamageBonus;
-            WakeEnemy();
+            WakeEnemyAnimation();
         }
 
         health -= damage;
@@ -359,19 +359,25 @@ public class EnemyStats : MonoBehaviour
     }
 
     /// <summary>
+    /// Starts the enemy wake animation
+    /// </summary>
+    private void WakeEnemyAnimation()
+    {
+        animator.SetBool("sleep", false); //TODO make animation event
+        if(sleepParticles)
+        {
+            sleepParticles.GetComponent<ParticleSystem>().Stop();
+            GameObject.Destroy(sleepParticles, 1f);
+        }
+    }
+
+    /// <summary>
     /// Wakes the enemy
     /// </summary>
     public void WakeEnemy()
     {
         enemySleep = false;
         sleepTimer = 0;
-        if(sleepParticles)
-        {
-            sleepParticles.GetComponent<ParticleSystem>().Stop();
-            GameObject.Destroy(sleepParticles, 1f);
-        }
-
-        animator.SetBool("sleep", false); //TODO make animation event
     }
 
     /// <summary>
