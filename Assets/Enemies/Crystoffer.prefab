@@ -55,6 +55,7 @@ MonoBehaviour:
   colorAmmount: 4
   movementSpeed: 3500
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
+  lookDir: -1
   currentCombo: 0
 --- !u!114 &3442240939785713313
 MonoBehaviour:
@@ -69,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCollisionDamage: 10
-  playerCollisionForce: 1800
+  playerCollisionForce: {x: 2000, y: 0}
   attackTrigger:
     radius: 0.5
     offset: {x: -0.44, y: 0.1}
