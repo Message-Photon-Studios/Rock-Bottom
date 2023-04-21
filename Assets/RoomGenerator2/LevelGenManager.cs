@@ -5,6 +5,8 @@ using UnityEngine;
 public class LevelGenManager : MonoBehaviour
 {
     public static float ROOMSIZE = 4*.9f;
+    public static int twoDoorRoomBias = 6;
+    public static int threeDoorRoomBias = 2;
     private LevelGenerator levelGen;
     public GameObject player;
 

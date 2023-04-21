@@ -33,22 +33,6 @@ public class RoomNodeHolder : SerializableDictionary<Vector2, RoomNode>
         }
         return neighbors;
     }
-
-    public List<(Vector2, Direction)> getDoors()
-    {
-        var doors = new List<(Vector2, Direction)>();
-        foreach (var node in this)
-        {
-            var neighbors = getNeighbors(node.Key);
-            for (var i = 0; i < 4; i++)
-            {
-                if (node.Value.doors[i] && neighbors[i] == null)
-                    doors.Add((node.Key, (Direction)i));
-            }
-        }
-
-        return doors;
-    }
 }
 
 [Serializable]
@@ -62,7 +46,8 @@ public class CustomRoom : MonoBehaviour
     public static readonly Vector2[] dirVectors = { Vector2.left, Vector2.down, Vector2.right, Vector2.up };
     public static readonly Vector2[] sideToDirVectors = { Vector2.down, Vector2.right, Vector2.up, Vector2.left };
     public static readonly int[] mirrorDir = { 2, 3, 0, 1 };
-    
+
+    public bool repeatable;
     public RoomNodeHolder roomNodes;
 
     public DisplayMode displayMode;
@@ -191,6 +176,32 @@ public class CustomRoom : MonoBehaviour
         
         node.doors[(int)doorDir] = !node.doors[(int)doorDir];
         EditorUtility.SetDirty(this);
+    }
+
+    public List<Door> getDoors()
+    {
+        var count = 0;
+        foreach (var node in roomNodes)
+        {
+            var neighbors = roomNodes.getNeighbors(node.Key);
+            for (var i = 0; i < 4; i++)
+            {
+                if (node.Value.doors[i] && neighbors[i] == null)
+                    count++;
+            }
+        }
+        var doors = new List<Door>();
+        foreach (var node in roomNodes)
+        {
+            var neighbors = roomNodes.getNeighbors(node.Key);
+            for (var i = 0; i < 4; i++)
+            {
+                if (node.Value.doors[i] && neighbors[i] == null)
+                    doors.Add(new Door(node.Key, (Direction)i, this, count - 1));
+            }
+        }
+
+        return doors;
     }
 #endif
 }
