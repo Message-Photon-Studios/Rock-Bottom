@@ -48,6 +48,8 @@ public class ColorSpell : MonoBehaviour
 
     public int lookDir {get; protected set;}
 
+    private HashSet<string> hitEnemies = new HashSet<string>();
+
     /// <summary>
     /// Needs to be called after the spell is instantiated
     /// </summary>
@@ -88,6 +90,8 @@ public class ColorSpell : MonoBehaviour
         {
             impact.Init(this);
         }
+
+        hitEnemies = new HashSet<string>();
     }
 
     void OnEnable()
@@ -95,18 +99,20 @@ public class ColorSpell : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
-        if(destroyOnImpact) 
+        if(destroyOnImpact && !hitEnemies.Contains(other.gameObject.name)) 
         {
             Impact(other);
             Destroy(gameObject);
+            hitEnemies.Add(other.gameObject.name);
             return;
         }
 
-        if(other.CompareTag("Enemy"))
+        if(other.CompareTag("Enemy") && !hitEnemies.Contains(other.gameObject.name))
         {
             Impact(other);
+            hitEnemies.Add(other.gameObject.name);
             if(destroyOnHit) Destroy(gameObject);
             return;
         }
