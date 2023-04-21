@@ -16,6 +16,8 @@ public class PlayerHpController : MonoBehaviour
         playerStats.onHealthChanged += HpChanged;
         playerStats.onPlayerDied += PlayerDied;
         gameObject.SetActive(true);
+        MaxHpChanged(playerStats.GetMaxHealth());
+        HpChanged(playerStats.GetHealth());
     }
 
     private void OnDisable() {

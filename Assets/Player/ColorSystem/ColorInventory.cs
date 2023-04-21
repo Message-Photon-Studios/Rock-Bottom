@@ -22,9 +22,10 @@ public class ColorInventory : MonoBehaviour
     /// The index of the active color
     /// </summary>
     [SerializeField] public int activeSlot;
-    [SerializeField] InputActionReference changeRightActions;
 
-    [SerializeField] Material defaultColor;
+    [SerializeField] public ColorSpell defaultSpell;
+    [SerializeField] InputActionReference changeRightActions;
+    [SerializeField] public Material defaultColor;
 
     #region Actions for UI
     
@@ -42,6 +43,11 @@ public class ColorInventory : MonoBehaviour
     /// Called when the number of color slots is changed
     /// </summary>
     public UnityAction onColorSlotsChanged;
+    
+    /// <summary>
+    /// Called when the color spell of a color slot is changed. The int is the index of the chaged slot
+    /// </summary>
+    public UnityAction<int> onColorSpellChanged;
     
     #endregion
 
@@ -93,15 +99,13 @@ public class ColorInventory : MonoBehaviour
         if(ActiveSlot().charge > 0)
         {
 
-            onColorUpdated?.Invoke();
             
             GameColor ret = ActiveSlot().gameColor;
 
             int charge = ActiveSlot().charge - 1;
             ActiveSlot().SetCharge(charge);
-
-            if (charge == 0)
-                onColorUpdated?.Invoke();
+            
+            onColorUpdated?.Invoke();
 
             return ret;
             
@@ -128,6 +132,19 @@ public class ColorInventory : MonoBehaviour
             return ActiveSlot().gameColor;
         }
         return null;
+    }
+
+    /// <summary>
+    /// Returns the colorspell for the active slot or the default spell if no such spell is attached
+    /// </summary>
+    /// <returns></returns>
+    public ColorSpell GetActiveColorSpell()
+    {
+        if(ActiveSlot().colorSpell)
+        {
+            return ActiveSlot().colorSpell;
+        }
+        return defaultSpell;
     }
 
     #endregion
@@ -172,7 +189,7 @@ public class ColorInventory : MonoBehaviour
     public void AddColor(GameColor color, int amount)
     {
         GameColor setColor;
-        if(ActiveSlot().gameColor != null)
+        if(ActiveSlot().charge > 0)
             setColor = ActiveSlot().gameColor.MixColor(color);
         else
             setColor = color;
@@ -210,9 +227,60 @@ public class ColorInventory : MonoBehaviour
     private void updateBrushColor()
     {
         // brush.
-        GetComponent<SpriteRenderer>().material = 
-            ActiveSlot().gameColor != null && ActiveSlot().charge > 0 ? 
-                ActiveSlot().gameColor.colorMat : defaultColor;
+        GetComponent<SpriteRenderer>().material = ActiveSlot().charge > 0 ? ActiveSlot().gameColor.colorMat : defaultColor;
+    }
+
+    #endregion
+
+    #region Change color spells
+
+    /// <summary>
+    /// Chagnes the color spell for the active slot
+    /// </summary>
+    /// <param name="newSpell"></param>
+    public void ChangeActiveSlotColorSpell(ColorSpell newSpell)
+    {
+        ActiveSlot().colorSpell = newSpell;
+        onColorSpellChanged?.Invoke(activeSlot);
+    }
+
+    /// <summary>
+    /// Returns the color spell of the specifed slot. Returns the default spell if no spell is specified for that slot
+    /// </summary>
+    /// <param name="index"> The index of the color slot</param>
+    /// <returns></returns>
+    public ColorSpell GetColorSpell(int index)
+    {
+        if(colorSlots[index].colorSpell == null) 
+            return defaultSpell;
+        return colorSlots[index].colorSpell;
+    }
+
+    /// <summary>
+    /// Changes the color spell of the specified slot
+    /// </summary>
+    /// <param name="index"> The index of the slot that the color slot should change on</param>
+    /// <param name="newSpell"></param>
+    public void ChangeColorSpell(int index, ColorSpell newSpell)
+    {
+        if(index < 0 || index > colorSlots.Count) 
+        {
+            Debug.LogWarning("Changed spell of color slot that didnt exist. Color slots available = " + colorSlots.Count + " index = " + index);
+            return;
+        }
+        colorSlots[index].colorSpell = newSpell;
+        onColorSpellChanged?.Invoke(index);
+    }
+
+    /// <summary>
+    /// Resets all color spells to their default state
+    /// </summary>
+    public void ResetAllColorSpells()
+    {
+        for (int i = 0; i < colorSlots.Count; i++)
+        {
+            ChangeColorSpell(i, null);
+        }
     }
 
     #endregion
@@ -240,11 +308,12 @@ public class ColorInventory : MonoBehaviour
     }
 
     /// <summary>
-    /// Removes all color and resets the ammount of slots to the initial state.
+    /// Removes all color, resets all color spells and resets the ammount of slots to the initial state.
     /// </summary>
     public void ResetColorSlots()
     {
         RemoveAllColors();
+        ResetAllColorSpells();
         while(colorSlots.Count > startColorSlots)
             RemoveColorSlot();
         onColorSlotsChanged?.Invoke();
@@ -252,6 +321,7 @@ public class ColorInventory : MonoBehaviour
     }
 
     #endregion
+
 }
 
 #region Color slot
@@ -262,18 +332,13 @@ public class ColorInventory : MonoBehaviour
 [System.Serializable]
 public class ColorSlot
 {
-    [SerializeField] public Image image ;
     [SerializeField] float imageScale;
     [SerializeField] public int maxCapacity = 6;
     [SerializeField] public int charge;
     [SerializeField] public GameColor gameColor;
-
+    [SerializeField] public ColorSpell colorSpell;
     public void Init(Image setImage)
     {
-        image = setImage;
-        imageScale = image.rectTransform.sizeDelta.y;
-        image.transform.parent.gameObject.SetActive(true);
-        image.gameObject.SetActive(true);
         SetGameColor(gameColor);
         SetCharge(charge);
     }
@@ -281,26 +346,14 @@ public class ColorSlot
     public void SetCharge(int set)
     {
         charge = set;
-        if(charge <= 0)
-        {
-            gameColor = null;
-            image.color = Color.white;
-        }
-
-        image.rectTransform.sizeDelta = new Vector2(image.rectTransform.sizeDelta.x, imageScale*((float)charge/maxCapacity));
-
     }
     public void SetGameColor(GameColor set) 
     {
-        if(set == null) return;
         gameColor = set;
-        image.color = gameColor.plainColor;
     }
 
     public void RemoveColor()
     {
-        gameColor = null;
-        image.color = Color.white;
         SetCharge(0);
     }
 }

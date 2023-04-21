@@ -16,6 +16,11 @@ public class EnemyStats : MonoBehaviour
     private Collider2D myCollider;  
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
 
+    /// <summary>
+    /// The direction that the enemy is looking
+    /// </summary>
+    public float lookDir = -1;
+
     private float normalMovementSpeed; //The normal movement speed of the enemy
     private float movementSpeedTimer; 
 
@@ -51,7 +56,6 @@ public class EnemyStats : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         GetComponent<SpriteRenderer>().material = color.colorMat;
-        onHealthChanged?.Invoke(health);
     }
 
     void OnValidate()
@@ -89,7 +93,7 @@ public class EnemyStats : MonoBehaviour
             if(sleepTimer <= 0)
             {
                 sleepTimer = 0;
-                WakeEnemy();
+                WakeEnemyAnimation();
             }
         }
 
@@ -154,7 +158,7 @@ public class EnemyStats : MonoBehaviour
         if(enemySleep)
         {
             damage *= sleepDamageBonus;
-            WakeEnemy();
+            WakeEnemyAnimation();
         }
 
         health -= damage;
@@ -350,6 +354,21 @@ public class EnemyStats : MonoBehaviour
             instantiatedParticles.transform.parent = transform;
             sleepParticles = instantiatedParticles;
         }
+
+        animator.SetBool("sleep", true);
+    }
+
+    /// <summary>
+    /// Starts the enemy wake animation
+    /// </summary>
+    private void WakeEnemyAnimation()
+    {
+        animator.SetBool("sleep", false); //TODO make animation event
+        if(sleepParticles)
+        {
+            sleepParticles.GetComponent<ParticleSystem>().Stop();
+            GameObject.Destroy(sleepParticles, 1f);
+        }
     }
 
     /// <summary>
@@ -359,12 +378,6 @@ public class EnemyStats : MonoBehaviour
     {
         enemySleep = false;
         sleepTimer = 0;
-        if(sleepParticles)
-        {
-            sleepParticles.GetComponent<ParticleSystem>().Stop();
-            GameObject.Destroy(sleepParticles, 1f);
-        }
-
     }
 
     /// <summary>

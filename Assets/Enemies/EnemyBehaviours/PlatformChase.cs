@@ -58,7 +58,7 @@ public class PlatformChase : Node
         {
             animator.SetBool(walkAnimation, true);
             chasePos = player.position.x;
-            body.AddForce(new Vector2(((chasePos < stats.GetPosition().x)?-1:1)*stats.GetSpeed()*chaseSpeedFactor, 0)*Time.deltaTime);
+            body.AddForce(new Vector2(((chasePos < stats.GetPosition().x)?-1:1)*stats.GetSpeed()*chaseSpeedFactor, 0)*Time.fixedDeltaTime);
         }
         
         state = NodeState.RUNNING;

@@ -26,7 +26,7 @@ public class LevelGenManager : MonoBehaviour
     {
         levelGen?.stepGenerate(size);
     }
-
+#if UNITY_EDITOR
     void OnDrawGizmos() 
     {
         levelGen?.graph.draw();

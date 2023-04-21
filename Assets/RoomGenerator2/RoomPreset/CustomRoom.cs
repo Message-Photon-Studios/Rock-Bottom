@@ -69,7 +69,8 @@ public class CustomRoom : MonoBehaviour
 
     [HideInInspector]
     public Vector2 selectedNode;
-
+    
+#if UNITY_EDITOR
     public void draw(Vector2 shift)
     {
         foreach (var node in roomNodes)
@@ -106,7 +107,7 @@ public class CustomRoom : MonoBehaviour
             }
         }
     }
-    
+
     private void OnDrawGizmos()
     {
         draw(Vector2.zero);
@@ -191,4 +192,5 @@ public class CustomRoom : MonoBehaviour
         node.doors[(int)doorDir] = !node.doors[(int)doorDir];
         EditorUtility.SetDirty(this);
     }
+#endif
 }
