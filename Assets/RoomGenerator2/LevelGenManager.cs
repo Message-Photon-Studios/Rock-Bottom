@@ -8,6 +8,7 @@ public class LevelGenManager : MonoBehaviour
     public static int twoDoorRoomBias = 6;
     public static int threeDoorRoomBias = 2;
     private LevelGenerator levelGen;
+    public GameObject player;
 
     public int size;
 
@@ -33,5 +34,9 @@ public class LevelGenManager : MonoBehaviour
         levelGen?.graph.draw();
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
-#endif
+
+    private void FixedUpdate()
+    {
+        levelGen?.minimap?.testPosition(player.transform.position);
+    }
 }
