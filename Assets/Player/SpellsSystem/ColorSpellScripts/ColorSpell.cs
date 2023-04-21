@@ -64,6 +64,11 @@ public class ColorSpell : MonoBehaviour
         this.player = player;
         this.lookDir = lookDir;
 
+        foreach(Collider2D col in GetComponents<Collider2D>())
+        {
+            col.offset *= new Vector2(lookDir, 1);
+        }
+
         var spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {

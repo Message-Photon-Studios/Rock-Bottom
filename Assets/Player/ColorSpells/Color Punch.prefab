@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3321278458073070405}
   - component: {fileID: 3321278458073070400}
+  - component: {fileID: 3293947447571823584}
   - component: {fileID: -2812139904606595728}
   - component: {fileID: 3321278458073070407}
   - component: {fileID: 4874330200776334801}
@@ -58,6 +59,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 6
+--- !u!58 &3293947447571823584
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.85, y: -0.1}
+  serializedVersion: 2
+  m_Radius: 0.6
 --- !u!70 &-2812139904606595728
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -72,7 +89,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 1.6, y: -0.1}
-  m_Size: {x: 2.7, y: 1.2}
+  m_Size: {x: 2.5, y: 1.2}
   m_Direction: 1
 --- !u!114 &3321278458073070407
 MonoBehaviour:
@@ -174,7 +191,7 @@ MonoBehaviour:
   powerScale: 2
   destroyOnImpact: 0
   destroyOnHit: 0
-  lifeTime: 100
+  lifeTime: 0.7
   animationTrigger: handSpell
   onImpact:
   - {fileID: 3321278458073070407}
