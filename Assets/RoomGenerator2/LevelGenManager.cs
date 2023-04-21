@@ -38,3 +38,4 @@ public class LevelGenManager : MonoBehaviour
         levelGen?.minimap?.testPosition(player.transform.position);
     }
 }
+#endif
