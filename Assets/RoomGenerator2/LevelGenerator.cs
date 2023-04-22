@@ -109,7 +109,7 @@ public class DungeonGraph
                 // Check that there is a new door to use as future potential door
                 foreach (var door in doors.Where(door => door.dir == Direction.Up))
                 {
-                    if (isTopDoorSuitable(door.pos))
+                    if (isTopDoorSuitable(door.pos + CustomRoom.dirVectors[(int)Direction.Up]))
                         return false;
                 }
                 return true;
@@ -185,30 +185,16 @@ public class DungeonGraph
         var remainingDoors = new List<Door>();
         // Return the list of doors that can be used to connect to other rooms
         var doors = prefab.getDoors();
+
         foreach (var door in doors)
         {
-            var node = prefab.roomNodes[door.pos];
-            for (var i = 0; i < node.doors.Length; i++)
-            {
-                // get the adjacent node to the door
-                var neighborPos = door.pos + CustomRoom.dirVectors[i] + shift;
-                // If the door is open and there is no node there, add it to the list of remaining doors
-                if (node.doors[i] && !nodes.ContainsKey(neighborPos))
-                    remainingDoors.Add(new Door(door.pos + shift, (Direction)i, prefab, door.doorsInRoom));
-            }
+            var neighborPos = door.pos + shift + CustomRoom.dirVectors[(int)door.dir];
+            if (nodes.ContainsKey(neighborPos))
+                continue;
+            door.pos += shift;
+            remainingDoors.Add(door);
         }
 
-        //foreach (var node in prefab.roomNodes)
-        //{
-        //    for (var i = 0; i < node.Value.doors.Length; i++)
-        //    {
-        //        // get the adjacent node to the door
-        //        var neighborPos = node.Key + CustomRoom.dirVectors[i] + shift;
-        //        // If the door is open and there is no node there, add it to the list of remaining doors
-        //        if (node.Value.doors[i] && !nodes.ContainsKey(neighborPos))
-        //            remainingDoors.Add(new Door(node.Key + shift, (Direction)i));
-        //    }
-        //}
         return remainingDoors;
     }
 #if UNITY_EDITOR
@@ -296,13 +282,12 @@ public class LevelGenerator
 
             initGeneration();
             var res = tryGenerate(size);
-            if (!res) 
-                continue;
-
+            if (!res) continue;
             endGeneration();
+
         } while (!graph.validate());
         insertPrefabs();
-
+        
         minimap = new Minimap(graph);
     }
 
@@ -331,7 +316,7 @@ public class LevelGenerator
     {
         var initRoom = Resources.Load<CustomRoom>("Rooms/InitRoom");
         remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0)};
-        normalRooms = new List<CustomRoom>();
+        normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").ToList();
         closingRooms = Resources.LoadAll<CustomRoom>("Rooms/ClosingRooms").ToList();
         usedRooms = new List<CustomRoom>();
         graph = new DungeonGraph(initRoom, this);
@@ -349,7 +334,7 @@ public class LevelGenerator
         // If we are out of rooms but still have to continue, we refill the normal room list
         if (normalRooms.All(room => room.repeatable))
         {
-            normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").ToList();
+            normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").Where(room => !room.repeatable).ToList();
         }
 
         // Get a random element from the list and remove it
@@ -378,6 +363,7 @@ public class LevelGenerator
         if (room == null)
             return (false, false);
         var exits = graph.placeRoom(nextPos.pos, entrance, nextPos.dir, room);
+
         processNewDoors(exits);
         // For each remainining door, ensure that there is no adjacent node in the graph
         // If there is, remove it from the list
@@ -401,22 +387,15 @@ public class LevelGenerator
         // Get all doors that are looking upwards and get the one with the hightest y value
         var topDoors = newDoors
             .Where(door => door.dir == Direction.Up)
+            .Where(door => graph.isTopDoorSuitable(door.pos + CustomRoom.dirVectors[(int)Direction.Up]))
             .OrderBy(door => door.pos.y)
             .ToList();
-
-        for (var i = 0; i < topDoors.Count; i++)
-        {
-            if (graph.isTopDoorSuitable(topDoors[i].pos + CustomRoom.dirVectors[(int)Direction.Up])) 
-                continue;
-
-            topDoors.RemoveAt(i);
-            i--;
-        }
+        
         if (topDoors.Count > 0 && topDoors.Last().pos.y > topDoor.pos.y)
         {
             remainingDoors.Add(topDoor);
             topDoor = topDoors.Last();
-            newDoors.Remove(topDoors.Last());
+            newDoors.Remove(topDoor);
         }
         // Add all new doors to the remaining door list
         remainingDoors = remainingDoors.Concat(newDoors).ToList();

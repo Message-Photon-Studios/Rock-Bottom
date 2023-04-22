@@ -197,7 +197,7 @@ public class CustomRoom : MonoBehaviour
             for (var i = 0; i < 4; i++)
             {
                 if (node.Value.doors[i] && neighbors[i] == null)
-                    doors.Add(new Door(node.Key, (Direction)i, this, count - 1));
+                    doors.Add(new Door(node.Key, (Direction)i, this, count));
             }
         }
 
