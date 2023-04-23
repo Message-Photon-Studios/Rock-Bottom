@@ -46,6 +46,7 @@ public class PlatformChase : Node
         if(stats.IsAsleep() || (stopped != null && (bool)stopped))
         {
             state = NodeState.FAILURE;
+            animator.SetBool(walkAnimation, false);
             return state;
         }
 
