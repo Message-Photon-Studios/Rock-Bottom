@@ -183,6 +183,5 @@ public class ColorSpell : MonoBehaviour
 public struct BottleSprite
 {
     public Sprite bigSprite;
-    public Sprite mediumSprite;
-    public Sprite smallSprite;
+    public Sprite bigSpriteMask;
 }
