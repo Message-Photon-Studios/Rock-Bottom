@@ -111,4 +111,13 @@ public class PlayerStats : MonoBehaviour
         
         gameManager?.EndLevel();
     }
+
+    /// <summary>
+    /// Returns true if the player is invincible
+    /// </summary>
+    /// <returns></returns>
+    public bool IsInvincible()
+    {
+        return invincibilityTimer > 0;
+    }
 }
