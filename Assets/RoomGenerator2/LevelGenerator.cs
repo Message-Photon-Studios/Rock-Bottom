@@ -103,7 +103,7 @@ public class DungeonGraph
             var doorNeighborLocal = parent.topDoor.pos + Vector2.up - shift;
             if (room.ContainsKey(doorNeighborLocal))
             {
-                if (!room[doorNeighborLocal].doors[CustomRoom.mirrorDir[(int)Direction.Down]])
+                if (!room[doorNeighborLocal].doors[(int)Direction.Down])
                     return true;
 
                 // Check that there is a new door to use as future potential door
@@ -130,14 +130,14 @@ public class DungeonGraph
         if (mirroredEntrances.Count == 0)
             return (-1, new Vector2(0, 0));
         // Order entrances from lowest y to highest y
-        var orderedEntrances = mirroredEntrances.OrderBy(pos => pos.y).ToArray();
+        var orderedEntrances = mirroredEntrances.OrderBy(pos => pos.y).Reverse().ToArray();
         // Get the position in the graph of the entrance
         var entrancePos = doorPos + CustomRoom.dirVectors[(int)doorDir];
 
         // Test the room with each entrance
         var failedTries = 0;
-        var door = new Vector2(0, 0);
         var found = false;
+        var doorsToDecide = new List<(int, Vector2)>();
         foreach (var entrance in orderedEntrances)
         {
             // Get the vector shift needed to move the room to the graph door
@@ -157,13 +157,15 @@ public class DungeonGraph
                 failedTries++;
                 continue;
             }
-
+            
             found = true;
-            door = entrance;
-            break;
+            doorsToDecide.Add((failedTries, entrance));
         }
 
-        return !found ? (-1, new Vector2()) : (failedTries + (room.repeatable ? 2 : 0), door);
+        doorsToDecide.Shuffle();
+        doorsToDecide = doorsToDecide.OrderBy(door => door.Item1).ToList();
+
+        return !found ? (-1, new Vector2()) : (failedTries + (room.repeatable ? 2 : 0), doorsToDecide[Random.Range(0, doorsToDecide.Count)].Item2);
     }
 
     public List<Door> placeRoom(Vector2 graphPos, Vector2 doorPos, Direction doorDir, CustomRoom prefab)
