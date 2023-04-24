@@ -179,6 +179,7 @@ public class ColorSpell : MonoBehaviour
 /// <summary>
 /// This struct keeps track of all sprites for a bottle
 /// </summary>
+[System.Serializable]
 public struct BottleSprite
 {
     public Sprite bigSprite;
