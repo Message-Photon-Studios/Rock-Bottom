@@ -144,12 +144,13 @@ public class PlayerMovement : MonoBehaviour
     #region Camera Check
     void CheckBelowStart()
     {
-        if(focusPoint == null) return;
+        if(focusPoint == null && movementRoot.totalRoot) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, -checkPointY, focusPoint.localPosition.z);
     }
 
     void CheckAboveStart()
     {
+        if(focusPoint == null && movementRoot.totalRoot) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkPointY, focusPoint.localPosition.z);
     }
 
@@ -186,6 +187,8 @@ public class PlayerMovement : MonoBehaviour
         movementRoot.UpdateTimers();
 
         float walkDir = walkAction.action.ReadValue<float>();
+
+        if(movementRoot.totalRoot) walkDir = 0;
 
         if(walkDir < 0 && lookDir > 0 ) Flip();
         else if(walkDir > 0 && lookDir < 0) Flip();
@@ -272,6 +275,11 @@ public class MovementRoot
     /// If it is true then the player should be rooted. 
     /// </summary>
     public bool rooted {get; private set;}
+    /// <summary>
+    /// If the player is total rooted then the camera can't be moved as well
+    /// </summary>
+    /// <value></value>
+    public bool totalRoot {get; private set;}
     private Dictionary<string, float> effects;
 
     public MovementRoot(string[] rootEffects)
@@ -302,6 +310,28 @@ public class MovementRoot
                 effects.Remove(effect);
         }
 
+        rooted = effects.Count > 0;
+    }
+
+    /// <summary>
+    /// Call this method to root or unroot the player. The player will only be unrooted completely if it has no effects that roots it. 
+    /// This does also set the total root. Setting the total root will disable camera movement completely
+    /// </summary>
+    /// <param name="effect"></param>
+    /// <param name="root"></param>
+    public void SetTotalRoot(string effect, bool root)
+    {
+        if(root)
+        {
+            if(!effects.ContainsKey(effect))
+                effects.Add(effect, -1);
+        } else
+        {
+            if(effects.ContainsKey(effect))
+                effects.Remove(effect);
+        }
+
+        totalRoot = root;
         rooted = effects.Count > 0;
     }
 
