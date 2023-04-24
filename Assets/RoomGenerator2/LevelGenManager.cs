@@ -35,6 +35,11 @@ public class LevelGenManager : MonoBehaviour
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
 
+    private void Update()
+    {
+        levelGen?.cullRooms();
+    }
+
     private void FixedUpdate()
     {
         levelGen?.minimap?.testPosition(player.transform.position);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -248,12 +249,15 @@ public class DungeonGraph
 
 public class LevelGenerator
 {
+    private static float ROOMSIZE => LevelGenManager.ROOMSIZE;
+
     public DungeonGraph graph;
     public Minimap minimap;
     private List<CustomRoom> normalRooms;
     private List<CustomRoom> closingRooms;
 
     private List<CustomRoom> usedRooms;
+    private List<(Vector2, CustomRoom)> prefabs;
 
     public List<Door> remainingDoors;
     public Door topDoor;
@@ -306,9 +310,11 @@ public class LevelGenerator
         foreach (var room in graph.rooms)
         {
             // Instantiate the room
-            var roomObj = Object.Instantiate(room.Item2, room.Item1 * 2 * LevelGenManager.ROOMSIZE, Quaternion.identity);
+            var pos = room.Item1 * 2 * LevelGenManager.ROOMSIZE;
+            var roomObj = Object.Instantiate(room.Item2, pos, Quaternion.identity);
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
+            prefabs.Add((pos, roomObj));
         }
         // Add the roomHolder to the current scene
         SceneManager.MoveGameObjectToScene(roomHolder, SceneManager.GetActiveScene());
@@ -321,6 +327,7 @@ public class LevelGenerator
         normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").ToList();
         closingRooms = Resources.LoadAll<CustomRoom>("Rooms/ClosingRooms").ToList();
         usedRooms = new List<CustomRoom>();
+        prefabs = new List<(Vector2, CustomRoom)>();
         graph = new DungeonGraph(initRoom, this);
         topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0);
     }
@@ -505,5 +512,24 @@ public class LevelGenerator
         return (results[0].Item1, results[0].Item2);
     }
 
+    
 
+    public void cullRooms()
+    {
+        // Get the player position
+        var camPos = Camera.main.transform.position;
+        var cameraSize = Camera.main.orthographicSize;
+        var cameraWidth = cameraSize * Camera.main.aspect;
+        // Make the square that will be used to cull rooms
+        var cullSquare = new Rect(camPos.x - cameraWidth, camPos.y - cameraSize, cameraWidth * 2, cameraSize * 2);
+        foreach (var room in prefabs)
+        {
+            var size = room.Item2.size * 2 * ROOMSIZE;
+            var pos = room.Item2.minNode * 2 * ROOMSIZE - Vector2.one * ROOMSIZE + room.Item1;
+            // Make room square
+            var roomSquare = new Rect(pos.x, pos.y, size.x, size.y);
+            
+            room.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
+        }
+    }
 }
