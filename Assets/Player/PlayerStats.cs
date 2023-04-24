@@ -11,6 +11,8 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] float health = 100;
     [SerializeField] float hitInvincibilityTime;
     [SerializeField] GameManager gameManager;
+    [SerializeField] Animator animator;
+    [SerializeField] PlayerMovement movement;
     float maxHealth;
     float invincibilityTimer = 0;
 
@@ -63,8 +65,10 @@ public class PlayerStats : MonoBehaviour
         invincibilityTimer = hitInvincibilityTime;
         if(health <= 0)
         {
-            KillPlayer();
+            animator.SetBool("dead", true);
+            movement.movementRoot.SetRoot("dead", true);
         }
+        animator.SetTrigger("damaged");
         onHealthChanged?.Invoke(health);
     }
 
