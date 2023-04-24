@@ -121,6 +121,10 @@ public class ColorSlotController : MonoBehaviour
        RotateSlots(dir);
     }
 
+    /// <summary>
+    /// Updates bottle sprite at specified index by fetching sprites from spell. 
+    /// </summary>
+    /// <param name="index"></param> which slot changed.
     private void BottleChanged(int index) {
         Image bottle = slotList[index].GetChild(0).GetComponent<Image>();
         Image bottleMask = slotList[index].GetChild(0).GetChild(0).GetComponent<Image>();
