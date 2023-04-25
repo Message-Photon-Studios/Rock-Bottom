@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName ="ColorBuff")]
+[System.Serializable]
 public class ColorBuffItem : ItemEffect
 {
     [SerializeField] GameColor color;

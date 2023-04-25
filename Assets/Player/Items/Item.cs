@@ -1,39 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using UnityEngine.UIElements;
 
-[RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
-public class Item : MonoBehaviour
+[CreateAssetMenu(menuName = "Items/Item")]
+public class Item : ScriptableObject
 {
-    [SerializeField] ItemEffect itemEffect;
-    SpriteRenderer spriteRenderer;
-    ItemInventory inventory;
+    public Sprite sprite;
+    [TextArea(5,20)] public string description;
+    [SerializeReference] public List<ItemEffect> effects = new List<ItemEffect>();
 
-    void OnEnable()
+    public void EnableItem() 
     {
-        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.CompareTag("Player"))
+        foreach (ItemEffect item in effects)
         {
-            inventory.EnablePickUp(this);
+            item.ActivateEffect();
         }
     }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if(other.CompareTag("Player"))
-        {
-            inventory.DisablePickUp(this);
-        }
-    }
-
-    public void PickedUp()
-    {
-        inventory.AddItem(itemEffect);
-        GameObject.Destroy(gameObject);
-    }
-
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Item))]
+public class ItemInspector : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        
+        Item item = (Item)target;
+        if(GUILayout.Button("Add color buff"))
+        {
+            item.effects.Add(new ColorBuffItem());
+        }
+    }
+}
+
+#endif

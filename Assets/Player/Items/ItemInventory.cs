@@ -7,10 +7,10 @@ using System;
 public class ItemInventory : MonoBehaviour
 {
     [SerializeField] int coins;
-    [SerializeField] List<ItemEffect> items = new List<ItemEffect>();
+    [SerializeField] List<Item> items = new List<Item>();
     [SerializeField] InputActionReference pickUpAction;
     
-    private List<Item> pickUpItems = new List<Item>();
+    private List<ItemPickup> pickUpItems = new List<ItemPickup>();
 
     Action<InputAction.CallbackContext> pickUp;
 
@@ -31,18 +31,18 @@ public class ItemInventory : MonoBehaviour
         pickUpAction.action.performed -= pickUp;
     }
 
-    public void AddItem(ItemEffect item)
+    public void AddItem(Item item)
     {
         items.Add(item);
-        item.ActivateEffect();
+        item.EnableItem();
     }
 
-    public void EnablePickUp(Item item)
+    public void EnablePickUp(ItemPickup item)
     {
         pickUpItems.Add(item);
     }
 
-    public void DisablePickUp (Item item) 
+    public void DisablePickUp (ItemPickup item) 
     {
         if(pickUpItems.Contains(item)) pickUpItems.Remove(item);    
     }
