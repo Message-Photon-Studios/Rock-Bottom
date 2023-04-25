@@ -6,7 +6,8 @@ using TMPro;
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
 public class ItemPickup : MonoBehaviour
 {
-    [SerializeField] Item item;
+    [SerializeField] float spawnChance = 1f;
+    Item item;
     [SerializeField] GameObject canvas;
     [SerializeField] TMP_Text text;
     SpriteRenderer spriteRenderer;
@@ -16,6 +17,14 @@ public class ItemPickup : MonoBehaviour
     {
         canvas.SetActive(false);
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
+        if(spawnChance < 1f)
+        {
+            float rng = UnityEngine.Random.Range(0,spawnChance);
+            if(rng > spawnChance)
+            {
+                GameObject.Destroy(gameObject);
+            }
+        }
     }
 
     public void SetItem(Item setItem)
