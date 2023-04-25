@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
   m_Name: Rainbow Charm
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  description: 
-  effects: []
+  sprite: {fileID: 21300000, guid: e574a9efe4a97ea4c8bd28936b2bebe9, type: 3}
+  description: Buffs rainbow color with +50%
+  effects:
+  - rid: 1595614060766298120
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 1595614060766298120
+      type: {class: ColorBuffItem, ns: , asm: Assembly-CSharp}
+      data:
+        color: {fileID: 11400000, guid: aab7a3fd5f4b5c04fb45da55783d8aa1, type: 2}
+        power: 0.5
