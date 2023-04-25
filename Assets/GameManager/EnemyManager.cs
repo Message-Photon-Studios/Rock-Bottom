@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    [SerializeField] GameColor[] spawnableColors; //The colors that the enemies can spawn with
+    [SerializeField] GameColor[] spawnableColors; //The colors that the list can spawn with
 
     /// <summary>
-    /// Returns a random color that the enemies can spawn with
+    /// Returns a random color that the list can spawn with
     /// </summary>
     /// <returns></returns>
     public GameColor GetRandomEnemyColor()

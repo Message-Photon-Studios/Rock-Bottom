@@ -262,19 +262,19 @@ public class LevelGenerator
     public List<Door> remainingDoors;
     public Door topDoor;
 
-    public void stepGenerate(int size)
+    public void stepGenerate(int size, string areaPath)
     {
         if (graph == null)
         {
-            initGeneration();
+            initGeneration(areaPath);
         }
         
-        var (finished, success) = nextRoom(size);
+        var (finished, success) = nextRoom(size, areaPath);
         if (finished) Debug.Log("Finished successfully");
         if (!success) Debug.Log("Failed to generate");
     }
 
-    public void generate(int size)
+    public void generate(int size, string areaPath)
     {
         var tries = 0;
         do
@@ -286,10 +286,10 @@ public class LevelGenerator
                 return;
             }
 
-            initGeneration();
-            var res = tryGenerate(size);
+            initGeneration(areaPath);
+            var res = tryGenerate(size, areaPath);
             if (!res) continue;
-            endGeneration();
+            endGeneration(areaPath);
 
         } while (!graph.validate());
         insertPrefabs();
@@ -307,11 +307,39 @@ public class LevelGenerator
         // Create a roomHolder game object
         roomHolder = new GameObject("RoomHolder");
 
+        // Try to find the object EnemyHolder and if it exists, delete it
+        var enemyHolder = GameObject.Find("EnemyHolder");
+        if (enemyHolder != null)
+            Object.DestroyImmediate(enemyHolder);
+
+        // Create an enemyHolder game object
+        enemyHolder = new GameObject("EnemyHolder");
+
         foreach (var room in graph.rooms)
         {
             // Instantiate the room
             var pos = room.Item1 * 2 * LevelGenManager.ROOMSIZE;
             var roomObj = Object.Instantiate(room.Item2, pos, Quaternion.identity);
+            // Get child object called "enemies"
+            var enemies = roomObj.transform.Find("enemies");
+            // For all children of type EnemySpawner, obtain the object called enemies
+            foreach (var enemySpawner in enemies.GetComponentsInChildren<EnemySpawner>())
+            {
+                // Get random value between 0 and 1
+                var rand = Random.value;
+                foreach (var enemyChance in enemySpawner.enemies.list)
+                {
+                    if (rand <= enemyChance.spawnChance)
+                    {
+                        var enemy = enemyChance.enemy;
+                        // Instantiate the enemy
+                        enemySpawner.transform.position += new Vector3(pos.x, pos.y);
+                        var enemyObj = Object.Instantiate(enemy, enemySpawner.transform);
+                        break;
+                    }
+                }
+            }
+
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
             prefabs.Add((pos, roomObj));
@@ -320,30 +348,32 @@ public class LevelGenerator
         SceneManager.MoveGameObjectToScene(roomHolder, SceneManager.GetActiveScene());
     }
 
-    public void initGeneration()
+    public void initGeneration(string areaPath)
     {
-        var initRoom = Resources.Load<CustomRoom>("Rooms/InitRoom");
+        var initRooms = Resources.LoadAll<CustomRoom>(areaPath + "InitRooms");
+        var initRoom = initRooms[Random.Range(0, initRooms.Length - 1)];
         remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0)};
-        normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").ToList();
-        closingRooms = Resources.LoadAll<CustomRoom>("Rooms/ClosingRooms").ToList();
+        normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").ToList();
+        closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "ClosingRooms").ToList();
         usedRooms = new List<CustomRoom>();
         prefabs = new List<(Vector2, CustomRoom)>();
         graph = new DungeonGraph(initRoom, this);
         topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0);
     }
 
-    private void endGeneration()
+    private void endGeneration(string areaPath)
     {
-        var endRoom = Resources.Load<CustomRoom>("Rooms/EndRoom");
+        var endRooms = Resources.LoadAll<CustomRoom>(areaPath + "EndRooms");
+        var endRoom = endRooms[Random.Range(0, endRooms.Length - 1)];
         graph.placeRoom(topDoor.pos, new Vector2(0, 0), Direction.Up, endRoom);
     }
 
-    private (bool, bool) nextRoom(int size)
+    private (bool, bool) nextRoom(int size, string areaPath)
     {
         // If we are out of rooms but still have to continue, we refill the normal room list
         if (normalRooms.All(room => room.repeatable))
         {
-            normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").Where(room => !room.repeatable).ToList();
+            normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").Where(room => !room.repeatable).ToList();
         }
 
         // Get a random element from the list and remove it
@@ -410,11 +440,11 @@ public class LevelGenerator
         remainingDoors = remainingDoors.Concat(newDoors).ToList();
     }
 
-    private bool tryGenerate(int size)
+    private bool tryGenerate(int size, string areaPath)
     {
         while (true)
         {
-            var (finished, success) = nextRoom(size);
+            var (finished, success) = nextRoom(size, areaPath);
             if (finished)
             {
                 return graph.nodes.Count >= size;
@@ -521,7 +551,12 @@ public class LevelGenerator
         var cameraSize = Camera.main.orthographicSize;
         var cameraWidth = cameraSize * Camera.main.aspect;
         // Make the square that will be used to cull rooms
-        var cullSquare = new Rect(camPos.x - cameraWidth, camPos.y - cameraSize, cameraWidth * 2, cameraSize * 2);
+        var dist = LevelGenManager.cullDistance;
+        var cullSquare = new Rect(
+            camPos.x - (cameraWidth * dist), 
+            camPos.y - (cameraSize * dist), 
+            (cameraWidth * dist) * 2, 
+            (cameraSize * dist) * 2);
         foreach (var room in prefabs)
         {
             var size = room.Item2.size * 2 * ROOMSIZE;
