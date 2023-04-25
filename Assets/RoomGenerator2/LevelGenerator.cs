@@ -321,25 +321,36 @@ public class LevelGenerator
             var pos = room.Item1 * 2 * LevelGenManager.ROOMSIZE;
             var roomObj = Object.Instantiate(room.Item2, pos, Quaternion.identity);
             // Get child object called "enemies"
-            var enemies = roomObj.transform.Find("enemies");
-            // For all children of type EnemySpawner, obtain the object called enemies
-            foreach (var enemySpawner in enemies.GetComponentsInChildren<EnemySpawner>())
+            var enemies = roomObj.transform.Find("Enemies");
+            if (enemies != null)
             {
-                // Get random value between 0 and 1
-                var rand = Random.value;
-                foreach (var enemyChance in enemySpawner.enemies.list)
+                // For all children of type EnemySpawner, obtain the object called enemies
+                foreach (var enemySpawner in enemies.GetComponentsInChildren<EnemySpawner>())
                 {
-                    if (rand <= enemyChance.spawnChance)
+                    // Get random value between 0 and 1
+                    var rand = Random.value;
+                    var cummulativeChance = 0f;
+                    foreach (var enemyChance in enemySpawner.enemies.list.OrderBy(enemy => enemy.spawnChance))
                     {
+                        if (rand > cummulativeChance + enemyChance.spawnChance)
+                        {
+                            cummulativeChance += enemyChance.spawnChance;
+                            continue;
+                        }
+
                         var enemy = enemyChance.enemy;
                         // Instantiate the enemy
-                        enemySpawner.transform.position += new Vector3(pos.x, pos.y);
-                        var enemyObj = Object.Instantiate(enemy, enemySpawner.transform);
+                        var enemyObj = Object.Instantiate(enemy, enemySpawner.transform.position, Quaternion.identity);
+                        // Set as child of enemyHolder
+                        enemyObj.transform.parent = enemyHolder.transform;
                         break;
                     }
                 }
+                // Remove the Enemies object from the room
+                Object.DestroyImmediate(enemies.gameObject);
             }
 
+            // Finish setting up the room
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
             prefabs.Add((pos, roomObj));
@@ -371,9 +382,9 @@ public class LevelGenerator
     private (bool, bool) nextRoom(int size, string areaPath)
     {
         // If we are out of rooms but still have to continue, we refill the normal room list
-        if (normalRooms.All(room => room.repeatable))
+        if (normalRooms.All(roomElem => roomElem.repeatable))
         {
-            normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").Where(room => !room.repeatable).ToList();
+            normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").Where(roomElem => !roomElem.repeatable).ToList();
         }
 
         // Get a random element from the list and remove it

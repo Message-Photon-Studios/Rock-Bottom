@@ -49,7 +49,7 @@ public class LevelGenManager : MonoBehaviour
 
     private void Update()
     {
-        levelGen?.cullRooms();
+        //levelGen?.cullRooms();
     }
 
     private void FixedUpdate()
