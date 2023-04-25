@@ -9,7 +9,8 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] float spawnChance = 1f;
     Item item;
     [SerializeField] GameObject canvas;
-    [SerializeField] TMP_Text text;
+    [SerializeField]TMP_Text nameText;
+    [SerializeField] TMP_Text descriptionText;
     SpriteRenderer spriteRenderer;
     ItemInventory inventory;
 
@@ -17,7 +18,8 @@ public class ItemPickup : MonoBehaviour
     {
         this.item = setItem;
                 
-        text.text = item.description;
+        descriptionText.text = item.description;
+        nameText.text = item.name;
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = item.sprite;
 
