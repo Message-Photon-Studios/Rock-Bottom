@@ -30,7 +30,7 @@ public class ItemPickup : MonoBehaviour
             float rng = UnityEngine.Random.Range(0,1f);
             if(rng > spawnChance)
             {
-                GameObject.Destroy(gameObject);
+                GameObject.DestroyImmediate(gameObject);
             }
         }
     }
