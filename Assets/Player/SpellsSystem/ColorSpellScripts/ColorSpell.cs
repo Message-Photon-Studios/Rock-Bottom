@@ -60,7 +60,7 @@ public class ColorSpell : MonoBehaviour
     public void Initi(GameColor gameColor, float power, GameObject player, int lookDir)
     {
         this.gameColor = gameColor;
-        this.power = power*powerScale;
+        this.power = power+powerScale;
         this.player = player;
         this.lookDir = lookDir;
 
