@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 
-[CreateAssetMenu(menuName = "Items/Item")]
+[CreateAssetMenu(menuName = "Item")]
 public class Item : ScriptableObject
 {
     public Sprite sprite;
