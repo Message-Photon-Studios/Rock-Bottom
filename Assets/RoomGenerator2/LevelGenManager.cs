@@ -49,12 +49,12 @@ public class LevelGenManager : MonoBehaviour
 
     private void Update()
     {
-        //levelGen?.cullRooms();
+        levelGen?.cullElements();
     }
 
     private void FixedUpdate()
     {
-        levelGen?.minimap?.testPosition(player.transform.position);
+        levelGen?.minimap?.testPosition(player.gameObject.transform.position);
     }
 }
 #endif

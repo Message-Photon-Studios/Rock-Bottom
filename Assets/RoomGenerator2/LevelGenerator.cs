@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 public class Door
@@ -258,6 +260,7 @@ public class LevelGenerator
 
     private List<CustomRoom> usedRooms;
     private List<(Vector2, CustomRoom)> prefabs;
+    private List<EnemyStats> enemies;
 
     public List<Door> remainingDoors;
     public Door topDoor;
@@ -343,6 +346,7 @@ public class LevelGenerator
                         var enemyObj = Object.Instantiate(enemy, enemySpawner.transform.position, Quaternion.identity);
                         // Set as child of enemyHolder
                         enemyObj.transform.parent = enemyHolder.transform;
+                        this.enemies.Add(enemy.GetComponent<EnemyStats>());
                         break;
                     }
                 }
@@ -368,6 +372,7 @@ public class LevelGenerator
         closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "ClosingRooms").ToList();
         usedRooms = new List<CustomRoom>();
         prefabs = new List<(Vector2, CustomRoom)>();
+        enemies = new List<EnemyStats>();
         graph = new DungeonGraph(initRoom, this);
         topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0);
     }
@@ -553,9 +558,7 @@ public class LevelGenerator
         return (results[0].Item1, results[0].Item2);
     }
 
-    
-
-    public void cullRooms()
+    public void cullElements()
     {
         // Get the player position
         var camPos = Camera.main.transform.position;
@@ -574,8 +577,19 @@ public class LevelGenerator
             var pos = room.Item2.minNode * 2 * ROOMSIZE - Vector2.one * ROOMSIZE + room.Item1;
             // Make room square
             var roomSquare = new Rect(pos.x, pos.y, size.x, size.y);
-            
             room.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
+        }
+
+        foreach (var enemy in this.enemies)
+        {
+            // Create rect with position and size of the enemy
+            var enemySquare = new Rect(
+                enemy.transform.position.x - enemy.transform.localScale.x / 2, 
+                enemy.transform.position.y - enemy.transform.localScale.y / 2, 
+                enemy.transform.localScale.x, 
+                enemy.transform.localScale.y);
+
+            enemy.gameObject.SetActive(cullSquare.Overlaps(enemySquare));
         }
     }
 }

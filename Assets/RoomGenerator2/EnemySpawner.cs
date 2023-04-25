@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public struct EnemySpawnData
 {
-    public GameObject enemy;
+    public EnemyStats enemy;
     [Range(0,1)]
     public float spawnChance;
 }
