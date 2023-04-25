@@ -13,20 +13,6 @@ public class ItemPickup : MonoBehaviour
     SpriteRenderer spriteRenderer;
     ItemInventory inventory;
 
-    void OnEnable()
-    {
-        canvas.SetActive(false);
-        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
-        if(spawnChance < 1f)
-        {
-            float rng = UnityEngine.Random.Range(0,spawnChance);
-            if(rng > spawnChance)
-            {
-                GameObject.Destroy(gameObject);
-            }
-        }
-    }
-
     public void SetItem(Item setItem)
     {
         this.item = setItem;
@@ -34,6 +20,17 @@ public class ItemPickup : MonoBehaviour
         text.text = item.description;
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = item.sprite;
+
+        canvas.SetActive(false);
+        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
+        if(spawnChance < 1f)
+        {
+            float rng = UnityEngine.Random.Range(0,1f);
+            if(rng > spawnChance)
+            {
+                GameObject.Destroy(gameObject);
+            }
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

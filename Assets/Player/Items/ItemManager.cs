@@ -6,7 +6,7 @@ public class ItemManager : MonoBehaviour
 {
     [SerializeField] Item[] spawnableItems;
 
-    void OnEnable()
+    public void SpawnItems()
     {
         List<Item> spawnSet = new List<Item>();
         spawnSet.AddRange(spawnableItems);
