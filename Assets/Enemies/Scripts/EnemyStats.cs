@@ -49,7 +49,7 @@ public class EnemyStats : MonoBehaviour
     public UnityAction onEnemyDeath;
 
     #region Setup and Timers
-    void OnEnable()
+    void Awake()
     {
         color = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
         normalMovementSpeed = movementSpeed;
