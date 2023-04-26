@@ -51,6 +51,13 @@ public class CustomRoom : MonoBehaviour
     public RoomNodeHolder roomNodes;
 
     public DisplayMode displayMode;
+    
+    private Vector2? _size;
+    private Vector2? _minNode;
+
+    [HideInInspector]
+    public Vector2 size => _size ?? (_size = getSize()).Value;
+    public Vector2 minNode => _minNode ?? (_minNode = getDownLeftCorner()).Value;
 
     [HideInInspector]
     public Vector2 selectedNode;
@@ -204,4 +211,36 @@ public class CustomRoom : MonoBehaviour
         return doors;
     }
 #endif
+
+    public Vector2 getSize()
+    {
+        var min = new Vector2(int.MaxValue, int.MaxValue);
+        var max = new Vector2(int.MinValue, int.MinValue);
+        foreach (var node in roomNodes)
+        {
+            if (node.Key.x < min.x)
+                min.x = node.Key.x;
+            if (node.Key.y < min.y)
+                min.y = node.Key.y;
+            if (node.Key.x > max.x)
+                max.x = node.Key.x;
+            if (node.Key.y > max.y)
+                max.y = node.Key.y;
+        }
+        return max - min + Vector2.one;
+    }
+
+    public Vector2 getDownLeftCorner()
+    {
+        // Get the node with the lowest x and y value
+        var min = new Vector2(int.MaxValue, int.MaxValue);
+        foreach (var node in roomNodes)
+        {
+            if (node.Key.x < min.x)
+                min.x = node.Key.x;
+            if (node.Key.y < min.y)
+                min.y = node.Key.y;
+        }
+        return min;
+    }
 }

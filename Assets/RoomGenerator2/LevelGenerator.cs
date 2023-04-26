@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 public class Door
@@ -103,7 +106,7 @@ public class DungeonGraph
             var doorNeighborLocal = parent.topDoor.pos + Vector2.up - shift;
             if (room.ContainsKey(doorNeighborLocal))
             {
-                if (!room[doorNeighborLocal].doors[CustomRoom.mirrorDir[(int)Direction.Down]])
+                if (!room[doorNeighborLocal].doors[(int)Direction.Down])
                     return true;
 
                 // Check that there is a new door to use as future potential door
@@ -130,14 +133,14 @@ public class DungeonGraph
         if (mirroredEntrances.Count == 0)
             return (-1, new Vector2(0, 0));
         // Order entrances from lowest y to highest y
-        var orderedEntrances = mirroredEntrances.OrderBy(pos => pos.y).ToArray();
+        var orderedEntrances = mirroredEntrances.OrderBy(pos => pos.y).Reverse().ToArray();
         // Get the position in the graph of the entrance
         var entrancePos = doorPos + CustomRoom.dirVectors[(int)doorDir];
 
         // Test the room with each entrance
         var failedTries = 0;
-        var door = new Vector2(0, 0);
         var found = false;
+        var doorsToDecide = new List<(int, Vector2)>();
         foreach (var entrance in orderedEntrances)
         {
             // Get the vector shift needed to move the room to the graph door
@@ -157,13 +160,15 @@ public class DungeonGraph
                 failedTries++;
                 continue;
             }
-
+            
             found = true;
-            door = entrance;
-            break;
+            doorsToDecide.Add((failedTries, entrance));
         }
 
-        return !found ? (-1, new Vector2()) : (failedTries + (room.repeatable ? 2 : 0), door);
+        doorsToDecide.Shuffle();
+        doorsToDecide = doorsToDecide.OrderBy(door => door.Item1).ToList();
+
+        return !found ? (-1, new Vector2()) : (failedTries + (room.repeatable ? 2 : 0), doorsToDecide[Random.Range(0, doorsToDecide.Count)].Item2);
     }
 
     public List<Door> placeRoom(Vector2 graphPos, Vector2 doorPos, Direction doorDir, CustomRoom prefab)
@@ -246,29 +251,33 @@ public class DungeonGraph
 
 public class LevelGenerator
 {
+    private static float ROOMSIZE => LevelGenManager.ROOMSIZE;
+
     public DungeonGraph graph;
     public Minimap minimap;
     private List<CustomRoom> normalRooms;
     private List<CustomRoom> closingRooms;
 
     private List<CustomRoom> usedRooms;
+    private List<(Vector2, CustomRoom)> prefabs;
+    private List<EnemyStats> enemies;
 
     public List<Door> remainingDoors;
     public Door topDoor;
 
-    public void stepGenerate(int size)
+    public void stepGenerate(int size, string areaPath)
     {
         if (graph == null)
         {
-            initGeneration();
+            initGeneration(areaPath);
         }
         
-        var (finished, success) = nextRoom(size);
+        var (finished, success) = nextRoom(size, areaPath);
         if (finished) Debug.Log("Finished successfully");
         if (!success) Debug.Log("Failed to generate");
     }
 
-    public void generate(int size)
+    public void generate(int size, string areaPath)
     {
         var tries = 0;
         do
@@ -280,10 +289,10 @@ public class LevelGenerator
                 return;
             }
 
-            initGeneration();
-            var res = tryGenerate(size);
+            initGeneration(areaPath);
+            var res = tryGenerate(size, areaPath);
             if (!res) continue;
-            endGeneration();
+            endGeneration(areaPath);
 
         } while (!graph.validate());
         insertPrefabs();
@@ -301,40 +310,92 @@ public class LevelGenerator
         // Create a roomHolder game object
         roomHolder = new GameObject("RoomHolder");
 
+        // Try to find the object EnemyHolder and if it exists, delete it
+        var enemyHolder = GameObject.Find("EnemyHolder");
+        if (enemyHolder != null)
+            Object.DestroyImmediate(enemyHolder);
+
+        // Create an enemyHolder game object
+        enemyHolder = new GameObject("EnemyHolder");
+
         foreach (var room in graph.rooms)
         {
             // Instantiate the room
-            var roomObj = Object.Instantiate(room.Item2, room.Item1 * 2 * LevelGenManager.ROOMSIZE, Quaternion.identity);
+            var pos = room.Item1 * 2 * LevelGenManager.ROOMSIZE;
+            var roomObj = Object.Instantiate(room.Item2, pos, Quaternion.identity);
+            // Get child object called "enemies"
+            var enemies = roomObj.transform.Find("Enemies");
+            if (enemies != null)
+            {
+                // For all children of type EnemySpawner, obtain the object called enemies
+                foreach (var enemySpawner in enemies.GetComponentsInChildren<EnemySpawner>())
+                {
+                    // Get random value between 0 and 1
+                    var rand = Random.value;
+                    var cummulativeChance = 0f;
+                    foreach (var enemyChance in enemySpawner.enemies.list.OrderBy(enemy => enemy.spawnChance))
+                    {
+                        if (rand > cummulativeChance + enemyChance.spawnChance)
+                        {
+                            cummulativeChance += enemyChance.spawnChance;
+                            continue;
+                        }
+
+                        var enemy = enemyChance.enemy;
+                        // Instantiate the enemy
+                        var enemyObj = Object.Instantiate(enemy, enemySpawner.transform.position, Quaternion.identity);
+                        // Set as child of enemyHolder
+                        enemyObj.transform.parent = enemyHolder.transform;
+                        this.enemies.Add(enemy.GetComponent<EnemyStats>());
+                        break;
+                    }
+                }
+
+                foreach (var enemy in enemies.GetComponentsInChildren<EnemyStats>())
+                {
+                    enemy.transform.parent = enemyHolder.transform;
+                    this.enemies.Add(enemy);
+                }
+                // Remove the Enemies object from the room
+                Object.DestroyImmediate(enemies.gameObject);
+            }
+
+            // Finish setting up the room
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
+            prefabs.Add((pos, roomObj));
         }
         // Add the roomHolder to the current scene
         SceneManager.MoveGameObjectToScene(roomHolder, SceneManager.GetActiveScene());
     }
 
-    public void initGeneration()
+    public void initGeneration(string areaPath)
     {
-        var initRoom = Resources.Load<CustomRoom>("Rooms/InitRoom");
+        var initRooms = Resources.LoadAll<CustomRoom>(areaPath + "InitRooms");
+        var initRoom = initRooms[Random.Range(0, initRooms.Length - 1)];
         remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0)};
-        normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").ToList();
-        closingRooms = Resources.LoadAll<CustomRoom>("Rooms/ClosingRooms").ToList();
+        normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").ToList();
+        closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "ClosingRooms").ToList();
         usedRooms = new List<CustomRoom>();
+        prefabs = new List<(Vector2, CustomRoom)>();
+        enemies = new List<EnemyStats>();
         graph = new DungeonGraph(initRoom, this);
         topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0);
     }
 
-    private void endGeneration()
+    private void endGeneration(string areaPath)
     {
-        var endRoom = Resources.Load<CustomRoom>("Rooms/EndRoom");
+        var endRooms = Resources.LoadAll<CustomRoom>(areaPath + "EndRooms");
+        var endRoom = endRooms[Random.Range(0, endRooms.Length - 1)];
         graph.placeRoom(topDoor.pos, new Vector2(0, 0), Direction.Up, endRoom);
     }
 
-    private (bool, bool) nextRoom(int size)
+    private (bool, bool) nextRoom(int size, string areaPath)
     {
         // If we are out of rooms but still have to continue, we refill the normal room list
-        if (normalRooms.All(room => room.repeatable))
+        if (normalRooms.All(roomElem => roomElem.repeatable))
         {
-            normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").Where(room => !room.repeatable).ToList();
+            normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").Where(roomElem => !roomElem.repeatable).ToList();
         }
 
         // Get a random element from the list and remove it
@@ -401,11 +462,11 @@ public class LevelGenerator
         remainingDoors = remainingDoors.Concat(newDoors).ToList();
     }
 
-    private bool tryGenerate(int size)
+    private bool tryGenerate(int size, string areaPath)
     {
         while (true)
         {
-            var (finished, success) = nextRoom(size);
+            var (finished, success) = nextRoom(size, areaPath);
             if (finished)
             {
                 return graph.nodes.Count >= size;
@@ -503,5 +564,42 @@ public class LevelGenerator
         return (results[0].Item1, results[0].Item2);
     }
 
+    public void cullElements()
+    {
+        // Get the player position
+        var camPos = Camera.main.transform.position;
+        var cameraSize = Camera.main.orthographicSize;
+        var cameraWidth = cameraSize * Camera.main.aspect;
+        // Make the square that will be used to cull rooms
+        var dist = LevelGenManager.cullDistance;
+        var cullSquare = new Rect(
+            camPos.x - (cameraWidth * dist), 
+            camPos.y - (cameraSize * dist), 
+            (cameraWidth * dist) * 2, 
+            (cameraSize * dist) * 2);
+        foreach (var room in prefabs)
+        {
+            var size = room.Item2.size * 2 * ROOMSIZE;
+            var pos = room.Item2.minNode * 2 * ROOMSIZE - Vector2.one * ROOMSIZE + room.Item1;
+            // Make room square
+            var roomSquare = new Rect(pos.x, pos.y, size.x, size.y);
+            room.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
+        }
 
+
+
+        for(int i = 0; i < enemies.Count; i++)
+        {
+            if(enemies[i] == null) continue;
+            
+            // Create rect with position and size of the enemy
+            var enemySquare = new Rect(
+                enemies[i].transform.position.x -  enemies[i].transform.localScale.x / 2, 
+                enemies[i].transform.position.y -  enemies[i].transform.localScale.y / 2, 
+                enemies[i].transform.localScale.x, 
+                enemies[i].transform.localScale.y);
+
+            enemies[i].gameObject.SetActive(cullSquare.Overlaps(enemySquare));
+        }
+    }
 }

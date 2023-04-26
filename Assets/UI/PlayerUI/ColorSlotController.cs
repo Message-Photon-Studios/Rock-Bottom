@@ -10,14 +10,19 @@ using UnityEngine.UI;
 public class ColorSlotController : MonoBehaviour
 {
     ColorInventory colorInventory;
+
     //Color slots the player currently has.
     List<ColorSlot> colorSlots;
+
     //All created UI elements for slots.
     [SerializeField] List<RectTransform> slotList;
+
     //Positions of all UI Containers for slots.
     List<Vector2> slotPositions = new List<Vector2>();
+
     //Scale of all UI containers for slots
     List<Vector3> slotScales = new List<Vector3>();
+
     // Spline to animate the filling effect of the color slots
     public AnimationCurve fillCurve;
     [ItemCanBeNull] private List<Coroutine> activeCoroutines = new List<Coroutine>();
@@ -35,10 +40,11 @@ public class ColorSlotController : MonoBehaviour
         //Attach local functions to UnityActions.
         colorInventory.onColorUpdated += ColorUpdate;
         colorInventory.onSlotChanged += ActiveColorChanged;
+        colorInventory.onColorSpellChanged += BottleChanged;
 
         //fetch each colorSlots position and scale and save it.
         foreach(RectTransform rect in slotList) {
-            slotPositions.Add(((RectTransform)rect).anchoredPosition);
+            slotPositions.Add(rect.anchoredPosition);
             slotScales.Add(rect.transform.localScale);
         }
         
@@ -50,11 +56,8 @@ public class ColorSlotController : MonoBehaviour
             ColorSlot slot = colorSlots[i];
             frameImage.material.SetColor("_Color", slot.gameColor != null ? slot.gameColor.plainColor : colorInventory.defaultColor.GetColor("_Color"));
             frameImage.material.SetFloat("_fill", slot.charge / (float) slot.maxCapacity);
-        }
-
-        for (int i = 0; i < slotList.Count; i++)
-        {
             activeCoroutines.Add(null);
+            BottleChanged(i);
         }
     }
 
@@ -62,6 +65,7 @@ public class ColorSlotController : MonoBehaviour
     private void OnDisable() {
         colorInventory.onColorUpdated -= ColorUpdate;
         colorInventory.onSlotChanged -= ActiveColorChanged;
+        colorInventory.onColorSpellChanged -= BottleChanged;
     }
     #endregion
     #region SlotMovement
@@ -74,10 +78,10 @@ public class ColorSlotController : MonoBehaviour
     private void RotateSlots(int dir) {
         for(int i = 0; i < slotList.Count; i++) {
             int trueIndex = (i + slotList.Count - colorInventory.activeSlot) % slotList.Count;
-            Debug.Log(trueIndex);
             RectTransform rect = slotList[i];
             rect.anchoredPosition = slotPositions[trueIndex];
             rect.transform.localScale = slotScales[trueIndex];
+            BottleChanged(i, trueIndex);
         }
     }
     #endregion
@@ -116,5 +120,30 @@ public class ColorSlotController : MonoBehaviour
     private void ActiveColorChanged(int dir) {
        RotateSlots(dir);
     }
+
+    /// <summary>
+    /// Updates bottle sprite at specified index by fetching sprites from spell. 
+    /// </summary>
+    /// <param name="index"></param> which slot changed.
+    private void BottleChanged(int index, int pos) {
+        Image bottle = slotList[index].GetChild(0).GetComponent<Image>();
+        Image bottleMask = slotList[index].GetChild(0).GetChild(0).GetComponent<Image>();
+        BottleSprite bottleSprite = colorInventory.GetColorSpell(index).GetBottleSprite();
+        if(pos == 0) {
+            bottle.sprite = bottleSprite.bigSprite;
+            bottleMask.sprite = bottleSprite.bigSpriteMask;
+        } else if(pos == 1 || pos == slotList.Count-1) {
+            bottle.sprite = bottleSprite.mediumSprite;
+            bottleMask.sprite = bottleSprite.mediumSpriteMask;
+        } else {
+            bottle.sprite = bottleSprite.smallSprite;
+            bottleMask.sprite = bottleSprite.smallSpriteMask;
+        }
+    }
+
+    private void BottleChanged(int index) {
+        BottleChanged(index, index);
+    }
+
     #endregion
 }

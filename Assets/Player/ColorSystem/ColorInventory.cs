@@ -27,6 +27,8 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] InputActionReference changeRightActions;
     [SerializeField] public Material defaultColor;
 
+    public Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
+
     #region Actions for UI
     
     /// <summary>
@@ -158,15 +160,19 @@ public class ColorInventory : MonoBehaviour
     /// <returns></returns>
     public float GetColorBuff(GameColor color)
     {
+        float buff = 0;
         foreach (ColorSlot slot in colorSlots)
         {
             if(slot.gameColor == color && slot.charge == slot.maxCapacity) 
             {
-                return colorBuff;
+                buff += colorBuff;
             }
         }
 
-        return 1;
+        if(colorBuffs.ContainsKey(color))
+            buff += colorBuffs[color];
+
+        return buff;
     }
 
     /// <summary>
