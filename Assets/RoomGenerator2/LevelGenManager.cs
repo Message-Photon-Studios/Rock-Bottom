@@ -28,6 +28,7 @@ public class LevelGenManager : MonoBehaviour
     {
         levelGen = new LevelGenerator();
         levelGen.generate(size, paths[(int)levelType]);
+        GetComponent<ItemManager>().SpawnItems();
     }
 
     public void reset()

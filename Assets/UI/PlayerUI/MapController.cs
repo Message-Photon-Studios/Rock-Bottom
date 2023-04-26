@@ -15,9 +15,12 @@ public class MapController : MonoBehaviour
 
     //container holding all map components.
     [SerializeField] GameObject mapContainer;
+    [SerializeField] GameObject mapLightbox;
+    private PlayerMovement playerMovement;
     
     private void OnEnable() {
         mapAction.action.performed += OpenMap;
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         open = false;
     }
 
@@ -33,5 +36,7 @@ public class MapController : MonoBehaviour
     private void OpenMap(InputAction.CallbackContext ctx) {
         open = !open;
         mapContainer.SetActive(open);
+        mapLightbox.SetActive(open);
+        playerMovement.movementRoot.SetTotalRoot("mapRoot", open);
     }
 }
