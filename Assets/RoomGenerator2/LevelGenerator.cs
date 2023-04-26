@@ -586,16 +586,20 @@ public class LevelGenerator
             room.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
         }
 
-        foreach (var enemy in this.enemies)
+
+
+        for(int i = 0; i < enemies.Count; i++)
         {
+            if(enemies[i] == null) continue;
+            
             // Create rect with position and size of the enemy
             var enemySquare = new Rect(
-                enemy.transform.position.x - enemy.transform.localScale.x / 2, 
-                enemy.transform.position.y - enemy.transform.localScale.y / 2, 
-                enemy.transform.localScale.x, 
-                enemy.transform.localScale.y);
+                enemies[i].transform.position.x -  enemies[i].transform.localScale.x / 2, 
+                enemies[i].transform.position.y -  enemies[i].transform.localScale.y / 2, 
+                enemies[i].transform.localScale.x, 
+                enemies[i].transform.localScale.y);
 
-            enemy.gameObject.SetActive(cullSquare.Overlaps(enemySquare));
+            enemies[i].gameObject.SetActive(cullSquare.Overlaps(enemySquare));
         }
     }
 }
