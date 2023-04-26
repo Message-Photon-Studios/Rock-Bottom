@@ -66,7 +66,7 @@ public class PlayerStats : MonoBehaviour
         if(health <= 0)
         {
             animator.SetBool("dead", true);
-            movement.movementRoot.SetRoot("dead", true);
+            movement.movementRoot.SetTotalRoot("dead", true);
             invincibilityTimer = 3f;
         }
         animator.SetTrigger("damaged");
