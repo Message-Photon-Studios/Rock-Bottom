@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Effects all the impacted enemies with the color effect
+/// Effects all the impacted list with the color effect
 /// </summary>
 public class ColorSpellImpact : SpellImpact
 {
