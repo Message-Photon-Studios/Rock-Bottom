@@ -48,6 +48,8 @@ public class ColorSpell : MonoBehaviour
 
     public int lookDir {get; protected set;}
 
+    private HashSet<string> hitEnemies = new HashSet<string>();
+
     /// <summary>
     /// Needs to be called after the spell is instantiated
     /// </summary>
@@ -58,9 +60,14 @@ public class ColorSpell : MonoBehaviour
     public void Initi(GameColor gameColor, float power, GameObject player, int lookDir)
     {
         this.gameColor = gameColor;
-        this.power = power*powerScale;
+        this.power = power+powerScale;
         this.player = player;
         this.lookDir = lookDir;
+
+        foreach(Collider2D col in GetComponents<Collider2D>())
+        {
+            col.offset *= new Vector2(lookDir, 1);
+        }
 
         var spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
@@ -88,6 +95,8 @@ public class ColorSpell : MonoBehaviour
         {
             impact.Init(this);
         }
+
+        hitEnemies = new HashSet<string>();
     }
 
     void OnEnable()
@@ -95,18 +104,20 @@ public class ColorSpell : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
-        if(destroyOnImpact) 
+        if(destroyOnImpact && !hitEnemies.Contains(other.gameObject.name)) 
         {
             Impact(other);
             Destroy(gameObject);
+            hitEnemies.Add(other.gameObject.name);
             return;
         }
 
-        if(other.CompareTag("Enemy"))
+        if(other.CompareTag("Enemy") && !hitEnemies.Contains(other.gameObject.name))
         {
             Impact(other);
+            hitEnemies.Add(other.gameObject.name);
             if(destroyOnHit) Destroy(gameObject);
             return;
         }
@@ -168,9 +179,9 @@ public class ColorSpell : MonoBehaviour
 /// <summary>
 /// This struct keeps track of all sprites for a bottle
 /// </summary>
+[System.Serializable]
 public struct BottleSprite
 {
     public Sprite bigSprite;
-    public Sprite mediumSprite;
-    public Sprite smallSprite;
+    public Sprite bigSpriteMask;
 }
