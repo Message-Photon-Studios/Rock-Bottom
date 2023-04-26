@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +25,7 @@ public class ColorSlotController : MonoBehaviour
 
     // Spline to animate the filling effect of the color slots
     public AnimationCurve fillCurve;
+    [ItemCanBeNull] private List<Coroutine> activeCoroutines = new List<Coroutine>();
 
 
     # region Setup
@@ -52,11 +54,9 @@ public class ColorSlotController : MonoBehaviour
             Image frameImage = slotList[i].GetChild(0).GetChild(0).GetComponent<Image>();
             frameImage.material = materials[i];
             ColorSlot slot = colorSlots[i];
-            if (slot.gameColor != null)
-                frameImage.material.SetColor("_Color", slot.gameColor.plainColor);
-            else
-                frameImage.material.SetColor("_Color", colorInventory.defaultColor.GetColor("_Color"));
-            frameImage.material.SetFloat("_fill", slot.charge / slot.maxCapacity);
+            frameImage.material.SetColor("_Color", slot.gameColor != null ? slot.gameColor.plainColor : colorInventory.defaultColor.GetColor("_Color"));
+            frameImage.material.SetFloat("_fill", slot.charge / (float) slot.maxCapacity);
+            activeCoroutines.Add(null);
             BottleChanged(i);
         }
     }
@@ -91,14 +91,13 @@ public class ColorSlotController : MonoBehaviour
     private void ColorUpdate() {
         Image frameImage = slotList[colorInventory.activeSlot].GetChild(0).GetChild(0).GetComponent<Image>();
         ColorSlot slot = colorInventory.colorSlots[colorInventory.activeSlot];
-        if (slot.gameColor != null)
-                frameImage.material.SetColor("_Color", slot.gameColor.plainColor);
-            else
-                frameImage.material.SetColor("_Color", colorInventory.defaultColor.GetColor("_Color"));
-        StartCoroutine(fillSlotGradually(frameImage));
+        frameImage.material.SetColor("_Color", slot.gameColor != null ? slot.gameColor.plainColor : colorInventory.defaultColor.GetColor("_Color"));
+        if (activeCoroutines[colorInventory.activeSlot] != null)
+            StopCoroutine(activeCoroutines[colorInventory.activeSlot]);
+        activeCoroutines[colorInventory.activeSlot] = StartCoroutine(fillSlotGradually(frameImage));
     }
 
-    private IEnumerator  fillSlotGradually(Image frame)
+    private IEnumerator  fillSlotGradually(Graphic frame)
     {
         ColorSlot color = colorSlots[colorInventory.activeSlot];
         float prevValue = frame.material.GetFloat("_fill");
