@@ -11,6 +11,7 @@ using System;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float movementSpeed; // Base movement speed for the player in air and on ground
+    [SerializeField] float climbSpeed; //The speed that the player is climbing with
     [SerializeField] float jumpPower; //The initial boost power for the jump. Increasing this will increse the jumpheight and jump speed but decrease controll
     [SerializeField] float leapPower; //This detemines the extra forward speed of the double jump
     [SerializeField] float wallJumpPower;
@@ -177,10 +178,10 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrappeling()
     {
-        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down*1.3f, 1f, 3) ||
-                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down*1.3f, 1f, 3)) &&
-                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right*0.1f, 1f, 3))  ||
-                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left*0.1f, 1f, 3)));
+        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3) ||
+                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3)) &&
+                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .5f, 3))  ||
+                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .5f, 3)));
     }
    
     #endregion
@@ -242,9 +243,17 @@ public class PlayerMovement : MonoBehaviour
             fallTime = 0;
             airTime = 0;
             CheckCancel();
-            if(body.velocity.y < 0)
+
+
+            if(walkDir != 0)
+            {
+                playerAnimator.SetInteger("velocityY", 1);
+                body.velocity = new Vector2(body.velocity.x, climbSpeed);
+            }
+            else if(body.velocity.y < 0)
             {
                 body.velocity = new Vector2(body.velocity.x, -2);
+                playerAnimator.SetInteger("velocityY", -1);
             }
         } else
         {
