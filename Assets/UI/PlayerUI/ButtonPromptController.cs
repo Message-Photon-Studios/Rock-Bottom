@@ -30,7 +30,7 @@ public class ButtonPromptController : MonoBehaviour
                 leftPromt.sprite = qSprite;
                 rightPromt.sprite = eSprite;
                 currentLayout = inputType;
-            } else if(inputType == "Gamepad"){
+            } else {
                 leftPromt.sprite = lbSprite;
                 rightPromt.sprite = rbSprite;
                 currentLayout = inputType;
