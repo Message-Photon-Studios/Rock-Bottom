@@ -81,6 +81,7 @@ public class ColorSlotController : MonoBehaviour
             RectTransform rect = slotList[i];
             rect.anchoredPosition = slotPositions[trueIndex];
             rect.transform.localScale = slotScales[trueIndex];
+            BottleChanged(i, trueIndex);
         }
     }
     #endregion
@@ -125,12 +126,24 @@ public class ColorSlotController : MonoBehaviour
     /// Updates bottle sprite at specified index by fetching sprites from spell. 
     /// </summary>
     /// <param name="index"></param> which slot changed.
-    private void BottleChanged(int index) {
+    private void BottleChanged(int index, int pos) {
         Image bottle = slotList[index].GetChild(0).GetComponent<Image>();
         Image bottleMask = slotList[index].GetChild(0).GetChild(0).GetComponent<Image>();
         BottleSprite bottleSprite = colorInventory.GetColorSpell(index).GetBottleSprite();
-        bottle.sprite = bottleSprite.bigSprite;
-        bottleMask.sprite = bottleSprite.bigSpriteMask;
+        if(pos == 0) {
+            bottle.sprite = bottleSprite.bigSprite;
+            bottleMask.sprite = bottleSprite.bigSpriteMask;
+        } else if(pos == 1 || pos == slotList.Count-1) {
+            bottle.sprite = bottleSprite.mediumSprite;
+            bottleMask.sprite = bottleSprite.mediumSpriteMask;
+        } else {
+            bottle.sprite = bottleSprite.smallSprite;
+            bottleMask.sprite = bottleSprite.smallSpriteMask;
+        }
+    }
+
+    private void BottleChanged(int index) {
+        BottleChanged(index, index);
     }
 
     #endregion
