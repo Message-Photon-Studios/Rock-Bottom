@@ -122,7 +122,6 @@ public class PlayerMovement : MonoBehaviour
             body.AddForce(new Vector2((wallRight?-1:1)*wallJumpPower, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
-            doubleJumpActive = false;
         } else if(!doubleJumpActive)
         {
             body.AddForce(new Vector2(movement*leapPower, 0));
@@ -206,6 +205,8 @@ public class PlayerMovement : MonoBehaviour
         {
             playerAnimator.SetInteger("velocityY", 0);
 
+            doubleJumpActive = false;
+
             airTime = 0;
             fallTime = 0;
             if(!movementRoot.rooted) body.velocity = new Vector2(movement, body.velocity.y);
@@ -243,6 +244,7 @@ public class PlayerMovement : MonoBehaviour
             fallTime = 0;
             airTime = 0;
             CheckCancel();
+            doubleJumpActive = false;
 
 
             if(walkDir != 0)
