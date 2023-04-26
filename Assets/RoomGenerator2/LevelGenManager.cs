@@ -57,5 +57,5 @@ public class LevelGenManager : MonoBehaviour
     {
         levelGen?.minimap?.testPosition(player.gameObject.transform.position);
     }
-}
 #endif
+}
