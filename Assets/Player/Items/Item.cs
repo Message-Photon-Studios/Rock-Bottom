@@ -33,6 +33,11 @@ public class ItemInspector : Editor
         {
             item.effects.Add(new ColorBuffItem());
         }
+
+        if(GUILayout.Button("Add health"))
+        {
+            item.effects.Add(new ChangeHealthIItem());
+        }
     }
 }
 
