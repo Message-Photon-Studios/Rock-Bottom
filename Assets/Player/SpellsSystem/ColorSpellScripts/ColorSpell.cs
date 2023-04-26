@@ -184,4 +184,8 @@ public struct BottleSprite
 {
     public Sprite bigSprite;
     public Sprite bigSpriteMask;
+    public Sprite mediumSprite;
+    public Sprite mediumSpriteMask;
+    public Sprite smallSprite;
+    public Sprite smallSpriteMask;
 }
