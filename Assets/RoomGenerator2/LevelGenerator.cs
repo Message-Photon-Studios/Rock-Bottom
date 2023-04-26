@@ -350,6 +350,12 @@ public class LevelGenerator
                         break;
                     }
                 }
+
+                foreach (var enemy in enemies.GetComponentsInChildren<EnemyStats>())
+                {
+                    enemy.transform.parent = enemyHolder.transform;
+                    this.enemies.Add(enemy);
+                }
                 // Remove the Enemies object from the room
                 Object.DestroyImmediate(enemies.gameObject);
             }

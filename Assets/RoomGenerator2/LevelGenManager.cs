@@ -22,7 +22,7 @@ public class LevelGenManager : MonoBehaviour
     public LevelArea levelType;
     public int size;
 
-    private string[] paths = new[] {"Rooms/CrystalCaves/", "Rooms/PebbleArea"};
+    private readonly string[] paths = {"Rooms/CrystalCaves/", "Rooms/PebbleArea"};
 
     public void init()
     {
