@@ -121,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
             body.AddForce(new Vector2((wallRight?-1:1)*wallJumpPower, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
+            doubleJumpActive = false;
         } else if(!doubleJumpActive)
         {
             body.AddForce(new Vector2(movement*leapPower, 0));
@@ -176,11 +177,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrappeling()
     {
-        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3) ||
-                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3)) &&
-                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3) && movement > 0)  ||
-                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, 1f, 3) && movement < 0));
+        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down*1.3f, 1f, 3) ||
+                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down*1.3f, 1f, 3)) &&
+                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right*0.1f, 1f, 3))  ||
+                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left*0.1f, 1f, 3)));
     }
+   
     #endregion
 
     private void FixedUpdate() {
@@ -234,13 +236,15 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrappeling())
         {
+            bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
+            if(wallRight == spriteRenderer.flipX) Flip();
             playerAnimator.SetBool("grapple", true);
             fallTime = 0;
             airTime = 0;
             CheckCancel();
             if(body.velocity.y < 0)
             {
-                body.velocity = new Vector2(body.velocity.x, 0);
+                body.velocity = new Vector2(body.velocity.x, -2);
             }
         } else
         {
