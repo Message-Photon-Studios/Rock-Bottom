@@ -102,6 +102,18 @@ public class PlayerStats : MonoBehaviour
     }
 
     /// <summary>
+    /// Adds health points to the players max health and also heals the player the same ammount
+    /// </summary>
+    /// <param name="addMaxHealth"></param>
+    public void AddMaxHealth(float addMaxHealth)
+    {
+        maxHealth += addMaxHealth;
+        health += addMaxHealth;
+        onMaxHealthChanged?.Invoke(maxHealth);
+        onHealthChanged?.Invoke(health);
+    }
+
+    /// <summary>
     /// Kill the player
     /// </summary>
     public void KillPlayer()
