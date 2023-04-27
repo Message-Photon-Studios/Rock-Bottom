@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the distribution of items within the game
+/// </summary>
 public class ItemManager : MonoBehaviour
 {
     [SerializeField] Item[] spawnableItems;
@@ -13,6 +16,8 @@ public class ItemManager : MonoBehaviour
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Item"))
         {
+            obj.GetComponent<ItemPickup>().RandomSpawnDestroy();
+            if(obj == null) continue;
             int rng = UnityEngine.Random.Range(0,spawnSet.Count);
             Item item = spawnSet[rng];
             spawnSet.RemoveAt(rng);

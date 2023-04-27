@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// Handles the item spawn points
+/// </summary>
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
 public class ItemPickup : MonoBehaviour
 {
@@ -14,6 +17,10 @@ public class ItemPickup : MonoBehaviour
     SpriteRenderer spriteRenderer;
     ItemInventory inventory;
 
+    /// <summary>
+    /// Sets the item for this spawnpoint
+    /// </summary>
+    /// <param name="setItem"></param>
     public void SetItem(Item setItem)
     {
         this.item = setItem;
@@ -25,6 +32,13 @@ public class ItemPickup : MonoBehaviour
 
         canvas.SetActive(false);
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
+    }
+
+    /// <summary>
+    /// Randomly destroys the spawn point depending on the initial conditions
+    /// </summary>
+    public void RandomSpawnDestroy()
+    {
         if(spawnChance < 1f)
         {
             float rng = UnityEngine.Random.Range(0,1f);
@@ -53,6 +67,9 @@ public class ItemPickup : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Is called when this item is picked up
+    /// </summary>
     public void PickedUp()
     {
         inventory.AddItem(item);

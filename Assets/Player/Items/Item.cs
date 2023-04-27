@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// This is the base class for an item
+/// </summary>
 [CreateAssetMenu(menuName = "Item")]
 public class Item : ScriptableObject
 {
