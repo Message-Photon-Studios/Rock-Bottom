@@ -33,22 +33,6 @@ public class RoomNodeHolder : SerializableDictionary<Vector2, RoomNode>
         }
         return neighbors;
     }
-
-    public List<(Vector2, Direction)> getDoors()
-    {
-        var doors = new List<(Vector2, Direction)>();
-        foreach (var node in this)
-        {
-            var neighbors = getNeighbors(node.Key);
-            for (var i = 0; i < 4; i++)
-            {
-                if (node.Value.doors[i] && neighbors[i] == null)
-                    doors.Add((node.Key, (Direction)i));
-            }
-        }
-
-        return doors;
-    }
 }
 
 [Serializable]
@@ -62,10 +46,18 @@ public class CustomRoom : MonoBehaviour
     public static readonly Vector2[] dirVectors = { Vector2.left, Vector2.down, Vector2.right, Vector2.up };
     public static readonly Vector2[] sideToDirVectors = { Vector2.down, Vector2.right, Vector2.up, Vector2.left };
     public static readonly int[] mirrorDir = { 2, 3, 0, 1 };
-    
+
+    public bool repeatable;
     public RoomNodeHolder roomNodes;
 
     public DisplayMode displayMode;
+    
+    private Vector2? _size;
+    private Vector2? _minNode;
+
+    [HideInInspector]
+    public Vector2 size => _size ?? (_size = getSize()).Value;
+    public Vector2 minNode => _minNode ?? (_minNode = getDownLeftCorner()).Value;
 
     [HideInInspector]
     public Vector2 selectedNode;
@@ -193,4 +185,62 @@ public class CustomRoom : MonoBehaviour
         EditorUtility.SetDirty(this);
     }
 #endif
+
+    public List<Door> getDoors()
+    {
+        var count = 0;
+        foreach (var node in roomNodes)
+        {
+            var neighbors = roomNodes.getNeighbors(node.Key);
+            for (var i = 0; i < 4; i++)
+            {
+                if (node.Value.doors[i] && neighbors[i] == null)
+                    count++;
+            }
+        }
+        var doors = new List<Door>();
+        foreach (var node in roomNodes)
+        {
+            var neighbors = roomNodes.getNeighbors(node.Key);
+            for (var i = 0; i < 4; i++)
+            {
+                if (node.Value.doors[i] && neighbors[i] == null)
+                    doors.Add(new Door(node.Key, (Direction)i, this, count));
+            }
+        }
+
+        return doors;
+    }
+
+    public Vector2 getSize()
+    {
+        var min = new Vector2(int.MaxValue, int.MaxValue);
+        var max = new Vector2(int.MinValue, int.MinValue);
+        foreach (var node in roomNodes)
+        {
+            if (node.Key.x < min.x)
+                min.x = node.Key.x;
+            if (node.Key.y < min.y)
+                min.y = node.Key.y;
+            if (node.Key.x > max.x)
+                max.x = node.Key.x;
+            if (node.Key.y > max.y)
+                max.y = node.Key.y;
+        }
+        return max - min + Vector2.one;
+    }
+
+    public Vector2 getDownLeftCorner()
+    {
+        // Get the node with the lowest x and y value
+        var min = new Vector2(int.MaxValue, int.MaxValue);
+        foreach (var node in roomNodes)
+        {
+            if (node.Key.x < min.x)
+                min.x = node.Key.x;
+            if (node.Key.y < min.y)
+                min.y = node.Key.y;
+        }
+        return min;
+    }
 }

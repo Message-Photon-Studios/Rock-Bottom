@@ -11,6 +11,8 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] float health = 100;
     [SerializeField] float hitInvincibilityTime;
     [SerializeField] GameManager gameManager;
+    [SerializeField] Animator animator;
+    [SerializeField] PlayerMovement movement;
     float maxHealth;
     float invincibilityTimer = 0;
 
@@ -43,7 +45,11 @@ public class PlayerStats : MonoBehaviour
         {
             invincibilityTimer -= Time.deltaTime;
             if(invincibilityTimer < 0)
+            {
                 invincibilityTimer = 0;
+                Physics2D.IgnoreLayerCollision(3,6,false);
+            }
+                
         }
     }
 
@@ -54,12 +60,16 @@ public class PlayerStats : MonoBehaviour
     public void DamagePlayer(float damage)
     {
         if(invincibilityTimer > 0) return;
+        Physics2D.IgnoreLayerCollision(3,6);
         health -= damage;
         invincibilityTimer = hitInvincibilityTime;
         if(health <= 0)
         {
-            KillPlayer();
+            animator.SetBool("dead", true);
+            movement.movementRoot.SetTotalRoot("dead", true);
+            invincibilityTimer = 3f;
         }
+        animator.SetTrigger("damaged");
         onHealthChanged?.Invoke(health);
     }
 
@@ -92,6 +102,18 @@ public class PlayerStats : MonoBehaviour
     }
 
     /// <summary>
+    /// Adds health points to the players max health and also heals the player the same ammount
+    /// </summary>
+    /// <param name="addMaxHealth"></param>
+    public void AddMaxHealth(float addMaxHealth)
+    {
+        maxHealth += addMaxHealth;
+        health += addMaxHealth;
+        onMaxHealthChanged?.Invoke(maxHealth);
+        onHealthChanged?.Invoke(health);
+    }
+
+    /// <summary>
     /// Kill the player
     /// </summary>
     public void KillPlayer()
@@ -100,6 +122,15 @@ public class PlayerStats : MonoBehaviour
         Debug.Log("Player died. Player deaths not implemented");
         onPlayerDied?.Invoke();
         
-        gameManager.EndLevel();
+        gameManager?.EndLevel();
+    }
+
+    /// <summary>
+    /// Returns true if the player is invincible
+    /// </summary>
+    /// <returns></returns>
+    public bool IsInvincible()
+    {
+        return invincibilityTimer > 0;
     }
 }

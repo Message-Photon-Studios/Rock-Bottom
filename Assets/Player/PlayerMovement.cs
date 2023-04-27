@@ -11,6 +11,7 @@ using System;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float movementSpeed; // Base movement speed for the player in air and on ground
+    [SerializeField] float climbSpeed; //The speed that the player is climbing with
     [SerializeField] float jumpPower; //The initial boost power for the jump. Increasing this will increse the jumpheight and jump speed but decrease controll
     [SerializeField] float leapPower; //This detemines the extra forward speed of the double jump
     [SerializeField] float wallJumpPower;
@@ -144,12 +145,13 @@ public class PlayerMovement : MonoBehaviour
     #region Camera Check
     void CheckBelowStart()
     {
-        if(focusPoint == null) return;
+        if(focusPoint == null && movementRoot.totalRoot) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, -checkPointY, focusPoint.localPosition.z);
     }
 
     void CheckAboveStart()
     {
+        if(focusPoint == null && movementRoot.totalRoot) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkPointY, focusPoint.localPosition.z);
     }
 
@@ -177,15 +179,18 @@ public class PlayerMovement : MonoBehaviour
     {
         return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3) ||
                 !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3)) &&
-                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3) && movement > 0)  ||
-                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, 1f, 3) && movement < 0));
+                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .5f, 3))  ||
+                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .5f, 3)));
     }
+   
     #endregion
 
     private void FixedUpdate() {
         movementRoot.UpdateTimers();
 
         float walkDir = walkAction.action.ReadValue<float>();
+
+        if(movementRoot.totalRoot) walkDir = 0;
 
         if(walkDir < 0 && lookDir > 0 ) Flip();
         else if(walkDir > 0 && lookDir < 0) Flip();
@@ -199,6 +204,8 @@ public class PlayerMovement : MonoBehaviour
         if(IsGrounded())
         {
             playerAnimator.SetInteger("velocityY", 0);
+
+            doubleJumpActive = false;
 
             airTime = 0;
             fallTime = 0;
@@ -231,13 +238,24 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrappeling())
         {
+            bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
+            if(wallRight == spriteRenderer.flipX) Flip();
             playerAnimator.SetBool("grapple", true);
             fallTime = 0;
             airTime = 0;
             CheckCancel();
-            if(body.velocity.y < 0)
+            doubleJumpActive = false;
+
+
+            if(walkDir != 0)
             {
-                body.velocity = new Vector2(body.velocity.x, 0);
+                playerAnimator.SetInteger("velocityY", 1);
+                body.velocity = new Vector2(body.velocity.x, climbSpeed);
+            }
+            else if(body.velocity.y < 0)
+            {
+                body.velocity = new Vector2(body.velocity.x, -2);
+                playerAnimator.SetInteger("velocityY", -1);
             }
         } else
         {
@@ -272,6 +290,11 @@ public class MovementRoot
     /// If it is true then the player should be rooted. 
     /// </summary>
     public bool rooted {get; private set;}
+    /// <summary>
+    /// If the player is total rooted then the camera can't be moved as well
+    /// </summary>
+    /// <value></value>
+    public bool totalRoot {get; private set;}
     private Dictionary<string, float> effects;
 
     public MovementRoot(string[] rootEffects)
@@ -302,6 +325,28 @@ public class MovementRoot
                 effects.Remove(effect);
         }
 
+        rooted = effects.Count > 0;
+    }
+
+    /// <summary>
+    /// Call this method to root or unroot the player. The player will only be unrooted completely if it has no effects that roots it. 
+    /// This does also set the total root. Setting the total root will disable camera movement completely
+    /// </summary>
+    /// <param name="effect"></param>
+    /// <param name="root"></param>
+    public void SetTotalRoot(string effect, bool root)
+    {
+        if(root)
+        {
+            if(!effects.ContainsKey(effect))
+                effects.Add(effect, -1);
+        } else
+        {
+            if(effects.ContainsKey(effect))
+                effects.Remove(effect);
+        }
+
+        totalRoot = root;
         rooted = effects.Count > 0;
     }
 

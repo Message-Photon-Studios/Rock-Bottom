@@ -1,9 +1,28 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+
+public class Door
+{
+    public Vector2 pos;
+    public Direction dir;
+    public CustomRoom room;
+    public int doorsInRoom;
+
+    public Door(Vector2 pos, Direction dir, CustomRoom room, int doorsInRoom)
+    {
+        this.pos = pos;
+        this.dir = dir;
+        this.room = room;
+        this.doorsInRoom = room.repeatable ? 0 : doorsInRoom;
+    }
+}
 
 public static class ListExtensions
 {
@@ -55,21 +74,21 @@ public class DungeonGraph
         return true;
     }
 
-    public bool areDoorsBlocked(List<(Vector2, Direction)> doors, Vector2 shift, RoomNodeHolder room)
+    public bool areDoorsBlocked(List<Door> doors, Vector2 shift, RoomNodeHolder room)
     {
         foreach (var door in doors)
         {
-            var pos = door.Item1 + shift;
+            var pos = door.pos + shift;
 
             // Test in every direction with a door that there is either not a node or that the node has a door
-            var dir = (int)door.Item2;
+            var dir = (int)door.dir;
             var neighborPos = pos + CustomRoom.dirVectors[dir];
             if (!nodes.ContainsKey(neighborPos))
                 continue;
             // Either both are false or both are true, in any other case there is a blockage
-            if (!nodes[neighborPos].doors[CustomRoom.mirrorDir[dir]] && !room[door.Item1].doors[dir])
+            if (!nodes[neighborPos].doors[CustomRoom.mirrorDir[dir]] && !room[door.pos].doors[dir])
                 continue;
-            if (nodes[neighborPos].doors[CustomRoom.mirrorDir[dir]] && room[door.Item1].doors[dir])
+            if (nodes[neighborPos].doors[CustomRoom.mirrorDir[dir]] && room[door.pos].doors[dir])
                 continue;
             return true;
         }
@@ -77,23 +96,23 @@ public class DungeonGraph
         // Check that no node is blocking any open door in the graph
         foreach (var door in parent.remainingDoors)
         {
-            var doorNeighborLocal = door.Item1 + CustomRoom.dirVectors[(int)door.Item2] - shift;
-            if (room.ContainsKey(doorNeighborLocal) && !room[doorNeighborLocal].doors[CustomRoom.mirrorDir[(int)door.Item2]])
+            var doorNeighborLocal = door.pos + CustomRoom.dirVectors[(int)door.dir] - shift;
+            if (room.ContainsKey(doorNeighborLocal) && !room[doorNeighborLocal].doors[CustomRoom.mirrorDir[(int)door.dir]])
                 return true;
         }
 
         // Check that it does not obstruct the top door either
         {
-            var doorNeighborLocal = parent.topDoor + Vector2.up - shift;
+            var doorNeighborLocal = parent.topDoor.pos + Vector2.up - shift;
             if (room.ContainsKey(doorNeighborLocal))
             {
-                if (!room[doorNeighborLocal].doors[CustomRoom.mirrorDir[(int)Direction.Down]])
+                if (!room[doorNeighborLocal].doors[(int)Direction.Down])
                     return true;
 
                 // Check that there is a new door to use as future potential door
-                foreach (var door in doors.Where(door => door.Item2 == Direction.Up))
+                foreach (var door in doors.Where(door => door.dir == Direction.Up))
                 {
-                    if (isTopDoorSuitable(door.Item1))
+                    if (isTopDoorSuitable(door.pos + CustomRoom.dirVectors[(int)Direction.Up]))
                         return false;
                 }
                 return true;
@@ -102,32 +121,32 @@ public class DungeonGraph
         return false;
     }
 
-    public (int, Vector2) testRoom(Vector2 doorPos, Direction doorDir, RoomNodeHolder room)
+    public (int, Vector2) testRoom(Vector2 doorPos, Direction doorDir, CustomRoom room)
     {
         // Get all entrances of the room that have a mirrored direction to the one provided
         var doors = room.getDoors();
         var mirroredEntrances = doors
-            .Where(door => (int)door.Item2 == CustomRoom.mirrorDir[(int)doorDir])
-            .Select(door => door.Item1)
+            .Where(door => (int)door.dir == CustomRoom.mirrorDir[(int)doorDir])
+            .Select(door => door.pos)
             .ToList();
         // If there are no mirrored entrances, the room cannot be placed
         if (mirroredEntrances.Count == 0)
             return (-1, new Vector2(0, 0));
         // Order entrances from lowest y to highest y
-        var orderedEntrances = mirroredEntrances.OrderBy(pos => pos.y).ToArray();
+        var orderedEntrances = mirroredEntrances.OrderBy(pos => pos.y).Reverse().ToArray();
         // Get the position in the graph of the entrance
         var entrancePos = doorPos + CustomRoom.dirVectors[(int)doorDir];
 
         // Test the room with each entrance
         var failedTries = 0;
-        var door = new Vector2(0, 0);
         var found = false;
+        var doorsToDecide = new List<(int, Vector2)>();
         foreach (var entrance in orderedEntrances)
         {
             // Get the vector shift needed to move the room to the graph door
             var shift = entrancePos - entrance;
             // Check if the room can be placed at the door
-            if (room
+            if (room.roomNodes
                 .Select(roomNode => roomNode.Key + shift)
                 .Any(nodePos => nodes.ContainsKey(nodePos)))
             {
@@ -136,21 +155,23 @@ public class DungeonGraph
             }
 
             // Check that no door is being blocked
-            if (areDoorsBlocked(doors.ToList(), shift, room))
+            if (areDoorsBlocked(doors.ToList(), shift, room.roomNodes))
             {
                 failedTries++;
                 continue;
             }
-
+            
             found = true;
-            door = entrance;
-            break;
+            doorsToDecide.Add((failedTries, entrance));
         }
 
-        return !found ? (-1, new Vector2()) : (failedTries, door);
+        doorsToDecide.Shuffle();
+        doorsToDecide = doorsToDecide.OrderBy(door => door.Item1).ToList();
+
+        return !found ? (-1, new Vector2()) : (failedTries + (room.repeatable ? 2 : 0), doorsToDecide[Random.Range(0, doorsToDecide.Count)].Item2);
     }
 
-    public List<(Vector2, Direction)> placeRoom(Vector2 graphPos, Vector2 doorPos, Direction doorDir, CustomRoom prefab)
+    public List<Door> placeRoom(Vector2 graphPos, Vector2 doorPos, Direction doorDir, CustomRoom prefab)
     {
         // Calculate the shift needed to move the room to the graph door
         var shift = graphPos - doorPos + CustomRoom.dirVectors[(int)doorDir];
@@ -166,19 +187,19 @@ public class DungeonGraph
         }
         rooms.Add((shift, prefab));
 
-        var remainingDoors = new List<(Vector2, Direction)>();
+        var remainingDoors = new List<Door>();
         // Return the list of doors that can be used to connect to other rooms
-        foreach (var node in prefab.roomNodes)
+        var doors = prefab.getDoors();
+
+        foreach (var door in doors)
         {
-            for (var i = 0; i < node.Value.doors.Length; i++)
-            {
-                // get the adjacent node to the door
-                var neighborPos = node.Key + CustomRoom.dirVectors[i] + shift;
-                // If the door is open and there is no node there, add it to the list of remaining doors
-                if (node.Value.doors[i] && !nodes.ContainsKey(neighborPos))
-                    remainingDoors.Add((node.Key + shift, (Direction)i));
-            }
+            var neighborPos = door.pos + shift + CustomRoom.dirVectors[(int)door.dir];
+            if (nodes.ContainsKey(neighborPos))
+                continue;
+            door.pos += shift;
+            remainingDoors.Add(door);
         }
+
         return remainingDoors;
     }
 #if UNITY_EDITOR
@@ -230,28 +251,33 @@ public class DungeonGraph
 
 public class LevelGenerator
 {
+    private static float ROOMSIZE => LevelGenManager.ROOMSIZE;
+
     public DungeonGraph graph;
+    public Minimap minimap;
     private List<CustomRoom> normalRooms;
     private List<CustomRoom> closingRooms;
 
     private List<CustomRoom> usedRooms;
+    private List<(Vector2, CustomRoom)> prefabs;
+    private List<EnemyStats> enemies;
 
-    public List<(Vector2, Direction)> remainingDoors;
-    public Vector2 topDoor;
+    public List<Door> remainingDoors;
+    public Door topDoor;
 
-    public void stepGenerate(int size)
+    public void stepGenerate(int size, string areaPath)
     {
         if (graph == null)
         {
-            initGeneration();
+            initGeneration(areaPath);
         }
         
-        var (finished, success) = nextRoom(size);
+        var (finished, success) = nextRoom(size, areaPath);
         if (finished) Debug.Log("Finished successfully");
         if (!success) Debug.Log("Failed to generate");
     }
 
-    public void generate(int size)
+    public void generate(int size, string areaPath)
     {
         var tries = 0;
         do
@@ -263,14 +289,15 @@ public class LevelGenerator
                 return;
             }
 
-            initGeneration();
-            var res = tryGenerate(size);
-            if (!res) 
-                continue;
+            initGeneration(areaPath);
+            var res = tryGenerate(size, areaPath);
+            if (!res) continue;
+            endGeneration(areaPath);
 
-            endGeneration();
         } while (!graph.validate());
         insertPrefabs();
+        
+        minimap = new Minimap(graph);
     }
 
     private void insertPrefabs()
@@ -283,58 +310,130 @@ public class LevelGenerator
         // Create a roomHolder game object
         roomHolder = new GameObject("RoomHolder");
 
+        // Try to find the object EnemyHolder and if it exists, delete it
+        var enemyHolder = GameObject.Find("EnemyHolder");
+        if (enemyHolder != null)
+            Object.DestroyImmediate(enemyHolder);
+
+        // Create an enemyHolder game object
+        enemyHolder = new GameObject("EnemyHolder");
+
         foreach (var room in graph.rooms)
         {
             // Instantiate the room
-            var roomObj = Object.Instantiate(room.Item2, room.Item1 * 2 * LevelGenManager.ROOMSIZE, Quaternion.identity);
+            var pos = room.Item1 * 2 * LevelGenManager.ROOMSIZE;
+            var roomObj = Object.Instantiate(room.Item2, pos, Quaternion.identity);
+            // Get child object called "enemies"
+            var enemies = roomObj.transform.Find("Enemies");
+            if (enemies != null)
+            {
+                // For all children of type EnemySpawner, obtain the object called enemies
+                foreach (var enemySpawner in enemies.GetComponentsInChildren<EnemySpawner>())
+                {
+                    // Get random value between 0 and 1
+                    var rand = Random.value;
+                    var cummulativeChance = 0f;
+                    foreach (var enemyChance in enemySpawner.enemies.list.OrderBy(enemy => enemy.spawnChance))
+                    {
+                        if (rand > cummulativeChance + enemyChance.spawnChance)
+                        {
+                            cummulativeChance += enemyChance.spawnChance;
+                            continue;
+                        }
+
+                        var enemy = enemyChance.enemy;
+                        // Instantiate the enemy
+                        var enemyObj = Object.Instantiate(enemy, enemySpawner.transform.position, Quaternion.identity);
+                        // Set as child of enemyHolder
+                        enemyObj.transform.parent = enemyHolder.transform;
+                        this.enemies.Add(enemy.GetComponent<EnemyStats>());
+                        break;
+                    }
+                }
+
+                foreach (var enemy in enemies.GetComponentsInChildren<EnemyStats>())
+                {
+                    enemy.transform.parent = enemyHolder.transform;
+                    this.enemies.Add(enemy);
+                }
+                // Remove the Enemies object from the room
+                Object.DestroyImmediate(enemies.gameObject);
+            }
+
+            // Finish setting up the room
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
+            prefabs.Add((pos, roomObj));
         }
         // Add the roomHolder to the current scene
         SceneManager.MoveGameObjectToScene(roomHolder, SceneManager.GetActiveScene());
     }
 
-    public void initGeneration()
+    public void initGeneration(string areaPath)
     {
-        var initRoom = Resources.Load<CustomRoom>("Rooms/InitRoom");
-        remainingDoors = new List<(Vector2, Direction)>{(new Vector2(0, 0), Direction.Up)};
-        normalRooms = new List<CustomRoom>();
-        closingRooms = Resources.LoadAll<CustomRoom>("Rooms/ClosingRooms").ToList();
+        var initRooms = Resources.LoadAll<CustomRoom>(areaPath + "InitRooms");
+        var initRoom = initRooms[Random.Range(0, initRooms.Length - 1)];
+        remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0)};
+        normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").ToList();
+        closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "ClosingRooms").ToList();
         usedRooms = new List<CustomRoom>();
+        prefabs = new List<(Vector2, CustomRoom)>();
+        enemies = new List<EnemyStats>();
         graph = new DungeonGraph(initRoom, this);
-        topDoor = new Vector2(0, 0);
+        topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0);
     }
 
-    private void endGeneration()
+    private void endGeneration(string areaPath)
     {
-        var endRoom = Resources.Load<CustomRoom>("Rooms/EndRoom");
-        graph.placeRoom(topDoor, new Vector2(0, 0), Direction.Up, endRoom);
+        var endRooms = Resources.LoadAll<CustomRoom>(areaPath + "EndRooms");
+        var endRoom = endRooms[Random.Range(0, endRooms.Length - 1)];
+        graph.placeRoom(topDoor.pos, new Vector2(0, 0), Direction.Up, endRoom);
     }
 
-    private (bool, bool) nextRoom(int size)
+    private (bool, bool) nextRoom(int size, string areaPath)
     {
         // If we are out of rooms but still have to continue, we refill the normal room list
-        if (normalRooms.Count == 0)
+        if (normalRooms.All(roomElem => roomElem.repeatable))
         {
-            normalRooms = Resources.LoadAll<CustomRoom>("Rooms/NormalRooms").ToList();
+            normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").Where(roomElem => !roomElem.repeatable).ToList();
         }
 
         // Get a random element from the list and remove it
-        var nextPos = remainingDoors[Random.Range(0, remainingDoors.Count)];
+        var weightedDoors = new List<Door>();
+        foreach (var door in remainingDoors)
+        {
+            switch (door.doorsInRoom)
+            {
+                case 2:
+                    for (var i = 0; i < LevelGenManager.twoDoorRoomBias; i++)
+                        weightedDoors.Add(door);
+                    break;
+                case 3:
+                    for (var i = 0; i < LevelGenManager.threeDoorRoomBias; i++)
+                        weightedDoors.Add(door);
+                    break;
+                default:
+                    weightedDoors.Add(door);
+                    break;
+            }
+        }
+
+        var nextPos = weightedDoors[Random.Range(0, weightedDoors.Count)];
         remainingDoors.Remove(nextPos);
-        var (room, entrance) = getRoom(size - graph.size, nextPos.Item1, nextPos.Item2);
+        var (room, entrance) = getRoom(size - graph.size, nextPos);
         if (room == null)
             return (false, false);
-        var exits = graph.placeRoom(nextPos.Item1, entrance, nextPos.Item2, room);
+        var exits = graph.placeRoom(nextPos.pos, entrance, nextPos.dir, room);
+
         processNewDoors(exits);
         // For each remainining door, ensure that there is no adjacent node in the graph
         // If there is, remove it from the list
         remainingDoors = remainingDoors
-            .Where(door => !graph.nodes.ContainsKey(door.Item1 + CustomRoom.dirVectors[(int)door.Item2]))
+            .Where(door => !graph.nodes.ContainsKey(door.pos + CustomRoom.dirVectors[(int)door.dir]))
             .ToList();
 
         // If it's a normal room, we remove so it does not repeat
-        if (normalRooms.Contains(room))
+        if (normalRooms.Contains(room) && !room.repeatable)
         {
             normalRooms.Remove(room);
             usedRooms.Add(room);
@@ -344,37 +443,30 @@ public class LevelGenerator
         return (remainingDoors.Count == 0, true);
     }
 
-    private void processNewDoors(List<(Vector2, Direction)> newDoors)
+    private void processNewDoors(ICollection<Door> newDoors)
     {
         // Get all doors that are looking upwards and get the one with the hightest y value
         var topDoors = newDoors
-            .Where(door => door.Item2 == Direction.Up)
-            .OrderBy(door => door.Item1.y)
+            .Where(door => door.dir == Direction.Up)
+            .Where(door => graph.isTopDoorSuitable(door.pos + CustomRoom.dirVectors[(int)Direction.Up]))
+            .OrderBy(door => door.pos.y)
             .ToList();
-
-        for (var i = 0; i < topDoors.Count; i++)
+        
+        if (topDoors.Count > 0 && topDoors.Last().pos.y > topDoor.pos.y)
         {
-            if (graph.isTopDoorSuitable(topDoors[i].Item1 + CustomRoom.dirVectors[(int)Direction.Up])) 
-                continue;
-
-            topDoors.RemoveAt(i);
-            i--;
-        }
-        if (topDoors.Count > 0 && topDoors.Last().Item1.y > topDoor.y)
-        {
-            remainingDoors.Add((topDoor, Direction.Up));
-            topDoor = topDoors.Last().Item1;
-            newDoors.Remove(topDoors.Last());
+            remainingDoors.Add(topDoor);
+            topDoor = topDoors.Last();
+            newDoors.Remove(topDoor);
         }
         // Add all new doors to the remaining door list
         remainingDoors = remainingDoors.Concat(newDoors).ToList();
     }
 
-    private bool tryGenerate(int size)
+    private bool tryGenerate(int size, string areaPath)
     {
         while (true)
         {
-            var (finished, success) = nextRoom(size);
+            var (finished, success) = nextRoom(size, areaPath);
             if (finished)
             {
                 return graph.nodes.Count >= size;
@@ -384,30 +476,30 @@ public class LevelGenerator
         }
     }
 
-    private (CustomRoom, Vector2) getRoom(int remainingSize, Vector2 pos, Direction doorDir)
+    private (CustomRoom, Vector2) getRoom(int remainingSize, Door door)
     {
         (CustomRoom, Vector2) retRoom;
 
         if (remainingSize > 0)
         {
-            retRoom = getNormalRoom(pos, doorDir, false);
+            retRoom = getNormalRoom(door, false);
             if (retRoom.Item1 == null)
-                retRoom = getClosingRoom(pos, doorDir);
+                retRoom = getClosingRoom(door);
         }
         else
         {
-            retRoom = getClosingRoom(pos, doorDir);
+            retRoom = getClosingRoom(door);
         }
 
         return retRoom;
     }
 
-    private (CustomRoom, Vector2) getClosingRoom(Vector2 pos, Direction doorDir)
+    private (CustomRoom, Vector2) getClosingRoom(Door door)
     {
         var rooms = closingRooms.ToList();
 
         // Get the posisition of the other node of the door
-        var otherNodePos = pos + CustomRoom.dirVectors[(int)doorDir];
+        var otherNodePos = door.pos + CustomRoom.dirVectors[(int)door.dir];
 
         // Get how many nodes adjacent to it have an open door looking at it
         var doorsToOpen = new[] { false, false, false, false };
@@ -434,13 +526,20 @@ public class LevelGenerator
         return (rooms[Random.Range(0, rooms.Count)], new Vector2(0, 0));
     }
 
-    private (CustomRoom, Vector2) getNormalRoom(Vector2 pos, Direction doorDir, bool secondTry)
+    private (CustomRoom, Vector2) getNormalRoom(Door door, bool secondTry)
     {
         var rooms = normalRooms.ToList();
         if (secondTry)
         {
-            rooms = normalRooms.Concat(usedRooms).ToList();
+            rooms = normalRooms
+                .Concat(usedRooms)
+                .ToList();
         }
+        else if (door.room.repeatable)
+        {
+            rooms = rooms.Where(room => !room.repeatable).ToList();
+        }
+        rooms = rooms.Where(room => room.name != door.room.name).ToList();
         // Shuffle filtered rooms
         rooms.Shuffle();
         // Find a room that can be placed, order by the lowest door
@@ -448,7 +547,7 @@ public class LevelGenerator
             // Get all result of testing the liability of the room
             .Select(room =>
             {
-                var test = graph.testRoom(pos, doorDir, room.roomNodes);
+                var test = graph.testRoom(door.pos, door.dir, room);
                 return (room, test.Item2, test.Item1);
             })
             //Filter all invalid ones
@@ -459,11 +558,48 @@ public class LevelGenerator
             .ToList();
         if (results.Count == 0)
         {
-            return secondTry ? (null, new Vector2()) : getNormalRoom(pos, doorDir, true);
+            return secondTry ? (null, new Vector2()) : getNormalRoom(door, true);
         }
         // We return the best result and if the room is flipped
         return (results[0].Item1, results[0].Item2);
     }
 
+    public void cullElements()
+    {
+        // Get the player position
+        var camPos = Camera.main.transform.position;
+        var cameraSize = Camera.main.orthographicSize;
+        var cameraWidth = cameraSize * Camera.main.aspect;
+        // Make the square that will be used to cull rooms
+        var dist = LevelGenManager.cullDistance;
+        var cullSquare = new Rect(
+            camPos.x - (cameraWidth * dist), 
+            camPos.y - (cameraSize * dist), 
+            (cameraWidth * dist) * 2, 
+            (cameraSize * dist) * 2);
+        foreach (var room in prefabs)
+        {
+            var size = room.Item2.size * 2 * ROOMSIZE;
+            var pos = room.Item2.minNode * 2 * ROOMSIZE - Vector2.one * ROOMSIZE + room.Item1;
+            // Make room square
+            var roomSquare = new Rect(pos.x, pos.y, size.x, size.y);
+            room.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
+        }
 
+
+
+        for(int i = 0; i < enemies.Count; i++)
+        {
+            if(enemies[i] == null) continue;
+            
+            // Create rect with position and size of the enemy
+            var enemySquare = new Rect(
+                enemies[i].transform.position.x -  enemies[i].transform.localScale.x / 2, 
+                enemies[i].transform.position.y -  enemies[i].transform.localScale.y / 2, 
+                enemies[i].transform.localScale.x, 
+                enemies[i].transform.localScale.y);
+
+            enemies[i].gameObject.SetActive(cullSquare.Overlaps(enemySquare));
+        }
+    }
 }

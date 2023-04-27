@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Ground
   - GameManager
+  - Spell
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -15,9 +17,9 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - 
-  - 
-  - 
+  - Minimap
+  - Spell
+  - Item
   - 
   - 
   - 
@@ -41,8 +43,14 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1495967295
+    locked: 0
   - name: Ground
     uniqueID: 3882692897
+    locked: 0
+  - name: Back Decoration
+    uniqueID: 770068331
     locked: 0
   - name: Default
     uniqueID: 0
@@ -53,8 +61,14 @@ TagManager:
   - name: Player
     uniqueID: 1472463759
     locked: 0
+  - name: Spell
+    uniqueID: 3679530677
+    locked: 0
   - name: Particles
     uniqueID: 567990507
+    locked: 0
+  - name: Front Decoration
+    uniqueID: 2140779007
     locked: 0
   - name: UI
     uniqueID: 303372357

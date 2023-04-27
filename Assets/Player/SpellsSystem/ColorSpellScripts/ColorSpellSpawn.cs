@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Spawns other color spells at impact
 /// </summary>
-public class ColorSpellSpawn : ColorSpell
+public class ColorSpellSpawn : SpellImpact
 {
     /// <summary>
     /// After this time the spell will autospawn the spawn spells.
@@ -26,12 +26,12 @@ public class ColorSpellSpawn : ColorSpell
         }
     }
     
-    protected override void Impact(Collider2D other)
+    public override void Impact(Collider2D other)
     {
         foreach (GameObject spawnPrefab in spawnPrefabs)
         {
             GameObject obj = GameObject.Instantiate(spawnPrefab, transform.position, transform.rotation) as GameObject;
-            obj.GetComponent<ColorSpell>().Initi(gameColor, power*powerScale, player, lookDir);
+            obj.GetComponent<ColorSpell>().Initi(spell.GetColor(), spell.GetPower(), spell.GetPlayerObj(), spell.lookDir);
         }
     }
 }

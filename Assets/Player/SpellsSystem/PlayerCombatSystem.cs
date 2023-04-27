@@ -10,6 +10,7 @@ using System;
 public class PlayerCombatSystem : MonoBehaviour
 {
     [SerializeField] float defaultAttackDamage;
+    [SerializeField] float defaultAttackForce; 
     [SerializeField] public float comboBaseDamage;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
     [SerializeField] PlayerDefaultAttack defaultAttackHitbox; //The object that controlls the default attack hitbox
@@ -17,7 +18,6 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] InputActionReference defaultAttackAction, specialAttackAction, verticalLookDir; 
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
-    [SerializeField] SpellInventory spellInventory;
     [SerializeField] Animator animator;
     private bool attacking;
 
@@ -27,7 +27,10 @@ public class PlayerCombatSystem : MonoBehaviour
     #region Setup
     private void OnEnable() {
         specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
-        defaultAttackHandler = (InputAction.CallbackContext ctx) => {animator.SetTrigger("defaultAttack");};
+        defaultAttackHandler = (InputAction.CallbackContext ctx) => {
+            animator.SetTrigger("defaultAttack");
+            playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
+        };
 
         specialAttackAction.action.performed += specialAttackHandler;
         defaultAttackAction.action.performed += defaultAttackHandler;
@@ -66,21 +69,24 @@ public class PlayerCombatSystem : MonoBehaviour
         (GameColor absorb, int ammount) = enemy.AbsorbColor();
         enemy.DamageEnemy(defaultAttackDamage);
         colorInventory.AddColor(absorb, ammount);
+        enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
     }
 
+    private GameObject currentSpell = null;
     /// <summary>
     /// Plays the animation for the special attack
     /// </summary>
     private void SpecialAttackAnimation()
     {
-        GameObject obj = spellInventory.GetColorSpell();
-        if(obj == null) return;
+        currentSpell= colorInventory.GetActiveColorSpell().gameObject;
+        if(currentSpell == null) return;
         if(attacking) return;
+        if(!colorInventory.CheckActveColor()) return;
         //if(playerMovement.airTime > 0) return;
         attacking = true;
-        string anim = obj.GetComponent<ColorSpell>().GetAnimationTrigger();
+        string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
-        playerMovement.movementRoot.SetRoot("attackRoot", true);
+        playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
     }
 
     /// <summary>
@@ -88,15 +94,14 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpecialAttack()
     {
-
-        GameObject obj = spellInventory.GetColorSpell();
         GameColor color = colorInventory.UseActiveColor();
 
-        if(obj == null) return;
+        if(currentSpell == null) return;
 
-        Vector3 spawnPoint = new Vector3(spellSpawnPoint.localPosition.x * playerMovement.lookDir, spellSpawnPoint.localPosition.y);
-        GameObject spell = GameObject.Instantiate(obj, transform.position + spawnPoint, transform.rotation) as GameObject;
-        spell.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
+        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+currentSpell.transform.position.x) * playerMovement.lookDir, 
+                                        currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
+        GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
+        spell?.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
     }
 
     /// <summary>
@@ -106,6 +111,6 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         attacking = false;
         defaultAttackHitbox.gameObject.SetActive(false);
-        playerMovement.movementRoot.SetRoot("attackRoot", false);
+        playerMovement.movementRoot.SetTotalRoot("attackRoot", false);
     }
 }

@@ -23,7 +23,7 @@ public class GameColor : ScriptableObject
     /// <summary>
     /// The effect that this color has
     /// </summary>
-    [SerializeField] public ColorEffect colorEffect;
+    [SerializeField] ColorEffect colorEffect;
     [SerializeField] List<ColorMix> mixes;
     
     /// <summary>
@@ -39,6 +39,12 @@ public class GameColor : ScriptableObject
         }
 
         else return this;
+    }
+
+    public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
+    {
+        if(enemyObj.GetComponent<EnemyStats>().GetColor() == this) return;
+        colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
     }
 }
 
