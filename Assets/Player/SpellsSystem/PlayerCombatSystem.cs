@@ -28,6 +28,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private void OnEnable() {
         specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
         defaultAttackHandler = (InputAction.CallbackContext ctx) => {
+            if(animator.GetBool("grapple")) return;
             animator.SetTrigger("defaultAttack");
             playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         };
@@ -78,6 +79,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpecialAttackAnimation()
     {
+        if(animator.GetBool("grapple")) return;
         currentSpell= colorInventory.GetActiveColorSpell().gameObject;
         if(currentSpell == null) return;
         if(attacking) return;
