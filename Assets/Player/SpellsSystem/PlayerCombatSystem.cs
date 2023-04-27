@@ -20,6 +20,7 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
     private bool attacking;
+    private Rigidbody2D body;
 
     Action<InputAction.CallbackContext> specialAttackHandler;
     Action<InputAction.CallbackContext> defaultAttackHandler;
@@ -32,7 +33,8 @@ public class PlayerCombatSystem : MonoBehaviour
             animator.SetTrigger("defaultAttack");
             playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         };
-
+        
+        body = GetComponent<Rigidbody2D>();
         specialAttackAction.action.performed += specialAttackHandler;
         defaultAttackAction.action.performed += defaultAttackHandler;
         defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
@@ -89,6 +91,7 @@ public class PlayerCombatSystem : MonoBehaviour
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
         playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
+        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
     }
 
     /// <summary>
@@ -104,6 +107,8 @@ public class PlayerCombatSystem : MonoBehaviour
                                         currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
         GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
         spell?.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
+        body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+        transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
     }
 
     /// <summary>
