@@ -47,6 +47,7 @@ public class LevelGenManager : MonoBehaviour
         levelGen?.graph.draw();
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
+#endif
 
     private void Update()
     {
@@ -57,5 +58,4 @@ public class LevelGenManager : MonoBehaviour
     {
         levelGen?.minimap?.testPosition(player.gameObject.transform.position);
     }
-#endif
 }
