@@ -55,10 +55,8 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         Debug.Log("Default attack");
         //TODO add attacking = true;
-        float vertical = verticalLookDir.action.ReadValue<float>();
-        float offsetX = (vertical == 0)? defaultAttackOffset.x * playerMovement.lookDir: 0;
-        float offsetY = defaultAttackOffset.y * vertical;
-        defaultAttackHitbox.transform.position = new Vector3(transform.position.x + offsetX, transform.position.y + offsetY, transform.position.z);
+        float offsetX = defaultAttackOffset.x * playerMovement.lookDir;
+        defaultAttackHitbox.transform.position = new Vector3(transform.position.x + offsetX, defaultAttackHitbox.transform.position.y, transform.position.z);
         defaultAttackHitbox.gameObject.SetActive(true);
     }
 
