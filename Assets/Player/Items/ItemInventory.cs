@@ -16,6 +16,8 @@ public class ItemInventory : MonoBehaviour
     
     private List<ItemPickup> pickUpItems = new List<ItemPickup>();
 
+    private List<ItemPickup> buyItems = new List<ItemPickup>();
+
     /// <summary>
     /// Is called whenever the player picks up an item. Sends the item picked up
     /// </summary>
@@ -41,6 +43,14 @@ public class ItemInventory : MonoBehaviour
             while(pickUpItems.Count > 0)
             {
                 pickUpItems[0].PickedUp();
+            }
+
+            while (buyItems.Count > 0)
+            {
+                if(PayCost(buyItems[0].GetItem().itemCost))
+                {
+                    buyItems[0].PickedUp();
+                } else buyItems.RemoveAt(0);
             }
         };
 
@@ -83,6 +93,29 @@ public class ItemInventory : MonoBehaviour
         pickUpItems.Remove(item);    
         onItemInRange?.Invoke(false);
     }
+    
+    /// <summary>
+    /// Enabels an item to be bought
+    /// </summary>
+    /// <param name="item"></param>
+    public void EnableBuyItem(ItemPickup item)
+    {
+        buyItems.Add(item);
+        onItemInRange?.Invoke(true);
+    }
+
+    /// <summary>
+    /// Disables an item from being bought
+    /// </summary>
+    /// <param name="item"></param>
+    public void DisableBuyItem(ItemPickup item)
+    {
+        if(!buyItems.Contains(item)) return;
+        buyItems.Remove(item);
+        onItemInRange?.Invoke(false);
+    }
+
+
 
     /// <summary>
     /// Adds coins to the players inventory

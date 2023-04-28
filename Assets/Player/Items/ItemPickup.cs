@@ -10,9 +10,11 @@ using TMPro;
 public class ItemPickup : MonoBehaviour
 {
     [SerializeField] float spawnChance = 1f;
+    [SerializeField] bool needsPayment;
     Item item;
     [SerializeField] GameObject canvas;
-    [SerializeField]TMP_Text nameText;
+    [SerializeField] TMP_Text cost;
+    [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
     SpriteRenderer spriteRenderer;
     ItemInventory inventory;
@@ -27,6 +29,8 @@ public class ItemPickup : MonoBehaviour
                 
         descriptionText.text = item.description;
         nameText.text = item.name;
+        cost.text = "Cost: " + item.itemCost;
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = item.sprite;
 
@@ -53,7 +57,16 @@ public class ItemPickup : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            inventory.EnablePickUp(this);
+            if(!needsPayment)
+            {
+                inventory.EnablePickUp(this);
+                cost.gameObject.SetActive(false);
+            } else
+            {
+                inventory.EnableBuyItem(this);
+                cost.gameObject.SetActive(true);
+            }
+
             canvas.SetActive(true);
         }
     }
@@ -62,8 +75,12 @@ public class ItemPickup : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            inventory.DisablePickUp(this);
+            if(!needsPayment)
+                inventory.DisablePickUp(this);
+            else
+                inventory.DisableBuyItem(this);
             canvas.SetActive(false);
+            cost.gameObject.SetActive(false);
         }
     }
 
@@ -76,4 +93,12 @@ public class ItemPickup : MonoBehaviour
         GameObject.Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Returns the spawnpoints item;
+    /// </summary>
+    /// <returns></returns>
+    public Item GetItem()
+    {
+        return item;
+    }
 }

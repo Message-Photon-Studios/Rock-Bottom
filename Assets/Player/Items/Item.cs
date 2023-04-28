@@ -12,6 +12,7 @@ public class Item : ScriptableObject
 {
     public Sprite sprite;
     [TextArea(5,20)] public string description;
+    public int itemCost;
     [SerializeReference] public List<ItemEffect> effects = new List<ItemEffect>();
 
     public void EnableItem() 
