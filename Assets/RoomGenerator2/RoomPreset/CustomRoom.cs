@@ -184,6 +184,7 @@ public class CustomRoom : MonoBehaviour
         node.doors[(int)doorDir] = !node.doors[(int)doorDir];
         EditorUtility.SetDirty(this);
     }
+#endif
 
     public List<Door> getDoors()
     {
@@ -210,7 +211,6 @@ public class CustomRoom : MonoBehaviour
 
         return doors;
     }
-#endif
 
     public Vector2 getSize()
     {

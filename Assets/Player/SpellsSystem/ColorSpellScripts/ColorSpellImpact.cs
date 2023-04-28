@@ -12,7 +12,7 @@ public class ColorSpellImpact : SpellImpact
     {
         if(other.CompareTag("Enemy"))
         {
-            GameObject test = Physics2D.Raycast(transform.position, other.transform.position-transform.position,1000, ~LayerMask.GetMask("Spell", "Player")).collider.gameObject;
+            GameObject test = Physics2D.Raycast(transform.position, other.transform.position-transform.position,1000, ~LayerMask.GetMask("Spell", "Player", "Ignore Raycast", "Item")).collider.gameObject;
             if(test.name != other.name) 
                 return;
 
