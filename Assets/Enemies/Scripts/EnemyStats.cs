@@ -207,6 +207,7 @@ public class EnemyStats : MonoBehaviour
     public void KillEnemy()
     {
         //TODO
+        if(animator.GetBool("dead")) return;
         Debug.Log(gameObject.name + " died");
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
