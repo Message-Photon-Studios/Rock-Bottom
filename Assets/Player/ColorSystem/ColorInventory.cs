@@ -25,10 +25,13 @@ public class ColorInventory : MonoBehaviour
 
     [SerializeField] public ColorSpell defaultSpell;
     [SerializeField] InputActionReference changeRightActions;
+    [SerializeField] InputActionReference pickUpAction;
     [SerializeField] public Material defaultColor;
 
     public Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
-
+    List<SpellPickup> pickUpSpells = new List<SpellPickup>();
+    List<SpellPickup> buySpells = new List<SpellPickup>();
+    System.Action<InputAction.CallbackContext> pickUp;
     #region Actions for UI
     
     /// <summary>
@@ -50,6 +53,12 @@ public class ColorInventory : MonoBehaviour
     /// Called when the color spell of a color slot is changed. The int is the index of the chaged slot
     /// </summary>
     public UnityAction<int> onColorSpellChanged;
+
+    /// <summary>
+    /// Called whenever a color spell gets in range our out of range of being picked up.
+    /// Sends a bool as parameter; if bool == true the spell got in range and if bool == false the spell left the range
+    /// </summary>
+    public UnityAction<bool> onSpellPickupInRange;
     
     #endregion
 
@@ -68,6 +77,23 @@ public class ColorInventory : MonoBehaviour
         changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
         onColorUpdated += updateBrushColor;
         onSlotChanged += slotChangedBrush;
+
+        pickUp = (InputAction.CallbackContext ctx) => {
+            foreach (SpellPickup spell in pickUpSpells)
+            {
+                spell.PickedUp();
+            }
+
+            foreach (SpellPickup buy in buySpells)
+            {
+                if(GetComponent<ItemInventory>().PayCost(buy.GetSpell().spellCost))
+                {
+                    buy.PickedUp();
+                }
+            }
+        };
+
+        pickUpAction.action.performed += pickUp;
     }
 
     void OnDisable()
@@ -75,6 +101,8 @@ public class ColorInventory : MonoBehaviour
         changeRightActions.action.performed -= (dir) => {RotateActive((int)dir.ReadValue<float>()); };
         onColorUpdated -= updateBrushColor;
         onSlotChanged -= slotChangedBrush;
+        
+        pickUpAction.action.performed -= pickUp;
     }
 
     #endregion
@@ -239,6 +267,47 @@ public class ColorInventory : MonoBehaviour
     #endregion
 
     #region Change color spells
+    /// <summary>
+    /// Enables a spell to be picked up
+    /// </summary>
+    /// <param name="spell"></param>
+    public void EnablePickUp(SpellPickup spell)
+    {
+        pickUpSpells.Add(spell);
+        onSpellPickupInRange?.Invoke(true);
+    }
+
+    /// <summary>
+    /// Disables a spell from being picked up
+    /// </summary>
+    /// <param name="spell"></param>
+    public void DisablePickUp (SpellPickup spell) 
+    {
+        if(!pickUpSpells.Contains(spell)) return;
+        pickUpSpells.Remove(spell);    
+        onSpellPickupInRange?.Invoke(false);
+    }
+    
+    /// <summary>
+    /// Enabels an spell to be bought
+    /// </summary>
+    /// <param name="item"></param>
+    public void EnableBuyItem(SpellPickup spell)
+    {
+        buySpells.Add(spell);
+        onSpellPickupInRange?.Invoke(true);
+    }
+
+    /// <summary>
+    /// Disables an spell from being bought
+    /// </summary>
+    /// <param name="item"></param>
+    public void DisableBuyItem(SpellPickup spell)
+    {
+        if(!buySpells.Contains(spell)) return;
+        buySpells.Remove(spell);
+        onSpellPickupInRange?.Invoke(false);
+    }
 
     /// <summary>
     /// Chagnes the color spell for the active slot
