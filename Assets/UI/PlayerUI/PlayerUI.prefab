@@ -110,7 +110,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 474, y: -92}
-  m_SizeDelta: {x: 82, y: 40}
+  m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &478562137382971245
 GameObject:
@@ -1082,7 +1082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1}
   m_SizeDelta: {x: 16, y: 14}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &3041012272157210003
@@ -2140,17 +2140,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffc86e55542d954ba986692ef9f920f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateAction: {fileID: -386362132723774860, guid: fd04459890e791843a48243064f9151b, type: 3}
-  leftPromt: {fileID: 2467980297970310885}
-  rightPromt: {fileID: 2042748716163655094}
-  qSprite: {fileID: 21300000, guid: 42684f166460c884db0731ce87438ee1, type: 3}
-  eSprite: {fileID: 21300000, guid: ff533f355c870154d81585732979176d, type: 3}
-  lbSprite: {fileID: 21300000, guid: c5cd9604862a2384eaac128d142872d1, type: 3}
-  rbSprite: {fileID: 21300000, guid: de8a823a101691b4cb18a12ccd06f64c, type: 3}
-  mapAction: {fileID: 0}
-  mapPromt: {fileID: 2282937880103288489}
-  mSprite: {fileID: 21300000, guid: 426d7d8c8bebead4c8f6581fe1be7d4f, type: 3}
-  ltSprite: {fileID: 21300000, guid: e69e9b6d3d58db44eb008d740694ff3e, type: 3}
+  inputActions:
+  - {fileID: -386362132723774860, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: -9189985484616426647, guid: fd04459890e791843a48243064f9151b, type: 3}
+  prompts:
+  - image: {fileID: 2467980297970310885}
+    keyboardImg: {fileID: 21300000, guid: 42684f166460c884db0731ce87438ee1, type: 3}
+    controllerImg: {fileID: 21300000, guid: c5cd9604862a2384eaac128d142872d1, type: 3}
+  - image: {fileID: 2042748716163655094}
+    keyboardImg: {fileID: 21300000, guid: ff533f355c870154d81585732979176d, type: 3}
+    controllerImg: {fileID: 21300000, guid: de8a823a101691b4cb18a12ccd06f64c, type: 3}
+  - image: {fileID: 2282937880103288489}
+    keyboardImg: {fileID: 21300000, guid: 426d7d8c8bebead4c8f6581fe1be7d4f, type: 3}
+    controllerImg: {fileID: 21300000, guid: e69e9b6d3d58db44eb008d740694ff3e, type: 3}
 --- !u!1 &7924270589170926756
 GameObject:
   m_ObjectHideFlags: 0

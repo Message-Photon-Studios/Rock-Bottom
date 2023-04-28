@@ -6,45 +6,48 @@ using UnityEngine.UI;
 
 public class ButtonPromptController : MonoBehaviour
 {
-    //Map Prompts
-    [SerializeField] InputActionReference rotateAction;
-    [SerializeField] Image leftPromt;
-    [SerializeField] Image rightPromt;
-    [SerializeField] Sprite qSprite;
-    [SerializeField] Sprite eSprite;
-    [SerializeField] Sprite lbSprite;
-    [SerializeField] Sprite rbSprite;
+    // List holding all actions related to button prompts.
+    [SerializeField] List<InputActionReference> inputActions;
 
-    //Map prompt
-    [SerializeField] InputActionReference mapAction;
-    [SerializeField] Image mapPromt;
-    [SerializeField] Sprite mSprite;
-    [SerializeField] Sprite ltSprite;
+    //List holding the image and assosiated sprite for each prompt.
+    [SerializeField] List<ButtonPromptSet> prompts;
 
     private string currentLayout;
     
     private void OnEnable() {
-        rotateAction.action.performed += CheckInputType;
+        foreach(InputActionReference action in inputActions) {
+            action.action.performed += CheckInputType;
+        }
+
     }
 
     private void OnDisable() {
-        rotateAction.action.performed -= CheckInputType;
+        foreach(InputActionReference action in inputActions) {
+            action.action.performed -= CheckInputType;
+        }
     }
 
     private void CheckInputType(InputAction.CallbackContext ctx) {
         string inputType = ctx.action.activeControl.device.name;
         if(currentLayout != inputType) {
             if(inputType == "Keyboard") {
-                leftPromt.sprite = qSprite;
-                rightPromt.sprite = eSprite;
-                mapPromt.sprite = mSprite;
+                foreach(ButtonPromptSet prompt in prompts) {
+                    prompt.image.sprite = prompt.keyboardImg;
+                }
                 currentLayout = inputType;
             } else {
-                leftPromt.sprite = lbSprite;
-                rightPromt.sprite = rbSprite;
-                mapPromt.sprite = ltSprite;
+                foreach(ButtonPromptSet prompt in prompts) {
+                    prompt.image.sprite = prompt.controllerImg;
+                }
                 currentLayout = inputType;
             }
         }
+    }
+
+    [System.Serializable]
+    public class ButtonPromptSet {
+        public Image image;
+        public Sprite keyboardImg;
+        public Sprite controllerImg;
     }
 }
