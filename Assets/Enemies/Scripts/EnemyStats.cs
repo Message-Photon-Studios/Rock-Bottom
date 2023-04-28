@@ -12,6 +12,7 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] GameColor color; //The colorMat of the enemy
     [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
+    [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
 
     private Collider2D myCollider;  
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
@@ -210,7 +211,9 @@ public class EnemyStats : MonoBehaviour
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
+        Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>().AddCoins(coinsDropped.GetReward());
         onEnemyDeath?.Invoke();
     }
     
@@ -390,4 +393,16 @@ public class EnemyStats : MonoBehaviour
     }
 
     #endregion
+}
+
+[System.Serializable]
+public struct CoinRange
+{
+    [SerializeField] int min;
+    [SerializeField] int max;
+
+    public int GetReward()
+    {
+        return UnityEngine.Random.Range(min, max+1);
+    }
 }
