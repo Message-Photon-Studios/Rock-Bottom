@@ -50,17 +50,13 @@ public class SpellPickup : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Player"))
         {
-            if(!needsPayment)
+            inventory.EnablePickUp(this);
+            if(needsPayment)
             {
-                inventory.EnablePickUp(this);
-                cost.gameObject.SetActive(false);
-            } else
-            {
-                inventory.EnableBuyItem(this);
                 cost.gameObject.SetActive(true);
             }
 
@@ -68,14 +64,11 @@ public class SpellPickup : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    public void OnTriggerExit2D(Collider2D other)
     {
         if(other.CompareTag("Player"))
         {
-            if(!needsPayment)
-                inventory.DisablePickUp(this);
-            else
-                inventory.DisableBuyItem(this);
+            inventory.DisablePickUp(this);
             canvas.SetActive(false);
             cost.gameObject.SetActive(false);
         }
@@ -99,5 +92,14 @@ public class SpellPickup : MonoBehaviour
     public ColorSpell GetSpell()
     {
         return colorSpell;
+    }
+
+    /// <summary>
+    /// Returns true if the spell needs payment
+    /// </summary>
+    /// <returns></returns>
+    public bool GetNeedsPayement()
+    {
+        return needsPayment;
     }
 }

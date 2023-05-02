@@ -29,8 +29,7 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] public Material defaultColor;
 
     public Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
-    List<SpellPickup> pickUpSpells = new List<SpellPickup>();
-    List<SpellPickup> buySpells = new List<SpellPickup>();
+    SpellPickup pickUpSpell = null;
     System.Action<InputAction.CallbackContext> pickUp;
     #region Actions for UI
     
@@ -79,17 +78,16 @@ public class ColorInventory : MonoBehaviour
         onSlotChanged += slotChangedBrush;
 
         pickUp = (InputAction.CallbackContext ctx) => {
-            foreach (SpellPickup spell in pickUpSpells)
+            if(pickUpSpell == null) return;
+            if(pickUpSpell.GetNeedsPayement())
             {
-                spell.PickedUp();
-            }
-
-            foreach (SpellPickup buy in buySpells)
-            {
-                if(GetComponent<ItemInventory>().PayCost(buy.GetSpell().spellCost))
+                if(GetComponent<ItemInventory>().PayCost(pickUpSpell.GetSpell().spellCost))
                 {
-                    buy.PickedUp();
+                    pickUpSpell.PickedUp();
                 }
+            } else
+            {
+                pickUpSpell.PickedUp();
             }
         };
 
@@ -273,7 +271,12 @@ public class ColorInventory : MonoBehaviour
     /// <param name="spell"></param>
     public void EnablePickUp(SpellPickup spell)
     {
-        pickUpSpells.Add(spell);
+        if(pickUpSpell != null)
+        {
+            pickUpSpell.OnTriggerExit2D(GetComponent<Collider2D>());
+        }
+
+        pickUpSpell = spell;
         onSpellPickupInRange?.Invoke(true);
     }
 
@@ -283,29 +286,7 @@ public class ColorInventory : MonoBehaviour
     /// <param name="spell"></param>
     public void DisablePickUp (SpellPickup spell) 
     {
-        if(!pickUpSpells.Contains(spell)) return;
-        pickUpSpells.Remove(spell);    
-        onSpellPickupInRange?.Invoke(false);
-    }
-    
-    /// <summary>
-    /// Enabels an spell to be bought
-    /// </summary>
-    /// <param name="item"></param>
-    public void EnableBuyItem(SpellPickup spell)
-    {
-        buySpells.Add(spell);
-        onSpellPickupInRange?.Invoke(true);
-    }
-
-    /// <summary>
-    /// Disables an spell from being bought
-    /// </summary>
-    /// <param name="item"></param>
-    public void DisableBuyItem(SpellPickup spell)
-    {
-        if(!buySpells.Contains(spell)) return;
-        buySpells.Remove(spell);
+        pickUpSpell = null;  
         onSpellPickupInRange?.Invoke(false);
     }
 
