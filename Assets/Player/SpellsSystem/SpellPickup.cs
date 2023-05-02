@@ -29,7 +29,7 @@ public class SpellPickup : MonoBehaviour
         cost.text = "Cost: " + colorSpell.spellCost;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = colorSpell.GetComponent<SpriteRenderer>().sprite;
+        spriteRenderer.sprite = colorSpell.GetBottleSprite().smallSprite;
 
         canvas.SetActive(false);
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
