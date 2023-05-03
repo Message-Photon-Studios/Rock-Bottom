@@ -142,7 +142,7 @@ public class ColorSlotController : MonoBehaviour
     }
 
     private void BottleChanged(int index) {
-        BottleChanged(index, index);
+        BottleChanged(index, ((index + slotList.Count - colorInventory.activeSlot) % slotList.Count));
     }
 
     #endregion
