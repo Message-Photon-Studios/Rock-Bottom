@@ -104,6 +104,7 @@ public class ItemPickup : MonoBehaviour
     {
         return item;
         
+    }
     private IEnumerator hoverAnimation()
     {
         while (true)
