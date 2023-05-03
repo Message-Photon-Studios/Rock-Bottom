@@ -8,6 +8,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class ColorSpell : MonoBehaviour
 {
+    [TextArea(5,20)] public string description;
+
+    public int spellCost;
     /// <summary>
     /// Scales the power for this specific color spell
     /// </summary>
