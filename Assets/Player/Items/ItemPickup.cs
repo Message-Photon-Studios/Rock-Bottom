@@ -16,8 +16,10 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
-    SpriteRenderer spriteRenderer;
+    [SerializeField] SpriteRenderer spriteRenderer;
     ItemInventory inventory;
+
+    private Coroutine hoverCoroutine;
 
     /// <summary>
     /// Sets the item for this spawnpoint
@@ -31,11 +33,11 @@ public class ItemPickup : MonoBehaviour
         nameText.text = item.name;
         cost.text = "Cost: " + item.itemCost;
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = item.sprite;
 
         canvas.SetActive(false);
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
+        hoverCoroutine = StartCoroutine(hoverAnimation());
     }
 
     /// <summary>
@@ -91,6 +93,7 @@ public class ItemPickup : MonoBehaviour
     {
         inventory.AddItem(item);
         GameObject.Destroy(gameObject);
+        StopCoroutine(hoverCoroutine);
     }
 
     /// <summary>
@@ -100,5 +103,16 @@ public class ItemPickup : MonoBehaviour
     public Item GetItem()
     {
         return item;
+        
+    private IEnumerator hoverAnimation()
+    {
+        while (true)
+        {
+            spriteRenderer.transform.position = new Vector3(
+                spriteRenderer.transform.position.x, 
+                spriteRenderer.transform.position.y + Mathf.Sin(Time.time * 2) * 0.003f, 
+                spriteRenderer.transform.position.z);
+            yield return new WaitForSeconds(0.005f);
+        }
     }
 }

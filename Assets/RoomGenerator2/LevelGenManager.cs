@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 
 public enum LevelArea
 {
@@ -18,6 +19,7 @@ public class LevelGenManager : MonoBehaviour
     public static float cullDistance = 2.5f;
     private LevelGenerator levelGen;
     public GameObject player;
+    public SpriteRenderer endCircle;
 
     public LevelArea levelType;
     public int size;
@@ -29,6 +31,7 @@ public class LevelGenManager : MonoBehaviour
         levelGen = new LevelGenerator();
         levelGen.generate(size, paths[(int)levelType]);
         GetComponent<ItemSpellManager>().SpawnItems();
+        endCircle.transform.position = levelGen.endRoomPos.Value;
     }
 
     public void reset()
