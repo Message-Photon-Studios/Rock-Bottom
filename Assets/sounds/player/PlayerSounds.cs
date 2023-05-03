@@ -15,6 +15,12 @@ public class PlayerSounds : MonoBehaviour
     private string walkingBool = "walking";
     private string damageBool = "damaged";
 
+    public void Start()
+    {
+        
+
+    }
+
 
     public void Update()
     {
@@ -47,6 +53,12 @@ public class PlayerSounds : MonoBehaviour
     {
         walking.Stop();
     }
+
+    public void PlayJump()
+    {
+        jumping.Play();
+    }
+
 
     public void PlayTakingDamage()
     {
