@@ -326,6 +326,11 @@ public class EnemyStats : MonoBehaviour
         return new Vector2(transform.position.x, transform.position.y) + myCollider.offset;
     }
 
+    public void ChangeDirection()
+    {
+        GetComponent<Enemy>().SwitchDirection();
+    }
+
 
     #endregion
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using BehaviourTree;
 using UnityEditor;
 
-public class CrystalBombarder : Enemy
+public class CrystalBombarderBomb : Enemy
 {
     [SerializeField] Trigger attackTrigger;
     [SerializeField] GameObject attackSpawn;
