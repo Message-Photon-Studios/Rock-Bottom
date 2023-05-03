@@ -132,11 +132,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 179425698}
+  - component: {fileID: 179425702}
+  - component: {fileID: 179425701}
+  - component: {fileID: 179425700}
+  - component: {fileID: 179425699}
   - component: {fileID: 179425697}
   - component: {fileID: 179425696}
-  m_Layer: 0
-  m_Name: crystal_bombarder_idle_0
-  m_TagString: Untagged
+  m_Layer: 6
+  m_Name: Crystal Bombarder
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,7 +185,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -228,6 +232,84 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &179425699
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179425695}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.05}
+  m_Size: {x: 0.9, y: 1.15}
+  m_Direction: 0
+--- !u!50 &179425700
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179425695}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 8
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!114 &179425701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179425695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf22cbb5684d2ad4caa70642bab93e18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCollisionDamage: 10
+  playerCollisionForce: {x: 2000, y: 0.5}
+  attackTrigger:
+    radius: 10
+    offset: {x: 0, y: 0}
+    color: {r: 1, g: 0, b: 0, a: 1}
+  attackSpawn: {fileID: 0}
+  spawnOffset: {x: -0.5, y: -0.1}
+  patrollDistance: 5
+  patrollIdleTime: 3
+--- !u!114 &179425702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179425695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 200
+  color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
+  colorAmmount: 3
+  movementSpeed: 4800
+  defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
+  lookDir: -1
+  currentCombo: 0
 --- !u!1001 &217147917
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1922,6 +2004,22 @@ PrefabInstance:
     - target: {fileID: 345329960993759074, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
       propertyPath: m_Name
       value: Big Cryss
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564256270706226063, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564256270706226063, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2322248132294487077, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2322248132294487077, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
