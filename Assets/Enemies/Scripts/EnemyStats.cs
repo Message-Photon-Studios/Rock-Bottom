@@ -261,6 +261,12 @@ public class EnemyStats : MonoBehaviour
         return color;
     }
 
+    public void SetColor(GameColor color)
+    {
+        this.color = color;
+        GetComponent<SpriteRenderer>().material = color.colorMat;
+    }
+
     #endregion
 
     #region Combo Color

@@ -31,6 +31,7 @@ public class EnemyObjectSpawner : Node
         Vector2 useOffset = offset * (Vector2.left*stats.lookDir + Vector2.up);
         GameObject spwn = GameObject.Instantiate(spawnTemp, stats.GetPosition()+useOffset, stats.gameObject.transform.rotation) as GameObject;
         spwn.GetComponent<Rigidbody2D>()?.AddForce(force*(Vector2.right*stats.lookDir+Vector2.up));
+        spwn.GetComponent<EnemyStats>()?.SetColor(stats.GetColor());
         state = NodeState.SUCCESS;
         return state;
     }

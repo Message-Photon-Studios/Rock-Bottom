@@ -16,23 +16,28 @@ public class CrystalBombarder : Enemy
     protected override Node SetupTree()
     {
         
-        Node root = new Selector(new List<Node>{
-            new Sequence(new List<Node>{
-                new CheckBool("spawnAttack", true),
-                new EnemyObjectSpawner(stats, attackSpawn, spawnOffset, spawnBombForce),
-                new SetParentVariable("spawnAttack", false, 2)
-            }),
+        Node root = new Sequence(new List<Node>{
 
-            new Sequence(new List<Node>{
-                new CheckBool("attack", false),
-                new CheckPlayerArea(stats, player, attackTrigger),
-                new LookAtPlayer(stats, player),
-                new AnimationTrigger(animator, "attack")
+            new KeepHeight(stats, transform.position.y, .1f),
+            
+            new Selector(new List<Node>{
+                new Sequence(new List<Node>{
+                    new CheckBool("spawnAttack", true),
+                    new EnemyObjectSpawner(stats, attackSpawn, spawnOffset, spawnBombForce),
+                    new SetParentVariable("spawnAttack", false, 3)
                 }),
 
-            new Sequence(new List<Node>{
-                new CheckBool("attack", false),
-                new AirPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .7f, "attack", "move")
+                new Sequence(new List<Node>{
+                    new CheckBool("attack", false),
+                    new CheckPlayerArea(stats, player, attackTrigger),
+                    new LookAtPlayer(stats, player),
+                    new AnimationTrigger(animator, "attack")
+                    }),
+
+                new Sequence(new List<Node>{
+                    new CheckBool("attack", false),
+                    new AirPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .7f, "spawnAttack", "move")
+                    })
                 })
             });
         

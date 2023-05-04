@@ -13,25 +13,26 @@ public class CrystalBombarderBomb : Enemy
     protected override Node SetupTree()
     {
         
-        Node root = new Selector(new List<Node>{
+        Node root =     
+            new Selector(new List<Node>{
             
-            new Sequence(new List<Node>{
-                new CheckBool("attack", true),
-                new CheckPlayerArea(stats, player, attackTrigger),
-                new DamagePlayer(player, damage),
-                new AddForcePlayer(stats, player, force),
-                new SetParentVariable("attack", false, 2)
-            }),
+                new Sequence(new List<Node>{
+                    new CheckBool("attack", true),
+                    new CheckPlayerArea(stats, player, attackTrigger),
+                    new DamagePlayer(player, damage),
+                    new AddForcePlayer(stats, player, force),
+                    new SetParentVariable("attack", false, 2)
+                }),
 
-            new Sequence(new List<Node>{
-                new EnemyCollide(GetComponent<ColliderCheck>(), ""),
-                new AnimationTrigger(animator, "Explode")
-            }),
+                new Sequence(new List<Node>{
+                    new EnemyCollide(GetComponent<ColliderCheck>(), ""),
+                    new AnimationTrigger(animator, "Explode")
+                }),
 
-            new Sequence(new List<Node>{
-                new LookAtPlayer(stats, player),
-                new RunForward(stats, 1f)
-            })
+                new Sequence(new List<Node>{
+                    new LookAtPlayer(stats, player),
+                    new RunForward(stats, 1f)
+                })
             });
         
         root.SetData("attack", false);
