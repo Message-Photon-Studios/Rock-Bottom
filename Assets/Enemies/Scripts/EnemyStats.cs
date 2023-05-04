@@ -17,6 +17,8 @@ public class EnemyStats : MonoBehaviour
     private Collider2D myCollider;  
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
 
+    [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
+
     /// <summary>
     /// The direction that the enemy is looking
     /// </summary>
@@ -145,6 +147,11 @@ public class EnemyStats : MonoBehaviour
                 }
             }
         }
+
+        if(IsAsleep())
+        {
+            GetComponent<Rigidbody2D>().AddForce(Vector2.down*sleepForcedown*Time.deltaTime);
+        }
     }
 
     #endregion
@@ -265,6 +272,15 @@ public class EnemyStats : MonoBehaviour
         return color;
     }
 
+    public void SetColor(GameColor color)
+    {
+        this.color = color;
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
+    }
+
     #endregion
 
     #region Combo Color
@@ -328,6 +344,11 @@ public class EnemyStats : MonoBehaviour
     public Vector2 GetPosition()
     {
         return new Vector2(transform.position.x, transform.position.y) + myCollider.offset;
+    }
+
+    public void ChangeDirection()
+    {
+        GetComponent<Enemy>().SwitchDirection();
     }
 
 

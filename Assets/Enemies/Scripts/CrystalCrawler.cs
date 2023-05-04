@@ -16,7 +16,7 @@ public class CrystalCrawler : Enemy
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;
 
-    private float legPos = 0f;
+    private float legPos = .5f;
     protected override Node SetupTree()
     {
         
@@ -34,8 +34,7 @@ public class CrystalCrawler : Enemy
                         new CheckBool("enableJump", true),
                         new CheckGrounded(stats, legPos),
                         new Selector(new List<Node>{
-                            new CheckPlayerDirection(stats,player,Vector2.up, 0.5f, 20f),
-                            new CheckPlayerDirection(stats,player,Vector2.down, 0.5f, 20f)
+                            new CheckPlayerDirection(stats,player,Vector2.up, 0.5f, 200f),
                         }),
                         new Inverter(new CheckPlayerBehind(stats, player)),
                         new Inverter(new CheckRoof(stats)),
