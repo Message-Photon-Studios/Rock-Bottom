@@ -247,6 +247,20 @@ public class DungeonGraph
 
         return true;
     }
+
+    public bool checkExistNear(Vector2 pos, int distance)
+    {
+        for (var x = pos.x - distance; x <= pos.x + distance; x++)
+        {
+            for (var y = pos.y - distance; y <= pos.y + distance; y++)
+            {
+                if (nodes.ContainsKey(new Vector2(x, y)))
+                    return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 public class LevelGenerator
@@ -295,33 +309,35 @@ public class LevelGenerator
             endGeneration(areaPath);
 
         } while (!graph.validate());
-        insertPrefabs();
+        insertPrefabs(areaPath);
         
         minimap = new Minimap(graph);
     }
 
-    private void insertPrefabs()
+    private void insertPrefabs(string areaPath)
     {
         // Try to find the object RoomHolder and if it exists, delete it
-        var roomHolder = GameObject.Find("RoomHolder");
-        if (roomHolder != null)
-            Object.DestroyImmediate(roomHolder);
+        var dungeon = GameObject.Find("Dungeon");
+        if (dungeon != null)
+            Object.DestroyImmediate(dungeon);
+        dungeon = new GameObject("Dungeon");
 
         // Create a roomHolder game object
-        roomHolder = new GameObject("RoomHolder");
-
-        // Try to find the object EnemyHolder and if it exists, delete it
-        var enemyHolder = GameObject.Find("EnemyHolder");
-        if (enemyHolder != null)
-            Object.DestroyImmediate(enemyHolder);
+        var roomHolder = new GameObject("RoomHolder");
+        roomHolder.transform.parent = dungeon.transform;
 
         // Create an enemyHolder game object
-        enemyHolder = new GameObject("EnemyHolder");
+        var enemyHolder = new GameObject("EnemyHolder");
+        enemyHolder.transform.parent = dungeon.transform;
+
+        // Create an fillHolder game object
+        var fillHolder = new GameObject("FillHolder");
+        fillHolder.transform.parent = dungeon.transform;
 
         foreach (var room in graph.rooms)
         {
             // Instantiate the room
-            var pos = room.Item1 * 2 * LevelGenManager.ROOMSIZE;
+            var pos = room.Item1 * 2 * ROOMSIZE;
             var roomObj = Object.Instantiate(room.Item2, pos, Quaternion.identity);
             // Get child object called "enemies"
             var enemies = roomObj.transform.Find("Enemies");
@@ -365,8 +381,35 @@ public class LevelGenerator
             roomObj.transform.parent = roomHolder.transform;
             prefabs.Add((pos, roomObj));
         }
+
+        // Get minimum and maximum coordinates of the graph
+        var minX = graph.rooms.Min(room => room.Item2.getDownLeftCorner().x + room.Item1.x);
+        var maxX = graph.rooms.Max(room => room.Item2.getDownLeftCorner().x + room.Item2.getSize().x + room.Item1.x);
+        var minY = graph.rooms.Min(room => room.Item2.getDownLeftCorner().y + room.Item1.y);
+        var maxY = graph.rooms.Max(room => room.Item2.getDownLeftCorner().y + room.Item2.getSize().y + room.Item1.y);
+
+        var fillRooms = Resources.LoadAll<GameObject>(areaPath + "filledRooms");
+
+        for (var x = minX - 2; x < maxX + 2; x++)
+        {
+            for (var y = minY - 2; y < maxY + 2; y++)
+            {
+                // If there already is a node, continue
+                if (graph.nodes.ContainsKey(new Vector2(x, y))) continue;
+
+                if (!graph.checkExistNear(new Vector2(x, y), 2)) continue;
+
+                //Pick a random fillRoom and instantiate it
+                var fillRoom = fillRooms[Random.Range(0, fillRooms.Length - 1)];
+                var pos = new Vector2(x, y) * 2 * ROOMSIZE;
+                var fillObj = Object.Instantiate(fillRoom, pos, Quaternion.identity);
+                fillObj.transform.position = pos;
+                fillObj.transform.parent = fillHolder.transform;
+            }
+        }
+
         // Add the roomHolder to the current scene
-        SceneManager.MoveGameObjectToScene(roomHolder, SceneManager.GetActiveScene());
+        SceneManager.MoveGameObjectToScene(dungeon, SceneManager.GetActiveScene());
     }
 
     public void initGeneration(string areaPath)
@@ -585,8 +628,6 @@ public class LevelGenerator
             var roomSquare = new Rect(pos.x, pos.y, size.x, size.y);
             room.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
         }
-
-
 
         for(int i = 0; i < enemies.Count; i++)
         {
