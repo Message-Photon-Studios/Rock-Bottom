@@ -53,7 +53,7 @@ public abstract class Enemy : BehaviourTree.Tree
     #region  Collision with player
     void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.collider.CompareTag("Player"))
+        if(other.collider.CompareTag("Player") && !stats.IsAsleep())
         {
             other.rigidbody.AddForce(Vector2.up * playerCollisionForce.y + ((Vector2)player.transform.position-stats.GetPosition()) * Vector2.right * playerCollisionForce.x);
             body.velocity = new Vector2(0, body.velocity.y);
@@ -64,7 +64,7 @@ public abstract class Enemy : BehaviourTree.Tree
     #endregion
     
     #region Switches the players direction
-    protected void SwitchDirection()
+    public void SwitchDirection()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
         myCollider.offset = new Vector2(-myCollider.offset.x, myCollider.offset.y);

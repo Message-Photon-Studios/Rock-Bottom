@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float wallJumpPower;
     [SerializeField] float jumpJetpack; //A small extra power over time for the jump that alows the player to controll the height of the jump
     [SerializeField] float jumpFalloff; //The falloff power of the jump jetpack
+    [SerializeField] float cayoteTime; //A small second affter leaving a platform you can still jump as normal. 
 
     /*
     * The jumpJetpack and the jumpFalloff does controll the extra force over time for the players jump that allows the player to controll the heigh of the jump.
@@ -56,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
     float movement = 0;
     private bool doubleJumpActive = false;
     private float jump;
+
+    private float cayoteTimer = 0;
     
     Action<InputAction.CallbackContext> movementRootTrue;
     Action<InputAction.CallbackContext> movementRootFalse;
@@ -109,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(movementRoot.rooted) return;
 
-        if(IsGrounded())
+        if(IsGrounded() || cayoteTimer > 0)
         {
             body.AddForce(new Vector2(movement, 0));
             body.AddForce(Vector2.up * jumpPower);
@@ -203,6 +206,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrounded())
         {
+            cayoteTimer = cayoteTime;
             playerAnimator.SetInteger("velocityY", 0);
 
             doubleJumpActive = false;
@@ -216,6 +220,7 @@ public class PlayerMovement : MonoBehaviour
     
         } else
         {
+            cayoteTimer -= Time.fixedDeltaTime;
             if(playerAnimator.GetBool("walking")) playerAnimator.SetBool("walking", false);
             if(!movementRoot.rooted)
                 body.AddForce(new Vector2(movement*10, 0));
