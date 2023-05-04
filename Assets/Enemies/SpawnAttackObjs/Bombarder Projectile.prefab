@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8094419970937011935}
   - component: {fileID: 1066099605864802491}
+  - component: {fileID: 6776652896614623255}
   - component: {fileID: 8094419970937011934}
+  - component: {fileID: -7253808559076259783}
   - component: {fileID: 8094419970937011933}
   - component: {fileID: 3285549977413106696}
   - component: {fileID: 1551972959209940406}
@@ -51,10 +53,30 @@ MonoBehaviour:
   health: 50
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
   colorAmmount: 0
-  movementSpeed: 10
+  movementSpeed: 4000
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   lookDir: -1
   currentCombo: 0
+--- !u!114 &6776652896614623255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8094419970937011932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0b4d89169d8598408867473de3a4116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCollisionDamage: 10
+  playerCollisionForce: {x: 2000, y: 0.5}
+  damage: 30
+  force: {x: 5000, y: 3000}
+  attackTrigger:
+    radius: 2.8
+    offset: {x: 0, y: 0}
+    color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!212 &8094419970937011934
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -107,6 +129,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-7253808559076259783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8094419970937011932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12d3eeeaf49f58548bec4d8a21860d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &8094419970937011933
 Animator:
   serializedVersion: 5
@@ -139,10 +173,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
+  m_Mass: 2
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
