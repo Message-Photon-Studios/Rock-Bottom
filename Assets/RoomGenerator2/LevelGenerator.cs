@@ -279,6 +279,8 @@ public class LevelGenerator
     public List<Door> remainingDoors;
     public Door topDoor;
 
+    public Vector3? endRoomPos = null;
+
     public void stepGenerate(int size, string areaPath)
     {
         if (graph == null)
@@ -334,6 +336,14 @@ public class LevelGenerator
         var fillHolder = new GameObject("FillHolder");
         fillHolder.transform.parent = dungeon.transform;
 
+        // Try to find the object ItemHolder and if it exists, delete it
+        var itemHolder = GameObject.Find("ItemHolder");
+        if (itemHolder != null)
+            Object.DestroyImmediate(itemHolder);
+
+        // Create an itemHolder game object
+        itemHolder = new GameObject("ItemHolder");
+
         foreach (var room in graph.rooms)
         {
             // Instantiate the room
@@ -374,6 +384,11 @@ public class LevelGenerator
                 }
                 // Remove the Enemies object from the room
                 Object.DestroyImmediate(enemies.gameObject);
+            }
+
+            foreach (var item in roomObj.transform.GetComponentsInChildren<ItemPickup>())
+            {
+                item.transform.parent = itemHolder.transform;
             }
 
             // Finish setting up the room
@@ -431,6 +446,7 @@ public class LevelGenerator
         var endRooms = Resources.LoadAll<CustomRoom>(areaPath + "EndRooms");
         var endRoom = endRooms[Random.Range(0, endRooms.Length - 1)];
         graph.placeRoom(topDoor.pos, new Vector2(0, 0), Direction.Up, endRoom);
+        endRoomPos = topDoor.pos * 2 * LevelGenManager.ROOMSIZE;
     }
 
     private (bool, bool) nextRoom(int size, string areaPath)
