@@ -264,7 +264,10 @@ public class EnemyStats : MonoBehaviour
     public void SetColor(GameColor color)
     {
         this.color = color;
-        GetComponent<SpriteRenderer>().material = color.colorMat;
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
     }
 
     #endregion
