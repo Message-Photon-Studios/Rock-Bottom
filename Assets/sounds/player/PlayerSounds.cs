@@ -9,16 +9,28 @@ public class PlayerSounds : MonoBehaviour
     public AudioSource walking;
     public AudioSource jumping;
     public AudioSource climbing;
+    public AudioSource sliding;
+    public AudioSource dying;
+
 
     public AudioSource takingDamage;
 
     private string walkingBool = "walking";
     private string damageBool = "damaged";
+    private string grappleBool = "grapple";
+    private string dyingBool = "dead";
 
+    // place looping sounds here and start them
     public void Start()
     {
-        
+        walking.Play();
+        walking.Pause();
 
+        climbing.Play();
+        climbing.Pause();
+
+        sliding.Play();
+        sliding.Pause();
     }
 
 
@@ -33,26 +45,70 @@ public class PlayerSounds : MonoBehaviour
             StopWalking();
         }
 
+        if (player.GetBool(grappleBool)) 
+        {
+            if(player.GetInteger("velocityY") > 0)
+            {
+                StopSliding();
+                PlayClimbing();
+            }
+            if(player.GetInteger("velocityY") < 0)
+            {
+                StopClimbing();
+                PlaySliding();
+            }
+        }
+        else
+        {
+            StopClimbing();
+            StopSliding();
+        }
+
         if (player.GetBool(damageBool)){
             PlayTakingDamage();
+        }
+
+        if (player.GetBool(dyingBool))
+        {
+            PlayDeath();
         }
     }
 
     // for each sound there is a play method
     // for looping ones there needs to be a stop method
+    // looping sounds are paused and unpaused, as to not start playing from the same place every time. 
+
 
     public void PlayWalking()
     {
-        if (!walking.isPlaying)
-        {
-            walking.Play();
-        }
-        
+        walking.UnPause();
     }
     public void StopWalking()
     {
-        walking.Stop();
+        walking.Pause();
     }
+
+    public void PlayClimbing()
+    {
+        climbing.UnPause();
+    }
+
+    public void StopClimbing()
+    {
+        climbing.Pause();
+    }
+
+    public void PlaySliding()
+    {
+        sliding.UnPause();
+    }
+
+    public void StopSliding()
+    {
+        sliding.Pause();
+    }
+
+    // non loops
 
     public void PlayJump()
     {
@@ -65,6 +121,14 @@ public class PlayerSounds : MonoBehaviour
         if (!takingDamage.isPlaying)
         {
             takingDamage.Play();
+        }
+    }
+
+    public void PlayDeath()
+    {
+        if (!dying.isPlaying)
+        {
+            dying.Play();
         }
     }
 
