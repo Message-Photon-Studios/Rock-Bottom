@@ -49,10 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 200
+  health: 150
   color: {fileID: 11400000, guid: fb4a5352fdc867147b0b07d399cd221d, type: 2}
   colorAmmount: 3
   movementSpeed: 3000
+  coinsDropped:
+    min: 10
+    max: 15
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   sleepForcedown: 4000
   lookDir: -1
@@ -77,7 +80,7 @@ MonoBehaviour:
     color: {r: 1, g: 0, b: 0, a: 1}
   attackSpawn: {fileID: 8094419970937011932, guid: 4a630427006a0094898b5c527abea127, type: 3}
   spawnOffset: {x: -0.5, y: -0.1}
-  spawnBombForce: {x: 3000, y: 3000}
+  spawnBombForce: {x: 2500, y: 3000}
   patrollDistance: 5
   patrollIdleTime: 3
 --- !u!50 &1115180573550613684
