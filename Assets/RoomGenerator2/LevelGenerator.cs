@@ -274,6 +274,7 @@ public class LevelGenerator
 
     private List<CustomRoom> usedRooms;
     private List<(Vector2, CustomRoom)> prefabs;
+    private List<(Vector2, GameObject)> filledPrefabs;
     private List<EnemyStats> enemies;
 
     public List<Door> remainingDoors;
@@ -420,6 +421,7 @@ public class LevelGenerator
                 var fillObj = Object.Instantiate(fillRoom, pos, Quaternion.identity);
                 fillObj.transform.position = pos;
                 fillObj.transform.parent = fillHolder.transform;
+                filledPrefabs.Add((pos, fillObj));
             }
         }
 
@@ -436,6 +438,7 @@ public class LevelGenerator
         closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "ClosingRooms").ToList();
         usedRooms = new List<CustomRoom>();
         prefabs = new List<(Vector2, CustomRoom)>();
+        filledPrefabs = new List<(Vector2, GameObject)>();
         enemies = new List<EnemyStats>();
         graph = new DungeonGraph(initRoom, this);
         topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0);
@@ -643,6 +646,14 @@ public class LevelGenerator
             // Make room square
             var roomSquare = new Rect(pos.x, pos.y, size.x, size.y);
             room.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
+        }
+        
+        foreach (var fill in filledPrefabs)
+        {
+            var pos = fill.Item1 + Vector2.one * ROOMSIZE;
+            // Make room square
+            var roomSquare = new Rect(pos.x, pos.y, 2 * ROOMSIZE, 2 * ROOMSIZE);
+            fill.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
         }
 
         for(int i = 0; i < enemies.Count; i++)
