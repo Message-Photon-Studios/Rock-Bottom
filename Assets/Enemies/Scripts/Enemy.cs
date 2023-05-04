@@ -64,7 +64,7 @@ public abstract class Enemy : BehaviourTree.Tree
     #endregion
     
     #region Switches the players direction
-    protected void SwitchDirection()
+    public void SwitchDirection()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
         myCollider.offset = new Vector2(-myCollider.offset.x, myCollider.offset.y);
