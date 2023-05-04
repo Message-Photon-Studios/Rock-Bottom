@@ -9,6 +9,13 @@ public class AddForcePlayer : Node
     Rigidbody2D player;
     Vector2 force;
 
+    /// <summary>
+    /// Adds a force to the player. The forced will be flipped depending on which side the player is compared
+    /// to the player. 
+    /// </summary>
+    /// <param name="stats"></param>
+    /// <param name="player"></param>
+    /// <param name="force"></param>
     public AddForcePlayer(EnemyStats stats, PlayerStats player, Vector2 force)
     {
         this.stats = stats;

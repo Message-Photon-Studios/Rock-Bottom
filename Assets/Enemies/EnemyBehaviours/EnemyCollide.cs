@@ -7,6 +7,12 @@ public class EnemyCollide : Node
 {
     ColliderCheck collider;
     string tag;
+    /// <summary>
+    /// Returns failed untill it collides with the tag, then it always returns true.
+    /// If the tag is set to "" then it doesn't check for tags
+    /// </summary>
+    /// <param name="collider"></param>
+    /// <param name="tag"></param>
     public EnemyCollide (ColliderCheck collider, string tag)
     {
         this.collider = collider;
