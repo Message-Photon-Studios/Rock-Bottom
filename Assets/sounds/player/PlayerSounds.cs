@@ -20,6 +20,8 @@ public class PlayerSounds : MonoBehaviour
     private string grappleBool = "grapple";
     private string dyingBool = "dead";
 
+    private float delayDeath = 0.1f;
+
     // place looping sounds here and start them
     public void Start()
     {
@@ -64,13 +66,8 @@ public class PlayerSounds : MonoBehaviour
             StopSliding();
         }
 
-        if (player.GetBool(damageBool)){
+        if (player.GetBool(damageBool) && !player.GetBool(dyingBool)){
             PlayTakingDamage();
-        }
-
-        if (player.GetBool(dyingBool))
-        {
-            PlayDeath();
         }
     }
 
@@ -128,7 +125,7 @@ public class PlayerSounds : MonoBehaviour
     {
         if (!dying.isPlaying)
         {
-            dying.Play();
+            dying.PlayDelayed(delayDeath);
         }
     }
 
