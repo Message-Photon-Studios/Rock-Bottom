@@ -16,6 +16,8 @@ public class EnemyStats : MonoBehaviour
     private Collider2D myCollider;  
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
 
+    [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
+
     /// <summary>
     /// The direction that the enemy is looking
     /// </summary>
@@ -143,6 +145,11 @@ public class EnemyStats : MonoBehaviour
                     obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles);
                 }
             }
+        }
+
+        if(IsAsleep())
+        {
+            GetComponent<Rigidbody2D>().AddForce(Vector2.down*sleepForcedown*Time.deltaTime);
         }
     }
 
