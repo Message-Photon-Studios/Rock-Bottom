@@ -30,7 +30,7 @@ public class LevelGenManager : MonoBehaviour
     {
         levelGen = new LevelGenerator();
         levelGen.generate(size, paths[(int)levelType]);
-        GetComponent<ItemManager>().SpawnItems();
+        GetComponent<ItemSpellManager>().SpawnItems();
         endCircle.transform.position = levelGen.endRoomPos.Value;
     }
 
