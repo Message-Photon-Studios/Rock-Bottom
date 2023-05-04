@@ -48,12 +48,12 @@ public class CoinController : MonoBehaviour
     /// <returns></returns>
     IEnumerator CoinChange(int change) {
         int start = -100;
-
+        int xPos = -40;
         TMP_Text coinChange = GameObject.Instantiate(coins) as TMP_Text;
         coinChange.GetComponent<RectTransform>().SetParent(coins.GetComponent<RectTransform>().parent); 
 
         coinChange.transform.localScale = coins.transform.localScale;
-        coinChange.transform.localPosition = new Vector3(-25, start);
+        coinChange.transform.localPosition = new Vector3(xPos, start);
         coinChange.text = "" + change;
 
         Color32 active;
@@ -67,7 +67,7 @@ public class CoinController : MonoBehaviour
         int current = start;
         while(current < 0) {
             current = current - Mathf.Min(Mathf.CeilToInt(current*0.05f), -1);
-            coinChange.transform.localPosition = new Vector3(-25, current);
+            coinChange.transform.localPosition = new Vector3(xPos, current);
             active.a = (byte)(255*((float)current/start));
             coinChange.color = active;
             yield return new WaitForFixedUpdate();
