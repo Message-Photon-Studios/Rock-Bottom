@@ -275,7 +275,8 @@ public class LevelGenerator
     private List<CustomRoom> usedRooms;
     private List<(Vector2, CustomRoom)> prefabs;
     private List<(Vector2, GameObject)> filledPrefabs;
-    private List<EnemyStats> enemies;
+
+    private GameObject enemyHolder;
 
     public List<Door> remainingDoors;
     public Door topDoor;
@@ -330,7 +331,7 @@ public class LevelGenerator
         roomHolder.transform.parent = dungeon.transform;
 
         // Create an enemyHolder game object
-        var enemyHolder = new GameObject("EnemyHolder");
+        enemyHolder = new GameObject("EnemyHolder");
         enemyHolder.transform.parent = dungeon.transform;
 
         // Create an fillHolder game object
@@ -373,7 +374,6 @@ public class LevelGenerator
                         var enemyObj = Object.Instantiate(enemy, enemySpawner.transform.position, Quaternion.identity);
                         // Set as child of enemyHolder
                         enemyObj.transform.parent = enemyHolder.transform;
-                        this.enemies.Add(enemy.GetComponent<EnemyStats>());
                         break;
                     }
                 }
@@ -381,7 +381,6 @@ public class LevelGenerator
                 foreach (var enemy in enemies.GetComponentsInChildren<EnemyStats>())
                 {
                     enemy.transform.parent = enemyHolder.transform;
-                    this.enemies.Add(enemy);
                 }
                 // Remove the Enemies object from the room
                 Object.DestroyImmediate(enemies.gameObject);
@@ -439,7 +438,6 @@ public class LevelGenerator
         usedRooms = new List<CustomRoom>();
         prefabs = new List<(Vector2, CustomRoom)>();
         filledPrefabs = new List<(Vector2, GameObject)>();
-        enemies = new List<EnemyStats>();
         graph = new DungeonGraph(initRoom, this);
         topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0);
     }
@@ -655,19 +653,17 @@ public class LevelGenerator
             var roomSquare = new Rect(pos.x, pos.y, 2 * ROOMSIZE, 2 * ROOMSIZE);
             fill.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
         }
-
-        for(int i = 0; i < enemies.Count; i++)
+        
+        foreach (Transform enemy in enemyHolder.transform)
         {
-            if(enemies[i] == null) continue;
-            
             // Create rect with position and size of the enemy
             var enemySquare = new Rect(
-                enemies[i].transform.position.x -  enemies[i].transform.localScale.x / 2, 
-                enemies[i].transform.position.y -  enemies[i].transform.localScale.y / 2, 
-                enemies[i].transform.localScale.x, 
-                enemies[i].transform.localScale.y);
+                enemy.position.x - enemy.localScale.x / 2, 
+                enemy.position.y - enemy.localScale.y / 2, 
+                enemy.localScale.x, 
+                enemy.localScale.y);
 
-            enemies[i].gameObject.SetActive(cullSquare.Overlaps(enemySquare));
+            enemy.gameObject.SetActive(cullSquare.Overlaps(enemySquare));
         }
     }
 }
