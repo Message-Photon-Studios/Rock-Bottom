@@ -16,6 +16,8 @@ public class PlayerStats : MonoBehaviour
     float maxHealth;
     float invincibilityTimer = 0;
 
+    [SerializeField] PlayerSounds playerSounds;
+
     /// <summary>
     /// This event fires when the player health is changed. The float is the new health.
     /// </summary>
@@ -69,6 +71,7 @@ public class PlayerStats : MonoBehaviour
             animator.SetBool("dead", true);
             movement.movementRoot.SetTotalRoot("dead", true);
             invincibilityTimer = 3f;
+            playerSounds.PlayDeath();
         }
         animator.SetTrigger("damaged");
         onHealthChanged?.Invoke(health);
