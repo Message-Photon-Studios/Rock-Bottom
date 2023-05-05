@@ -11,6 +11,7 @@ public class MainMenuController : MonoBehaviour
 
     private void OnEnable() {
         startButton.Select();
+        startButton.GetComponent<IndicatorController>().ShowIndicator(true);
     }
 
     //Load scene "Gem" when pressed.

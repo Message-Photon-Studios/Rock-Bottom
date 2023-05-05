@@ -20,6 +20,7 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
     private bool attacking;
+    private Rigidbody2D body;
 
     Action<InputAction.CallbackContext> specialAttackHandler;
     Action<InputAction.CallbackContext> defaultAttackHandler;
@@ -28,10 +29,12 @@ public class PlayerCombatSystem : MonoBehaviour
     private void OnEnable() {
         specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
         defaultAttackHandler = (InputAction.CallbackContext ctx) => {
+            if(animator.GetBool("grapple")) return;
             animator.SetTrigger("defaultAttack");
             playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         };
-
+        
+        body = GetComponent<Rigidbody2D>();
         specialAttackAction.action.performed += specialAttackHandler;
         defaultAttackAction.action.performed += defaultAttackHandler;
         defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
@@ -52,10 +55,8 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         Debug.Log("Default attack");
         //TODO add attacking = true;
-        float vertical = verticalLookDir.action.ReadValue<float>();
-        float offsetX = (vertical == 0)? defaultAttackOffset.x * playerMovement.lookDir: 0;
-        float offsetY = defaultAttackOffset.y * vertical;
-        defaultAttackHitbox.transform.position = new Vector3(transform.position.x + offsetX, transform.position.y + offsetY, transform.position.z);
+        float offsetX = defaultAttackOffset.x * playerMovement.lookDir;
+        defaultAttackHitbox.transform.position = new Vector3(transform.position.x + offsetX, defaultAttackHitbox.transform.position.y, transform.position.z);
         defaultAttackHitbox.gameObject.SetActive(true);
     }
 
@@ -78,6 +79,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpecialAttackAnimation()
     {
+        if(animator.GetBool("grapple")) return;
         currentSpell= colorInventory.GetActiveColorSpell().gameObject;
         if(currentSpell == null) return;
         if(attacking) return;
@@ -87,6 +89,7 @@ public class PlayerCombatSystem : MonoBehaviour
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
         playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
+        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
     }
 
     /// <summary>
@@ -102,6 +105,8 @@ public class PlayerCombatSystem : MonoBehaviour
                                         currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
         GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
         spell?.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
+        body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+        transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
     }
 
     /// <summary>

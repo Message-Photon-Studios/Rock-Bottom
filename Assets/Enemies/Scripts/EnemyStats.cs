@@ -12,9 +12,12 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] GameColor color; //The colorMat of the enemy
     [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
+    [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
 
     private Collider2D myCollider;  
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
+
+    [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
 
     /// <summary>
     /// The direction that the enemy is looking
@@ -144,6 +147,11 @@ public class EnemyStats : MonoBehaviour
                 }
             }
         }
+
+        if(IsAsleep())
+        {
+            GetComponent<Rigidbody2D>().AddForce(Vector2.down*sleepForcedown*Time.deltaTime);
+        }
     }
 
     #endregion
@@ -206,11 +214,14 @@ public class EnemyStats : MonoBehaviour
     public void KillEnemy()
     {
         //TODO
+        if(animator.GetBool("dead")) return;
         Debug.Log(gameObject.name + " died");
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
+        Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>().AddCoins(coinsDropped.GetReward());
         onEnemyDeath?.Invoke();
     }
     
@@ -259,6 +270,15 @@ public class EnemyStats : MonoBehaviour
     public GameColor GetColor()
     {
         return color;
+    }
+
+    public void SetColor(GameColor color)
+    {
+        this.color = color;
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
     }
 
     #endregion
@@ -326,6 +346,11 @@ public class EnemyStats : MonoBehaviour
         return new Vector2(transform.position.x, transform.position.y) + myCollider.offset;
     }
 
+    public void ChangeDirection()
+    {
+        GetComponent<Enemy>().SwitchDirection();
+    }
+
 
     #endregion
 
@@ -390,4 +415,16 @@ public class EnemyStats : MonoBehaviour
     }
 
     #endregion
+}
+
+[System.Serializable]
+public struct CoinRange
+{
+    [SerializeField] int min;
+    [SerializeField] int max;
+
+    public int GetReward()
+    {
+        return UnityEngine.Random.Range(min, max+1);
+    }
 }

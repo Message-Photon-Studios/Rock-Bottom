@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Power up the players colors
+/// </summary>
 [System.Serializable]
 public class ColorBuffItem : ItemEffect
 {
