@@ -19,6 +19,8 @@ public class EnemyStats : MonoBehaviour
 
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
 
+    [SerializeField] public EnemySounds enemySounds;
+
     /// <summary>
     /// The direction that the enemy is looking
     /// </summary>
@@ -172,7 +174,12 @@ public class EnemyStats : MonoBehaviour
         health -= damage;
 
         onHealthChanged?.Invoke(health);
-        if(health <= 0) KillEnemy();
+        if (health <= 0)
+        {
+            KillEnemy();
+            enemySounds.PlayDeath();
+        
+        }
     }
 
     /// <summary>

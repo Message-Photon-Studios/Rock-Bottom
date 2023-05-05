@@ -11,8 +11,6 @@ public class PlayerSounds : MonoBehaviour
     public AudioSource climbing;
     public AudioSource sliding;
     public AudioSource dying;
-
-
     public AudioSource takingDamage;
 
     private string walkingBool = "walking";
