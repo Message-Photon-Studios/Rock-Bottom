@@ -117,9 +117,9 @@ public class EnemyStats : MonoBehaviour
                     float damage = poisonEffects[i].damage;
                     if (damage >= health)
                     {
-                        poisonEffects.RemoveAt(i);
-                        i--;
                         DamageEnemy(0);
+                        poisonEffects[i] = (0, poisonEffects[i].timer -1);
+                        i--;
                         continue;
                     }
                     
