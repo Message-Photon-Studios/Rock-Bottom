@@ -22,6 +22,7 @@ public class ItemController : MonoBehaviour
             GameObject container = new GameObject();
             Image image = container.AddComponent<Image>();
             container.GetComponent<RectTransform>().SetParent(itemContainer.transform);
+            container.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
             image.SetNativeSize();
             container.SetActive(true);
         }
