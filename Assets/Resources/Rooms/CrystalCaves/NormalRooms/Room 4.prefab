@@ -32,6 +32,7 @@ Transform:
   - {fileID: 4093459538343505182}
   - {fileID: 1594750514815882799}
   - {fileID: 6728947740463179543}
+  - {fileID: 3493168624686115068}
   - {fileID: 2947031243015636902}
   m_Father: {fileID: 1110097504496171644}
   m_RootOrder: 2
@@ -266,7 +267,7 @@ MonoBehaviour:
     - doors: 01010000
     - doors: 00010101
   displayMode: 0
-  selectedNode: {x: 0, y: 0}
+  selectedNode: {x: -1, y: 0}
 --- !u!1 &5817965262160290968
 GameObject:
   m_ObjectHideFlags: 0
@@ -3069,6 +3070,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crystoffer (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3442240939785713324, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
 --- !u!4 &4093459538343505182 stripped
@@ -3131,12 +3136,78 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crystoffer
       objectReference: {fileID: 0}
+    - target: {fileID: 3442240939785713324, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
 --- !u!4 &4041417702304883020 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3442240939785713319, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
   m_PrefabInstance: {fileID: 1716069479540086763}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2196550433877963459
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8083294930697071371}
+    m_Modifications:
+    - target: {fileID: 3315085419819964976, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_Name
+      value: Spikey
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+--- !u!4 &3493168624686115068 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3315085419819964991, guid: 1058f1b37b3254b4fa24939d4135b87d, type: 3}
+  m_PrefabInstance: {fileID: 2196550433877963459}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3183814624209918151
 PrefabInstance:
@@ -3147,7 +3218,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 345329960993759073, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 345329960993759073, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3279,6 +3350,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crystoffer (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3442240939785713324, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4395701124899108778, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3356,6 +3431,10 @@ PrefabInstance:
     - target: {fileID: 3442240939785713324, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
       propertyPath: m_Name
       value: Crystoffer (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442240939785713324, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4395701124899108778, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
       propertyPath: m_AnchorMax.x

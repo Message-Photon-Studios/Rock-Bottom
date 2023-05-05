@@ -34,8 +34,6 @@ public class CheckPlayerDirection : Node
         float distSqr = (((Vector2)player.position-stats.GetPosition())*new Vector2(stats.lookDir,1)*direction.normalized).magnitude;
 
         state = (distSqr < minDist || distSqr > maxDist)?NodeState.FAILURE:NodeState.SUCCESS;
-        Debug.Log("Checkdir " + direction +" : "+ state);
-
         return state;
 
     }
