@@ -6,25 +6,24 @@ using UnityEngine.UI;
 public class ItemController : MonoBehaviour
 {
     ItemInventory inventory;
-    [SerializeField] GameObject itemContainer;
-
+    [SerializeField] GameObject itemsContainer;
     private void OnEnable() {
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
-        LoadItems();
+        inventory.onItemPickedUp += AddItem;
     }
 
     private void OnDisable() {
         
     }
 
-    private void LoadItems() {
-        foreach(Item item in inventory.getItems()) {
-            GameObject container = new GameObject();
-            Image image = container.AddComponent<Image>();
-            container.GetComponent<RectTransform>().SetParent(itemContainer.transform);
-            container.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
-            image.SetNativeSize();
-            container.SetActive(true);
-        }
+    private void AddItem(Item item) {
+        GameObject container = new GameObject();
+        Image image = container.AddComponent<Image>();
+        container.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
+        container.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
+        container.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+        image.sprite = item.sprite;
+        image.SetNativeSize();
+        container.SetActive(true);
     }
 }
