@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class ItemController : MonoBehaviour
 {
+    //Items inventory.
     ItemInventory inventory;
+
+    //GameObject with grid to put items in.
     [SerializeField] GameObject itemsContainer;
     private void OnEnable() {
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
@@ -16,6 +19,10 @@ public class ItemController : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Adds the item as an image in the inventory.
+    /// </summary>
+    /// <param name="item">Item to be added.</param>
     private void AddItem(Item item) {
         GameObject container = new GameObject();
         Image image = container.AddComponent<Image>();

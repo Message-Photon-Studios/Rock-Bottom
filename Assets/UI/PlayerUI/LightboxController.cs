@@ -7,10 +7,10 @@ using UnityEngine.InputSystem;
 public class LightboxController : MonoBehaviour
 {
 
-    //action that is called when using the map button.
+    //action that is called when using the specified button.
     [SerializeField] InputActionReference inputAction;
     
-    //is map open
+    //is container open
     private bool open;
 
     //container holding all components.

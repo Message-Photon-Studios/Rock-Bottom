@@ -136,6 +136,10 @@ public class ItemInventory : MonoBehaviour
         return coins;
     }
 
+    /// <summary>
+    /// Returns all the items the player has.
+    /// </summary>
+    /// <returns></returns>
     public List<Item> getItems() {
         return items;
     }
