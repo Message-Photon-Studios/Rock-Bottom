@@ -42,9 +42,10 @@ public class EnemyStats : MonoBehaviour
     
     private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
     /// <summary>
-    /// This event fires when the enemys health is changed. The float is the new health.
+    /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
     public UnityAction<float> onHealthChanged;
+    public UnityAction<float, Vector2> onDamageTaken;
 
     /// <summary>
     /// The enemy died
@@ -59,6 +60,11 @@ public class EnemyStats : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         GetComponent<SpriteRenderer>().material = color.colorMat;
+    }
+
+    void Start()
+    {
+        onDamageTaken += DmgNumber.create;
     }
 
     void OnValidate()
@@ -172,6 +178,7 @@ public class EnemyStats : MonoBehaviour
         health -= damage;
 
         onHealthChanged?.Invoke(health);
+        onDamageTaken?.Invoke(damage, transform.position);
         if(health <= 0) KillEnemy();
     }
 
