@@ -136,6 +136,10 @@ public class ItemInventory : MonoBehaviour
         return coins;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
     /// <summary>
     /// Makes the player pay the specified cost. If the player don't have enough money the method returns false and no
     /// coins are removed form the player. If the payment was successfully done the method returns true.
