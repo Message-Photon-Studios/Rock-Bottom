@@ -18,7 +18,7 @@ public class CrystalBombarder : Enemy
         
         Node root = new Sequence(new List<Node>{
 
-            new KeepHeight(stats, transform.position.y, .1f),
+            new KeepHeight(stats, transform.position.y, 1f),
             
             new Selector(new List<Node>{
                 new Sequence(new List<Node>{
