@@ -59,7 +59,9 @@ public class PlayerMovement : MonoBehaviour
     private float jump;
 
     private float cayoteTimer = 0;
-    
+
+    [SerializeField] PlayerSounds playerSounds;
+
     Action<InputAction.CallbackContext> movementRootTrue;
     Action<InputAction.CallbackContext> movementRootFalse;
     Action<InputAction.CallbackContext> checkBelow;
@@ -112,12 +114,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if(movementRoot.rooted) return;
 
-        if(IsGrounded() || cayoteTimer > 0)
+        if (IsGrounded() || cayoteTimer > 0)
         {
             body.AddForce(new Vector2(movement, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
             doubleJumpActive = false;
+            playerSounds.PlayJump();
             return;
         } else if(IsGrappeling())
         {
@@ -125,6 +128,7 @@ public class PlayerMovement : MonoBehaviour
             body.AddForce(new Vector2((wallRight?-1:1)*wallJumpPower, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
+            playerSounds.PlayJump();
         } else if(!doubleJumpActive)
         {
             body.AddForce(new Vector2(movement*leapPower, 0));
@@ -132,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
             body.AddForce(Vector2.up * jumpPower);
             doubleJumpActive = true;
             jump = jumpJetpack;
+            playerSounds.PlayJump();
         }
     }
 
