@@ -119,6 +119,7 @@ public class EnemyStats : MonoBehaviour
                     {
                         poisonEffects.RemoveAt(i);
                         i--;
+                        DamageEnemy(0);
                         continue;
                     }
                     
