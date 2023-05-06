@@ -15,11 +15,16 @@ public class ItemController : MonoBehaviour
     //GameObject with grid to put items in.
     [SerializeField] GameObject itemsContainer;
 
-    [SerializeField] GameObject selectedItemContainer;
+    //Prefab for UI component of each item in the inventory.
     [SerializeField] SelectedInventoryItem prefab;
+
+    //Containers that holds the selected item components.
+    [SerializeField] GameObject selectedItemContainer;
     [SerializeField] Image selectedImage;
     [SerializeField] TMP_Text selectedName;
     [SerializeField] TMP_Text selectedDesc;
+
+    //Event system used in inventory.
     [SerializeField] EventSystem eventSystem;
 
 
@@ -30,6 +35,9 @@ public class ItemController : MonoBehaviour
         selectedItemContainer.SetActive(false);
     }
 
+    /// <summary>
+    /// When inventory is opened, hide selected item container and deselect any item.
+    /// </summary>
     private void InventoryOpened(){
         selectedItemContainer.SetActive(false);
         eventSystem.SetSelectedGameObject(null);
@@ -48,6 +56,10 @@ public class ItemController : MonoBehaviour
         newItem.onInventoryItemSelected += ShowSelectedItem;
     }
 
+    /// <summary>
+    /// Sets up the selected image component with given item.
+    /// </summary>
+    /// <param name="item"></param>
     private void ShowSelectedItem(Item item) {
         selectedItemContainer.SetActive(true);
         selectedImage.sprite = item.sprite;
