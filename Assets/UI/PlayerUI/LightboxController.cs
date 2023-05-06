@@ -26,6 +26,8 @@ public class LightboxController : MonoBehaviour
     private void OnEnable() {
         inputAction.action.performed += OpenContainer;
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        container.SetActive(false);
+        lightbox.SetActive(false);
         open = false;
     }
 

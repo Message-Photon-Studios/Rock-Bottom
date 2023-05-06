@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ItemController : MonoBehaviour
 {
@@ -10,9 +11,17 @@ public class ItemController : MonoBehaviour
 
     //GameObject with grid to put items in.
     [SerializeField] GameObject itemsContainer;
+
+    [SerializeField] GameObject selectedItemContainer;
+    [SerializeField] Image selectedImage;
+    [SerializeField] TMP_Text selectedName;
+    [SerializeField] TMP_Text selectedDesc;
+
+
     private void OnEnable() {
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
         inventory.onItemPickedUp += AddItem;
+        selectedItemContainer.SetActive(false);
     }
 
     private void OnDisable() {
@@ -32,5 +41,13 @@ public class ItemController : MonoBehaviour
         image.sprite = item.sprite;
         image.SetNativeSize();
         container.SetActive(true);
+        ShowSelectedItem(item);
+    }
+
+    private void ShowSelectedItem(Item item) {
+        selectedItemContainer.SetActive(true);
+        selectedImage.sprite = item.sprite;
+        selectedName.text = item.name;
+        selectedDesc.text = item.description;
     }
 }
