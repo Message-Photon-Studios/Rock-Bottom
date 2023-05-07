@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BehaviourTree;
 
-public class CheckPlayerArea : Node
+public class CheckPlayerAreaCone : Node
 {
     EnemyStats stats;
     PlayerStats player;
@@ -15,7 +15,7 @@ public class CheckPlayerArea : Node
     /// <param name="stats"></param>
     /// <param name="player"></param>
     /// <param name="trigger"></param>
-    public CheckPlayerArea(EnemyStats stats, PlayerStats player, Trigger trigger)
+    public CheckPlayerAreaCone(EnemyStats stats, PlayerStats player, Trigger trigger)
     {
         this.stats = stats;
         this.player = player;
@@ -34,7 +34,7 @@ public class CheckPlayerArea : Node
         float dX = player.transform.position.x - (stats.GetPosition().x + trigger.offset.x);
         float dY = player.transform.position.y - (stats.GetPosition().y + trigger.offset.y);
         float deg = Mathf.Atan2(dY, dX) * Mathf.Rad2Deg;
-        if (deg >= (trigger.direction - trigger.width/2)%360 && deg <= (trigger.direction + trigger.width/2)%360) return true;
+        if ((trigger.direction - deg) % 360 <= trigger.width / 2) return true;
         return false;
     }
 }

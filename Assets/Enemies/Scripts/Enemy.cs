@@ -103,39 +103,20 @@ public abstract class Enemy : BehaviourTree.Tree
 /// <summary>
 /// A small class that handles triggers
 /// </summary>
-[System.Serializable]
-public class Trigger
-{
-    [SerializeField] public float radius;
-    [SerializeField] public Vector2 offset;
-    [SerializeField] private Color color;
 
-    public void Flip()
-    {
-        offset = new Vector2(-offset.x, offset.y);
-    }
-    
-#if UNITY_EDITOR
-    public void DrawTrigger(Vector2 position)
-    {
-        Handles.color = color;
-        Handles.DrawWireDisc(position+offset, Vector3.forward, radius);
-    }
-#endif
-}
 [System.Serializable]
-public class ConeTrigger {
+public class Trigger {
 
     [SerializeField] public float radius;
     [SerializeField] public float direction;
-    [SerializeField] public float width;
+    [SerializeField] public float width = 360;
     [SerializeField] public Vector2 offset;
     [SerializeField] private Color color;
 
     public void Flip()
     {
         offset = new Vector2(-offset.x, offset.y);
-        direction = (360 - direction) % 360;
+        direction = ((-(direction-90))+90)%360;
     }
 
 #if UNITY_EDITOR

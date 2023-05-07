@@ -11,7 +11,7 @@ public class SirFly : Enemy
 {
 
     [SerializeField] Trigger rangeTrigger;
-    [SerializeField] ConeTrigger attackTrigger;
+    [SerializeField] Trigger attackTrigger;
     [SerializeField] float swordDamage;
     [SerializeField] float swordForce;
     [SerializeField] float patrollDistance;
@@ -27,18 +27,24 @@ public class SirFly : Enemy
                 new SetParentVariable("attackDone", true, 2)
             }),
             new Sequence(new List<Node>{
+                new CheckBool("inRange", true),
+                new Inverter( new CheckPlayerArea(stats, player, attackTrigger)),
+                new SetParentVariable("inRange", false, 2),
+                new AnimationBool(animator, "inRange", false)
+            }),
+            new Sequence(new List<Node>{
                 new CheckBool("inRange", false),
-                new CheckPlayerArea(stats, player, rangeTrigger),
+                new CheckPlayerArea(stats, player, attackTrigger),
                 new SetParentVariable("inRange", true, 2),
                 new AnimationBool(animator, "inRange",true)
                 }),
             new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .4f, "inRange", "walk")
-            });
+            }); 
         
         root.SetData("inRange", false);
         root.SetData("attackDone", false);
         root.SetData("swordAttack", false);
-        //triggersToFlip.Add(attackTrigger);
+        triggersToFlip.Add(attackTrigger);
         return root;
     }
 #if UNITY_EDITOR
