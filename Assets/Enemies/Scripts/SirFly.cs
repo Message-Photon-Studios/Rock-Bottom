@@ -11,7 +11,7 @@ public class SirFly : Enemy
 {
 
     [SerializeField] Trigger rangeTrigger;
-    [SerializeField] Trigger attackTrigger;
+    [SerializeField] ConeTrigger attackTrigger;
     [SerializeField] float swordDamage;
     [SerializeField] float swordForce;
     [SerializeField] float patrollDistance;
@@ -23,7 +23,7 @@ public class SirFly : Enemy
         Node root = new Selector(new List<Node>{
             new Sequence(new List<Node>{
                 new CheckBool("attackDone", false),
-                new NormalAttack("swordAttack", player, swordDamage, swordForce, 0.5f, attackTrigger, stats),
+                new NormalAttack("swordAttack", player, swordDamage, swordForce, 0.5f, rangeTrigger, stats),
                 new SetParentVariable("attackDone", true, 2)
             }),
             new Sequence(new List<Node>{
@@ -38,7 +38,7 @@ public class SirFly : Enemy
         root.SetData("inRange", false);
         root.SetData("attackDone", false);
         root.SetData("swordAttack", false);
-        triggersToFlip.Add(attackTrigger);
+        //triggersToFlip.Add(attackTrigger);
         return root;
     }
 #if UNITY_EDITOR

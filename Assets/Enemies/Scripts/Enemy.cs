@@ -123,4 +123,29 @@ public class Trigger
     }
 #endif
 }
+[System.Serializable]
+public class ConeTrigger {
+
+    [SerializeField] public float radius;
+    [SerializeField] public float direction;
+    [SerializeField] public float width;
+    [SerializeField] public Vector2 offset;
+    [SerializeField] private Color color;
+
+    public void Flip()
+    {
+        offset = new Vector2(-offset.x, offset.y);
+        direction = (360 - direction) % 360;
+    }
+
+#if UNITY_EDITOR
+    public void DrawTrigger(Vector2 position)
+    {
+        Handles.color = color;
+        Handles.DrawWireDisc(position + offset, Vector3.forward, radius);
+        Handles.DrawLine(position + offset, new Vector2(Mathf.Cos((direction + (width / 2)) * Mathf.Deg2Rad)*radius + position.x,Mathf.Sin((direction + (width / 2))*Mathf.Deg2Rad)*radius+position.y) + offset);
+        Handles.DrawLine(position + offset, new Vector2(Mathf.Cos((direction - (width / 2)) * Mathf.Deg2Rad) * radius + position.x, Mathf.Sin((direction - (width / 2)) * Mathf.Deg2Rad) * radius + position.y) + offset);
+    }
+#endif
+}
 #endregion
