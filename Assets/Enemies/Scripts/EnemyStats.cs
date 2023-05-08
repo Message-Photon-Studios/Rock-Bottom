@@ -132,7 +132,8 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.timer > 0)
             {
-                DamageEnemy(burning.damage);
+                if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
+                else DamageEnemy(0);
                 float timer = burning.timer;
                 timer --;
                 burning.timer = timer;
@@ -144,6 +145,7 @@ public class EnemyStats : MonoBehaviour
                     burning = (0, 0, 0, null, null);
                     return;
                 }
+                
 
                 foreach(GameObject obj in burning.burnable)
                 {

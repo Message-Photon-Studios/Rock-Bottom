@@ -10,7 +10,11 @@ public class BrownColorEffect : ColorEffect
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
-        if(enemy.GetColor() == null) return;
+        if(enemy.GetColor() == null)
+        {
+            enemy.DamageEnemy(0);
+            return;
+        }
 
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
