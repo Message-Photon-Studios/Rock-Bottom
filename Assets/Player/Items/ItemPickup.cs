@@ -113,7 +113,7 @@ public class ItemPickup : MonoBehaviour
                 spriteRenderer.transform.position.x, 
                 spriteRenderer.transform.position.y + Mathf.Sin(Time.time * 2) * 0.003f, 
                 spriteRenderer.transform.position.z);
-            yield return new WaitForSeconds(0.005f);
+            yield return new WaitForFixedUpdate();
         }
     }
 }

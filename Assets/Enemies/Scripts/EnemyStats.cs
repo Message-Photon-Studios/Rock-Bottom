@@ -17,6 +17,8 @@ public class EnemyStats : MonoBehaviour
     private Collider2D myCollider;  
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
 
+    [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
+
     /// <summary>
     /// The direction that the enemy is looking
     /// </summary>
@@ -34,15 +36,18 @@ public class EnemyStats : MonoBehaviour
     private GameColor comboColor; //The colorMat that currently affects the enemy in a combo
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
+    private float secTimer = 0f;
+
     private Animator animator;
 
     private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
     
     private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
     /// <summary>
-    /// This event fires when the enemys health is changed. The float is the new health.
+    /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
     public UnityAction<float> onHealthChanged;
+    public UnityAction<float, Vector2> onDamageTaken;
 
     /// <summary>
     /// The enemy died
@@ -59,6 +64,11 @@ public class EnemyStats : MonoBehaviour
         GetComponent<SpriteRenderer>().material = color.colorMat;
     }
 
+    void Start()
+    {
+        onDamageTaken += DmgNumber.create;
+    }
+
     void OnValidate()
     {
         myCollider = GetComponent<Collider2D>();
@@ -67,83 +77,95 @@ public class EnemyStats : MonoBehaviour
 
     void Update()
     {
-        if(comboTimer > 0)
+        if(secTimer > 1f)
         {
-            comboTimer -= Time.deltaTime;
-            if(comboTimer <= 0) 
+            if(comboTimer > 0)
             {
-                comboTimer = 0;
-                comboColor = null;
-                currentCombo = 0;
-            }
-        }
-
-        if(movementSpeedTimer > 0)
-        {
-            movementSpeedTimer -= Time.deltaTime;
-            if(movementSpeedTimer <= 0)
-            {
-                movementSpeedTimer = 0;
-                movementSpeed = normalMovementSpeed;
-            }
-        }
-
-        if(sleepTimer > 0)
-        {
-            sleepTimer -= Time.deltaTime;
-            if(sleepTimer <= 0)
-            {
-                sleepTimer = 0;
-                WakeEnemyAnimation();
-            }
-        }
-
-        if(poisonEffects.Count > 0)
-        {
-            for (int i = 0; i < poisonEffects.Count; i++)
-            {
-                float damage = poisonEffects[i].damage * Time.deltaTime;
-                if (damage >= health)
+                comboTimer --;
+                if(comboTimer <= 0) 
                 {
-                    poisonEffects.RemoveAt(i);
-                    i--;
-                    continue;
-                }
-                
-                DamageEnemy(damage);
-                poisonEffects[i] = (poisonEffects[i].damage, poisonEffects[i].timer - Time.deltaTime);
-                if(poisonEffects[i].timer <= 0)
-                {
-                    poisonEffects.RemoveAt(i);
-                    i--;
+                    comboTimer = 0;
+                    comboColor = null;
+                    currentCombo = 0;
                 }
             }
-        }
 
-        if(burning.timer > 0)
-        {
-            DamageEnemy(burning.damage * Time.deltaTime);
-            float timer = burning.timer;
-            timer -= Time.deltaTime;
-            burning.timer = timer;
-
-            //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
-
-            if(timer <= 0)
+            if(movementSpeedTimer > 0)
             {
-                burning = (0, 0, 0, null, null);
-                return;
-            }
-
-            foreach(GameObject obj in burning.burnable)
-            {
-                if(obj == null) return;
-                float dist = Vector2.Distance(transform.position, obj.transform.position);
-                if(dist < burning.range)
+                movementSpeedTimer --;
+                if(movementSpeedTimer <= 0)
                 {
-                    obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles);
+                    movementSpeedTimer = 0;
+                    movementSpeed = normalMovementSpeed;
                 }
             }
+
+            if(sleepTimer > 0)
+            {
+                sleepTimer --;
+                if(sleepTimer <= 0)
+                {
+                    sleepTimer = 0;
+                    WakeEnemyAnimation();
+                }
+            }
+
+            if(poisonEffects.Count > 0)
+            {
+                for (int i = 0; i < poisonEffects.Count; i++)
+                {
+                    float damage = poisonEffects[i].damage;
+                    if (damage >= health)
+                    {
+                        DamageEnemy(0);
+                        poisonEffects[i] = (0, poisonEffects[i].timer -1);
+                        i--;
+                        continue;
+                    }
+                    
+                    DamageEnemy(damage);
+                    poisonEffects[i] = (poisonEffects[i].damage, poisonEffects[i].timer -1);
+                    if(poisonEffects[i].timer <= 0)
+                    {
+                        poisonEffects.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+
+            if(burning.timer > 0)
+            {
+                DamageEnemy(burning.damage);
+                float timer = burning.timer;
+                timer --;
+                burning.timer = timer;
+
+                //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
+
+                if(timer <= 0)
+                {
+                    burning = (0, 0, 0, null, null);
+                    return;
+                }
+
+                foreach(GameObject obj in burning.burnable)
+                {
+                    if(obj == null) return;
+                    float dist = Vector2.Distance(transform.position, obj.transform.position);
+                    if(dist < burning.range)
+                    {
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles);
+                    }
+                }
+            }
+        secTimer = 0f;
+
+        }
+        secTimer += Time.deltaTime;
+
+        if(IsAsleep())
+        {
+            GetComponent<Rigidbody2D>().AddForce(Vector2.down*sleepForcedown*Time.deltaTime);
         }
     }
 
@@ -165,6 +187,7 @@ public class EnemyStats : MonoBehaviour
         health -= damage;
 
         onHealthChanged?.Invoke(health);
+        onDamageTaken?.Invoke(damage, transform.position);
         if(health <= 0) KillEnemy();
     }
 
@@ -265,6 +288,15 @@ public class EnemyStats : MonoBehaviour
         return color;
     }
 
+    public void SetColor(GameColor color)
+    {
+        this.color = color;
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
+    }
+
     #endregion
 
     #region Combo Color
@@ -328,6 +360,11 @@ public class EnemyStats : MonoBehaviour
     public Vector2 GetPosition()
     {
         return new Vector2(transform.position.x, transform.position.y) + myCollider.offset;
+    }
+
+    public void ChangeDirection()
+    {
+        GetComponent<Enemy>().SwitchDirection();
     }
 
 

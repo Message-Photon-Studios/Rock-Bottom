@@ -58,6 +58,8 @@ MonoBehaviour:
     min: 15
     max: 20
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
+  sleepForcedown: 0
+  damageNumberGen: {fileID: 2904364645965432678, guid: c50d3581f17273f4d98785964e917c27, type: 3}
   lookDir: -1
   currentCombo: 0
 --- !u!114 &1462253517624165458
@@ -75,7 +77,7 @@ MonoBehaviour:
   playerCollisionDamage: 20
   playerCollisionForce: {x: 1000, y: 5000}
   viewTrigger:
-    radius: 8
+    radius: 6
     offset: {x: 0, y: 0}
     color: {r: 0, g: 0.54226303, b: 1, a: 1}
   damageTrigger:
@@ -85,8 +87,8 @@ MonoBehaviour:
   attackDamage: 20
   attackForce: 4000
   runSpeed: 2
-  jumpForce: 4400
-  forwardJumpForce: 2500
+  jumpForce: 6000
+  forwardJumpForce: 2000
   patrollDistance: 6
   patrollIdleTime: 2
 --- !u!50 &1462253517624165469
