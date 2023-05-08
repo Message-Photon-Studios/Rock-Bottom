@@ -34,7 +34,11 @@ public class CheckPlayerArea : Node
         float dX = player.transform.position.x - (stats.GetPosition().x + trigger.offset.x);
         float dY = player.transform.position.y - (stats.GetPosition().y + trigger.offset.y);
         float deg = Mathf.Atan2(dY, dX) * Mathf.Rad2Deg;
-        if (deg >= (trigger.direction - trigger.width/2)%360 && deg <= (trigger.direction + trigger.width/2)%360) return true;
+        deg = ((deg % 360) - (trigger.direction % 360)+360)%360;
+        Debug.Log(deg);
+        //Debug.Log("Min" + (trigger.direction - trigger.width / 2) % 360);
+        //Debug.Log("Max" + (trigger.direction + trigger.width / 2) % 360);
+        if (deg >= 360-(trigger.width/2) || deg <= trigger.width/2) return true;
         return false;
     }
 }

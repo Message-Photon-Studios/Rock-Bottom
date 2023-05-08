@@ -7,13 +7,11 @@ using UnityEditor;
 /// <summary>
 /// This is the ai for the Crystoffer enemy
 /// </summary>
-public class SirFly : Enemy
+public class SirFlyStationary : Enemy
 {
 
     [SerializeField] Trigger rangeTrigger;
     [SerializeField] Trigger attackTrigger;
-    [SerializeField] float patrollDistance;
-    [SerializeField] float patrollIdleTime;
     [SerializeField] GameObject attackSpawn;
     [SerializeField] Vector2 spawnOffset;
     [SerializeField] float spawnForce;
@@ -46,16 +44,12 @@ public class SirFly : Enemy
                 new CheckBool("inRange", false),
                 new CheckPlayerArea(stats, player, rangeTrigger),
                 new AnimationBool(animator, "inRange",true)
-                }),
-            new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .4f, "inRange", "walk")
+                })
             }); 
-        
-
         
         root.SetData("inRange", false);
         root.SetData("attackReady", false);
         root.SetData("attackDone", false);
-        root.SetData("swordAttack", false);
         triggersToFlip.Add(attackTrigger);
         return root;
     }
@@ -64,7 +58,6 @@ public class SirFly : Enemy
         attackTrigger.DrawTrigger(stats.GetPosition());
         rangeTrigger.DrawTrigger(stats.GetPosition());
         Handles.color = Color.yellow;
-        Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
     }
 #endif
 }
