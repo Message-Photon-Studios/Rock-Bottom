@@ -16,32 +16,44 @@ public class SirFly : Enemy
     [SerializeField] float swordForce;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;
+    [SerializeField] GameObject attackSpawn;
+    [SerializeField] Vector2 spawnOffset;
+    [SerializeField] float spawnForce;
 
     protected override Node SetupTree()
     {
 
         Node root = new Selector(new List<Node>{
             new Sequence(new List<Node>{
-                new CheckBool("attackDone", false),
-                new NormalAttack("swordAttack", player, swordDamage, swordForce, 0.5f, rangeTrigger, stats),
-                new SetParentVariable("attackDone", true, 2)
+                new CheckBool("attackDone", true),
+                new EnemyObjectSpawnerAim(stats, attackSpawn, spawnOffset, player, spawnForce),
+                new SetParentVariable("attackDone", false, 2)
             }),
             new Sequence(new List<Node>{
                 new CheckBool("inRange", true),
-                new Inverter( new CheckPlayerArea(stats, player, attackTrigger)),
+                new CheckPlayerArea(stats, player, attackTrigger),
+                new AnimationTrigger(animator,"attack"),
+                new SetParentVariable("inRange", false, 2),
+                new SetParentVariable("attackReady", false, 2),
+
+            }),
+            new Sequence(new List<Node>{
+                new CheckBool("inRange", true),
+                new Inverter( new CheckPlayerArea(stats, player, rangeTrigger)),
                 new SetParentVariable("inRange", false, 2),
                 new AnimationBool(animator, "inRange", false)
             }),
             new Sequence(new List<Node>{
                 new CheckBool("inRange", false),
-                new CheckPlayerArea(stats, player, attackTrigger),
-                new SetParentVariable("inRange", true, 2),
+                new CheckPlayerArea(stats, player, rangeTrigger),
+                //new SetParentVariable("inRange", true, 2),
                 new AnimationBool(animator, "inRange",true)
                 }),
             new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .4f, "inRange", "walk")
             }); 
         
         root.SetData("inRange", false);
+        root.SetData("attackReady", false);
         root.SetData("attackDone", false);
         root.SetData("swordAttack", false);
         triggersToFlip.Add(attackTrigger);

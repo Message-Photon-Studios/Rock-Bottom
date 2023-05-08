@@ -76,21 +76,24 @@ MonoBehaviour:
   playerCollisionDamage: 10
   playerCollisionForce: {x: 2000, y: 0.5}
   rangeTrigger:
-    radius: 0
-    direction: 0
-    width: 360
+    radius: 8
+    direction: 90
+    width: 190
     offset: {x: 0, y: 0}
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color: {r: 0.9780209, g: 1, b: 0, a: 1}
   attackTrigger:
-    radius: 2
-    direction: 0
-    width: 10
+    radius: 6
+    direction: 90
+    width: 130
     offset: {x: 0, y: 0}
-    color: {r: 1, g: 0, b: 0, a: 0}
+    color: {r: 1, g: 0, b: 0, a: 1}
   swordDamage: 1
   swordForce: 1
   patrollDistance: 4
   patrollIdleTime: 2
+  attackSpawn: {fileID: 8094419970937011932, guid: a559141a38b8717499efe9c0e074bf90, type: 3}
+  spawnOffset: {x: 0, y: 0}
+  spawnForce: 2000
 --- !u!50 &3442240939785713325
 Rigidbody2D:
   serializedVersion: 4

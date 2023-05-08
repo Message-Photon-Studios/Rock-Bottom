@@ -10,14 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 8094419970937011935}
   - component: {fileID: 1066099605864802491}
-  - component: {fileID: 6776652896614623255}
+  - component: {fileID: 1277255620814457837}
   - component: {fileID: 8094419970937011934}
   - component: {fileID: -7253808559076259783}
   - component: {fileID: 8094419970937011933}
   - component: {fileID: 3285549977413106696}
   - component: {fileID: 1551972959209940406}
   m_Layer: 6
-  m_Name: Bombarder Projectile
+  m_Name: SirFly Projectile
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   sleepForcedown: 0
   lookDir: -1
   currentCombo: 0
---- !u!114 &6776652896614623255
+--- !u!114 &1277255620814457837
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,19 +70,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8094419970937011932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0b4d89169d8598408867473de3a4116, type: 3}
+  m_Script: {fileID: 11500000, guid: 842512fbc23254c44a4172efb14a9d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
+  playerCollisionDamage: 15
   playerCollisionForce: {x: 2000, y: 0.5}
-  damage: 30
-  force: {x: 5500, y: 1000}
+  damage: 0
+  force: {x: 0, y: 0}
   attackTrigger:
-    radius: 2.8
+    radius: 0
     direction: 0
     width: 360
     offset: {x: 0, y: 0}
-    color: {r: 1, g: 0, b: 0, a: 1}
+    color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &8094419970937011934
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -124,12 +124,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1454816939, guid: 48b54bef2bc391b4abef9c6600510288, type: 3}
+  m_Sprite: {fileID: -1499021170, guid: c8c11cc4072b6a441a0fcea206a028e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -157,7 +157,7 @@ Animator:
   m_GameObject: {fileID: 8094419970937011932}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 10f7c9c7547763b41b20a4fa9546f7f6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 26d0f10e210635b4888fca0c1b85b322, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -180,9 +180,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 2
-  m_LinearDrag: 10
+  m_LinearDrag: 0.2
   m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 0.4
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
