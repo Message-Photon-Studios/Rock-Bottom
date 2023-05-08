@@ -27,6 +27,12 @@ public class ItemController : MonoBehaviour
     //Event system used in inventory.
     [SerializeField] EventSystem eventSystem;
 
+    //Amount of items the player has that is over the inventory display limit.
+    private int excessCount = 0;
+
+    //Text showing how many more items you have.
+    [SerializeField] TMP_Text excessItemsCounter;
+
     private List<SelectedInventoryItem> items = new List<SelectedInventoryItem>{};
 
 
@@ -35,6 +41,7 @@ public class ItemController : MonoBehaviour
         itemsContainer.GetComponent<NotifyInventory>().onInventoryOpened += InventoryOpened;
         inventory.onItemPickedUp += AddItem;
         selectedItemContainer.SetActive(false);
+        excessItemsCounter.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -57,6 +64,11 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item">Item to be added.</param>
     private void AddItem(Item item) {
+        for(int i = 0; i < 100; i++) {
+        if(items.Count >= 69) {
+            excessCount += 1;
+            ShowExcessItems(excessCount);
+        } else {
         SelectedInventoryItem newItem = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
         newItem.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
         newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
@@ -67,7 +79,20 @@ public class ItemController : MonoBehaviour
         newItem.onItemLoaded += ItemsLoaded;
         if(items.Count > 1) {
             items[items.Count-2].onItemLoaded -= ItemsLoaded;
+        }}
         }
+    }
+
+    /// <summary>
+    /// Is called when player has more items than the inventory can show.
+    /// Displayes extra amount of items as a + followed by the amount of items
+    /// in excess the player has. 
+    /// </summary>
+    /// <param name="excessCount"></param>
+    private void ShowExcessItems(int excessCount)
+    {
+        excessItemsCounter.gameObject.SetActive(true);
+        excessItemsCounter.text = "+" + excessCount;
     }
 
     /// <summary>
