@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,8 +15,9 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
 
-    private Collider2D myCollider;  
+    private Collider2D myCollider;
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
+    [SerializeField] private Material defaultColorDmg; //The material that is used when there is no GameColor attached
 
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
 
@@ -53,6 +55,9 @@ public class EnemyStats : MonoBehaviour
     /// The enemy died
     /// </summary>
     public UnityAction onEnemyDeath;
+
+    private Coroutine currentCoroutine;
+    private bool isDead = false;
 
     #region Setup and Timers
     void Awake()
@@ -189,6 +194,18 @@ public class EnemyStats : MonoBehaviour
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
         if(health <= 0) KillEnemy();
+        else currentCoroutine = StartCoroutine(damageResponse());
+    }
+
+    private IEnumerator damageResponse()
+    {
+        if (isDead)
+            yield break;
+        var sprite = GetComponent<SpriteRenderer>();
+        var oldMat = sprite.material;
+        sprite.material = defaultColorDmg;
+        yield return new WaitForSeconds(0.2f);
+        sprite.material = oldMat;
     }
 
     /// <summary>
@@ -229,6 +246,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
+        isDead = true;
         //TODO
         if(animator.GetBool("dead")) return;
         Debug.Log(gameObject.name + " died");
