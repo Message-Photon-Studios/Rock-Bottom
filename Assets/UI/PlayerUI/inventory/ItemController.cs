@@ -64,22 +64,21 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item">Item to be added.</param>
     private void AddItem(Item item) {
-        for(int i = 0; i < 100; i++) {
         if(items.Count >= 69) {
             excessCount += 1;
             ShowExcessItems(excessCount);
         } else {
-        SelectedInventoryItem newItem = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-        newItem.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
-        newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
-        newItem.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
-        newItem.Setup(item);
-        items.Add(newItem);
-        newItem.onInventoryItemSelected += ShowSelectedItem;
-        newItem.onItemLoaded += ItemsLoaded;
-        if(items.Count > 1) {
-            items[items.Count-2].onItemLoaded -= ItemsLoaded;
-        }}
+            SelectedInventoryItem newItem = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            newItem.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
+            newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
+            newItem.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+            newItem.Setup(item);
+            items.Add(newItem);
+            newItem.onInventoryItemSelected += ShowSelectedItem;
+            newItem.onItemLoaded += ItemsLoaded;
+            if(items.Count > 1) {
+                items[items.Count-2].onItemLoaded -= ItemsLoaded;
+            }
         }
     }
 
