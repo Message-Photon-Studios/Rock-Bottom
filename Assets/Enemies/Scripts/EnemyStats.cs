@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -56,8 +57,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public UnityAction onEnemyDeath;
 
-    private Coroutine currentCoroutine;
-    private bool isDead = false;
+    [CanBeNull] private Coroutine currentCoroutine;
 
     #region Setup and Timers
     void Awake()
@@ -193,19 +193,20 @@ public class EnemyStats : MonoBehaviour
 
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
+        if (currentCoroutine != null)
+            StopCoroutine(currentCoroutine);
         if(health <= 0) KillEnemy();
-        else currentCoroutine = StartCoroutine(damageResponse());
+        else currentCoroutine = StartCoroutine(dmgResponse());
+        
     }
 
-    private IEnumerator damageResponse()
+    public IEnumerator dmgResponse()
     {
-        if (isDead)
-            yield break;
-        var sprite = GetComponent<SpriteRenderer>();
-        var oldMat = sprite.material;
-        sprite.material = defaultColorDmg;
-        yield return new WaitForSeconds(0.2f);
-        sprite.material = oldMat;
+        Material mat = GetComponent<SpriteRenderer>().material;
+
+        mat.SetFloat("_takingDmg", 1);
+        yield return new WaitForSeconds(0.1f);
+        mat.SetFloat("_takingDmg", 0);
     }
 
     /// <summary>
@@ -246,7 +247,6 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
-        isDead = true;
         //TODO
         if(animator.GetBool("dead")) return;
         Debug.Log(gameObject.name + " died");
