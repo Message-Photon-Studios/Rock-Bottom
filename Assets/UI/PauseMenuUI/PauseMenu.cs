@@ -50,4 +50,15 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
         
     }
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
