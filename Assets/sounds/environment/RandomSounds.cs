@@ -13,7 +13,7 @@ public class RandomSounds : MonoBehaviour
     private float start;
 
     [Range(0.1f, 0.5f)]
-    public float volumeChangeMultiplier = 0.2f;
+    public float volumeChangeMultiplier = 0.1f;
 
     [Range(0.1f, 0.5f)]
     public float pitchChangeMultiplier = 0.2f;
@@ -35,7 +35,7 @@ public class RandomSounds : MonoBehaviour
         time = Time.time;
         if (time > start + delay){
             source.clip = sounds[Random.Range(0, sounds.Length)];
-            source.volume = Random.Range(1 - volumeChangeMultiplier, 1);
+            source.volume = Random.Range(0.2f - volumeChangeMultiplier, 0.2f);
             source.pitch = Random.Range(1 - pitchChangeMultiplier, 1);
             source.PlayOneShot(source.clip);
             start = Time.time;

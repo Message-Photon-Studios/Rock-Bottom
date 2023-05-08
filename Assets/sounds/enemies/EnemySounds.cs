@@ -7,20 +7,26 @@ public class EnemySounds : MonoBehaviour
     public Animator enemy;
 
     public AudioSource walking;
+    public AudioSource running;
     public AudioSource sleeping;
     public AudioSource dying;
     public AudioSource takingDamage;
+    public AudioSource jumping;
 
     private string walkingBool = "walk";
     private string damageBool = "damaged";
     private string dyingBool = "dead";
     private string sleepingBool = "sleep";
+    private string runningBool = "running";
 
     // Start is called before the first frame update
     void OnEnable()
     {
         walking.Play();
         walking.Pause();
+
+        running.Play();
+        running.Pause();
 
         sleeping.Play();
         sleeping.Pause();
@@ -67,6 +73,14 @@ public class EnemySounds : MonoBehaviour
     public void StopSleeping()
     {
         sleeping.Pause();
+    }
+
+    public void PlayJump()
+    {
+        if (!jumping.isPlaying)
+        {
+            jumping.Play();
+        }
     }
 
     public void PlayDeath()
