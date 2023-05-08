@@ -191,10 +191,8 @@ public class EnemyStats : MonoBehaviour
 
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
-        if (health <= 0)
-        {
-            KillEnemy();
-             }
+        if (health <= 0) KillEnemy();
+        
     }
 
     /// <summary>

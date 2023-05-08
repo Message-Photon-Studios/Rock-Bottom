@@ -12,6 +12,7 @@ public class EnemySounds : MonoBehaviour
     public AudioSource dying;
     public AudioSource takingDamage;
     public AudioSource jumping;
+    public AudioSource onHit;
 
     private string walkingBool = "walk";
     private string walkingBool2 = "move";
@@ -22,14 +23,14 @@ public class EnemySounds : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        walking.Play();
-        walking.Pause();
+        //walking.Play();
+        //walking.Pause();
 
-        running.Play();
-        running.Pause();
+        //running.Play();
+        //running.Pause();
 
-        sleeping.Play();
-        sleeping.Pause();
+        //sleeping.Play();
+        //sleeping.Pause();
 
     }
 
@@ -84,6 +85,12 @@ public class EnemySounds : MonoBehaviour
         }
     }
 
+
+    public void PlayOnHit()
+    {
+        onHit.pitch = Random.Range(0.8f, 1.5f);
+        onHit.Play();
+    }
     public void PlayDeath()
     {
         if (!dying.isPlaying)

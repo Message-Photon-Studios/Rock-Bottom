@@ -36,6 +36,7 @@ public class PlayerSounds : MonoBehaviour
 
     public void Update()
     {
+        
         if (player.GetBool(walkingBool))
         {
             PlayWalking();
@@ -44,6 +45,7 @@ public class PlayerSounds : MonoBehaviour
         {
             StopWalking();
         }
+        
 
         if (player.GetBool(grappleBool)) 
         {
