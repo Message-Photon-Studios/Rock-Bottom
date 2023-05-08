@@ -61,9 +61,9 @@ MonoBehaviour:
     max: 5
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   sleepForcedown: 0
-  enemySounds: {fileID: 2042908631029740834}
   lookDir: -1
   currentCombo: 0
+  enemySounds: {fileID: 2042908631029740834}
 --- !u!114 &345329960993759076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 345329960993759075}
   walking: {fileID: 6526154241192246987}
-  running: {fileID: 0}
+  running: {fileID: 6718911180458043571}
   sleeping: {fileID: 6348578884827556329}
   dying: {fileID: 4639900190857077959}
   takingDamage: {fileID: 0}
@@ -415,6 +415,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4759588140922973129, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7053075696140110955, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
       propertyPath: m_Pitch
       value: 0.4
@@ -455,5 +459,10 @@ AudioSource:
 --- !u!82 &6526154241192246987 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 7053075696140110955, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
+  m_PrefabInstance: {fileID: 4282923583286768288}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &6718911180458043571 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7371933339108334099, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
   m_PrefabInstance: {fileID: 4282923583286768288}
   m_PrefabAsset: {fileID: 0}

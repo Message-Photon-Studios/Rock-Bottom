@@ -40,6 +40,9 @@ public class EnemyStats : MonoBehaviour
 
     private Animator animator;
 
+    [SerializeField]
+    public EnemySounds enemySounds;
+
     private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
     
     private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
@@ -188,7 +191,10 @@ public class EnemyStats : MonoBehaviour
 
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
-        if(health <= 0) KillEnemy();
+        if (health <= 0)
+        {
+            KillEnemy();
+             }
     }
 
     /// <summary>
@@ -229,8 +235,9 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
+        enemySounds.PlayDeath();
         //TODO
-        if(animator.GetBool("dead")) return;
+        if (animator.GetBool("dead")) return;
         Debug.Log(gameObject.name + " died");
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;

@@ -14,8 +14,8 @@ public class EnemySounds : MonoBehaviour
     public AudioSource jumping;
 
     private string walkingBool = "walk";
+    private string walkingBool2 = "move";
     private string damageBool = "damaged";
-    private string dyingBool = "dead";
     private string sleepingBool = "sleep";
     private string runningBool = "running";
 
@@ -36,7 +36,7 @@ public class EnemySounds : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (enemy.GetBool(walkingBool))
+        /*if (enemy.GetBool(walkingBool) || enemy.GetBool(walkingBool2))
         {
             PlayWalking();
         }
@@ -44,6 +44,7 @@ public class EnemySounds : MonoBehaviour
         {
             StopWalking();
         }
+        */
 
         if (enemy.GetBool(sleepingBool))
         {
