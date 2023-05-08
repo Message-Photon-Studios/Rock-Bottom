@@ -19,6 +19,8 @@ public class SelectedInventoryItem : MonoBehaviour, ISelectHandler, IDeselectHan
     //Send out a notification if selected.
     public UnityAction<Item> onInventoryItemSelected;
 
+    public UnityAction onItemLoaded;
+
     /// <summary>
     /// Sets up the prefab with given item.
     /// </summary>
@@ -34,6 +36,7 @@ public class SelectedInventoryItem : MonoBehaviour, ISelectHandler, IDeselectHan
     /// </summary>
     private void OnEnable() {
         border.SetActive(false);
+        onItemLoaded?.Invoke();
     }
 
     /// <summary>

@@ -27,6 +27,8 @@ public class ItemController : MonoBehaviour
     //Event system used in inventory.
     [SerializeField] EventSystem eventSystem;
 
+    private List<SelectedInventoryItem> items = new List<SelectedInventoryItem>{};
+
 
     private void OnEnable() {
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
@@ -44,6 +46,13 @@ public class ItemController : MonoBehaviour
     }
 
     /// <summary>
+    /// Called when last item is loaded which then selects it.
+    /// </summary>
+    private void ItemsLoaded(){
+        items[items.Count -1].GetComponent<Selectable>().Select();
+    }
+
+    /// <summary>
     /// Adds the item as an image in the inventory.
     /// </summary>
     /// <param name="item">Item to be added.</param>
@@ -53,7 +62,12 @@ public class ItemController : MonoBehaviour
         newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
         newItem.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
         newItem.Setup(item);
+        items.Add(newItem);
         newItem.onInventoryItemSelected += ShowSelectedItem;
+        newItem.onItemLoaded += ItemsLoaded;
+        if(items.Count > 1) {
+            items[items.Count-2].onItemLoaded -= ItemsLoaded;
+        }
     }
 
     /// <summary>
