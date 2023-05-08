@@ -119,6 +119,15 @@ public class Trigger {
         direction = ((-(direction-90))+90)%360;
     }
 
+    public void RotateRight()
+    {
+        direction = (direction - 90) % 360;
+        float lengh = Mathf.Sqrt(Mathf.Pow(offset.x,2) + Mathf.Pow(offset.y,2));
+        if (lengh == 0) return;
+        float rad = Mathf.Atan2(offset.y, offset.x);
+        offset = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad))*lengh;
+    }
+
 #if UNITY_EDITOR
     public void DrawTrigger(Vector2 position)
     {

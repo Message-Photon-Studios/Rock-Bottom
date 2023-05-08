@@ -24,6 +24,7 @@ public class SirFly : Enemy
     {
 
         Node root = new Selector(new List<Node>{
+
             new Sequence(new List<Node>{
                 new CheckBool("attackDone", true),
                 new EnemyObjectSpawnerAim(stats, attackSpawn, spawnOffset, player, spawnForce),
@@ -51,6 +52,8 @@ public class SirFly : Enemy
                 }),
             new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .4f, "inRange", "walk")
             }); 
+        
+
         
         root.SetData("inRange", false);
         root.SetData("attackReady", false);

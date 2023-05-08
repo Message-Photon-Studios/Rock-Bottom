@@ -15,12 +15,10 @@ public class SirFlyShard : Enemy
         
         Node root =     
             new Selector(new List<Node>{
-
                 new Sequence(new List<Node>{
                     new EnemyCollide(GetComponent<ColliderCheck>(), ""),
                     new AnimationBool(animator, "dead", true)
                 })
-
             });
         
         root.SetData("attack", false);
