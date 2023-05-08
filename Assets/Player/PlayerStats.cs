@@ -66,6 +66,7 @@ public class PlayerStats : MonoBehaviour
         Physics2D.IgnoreLayerCollision(3,6);
         health -= damage;
         invincibilityTimer = hitInvincibilityTime;
+        GetComponent<PlayerCombatSystem>().RemoveAttackRoot();
         if(health <= 0)
         {
             animator.SetBool("dead", true);

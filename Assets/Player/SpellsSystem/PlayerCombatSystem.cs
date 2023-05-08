@@ -112,7 +112,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// <summary>
     /// Removes the attack root. Called by animation event
     /// </summary>
-    private void RemoveAttackRoot()
+    public void RemoveAttackRoot()
     {
         attacking = false;
         defaultAttackHitbox.gameObject.SetActive(false);
