@@ -70,12 +70,15 @@ public class EnemySounds : MonoBehaviour
 
     public void PlaySleeping()
     {
-        sleeping.UnPause();
+        if (!sleeping.isPlaying)
+        {
+            sleeping.Play();
+        }
     }
 
     public void StopSleeping()
     {
-        sleeping.Pause();
+        sleeping.Stop();
     }
 
     public void PlayJump()
