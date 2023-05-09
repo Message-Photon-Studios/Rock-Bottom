@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class PrIndicationController : MonoBehaviour
 {
+    //Players color inventory.
     private ColorInventory colorInventory;
 
+    //different components of the UI for the power indicator. 
     [SerializeField] TMP_Text powerText;
     [SerializeField] Image icon;
     [SerializeField] Image border;
@@ -21,6 +23,9 @@ public class PrIndicationController : MonoBehaviour
         colorInventory.onColorSpellChanged += OnSlotChanged;
     }
 
+    /// <summary>
+    /// called every time number should update and sets parameters. 
+    /// </summary>
     private void UpdatePrIndicator(){
         #nullable enable
         GameColor? currentColor = colorInventory.CheckActveColor();
@@ -41,6 +46,11 @@ public class PrIndicationController : MonoBehaviour
         #nullable disable
     }
 
+    /// <summary>
+    /// Catching unity actions that send an int with it and calls
+    /// UpdatePrIndicator without it as it's unessesary for this.
+    /// </summary>
+    /// <param name="i"></param>
     private void OnSlotChanged(int i) {
         UpdatePrIndicator();
     }
