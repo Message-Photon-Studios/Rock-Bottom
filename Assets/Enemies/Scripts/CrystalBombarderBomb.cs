@@ -25,7 +25,10 @@ public class CrystalBombarderBomb : Enemy
                 }),
 
                 new Sequence(new List<Node>{
-                    new EnemyCollide(GetComponent<ColliderCheck>(), ""),
+                    new Selector(new List<Node>{
+                        new EnemyCollide(GetComponent<ColliderCheck>(), "Player"),
+                        new CheckGrounded(stats,0.2f)
+                    }),
                     new AnimationTrigger(animator, "Explode")
                 }),
 
