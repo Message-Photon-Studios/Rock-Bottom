@@ -16,6 +16,8 @@ public class PlayerStats : MonoBehaviour
     float maxHealth;
     float invincibilityTimer = 0;
 
+    [SerializeField] PlayerSounds playerSounds;
+
     /// <summary>
     /// This event fires when the player health is changed. The float is the new health.
     /// </summary>
@@ -60,14 +62,17 @@ public class PlayerStats : MonoBehaviour
     public void DamagePlayer(float damage)
     {
         if(invincibilityTimer > 0) return;
+        if(damage == 0) return;
         Physics2D.IgnoreLayerCollision(3,6);
         health -= damage;
         invincibilityTimer = hitInvincibilityTime;
+        GetComponent<PlayerCombatSystem>().RemoveAttackRoot();
         if(health <= 0)
         {
             animator.SetBool("dead", true);
             movement.movementRoot.SetTotalRoot("dead", true);
             invincibilityTimer = 3f;
+            playerSounds.PlayDeath();
         }
         animator.SetTrigger("damaged");
         onHealthChanged?.Invoke(health);
