@@ -32,14 +32,12 @@ public class PrIndicationController : MonoBehaviour
         if(currentColor == null) {
             powerText.gameObject.SetActive(false);
             border.color = new Color32(255, 255, 255, 150);
-            background.color = new Color32(75, 59, 33, 150);
             
         } else {
             float buff = 100*(colorInventory.GetColorBuff() + colorInventory.GetActiveColorSpell().powerScale);
             powerText.text = buff + "%";
             icon.sprite = currentColor.colorIcon;
             border.color = new Color32(255, 255, 255, 255);
-            background.color = new Color32(75, 59, 33, 200);
             powerText.gameObject.SetActive(true);
             
         }
