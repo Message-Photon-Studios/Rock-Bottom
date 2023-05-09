@@ -120,14 +120,11 @@ public class EnemyStats : MonoBehaviour
                     float damage = poisonEffects[i].damage;
                     if (damage >= health)
                     {
-                        DamageEnemy(0);
-                        poisonEffects[i] = (0, poisonEffects[i].timer -1);
-                        i--;
-                        continue;
+                        damage = 0;
                     }
                     
                     DamageEnemy(damage);
-                    poisonEffects[i] = (poisonEffects[i].damage, poisonEffects[i].timer -1);
+                    poisonEffects[i] = (damage, poisonEffects[i].timer -1);
                     if(poisonEffects[i].timer <= 0)
                     {
                         poisonEffects.RemoveAt(i);
@@ -138,7 +135,8 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.timer > 0)
             {
-                DamageEnemy(burning.damage);
+                if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
+                else DamageEnemy(0);
                 float timer = burning.timer;
                 timer --;
                 burning.timer = timer;
@@ -150,6 +148,7 @@ public class EnemyStats : MonoBehaviour
                     burning = (0, 0, 0, null, null);
                     return;
                 }
+                
 
                 foreach(GameObject obj in burning.burnable)
                 {
@@ -191,8 +190,7 @@ public class EnemyStats : MonoBehaviour
 
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
-        if (health <= 0) KillEnemy();
-        
+        if(damage > 0 && health <= 0) KillEnemy();
     }
 
     /// <summary>

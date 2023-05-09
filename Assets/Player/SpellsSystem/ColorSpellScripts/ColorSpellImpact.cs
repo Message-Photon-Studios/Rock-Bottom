@@ -7,7 +7,6 @@ public class ColorSpellImpact : SpellImpact
 {
 
     [SerializeField] public ParticleSystem onImpactParticles;
-    [SerializeField] public AudioSource impactSound;
 
     public override void Impact(Collider2D other)
     {
