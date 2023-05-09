@@ -20,8 +20,8 @@ public class RandomSounds : MonoBehaviour
 
     private float delay = 0;
     //change this to increase the range of random delays
-    private float minDelay = 2f;
-    private float maxDelay = 10f;
+    private float minDelay = 5f;
+    private float maxDelay = 15f;
 
     void Start()
     {

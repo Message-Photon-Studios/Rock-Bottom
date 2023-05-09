@@ -13,6 +13,7 @@ public class EnemySounds : MonoBehaviour
     public AudioSource takingDamage;
     public AudioSource jumping;
     public AudioSource onHit;
+    public AudioSource spellHit;
 
     private string walkingBool = "walk";
     private string walkingBool2 = "move";
@@ -90,6 +91,14 @@ public class EnemySounds : MonoBehaviour
     {
         onHit.pitch = Random.Range(0.8f, 1.5f);
         onHit.Play();
+    }
+
+    public void PlaySpellHit()
+    {
+        if (!spellHit.isPlaying)
+        {
+            spellHit.Play();
+        }
     }
     public void PlayDeath()
     {
