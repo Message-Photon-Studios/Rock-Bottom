@@ -58,7 +58,6 @@ MonoBehaviour:
     max: 15
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   sleepForcedown: 4000
-  damageNumberGen: {fileID: 2904364645965432678, guid: c50d3581f17273f4d98785964e917c27, type: 3}
   lookDir: -1
   currentCombo: 0
 --- !u!114 &1115180573550613685
@@ -77,6 +76,8 @@ MonoBehaviour:
   playerCollisionForce: {x: 2000, y: 0.5}
   attackTrigger:
     radius: 8
+    direction: 0
+    width: 360
     offset: {x: 0, y: 0}
     color: {r: 1, g: 0, b: 0, a: 1}
   attackSpawn: {fileID: 8094419970937011932, guid: 4a630427006a0094898b5c527abea127, type: 3}
