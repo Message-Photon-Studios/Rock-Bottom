@@ -114,7 +114,6 @@ public class ColorInventory : MonoBehaviour
     public void RotateActive(int dir)
     {
         activeSlot = (colorSlots.Count+activeSlot+dir)%colorSlots.Count;
-        Debug.Log(ActiveSlot().gameColor);
         onSlotChanged?.Invoke(dir);
     }
 

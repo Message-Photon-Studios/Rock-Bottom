@@ -23,6 +23,12 @@ public class PrIndicationController : MonoBehaviour
         colorInventory.onColorSpellChanged += OnSlotChanged;
     }
 
+    private void OnDisable() {
+        colorInventory.onSlotChanged -= OnSlotChanged;
+        colorInventory.onColorUpdated -= UpdatePrIndicator;
+        colorInventory.onColorSpellChanged -= OnSlotChanged;
+    }
+
     /// <summary>
     /// called every time number should update and sets parameters. 
     /// </summary>
