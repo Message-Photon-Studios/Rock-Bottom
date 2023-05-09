@@ -18,7 +18,6 @@ public class EnemyStats : MonoBehaviour
 
     private Collider2D myCollider;
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
-    [SerializeField] private Material defaultColorDmg; //The material that is used when there is no GameColor attached
 
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
 
