@@ -43,9 +43,19 @@ public class GameColor : ScriptableObject
 
     public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
-        if(enemyObj.GetComponent<EnemyStats>().GetColor() == this) return;
+        if(enemyObj.GetComponent<EnemyStats>().GetColor() == this)
+        {
+            enemyObj.GetComponent<EnemyStats>().DamageEnemy(0);
+            return;
+        }
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
     }
+
+    /// <summary>
+    /// Returns the color effect of this color
+    /// </summary>
+    /// <returns></returns>
+    public ColorEffect GetColorEffect() { return colorEffect; }
 }
 
 [System.Serializable]
