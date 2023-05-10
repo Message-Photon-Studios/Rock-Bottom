@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class EnemyHpController : MonoBehaviour
 {
     // The UI component for the enemy health bar.
+    public EnemyStats enemy;
     [SerializeField] Slider healthSlider;
     [SerializeField] Slider healthSubSlider;
-    [SerializeField] EnemyStats enemy;
     [SerializeField] float subBarRate;
     
     private void Start() {
