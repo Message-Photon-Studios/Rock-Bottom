@@ -17,7 +17,7 @@ public class MainMenuController : MonoBehaviour
     //Load scene "Gem" when pressed.
     public void LoadScene()
     {
-        SceneManager.LoadScene("Gem");
+        SceneManager.LoadScene("Tutorial");
     }
 
     //Exit application when pressed.

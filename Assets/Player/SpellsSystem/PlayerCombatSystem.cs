@@ -57,9 +57,17 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         Debug.Log("Default attack");
         //TODO add attacking = true;
+        FlipDefaultAttack();
+        defaultAttackHitbox.HitEnemies();
+    }
+
+    /// <summary>
+    /// Flips the default attack
+    /// </summary>
+    public void FlipDefaultAttack()
+    {
         float offsetX = defaultAttackOffset.x * playerMovement.lookDir;
         defaultAttackHitbox.transform.position = new Vector3(transform.position.x + offsetX, defaultAttackHitbox.transform.position.y, transform.position.z);
-        defaultAttackHitbox.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -118,7 +126,6 @@ public class PlayerCombatSystem : MonoBehaviour
     public void RemoveAttackRoot()
     {
         attacking = false;
-        defaultAttackHitbox.gameObject.SetActive(false);
         playerMovement.movementRoot.SetTotalRoot("attackRoot", false);
         body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
     }
