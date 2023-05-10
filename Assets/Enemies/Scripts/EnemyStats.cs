@@ -82,6 +82,23 @@ public class EnemyStats : MonoBehaviour
         GetComponent<SpriteRenderer>().material = color.colorMat;
     }
 
+    void OnDisable()
+    {
+        CleanEffects();
+    }
+
+    /// <summary>
+    /// Removes all effects on enemy
+    /// </summary>
+    void CleanEffects()
+    {
+        animator.SetBool("sleep", false);
+        WakeEnemy();
+        movementSpeed = normalMovementSpeed;
+        poisonEffects = new List<(float damage, float timer)>();
+        burning = (0, 0, 0, null, null);
+    }
+
     void Update()
     {
         if(secTimer > 1f)
