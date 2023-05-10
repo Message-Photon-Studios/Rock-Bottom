@@ -45,7 +45,7 @@ public class EnemyStats : MonoBehaviour
     [HideInInspector] public EnemySounds enemySounds;
 
     private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
-    
+
     private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
@@ -183,7 +183,7 @@ public class EnemyStats : MonoBehaviour
                     }
                 }
             }
-        secTimer = 0f;
+            secTimer = 0f;
 
         }
         secTimer += Time.deltaTime;
@@ -238,6 +238,11 @@ public class EnemyStats : MonoBehaviour
         poisonEffects.Add((damage, timer));
     }
 
+    public bool isPoisoned()
+    {
+        return poisonEffects.Count > 0;
+    }
+
     /// <summary>
     /// Adds a burning effect to the enemy
     /// </summary>
@@ -259,6 +264,11 @@ public class EnemyStats : MonoBehaviour
         Destroy(instantiatedParticles, timer*1.2f);
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = gameObject.transform;
+    }
+
+    public bool isBurning()
+    {
+        return burning.timer > 0;
     }
 
     /// <summary>
@@ -294,6 +304,11 @@ public class EnemyStats : MonoBehaviour
     public float GetHealth()
     {
         return health;
+    }
+
+    public bool isFrozen()
+    {
+        return movementSpeedTimer > 0;
     }
 
     #endregion
