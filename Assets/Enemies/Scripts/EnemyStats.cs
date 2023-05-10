@@ -42,8 +42,7 @@ public class EnemyStats : MonoBehaviour
 
     private Animator animator;
 
-    [SerializeField]
-    public EnemySounds enemySounds;
+    [HideInInspector] public EnemySounds enemySounds;
 
     private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
     
@@ -74,12 +73,32 @@ public class EnemyStats : MonoBehaviour
     void Start()
     {
         onDamageTaken += DmgNumber.create;
+        enemySounds = GetComponent<EnemySounds>();
     }
 
     void OnValidate()
     {
         myCollider = GetComponent<Collider2D>();
         GetComponent<SpriteRenderer>().material = color.colorMat;
+    }
+
+    void OnDisable()
+    {
+        CleanEffects();
+    }
+
+    /// <summary>
+    /// Removes all effects on enemy
+    /// </summary>
+    void CleanEffects()
+    {
+        animator.SetBool("sleep", false);
+        WakeEnemy();
+        movementSpeed = normalMovementSpeed;
+        poisonEffects = new List<(float damage, float timer)>();
+        burning = (0, 0, 0, null, null);
+        Material mat = GetComponent<SpriteRenderer>().material;
+        mat.SetFloat("_takingDmg", 0);
     }
 
     void Update()
@@ -247,7 +266,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
-        enemySounds.PlayDeath();
+        enemySounds?.PlayDeath();
         //TODO
         if (animator.GetBool("dead")) return;
         Debug.Log(gameObject.name + " died");
