@@ -9,7 +9,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] InputActionReference interactAction;
     [SerializeField] TMP_Text tutorialText;
     [SerializeField] GameObject tutorialCanvas;
-    [SerializeField] [TextArea(5,20)] string[] tutorialTexts;
+    [SerializeField] [TextArea(10,40)] string[] tutorialTexts;
     int textNr = 0;
 
     [SerializeField] GameObject dummyTemplate;
