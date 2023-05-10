@@ -13,7 +13,7 @@ public class PlayerDefaultAttack : MonoBehaviour
     /// This action is called when the player hits an with the default attack
     /// </summary>
     public UnityAction<GameObject> onDefaultHit;
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if(other.CompareTag("Enemy"))
         {
