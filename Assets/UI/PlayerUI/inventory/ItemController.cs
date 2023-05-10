@@ -10,7 +10,8 @@ using System;
 public class ItemController : MonoBehaviour
 {
     //Items inventory.
-    ItemInventory inventory;
+    ItemInventory itemInventory;
+    [SerializeField] List<SelectedColor> statColorList;
 
     //GameObject with grid to put items in.
     [SerializeField] GameObject itemsContainer;
@@ -37,11 +38,25 @@ public class ItemController : MonoBehaviour
 
 
     private void OnEnable() {
-        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
+        itemInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
         itemsContainer.GetComponent<NotifyInventory>().onInventoryOpened += InventoryOpened;
-        inventory.onItemPickedUp += AddItem;
+
+        itemInventory.onItemPickedUp += AddItem;
+        foreach(SelectedColor color in statColorList) {
+            color.onInventoryColorSelected += ShowSelectedColor;
+            color.onColorLoaded += ItemsLoaded;
+        }
+
         selectedItemContainer.SetActive(false);
         excessItemsCounter.gameObject.SetActive(false);
+    }
+
+    private void OnDisable() {
+        itemInventory.onItemPickedUp -= AddItem;
+        foreach(SelectedColor color in statColorList) {
+            color.onInventoryColorSelected -= ShowSelectedColor;
+            color.onColorLoaded -= ItemsLoaded;
+        }
     }
 
     /// <summary>
@@ -56,7 +71,13 @@ public class ItemController : MonoBehaviour
     /// Called when last item is loaded which then selects it.
     /// </summary>
     private void ItemsLoaded(){
-        items[items.Count -1].GetComponent<Selectable>().Select();
+        if(items.Count > 0) {
+            eventSystem.SetSelectedGameObject(null);
+            items[items.Count -1].GetComponent<Selectable>().Select();
+        } else {
+            eventSystem.SetSelectedGameObject(null);
+            statColorList[0].GetComponent<Selectable>().Select();
+        }
     }
 
     /// <summary>
@@ -103,5 +124,17 @@ public class ItemController : MonoBehaviour
         selectedImage.sprite = item.sprite;
         selectedName.text = item.name;
         selectedDesc.text = item.description;
+    }
+
+    /// <summary>
+    /// Sets up the selected image component with given color.
+    /// </summary>
+    /// <param name="item"></param>
+    private void ShowSelectedColor(GameColor color) {
+        Debug.Log("Helo");
+        selectedItemContainer.SetActive(true);
+        selectedImage.sprite =color.colorIcon;
+        selectedName.text = color.name;
+        selectedDesc.text = color.description;
     }
 }
