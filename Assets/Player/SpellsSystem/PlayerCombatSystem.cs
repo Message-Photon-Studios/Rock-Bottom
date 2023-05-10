@@ -72,7 +72,7 @@ public class PlayerCombatSystem : MonoBehaviour
         enemy.DamageEnemy(defaultAttackDamage);
         colorInventory.AddColor(absorb, ammount);
         enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
-        enemy.enemySounds.PlayOnHit();
+        enemy.enemySounds?.PlayOnHit();
     }
 
     private GameObject currentSpell = null;

@@ -42,8 +42,7 @@ public class EnemyStats : MonoBehaviour
 
     private Animator animator;
 
-    [SerializeField]
-    public EnemySounds enemySounds;
+    [HideInInspector] public EnemySounds enemySounds;
 
     private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
     
@@ -74,6 +73,7 @@ public class EnemyStats : MonoBehaviour
     void Start()
     {
         onDamageTaken += DmgNumber.create;
+        enemySounds = GetComponent<EnemySounds>();
     }
 
     void OnValidate()
@@ -247,7 +247,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
-        enemySounds.PlayDeath();
+        enemySounds?.PlayDeath();
         //TODO
         if (animator.GetBool("dead")) return;
         Debug.Log(gameObject.name + " died");
