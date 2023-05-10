@@ -65,17 +65,17 @@ public class ItemController : MonoBehaviour
     private void InventoryOpened(){
         selectedItemContainer.SetActive(false);
         eventSystem.SetSelectedGameObject(null);
+        statColorList[0].GetComponent<Selectable>().Select();
     }
 
     /// <summary>
     /// Called when last item is loaded which then selects it.
     /// </summary>
     private void ItemsLoaded(){
+        eventSystem.SetSelectedGameObject(null);
         if(items.Count > 0) {
-            eventSystem.SetSelectedGameObject(null);
             items[items.Count -1].GetComponent<Selectable>().Select();
         } else {
-            eventSystem.SetSelectedGameObject(null);
             statColorList[0].GetComponent<Selectable>().Select();
         }
     }
