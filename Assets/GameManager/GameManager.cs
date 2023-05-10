@@ -7,12 +7,13 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] LevelGenManager levelGenerator;
+    [SerializeField] string onDeathLevel;
     [SerializeField] string nextLevelName;
     [SerializeField] string mainMenuName;
     [SerializeField] InputActionReference menuAction;
     private void Start() 
     {
-        levelGenerator.init();
+        levelGenerator?.init();
     }
 
     void OnEnable()
@@ -33,5 +34,10 @@ public class GameManager : MonoBehaviour
     public void EndLevel()
     {
         SceneManager.LoadScene(nextLevelName);
+    }
+
+    public void PlayerDied()
+    {
+        SceneManager.LoadScene(onDeathLevel);
     }
 }

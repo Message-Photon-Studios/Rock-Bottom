@@ -127,7 +127,7 @@ public class PlayerStats : MonoBehaviour
         Debug.Log("Player died. Player deaths not implemented");
         onPlayerDied?.Invoke();
         
-        gameManager?.EndLevel();
+        gameManager?.PlayerDied();
     }
 
     /// <summary>
