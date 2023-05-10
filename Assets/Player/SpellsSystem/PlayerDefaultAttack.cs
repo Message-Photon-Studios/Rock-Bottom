@@ -9,17 +9,33 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerDefaultAttack : MonoBehaviour
 {
+    List<GameObject> targetedEnemies = new List<GameObject>();
+
     /// <summary>
     /// This action is called when the player hits an with the default attack
     /// </summary>
     public UnityAction<GameObject> onDefaultHit;
-    void OnTriggerStay2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Enemy"))
+        if(other.CompareTag("Enemy") && !targetedEnemies.Contains(other.gameObject))
         {
-            onDefaultHit?.Invoke(other.gameObject);
-
-            gameObject.SetActive(false);
+            targetedEnemies.Add(other.gameObject);
         }   
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.CompareTag("Enemy") && targetedEnemies.Contains(other.gameObject))
+        {
+            targetedEnemies.Remove(other.gameObject);
+        }   
+    }
+
+    public void HitEnemies()
+    {
+        for (int i = 0; i < targetedEnemies.Count; i++)
+        {
+            onDefaultHit?.Invoke(targetedEnemies[i]);
+        }
     }
 }
