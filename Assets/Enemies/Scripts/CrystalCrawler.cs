@@ -23,16 +23,13 @@ public class CrystalCrawler : Enemy
         Node root = new Selector(new List<Node>{
             new Sequence(new List<Node>{
                 new CheckBool("prusuit", true),
+
                 new Selector(new List<Node>{
 
-                    new Sequence(new List<Node>{ //If player is too close then wait with jump
-                        new CheckPlayerArea(stats, player, damageTrigger),
-                        new SetParentVariable("enableJump", false, 4)
-                    }),
-                    
                     new Sequence(new List<Node>{
                         new CheckBool("enableJump", true),
                         new CheckGrounded(stats, legPos),
+                        new Inverter(new CheckPlayerArea(stats, player, damageTrigger)),
                         new Selector(new List<Node>{
                             new CheckPlayerDirection(stats,player,Vector2.up, 0.5f, 200f),
                         }),
