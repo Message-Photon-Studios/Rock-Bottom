@@ -11,9 +11,8 @@ public class PlayerSounds : MonoBehaviour
     public AudioSource climbing;
     public AudioSource sliding;
     public AudioSource dying;
-
-
     public AudioSource takingDamage;
+    public AudioSource castingSpell;
 
     private string walkingBool = "walking";
     private string damageBool = "damaged";
@@ -38,6 +37,7 @@ public class PlayerSounds : MonoBehaviour
 
     public void Update()
     {
+        
         if (player.GetBool(walkingBool))
         {
             PlayWalking();
@@ -46,6 +46,7 @@ public class PlayerSounds : MonoBehaviour
         {
             StopWalking();
         }
+        
 
         if (player.GetBool(grappleBool)) 
         {
@@ -112,7 +113,10 @@ public class PlayerSounds : MonoBehaviour
         jumping.Play();
     }
 
-
+    public void PlayCastingSpell()
+    {
+        castingSpell.Play();
+    }
     public void PlayTakingDamage()
     {
         if (!takingDamage.isPlaying)

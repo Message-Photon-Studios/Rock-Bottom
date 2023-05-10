@@ -25,6 +25,9 @@ public class GameColor : ScriptableObject
     /// </summary>
     [SerializeField] ColorEffect colorEffect;
     [SerializeField] List<ColorMix> mixes;
+
+    //Icon representing the color.
+    [SerializeField] public Sprite colorIcon;
     
     /// <summary>
     /// Returns the mix of this color with the specified color

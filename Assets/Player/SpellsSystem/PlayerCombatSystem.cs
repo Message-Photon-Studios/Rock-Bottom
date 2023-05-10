@@ -10,15 +10,16 @@ using System;
 public class PlayerCombatSystem : MonoBehaviour
 {
     [SerializeField] float defaultAttackDamage;
-    [SerializeField] float defaultAttackForce; 
+    [SerializeField] float defaultAttackForce;
     [SerializeField] public float comboBaseDamage;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
     [SerializeField] PlayerDefaultAttack defaultAttackHitbox; //The object that controlls the default attack hitbox
     [SerializeField] Vector2 defaultAttackOffset; //The offset that the default attack will be set to
-    [SerializeField] InputActionReference defaultAttackAction, specialAttackAction, verticalLookDir; 
+    [SerializeField] InputActionReference defaultAttackAction, specialAttackAction, verticalLookDir;
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
+    [SerializeField] PlayerSounds playerSounds;
     private bool attacking;
     private Rigidbody2D body;
 
@@ -31,6 +32,7 @@ public class PlayerCombatSystem : MonoBehaviour
         defaultAttackHandler = (InputAction.CallbackContext ctx) => {
             if(animator.GetBool("grapple")) return;
             animator.SetTrigger("defaultAttack");
+            body.constraints |= RigidbodyConstraints2D.FreezePositionY;
             playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         };
         
@@ -71,6 +73,7 @@ public class PlayerCombatSystem : MonoBehaviour
         enemy.DamageEnemy(defaultAttackDamage);
         colorInventory.AddColor(absorb, ammount);
         enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
+        enemy.enemySounds?.PlayOnHit();
     }
 
     private GameObject currentSpell = null;
@@ -90,6 +93,7 @@ public class PlayerCombatSystem : MonoBehaviour
         animator.SetTrigger(anim);
         playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        playerSounds.PlayCastingSpell();
     }
 
     /// <summary>
@@ -105,7 +109,6 @@ public class PlayerCombatSystem : MonoBehaviour
                                         currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
         GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
         spell?.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
-        body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
         transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
     }
 
@@ -117,5 +120,6 @@ public class PlayerCombatSystem : MonoBehaviour
         attacking = false;
         defaultAttackHitbox.gameObject.SetActive(false);
         playerMovement.movementRoot.SetTotalRoot("attackRoot", false);
+        body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
     }
 }

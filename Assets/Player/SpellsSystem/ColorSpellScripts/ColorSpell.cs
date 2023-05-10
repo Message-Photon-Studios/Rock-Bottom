@@ -14,7 +14,7 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// Scales the power for this specific color spell
     /// </summary>
-    [SerializeField] protected float powerScale = 1;
+    [SerializeField] public float powerScale = 1;
 
     /// <summary>
     /// The projectile will be destroyed on impact with any object

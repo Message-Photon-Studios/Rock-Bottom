@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,7 +16,7 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
 
-    private Collider2D myCollider;  
+    private Collider2D myCollider;
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
 
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
@@ -40,6 +42,8 @@ public class EnemyStats : MonoBehaviour
 
     private Animator animator;
 
+    [HideInInspector] public EnemySounds enemySounds;
+
     private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
     
     private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
@@ -54,6 +58,8 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public UnityAction onEnemyDeath;
 
+    [CanBeNull] private Coroutine currentCoroutine;
+
     #region Setup and Timers
     void Awake()
     {
@@ -67,12 +73,32 @@ public class EnemyStats : MonoBehaviour
     void Start()
     {
         onDamageTaken += DmgNumber.create;
+        enemySounds = GetComponent<EnemySounds>();
     }
 
     void OnValidate()
     {
         myCollider = GetComponent<Collider2D>();
         GetComponent<SpriteRenderer>().material = color.colorMat;
+    }
+
+    void OnDisable()
+    {
+        CleanEffects();
+    }
+
+    /// <summary>
+    /// Removes all effects on enemy
+    /// </summary>
+    void CleanEffects()
+    {
+        animator.SetBool("sleep", false);
+        WakeEnemy();
+        movementSpeed = normalMovementSpeed;
+        poisonEffects = new List<(float damage, float timer)>();
+        burning = (0, 0, 0, null, null);
+        Material mat = GetComponent<SpriteRenderer>().material;
+        mat.SetFloat("_takingDmg", 0);
     }
 
     void Update()
@@ -187,7 +213,19 @@ public class EnemyStats : MonoBehaviour
 
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
-        if(damage > 0 && health <= 0) KillEnemy();
+        if (currentCoroutine != null)
+            StopCoroutine(currentCoroutine);
+        if(health <= 0) KillEnemy();
+        else currentCoroutine = StartCoroutine(dmgResponse());
+    }
+
+    public IEnumerator dmgResponse()
+    {
+        Material mat = GetComponent<SpriteRenderer>().material;
+
+        mat.SetFloat("_takingDmg", 1);
+        yield return new WaitForSeconds(0.1f);
+        mat.SetFloat("_takingDmg", 0);
     }
 
     /// <summary>
@@ -228,8 +266,9 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
+        enemySounds?.PlayDeath();
         //TODO
-        if(animator.GetBool("dead")) return;
+        if (animator.GetBool("dead")) return;
         Debug.Log(gameObject.name + " died");
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
