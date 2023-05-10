@@ -97,6 +97,8 @@ public class EnemyStats : MonoBehaviour
         movementSpeed = normalMovementSpeed;
         poisonEffects = new List<(float damage, float timer)>();
         burning = (0, 0, 0, null, null);
+        Material mat = GetComponent<SpriteRenderer>().material;
+        mat.SetFloat("_takingDmg", 0);
     }
 
     void Update()
