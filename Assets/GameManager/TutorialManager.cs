@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.InputSystem;
 
 public class TutorialManager : MonoBehaviour
 {
+    [SerializeField] InputActionReference interactAction;
+    [SerializeField] TMP_Text tutorialText;
+    [SerializeField] GameObject tutorialCanvas;
+    [SerializeField] [TextArea(5,20)] string[] tutorialTexts;
+    int textNr = 0;
+
     [SerializeField] GameObject dummyTemplate;
     [SerializeField] GameObject[] dummys;
 
@@ -16,6 +24,18 @@ public class TutorialManager : MonoBehaviour
         {
             spawnPoints[i] = dummys[i].transform.position;
         }
+
+        tutorialText.text = tutorialTexts[0];
+    }
+
+    void OnEnable()
+    {
+        interactAction.action.performed += NextTutorial;
+    }
+
+    void OnDisable()
+    {
+        interactAction.action.performed -= NextTutorial;
     }
 
     void Update()
@@ -29,5 +49,17 @@ public class TutorialManager : MonoBehaviour
                 dummys[i] = newDummy;
             }
         }
+    }
+
+    void NextTutorial(InputAction.CallbackContext ctx)
+    {
+        textNr ++;
+        if(tutorialTexts.Length <= textNr)
+        {
+            tutorialCanvas.SetActive(false);
+            return;
+        }
+
+        tutorialText.text = tutorialTexts[textNr];
     }
 }
