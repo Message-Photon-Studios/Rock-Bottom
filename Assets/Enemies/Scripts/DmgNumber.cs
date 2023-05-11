@@ -35,16 +35,17 @@ public class DmgNumber : MonoBehaviour
 
     public static void create(float number, Vector2 position)
     {
+        int numberInt = (int)number;
         var prefab = Resources.Load<DmgNumber>("DmgNumbers/DmgNumber");
         DmgNumber dmgNumber = Instantiate(prefab, position, Quaternion.identity);
         dmgNumber.textMesh = dmgNumber.GetComponent<TextMeshPro>();
-        dmgNumber.textMesh.SetText(number.ToString(CultureInfo.InvariantCulture));
-        if (number <= prefab.smallThreshold)
+        dmgNumber.textMesh.SetText(numberInt.ToString(CultureInfo.InvariantCulture));
+        if (numberInt <= prefab.smallThreshold)
         {
             dmgNumber.size = 0.75f;
             dmgNumber.textMesh.color = prefab.smallColor;
         }
-        else if (number >= prefab.critThreshold)
+        else if (numberInt >= prefab.critThreshold)
         {
             dmgNumber.size = 1.5f;
             dmgNumber.textMesh.color = prefab.criticalColor;
