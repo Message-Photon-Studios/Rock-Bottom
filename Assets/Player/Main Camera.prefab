@@ -225,7 +225,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3.6
+  orthographic size: 5.4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -322,6 +322,74 @@ MonoBehaviour:
   verticalSpeedUp: 2
   verticalSpeedDown: 6
   focusPoint: {fileID: 0}
+  player: {fileID: 0}
+  lowHealthThreshold: 0.2
+  beatCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.00018927956
+      value: -0.0048102858
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.06147909
+      value: 0.1825479
+      inSlope: 0.21676403
+      outSlope: 0.21676403
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.3035457
+    - serializedVersion: 3
+      time: 0.12271929
+      value: -0.03566453
+      inSlope: -1.0452524
+      outSlope: -1.0452524
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.19608182
+    - serializedVersion: 3
+      time: 0.22624105
+      value: 0.05449328
+      inSlope: -0.38461545
+      outSlope: -0.38461545
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.29688564
+      outWeight: 0.19303992
+    - serializedVersion: 3
+      time: 0.4073887
+      value: 0.0011961982
+      inSlope: 0.021587053
+      outSlope: 0.021587053
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23325455
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0007324
+      value: 0.00042192335
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  vignetteNormalColor: {r: 0, g: 0, b: 0, a: 0}
+  vignetteNormalIntensity: 0.27
+  vignetteNormalSmoothness: 0.556
+  vignetteCritColor: {r: 1, g: 0, b: 0, a: 0}
+  vignetteCritIntensity: 0.471
+  vignetteCritSmoothness: 0.146
 --- !u!1 &3311808051537944823
 GameObject:
   m_ObjectHideFlags: 0
