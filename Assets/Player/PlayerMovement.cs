@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
         
         jumpAction.action.started += Jump;
         jumpAction.action.canceled += JumpCancel;
-        belowCheckAction.action.performed += checkBelow;
+        belowCheckAction.action.started += checkBelow;
         belowCheckAction.action.canceled += checkCancle;
         aboveCheckAction.action.started += checkAbove;
         aboveCheckAction.action.canceled += checkCancle;
