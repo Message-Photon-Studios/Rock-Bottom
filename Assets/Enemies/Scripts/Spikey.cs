@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BehaviourTree;
 using UnityEditor;
+using Sequence = BehaviourTree.Sequence;
 
 public class Spikey : Enemy
 {
@@ -16,6 +16,9 @@ public class Spikey : Enemy
     [SerializeField] float patrollSpeedFactor;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;
+
+    [Space(10)]
+    [SerializeField] ParticleSystem rocks;
 
     protected override Node SetupTree()
     {
