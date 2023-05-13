@@ -11,8 +11,8 @@ public class IndicatorController : MonoBehaviour, IPointerEnterHandler, IPointer
     //Indicator for current button, In main menu it's the acorn.
     [SerializeField] GameObject indicator;
     [SerializeField] TMP_Text text;
-    private Color32 active = new Color32(248,195,94, 255);
-    private Color32 nonActive = new Color32(209,165,82, 255);
+    [SerializeField] Color32 active;
+    [SerializeField] Color32 nonActive;
 
 
     //On enable hide the acorn.
