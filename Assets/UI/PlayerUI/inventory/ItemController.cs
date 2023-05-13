@@ -99,8 +99,69 @@ public class ItemController : MonoBehaviour
             newItem.onItemLoaded += ItemsLoaded;
             if(items.Count > 1) {
                 items[items.Count-2].onItemLoaded -= ItemsLoaded;
+                NavigationSetup(newItem);
+            } else if(items.Count == 1) {
+                Navigation itemNav = newItem.GetComponent<Selectable>().navigation;
+                itemNav.mode = Navigation.Mode.Explicit;
+                itemNav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
+
+                foreach (SelectedColor colorInfo in statColorList) {
+                    Navigation nav = colorInfo.GetComponent<Selectable>().navigation;
+                    nav.selectOnRight = newItem.GetComponent<Selectable>();
+                    colorInfo.GetComponent<Selectable>().navigation = nav;
+                }
             }
+            
         }
+    }
+
+    /// <summary>
+    /// Given an item, sets up navigation for keyboard only/controller.
+    /// </summary>
+    /// <param name="newItem"></param>
+    private void NavigationSetup(SelectedInventoryItem newItem) {
+        int nr = items.Count - 1;
+            Navigation nav = newItem.GetComponent<Selectable>().navigation;
+            Navigation lastNav =  items[nr-1].GetComponent<Selectable>().navigation;
+            nav.mode = Navigation.Mode.Explicit;
+            nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
+            if((nr%10) != 0) {
+            lastNav.selectOnRight = newItem.GetComponent<Selectable>();
+            }
+
+            if((nr%10) == 0) {
+                nav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
+                nav.selectOnRight = null;
+            } 
+            else if((nr%10) == 9) {
+                nav.selectOnRight = items[nr-9].GetComponent<Selectable>();
+                nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
+                lastNav.selectOnRight = newItem.GetComponent<Selectable>();
+            } else if(nr == 68) {
+                nav.selectOnRight = items[nr-8].GetComponent<Selectable>();
+                nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
+                lastNav.selectOnRight = newItem.GetComponent<Selectable>();
+            }
+
+            if(nr < 10) {
+                nav.selectOnUp = null;
+                nav.selectOnDown = null;
+            } else if (nr > 60) {
+                nav.selectOnDown = null;
+                nav.selectOnUp = items[nr-10].GetComponent<Selectable>();
+                Navigation above = items[nr-10].GetComponent<Selectable>().navigation;
+                above.selectOnDown = newItem.GetComponent<Selectable>();
+                items[nr-10].GetComponent<Selectable>().navigation = above;
+            } else {
+                nav.selectOnUp = items[nr-10].GetComponent<Selectable>();
+                nav.selectOnDown = null;
+                Navigation above = items[nr-10].GetComponent<Selectable>().navigation;
+                above.selectOnDown = newItem.GetComponent<Selectable>();
+                items[nr-10].GetComponent<Selectable>().navigation = above;
+            }
+
+            newItem.GetComponent<Selectable>().navigation = nav;
+            items[nr-1].GetComponent<Selectable>().navigation = lastNav;
     }
 
     /// <summary>
