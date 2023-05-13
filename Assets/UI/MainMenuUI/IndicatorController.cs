@@ -12,7 +12,7 @@ public class IndicatorController : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] GameObject indicator;
     [SerializeField] TMP_Text text;
     private Color32 active = new Color32(248,195,94, 255);
-    private Color32 nonActive = new Color32(163,104,58, 255);
+    private Color32 nonActive = new Color32(209,165,82, 255);
 
 
     //On enable hide the acorn.
