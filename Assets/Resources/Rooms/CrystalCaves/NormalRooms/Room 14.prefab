@@ -65,6 +65,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5866259959131463049}
+  - {fileID: 2916309184102384690}
   - {fileID: 7210663354994596779}
   - {fileID: 3701044208981261513}
   - {fileID: 8590647663435766339}
@@ -10418,6 +10420,68 @@ CompositeCollider2D:
       - {x: -0.8399958, y: -9.900001}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
+--- !u!1001 &72123618808483243
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5758126673744070995}
+    m_Modifications:
+    - target: {fileID: 1577072170190130292, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_Name
+      value: big shroom roof 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e650b232608113842a62b224f6f1f400, type: 3}
+--- !u!4 &5866259959131463049 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5794189156303114274, guid: e650b232608113842a62b224f6f1f400, type: 3}
+  m_PrefabInstance: {fileID: 72123618808483243}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &344970985877678520
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10477,6 +10541,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7358701150700621244, guid: 2952b285cebf93744bd493eda8d896ef, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c26f976a087197846b7127677abbef68, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2952b285cebf93744bd493eda8d896ef, type: 3}
 --- !u!4 &2122422956945000067 stripped
@@ -10495,9 +10563,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall Shroom 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6744525000624613479, guid: f14c4bc10bb0d4b41885970cb563575a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1439027269cd900488ac93e378ac645c, type: 2}
     - target: {fileID: 8072021620135387419, guid: f14c4bc10bb0d4b41885970cb563575a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8072021620135387419, guid: f14c4bc10bb0d4b41885970cb563575a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10553,13 +10625,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5758126673744070995}
     m_Modifications:
+    - target: {fileID: 1602930748849985099, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d0f023ffdef0b934497644e717c07648, type: 2}
     - target: {fileID: 2584378146365180634, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
       propertyPath: m_Name
       value: wall Shroom 4
       objectReference: {fileID: 0}
     - target: {fileID: 2723589846126743054, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2723589846126743054, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10623,6 +10699,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1744140879246654550, guid: 60c2e7ad20663b14e81c98a2238bb959, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1439027269cd900488ac93e378ac645c, type: 2}
     - target: {fileID: 8914574252360045259, guid: 60c2e7ad20663b14e81c98a2238bb959, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -10685,6 +10765,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall Shroom 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4582248350746735701, guid: d18abb4936f293d4ab6ece34c1a719bc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
     - target: {fileID: 7610969400485708626, guid: d18abb4936f293d4ab6ece34c1a719bc, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -10795,6 +10879,22 @@ PrefabInstance:
       propertyPath: patrollDistance
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1564256270706226063, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564256270706226063, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518822586713996048, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518822586713996048, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
 --- !u!4 &2275134322849042545 stripped
@@ -10813,9 +10913,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Floor Shroom 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1744140879246654550, guid: 60c2e7ad20663b14e81c98a2238bb959, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1439027269cd900488ac93e378ac645c, type: 2}
     - target: {fileID: 8914574252360045259, guid: 60c2e7ad20663b14e81c98a2238bb959, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8914574252360045259, guid: 60c2e7ad20663b14e81c98a2238bb959, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10871,13 +10975,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5758126673744070995}
     m_Modifications:
+    - target: {fileID: 1284258156523684247, guid: 6318e8a69e5b05941b028587d734188e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d0f023ffdef0b934497644e717c07648, type: 2}
     - target: {fileID: 7960389596444399656, guid: 6318e8a69e5b05941b028587d734188e, type: 3}
       propertyPath: m_Name
       value: wall Shroom 1
       objectReference: {fileID: 0}
     - target: {fileID: 8810671474923876672, guid: 6318e8a69e5b05941b028587d734188e, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8810671474923876672, guid: 6318e8a69e5b05941b028587d734188e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10984,6 +11092,22 @@ PrefabInstance:
     - target: {fileID: 345329960993759076, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
       propertyPath: patrollDistance
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564256270706226063, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564256270706226063, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518822586713996048, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518822586713996048, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
@@ -11149,6 +11273,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8269297978319781685, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8269297978319781685, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
 --- !u!4 &900281546374958441 stripped
@@ -11249,9 +11381,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall Shroom 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4582248350746735701, guid: d18abb4936f293d4ab6ece34c1a719bc, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d0f023ffdef0b934497644e717c07648, type: 2}
     - target: {fileID: 7610969400485708626, guid: d18abb4936f293d4ab6ece34c1a719bc, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7610969400485708626, guid: d18abb4936f293d4ab6ece34c1a719bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11379,6 +11515,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8269297978319781685, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8269297978319781685, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
 --- !u!4 &440061261370470823 stripped
@@ -11397,6 +11541,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Floor Shroom 3 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1744140879246654550, guid: 60c2e7ad20663b14e81c98a2238bb959, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c26f976a087197846b7127677abbef68, type: 2}
     - target: {fileID: 8914574252360045259, guid: 60c2e7ad20663b14e81c98a2238bb959, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -11459,6 +11607,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3355211817477068844, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4386134c72943a442b58e46e656b3670, type: 2}
     - target: {fileID: 4111636135796895263, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
       propertyPath: m_Name
       value: Floor Shroom 1
@@ -11523,7 +11675,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1854859793116262203, guid: 2952b285cebf93744bd493eda8d896ef, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1854859793116262203, guid: 2952b285cebf93744bd493eda8d896ef, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11573,6 +11725,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7358701150700621244, guid: 2952b285cebf93744bd493eda8d896ef, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: baa5dd5cefd897347ab2a6b5f0c3fa40, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2952b285cebf93744bd493eda8d896ef, type: 3}
 --- !u!4 &3332493146418223534 stripped
@@ -11591,6 +11747,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Floor Shroom 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1744140879246654550, guid: 60c2e7ad20663b14e81c98a2238bb959, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
     - target: {fileID: 8914574252360045259, guid: 60c2e7ad20663b14e81c98a2238bb959, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -11649,13 +11809,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5758126673744070995}
     m_Modifications:
+    - target: {fileID: 3355211817477068844, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1439027269cd900488ac93e378ac645c, type: 2}
     - target: {fileID: 4111636135796895263, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
       propertyPath: m_Name
       value: Floor Shroom 1
       objectReference: {fileID: 0}
     - target: {fileID: 7859313436852034230, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7859313436852034230, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11711,6 +11875,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4980946205955987825}
     m_Modifications:
+    - target: {fileID: 1284258156523684247, guid: 6318e8a69e5b05941b028587d734188e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
     - target: {fileID: 7960389596444399656, guid: 6318e8a69e5b05941b028587d734188e, type: 3}
       propertyPath: m_Name
       value: wall Shroom 1
@@ -11773,6 +11941,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4980946205955987825}
     m_Modifications:
+    - target: {fileID: 3355211817477068844, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1439027269cd900488ac93e378ac645c, type: 2}
     - target: {fileID: 4111636135796895263, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
       propertyPath: m_Name
       value: Floor Shroom 1
@@ -11839,6 +12011,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3355211817477068844, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
     - target: {fileID: 4111636135796895263, guid: 89fdba26c56f809488357553ba2eeb31, type: 3}
       propertyPath: m_Name
       value: Floor Shroom 1
@@ -11901,6 +12077,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5736565597007834623}
     m_Modifications:
+    - target: {fileID: 1602930748849985099, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c26f976a087197846b7127677abbef68, type: 2}
     - target: {fileID: 2584378146365180634, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
       propertyPath: m_Name
       value: wall Shroom 4 (1)
@@ -12007,6 +12187,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8517845773157789013, guid: 748d98c0f889f574c8e760900018a21e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
     - target: {fileID: 8927118482932633176, guid: 748d98c0f889f574c8e760900018a21e, type: 3}
       propertyPath: m_Name
       value: Roof Shroom 3
@@ -12025,6 +12209,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5736565597007834623}
     m_Modifications:
+    - target: {fileID: 1602930748849985099, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
     - target: {fileID: 2584378146365180634, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
       propertyPath: m_Name
       value: wall Shroom 4
@@ -12091,6 +12279,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wall Shroom 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6744525000624613479, guid: f14c4bc10bb0d4b41885970cb563575a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4386134c72943a442b58e46e656b3670, type: 2}
     - target: {fileID: 8072021620135387419, guid: f14c4bc10bb0d4b41885970cb563575a, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -12221,6 +12413,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8269297978319781685, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8269297978319781685, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
 --- !u!4 &5347179495060709608 stripped
@@ -12283,6 +12483,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Floor Shroom 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7358701150700621244, guid: 2952b285cebf93744bd493eda8d896ef, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: baa5dd5cefd897347ab2a6b5f0c3fa40, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2952b285cebf93744bd493eda8d896ef, type: 3}
 --- !u!4 &8340229112309880832 stripped
@@ -12369,6 +12573,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8269297978319781685, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8269297978319781685, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11cf5fcb6fe822c47bfc3c294e7eff87, type: 3}
 --- !u!4 &5026467061037576292 stripped
@@ -12387,6 +12599,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1602930748849985099, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
     - target: {fileID: 2584378146365180634, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
       propertyPath: m_Name
       value: wall Shroom 4
@@ -12442,6 +12658,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2723589846126743054, guid: 1ac4ce16d315122439315f6ddcfe68b8, type: 3}
   m_PrefabInstance: {fileID: 8185623431693566803}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8651933402083087376
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5758126673744070995}
+    m_Modifications:
+    - target: {fileID: 1577072170190130292, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_Name
+      value: big shroom floor 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.143
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.207
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+--- !u!4 &2916309184102384690 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5794189156303114274, guid: 8b4f7403fb14af44991878bc79d866be, type: 3}
+  m_PrefabInstance: {fileID: 8651933402083087376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8924347015357207332
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12453,6 +12731,10 @@ PrefabInstance:
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1284258156523684247, guid: 6318e8a69e5b05941b028587d734188e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
     - target: {fileID: 7960389596444399656, guid: 6318e8a69e5b05941b028587d734188e, type: 3}
       propertyPath: m_Name
       value: wall Shroom 1
