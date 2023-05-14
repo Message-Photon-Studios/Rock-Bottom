@@ -11,19 +11,31 @@ public class ItemController : MonoBehaviour
 {
     //Items inventory.
     ItemInventory itemInventory;
+
+    //Color inventory.
+    ColorInventory colorInventory;
+
+    //List with all color stats components.
     [SerializeField] List<SelectedColor> statColorList;
 
     //GameObject with grid to put items in.
     [SerializeField] GameObject itemsContainer;
 
-    //Prefab for UI component of each item in the inventory.
-    [SerializeField] SelectedInventoryItem prefab;
+    //itemPrefab for UI component of each item in the inventory.
+    [SerializeField] SelectedInventoryItem itemPrefab;
+
+    //bottlePrefab for UI component of each bottle in the inventory.
+    [SerializeField] SelectedBottle bottlePrefab;
+
+    //Container that holds the selected bottles.
+    [SerializeField] GameObject bottlesContainer;
 
     //Containers that holds the selected item components.
     [SerializeField] GameObject selectedItemContainer;
     [SerializeField] Image selectedImage;
     [SerializeField] TMP_Text selectedName;
     [SerializeField] TMP_Text selectedDesc;
+    [SerializeField] int descriptionFontSize;
 
     //Event system used in inventory.
     [SerializeField] EventSystem eventSystem;
@@ -34,18 +46,32 @@ public class ItemController : MonoBehaviour
     //Text showing how many more items you have.
     [SerializeField] TMP_Text excessItemsCounter;
 
+    //Holds all item prefabs.
     private List<SelectedInventoryItem> items = new List<SelectedInventoryItem>{};
+
+    //Holds all bottle prefabs.
+    private List<SelectedBottle> bottles = new List<SelectedBottle>{};
 
 
     private void OnEnable() {
         itemInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
         itemsContainer.GetComponent<NotifyInventory>().onInventoryOpened += InventoryOpened;
+        colorInventory = colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
 
         itemInventory.onItemPickedUp += AddItem;
+        colorInventory.onColorSlotsChanged += BottleAmountChanged;
+        colorInventory.onColorSpellChanged += BottleChanged;
         foreach(SelectedColor color in statColorList) {
             color.onInventoryColorSelected += ShowSelectedColor;
             color.onColorLoaded += ItemsLoaded;
         }
+
+        for(int i = 0; i < colorInventory.colorSlots.Count; i++) {
+            AddBottle(colorInventory.GetColorSpell(i));
+        }
+        BottleNavigation();
+
+        selectedDesc.fontSize = descriptionFontSize;
 
         selectedItemContainer.SetActive(false);
         excessItemsCounter.gameObject.SetActive(false);
@@ -69,6 +95,76 @@ public class ItemController : MonoBehaviour
     }
 
     /// <summary>
+    /// When a bottle is added, create UI prefab and set up new navigation.
+    /// </summary>
+    private void BottleAmountChanged() {
+        AddBottle(colorInventory.GetColorSpell(colorInventory.colorSlots.Count -1));
+        BottleNavigation();
+    }
+
+    /// <summary>
+    /// If bottle changed, update information with new bottle from index.
+    /// </summary>
+    /// <param name="index"></param>
+    private void BottleChanged(int index) {
+        bottles[index].Setup(colorInventory.GetColorSpell(index));
+    }
+
+    /// <summary>
+    /// Adds a bottle to the inventory acording to colorspell that was given.
+    /// </summary>
+    /// <param name="bottle"></param>
+    private void AddBottle(ColorSpell bottle) {
+        SelectedBottle newBottle = Instantiate(bottlePrefab, new Vector3(0,0,0), Quaternion.identity);
+        newBottle.GetComponent<RectTransform>().SetParent(bottlesContainer.transform);
+        newBottle.GetComponent<RectTransform>().sizeDelta = new Vector2(110, 110);
+        newBottle.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+        newBottle.Setup(bottle);
+        bottles.Add(newBottle);
+        newBottle.onInventoryBottleSelected += ShowSelectedBottle;
+    }
+
+    /// <summary>
+    /// Sets up navigation for all bottles and other related components with current bottles.
+    /// </summary>
+    private void BottleNavigation() {
+        Navigation redColorNav = statColorList[0].GetComponent<Selectable>().navigation;
+        redColorNav.mode = Navigation.Mode.Explicit;
+        redColorNav.selectOnLeft = null;
+        redColorNav.selectOnDown = statColorList[1].GetComponent<Selectable>();
+        redColorNav.selectOnUp = bottles[bottles.Count/2].GetComponent<Selectable>();
+        if(items.Count == 0) {
+            redColorNav.selectOnRight = null;
+        } 
+        statColorList[0].GetComponent<Selectable>().navigation = redColorNav;
+
+        Navigation rainbowColorNav = statColorList[6].GetComponent<Selectable>().navigation;
+        rainbowColorNav.selectOnDown = bottles[bottles.Count/2].GetComponent<Selectable>();
+        statColorList[6].GetComponent<Selectable>().navigation = rainbowColorNav;
+
+        for(int i = 0; i < bottles.Count; i++) {
+            Navigation nav = bottles[i].GetComponent<Selectable>().navigation;
+            nav.mode = Navigation.Mode.Explicit;
+            nav.selectOnUp = statColorList[6].GetComponent<Selectable>();
+            nav.selectOnDown = statColorList[0].GetComponent<Selectable>();
+
+            if(i == 0) {
+                nav.selectOnLeft = bottles[bottles.Count-1].GetComponent<Selectable>();
+            } else {
+                nav.selectOnLeft = bottles[i-1].GetComponent<Selectable>();
+            }
+
+            if(i == (bottles.Count-1)) {
+                 nav.selectOnRight = bottles[0].GetComponent<Selectable>();
+            } else {
+                nav.selectOnRight = bottles[i+1].GetComponent<Selectable>();
+            }
+
+            bottles[i].GetComponent<Selectable>().navigation = nav;
+        }
+    }
+
+    /// <summary>
     /// Called when last item is loaded which then selects it.
     /// </summary>
     private void ItemsLoaded(){
@@ -89,7 +185,7 @@ public class ItemController : MonoBehaviour
             excessCount += 1;
             ShowExcessItems(excessCount);
         } else {
-            SelectedInventoryItem newItem = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
+            SelectedInventoryItem newItem = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             newItem.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
             newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
             newItem.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
@@ -104,6 +200,10 @@ public class ItemController : MonoBehaviour
                 Navigation itemNav = newItem.GetComponent<Selectable>().navigation;
                 itemNav.mode = Navigation.Mode.Explicit;
                 itemNav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
+                itemNav.selectOnRight = null;
+                itemNav.selectOnDown = null;
+                itemNav.selectOnUp = null;
+                newItem.GetComponent<Selectable>().navigation = itemNav;
 
                 foreach (SelectedColor colorInfo in statColorList) {
                     Navigation nav = colorInfo.GetComponent<Selectable>().navigation;
@@ -192,10 +292,20 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     private void ShowSelectedColor(GameColor color) {
-        Debug.Log("Helo");
         selectedItemContainer.SetActive(true);
         selectedImage.sprite =color.colorIcon;
         selectedName.text = color.name;
         selectedDesc.text = color.description;
+    }
+
+    /// <summary>
+    /// Sets up the selected image component with given color.
+    /// </summary>
+    /// <param name="item"></param>
+    private void ShowSelectedBottle(ColorSpell bottle) {
+        selectedItemContainer.SetActive(true);
+        selectedImage.sprite =bottle.GetBottleSprite().bigSprite;
+        selectedName.text = bottle.name;
+        selectedDesc.text = bottle.description;
     }
 }
