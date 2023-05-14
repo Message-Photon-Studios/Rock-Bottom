@@ -41,7 +41,7 @@ public class ColorSlotController : MonoBehaviour
     /// </summary>
     private void OnEnable() {
         //Fetch the players current colors.
-        colorInventory = colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();;
+        colorInventory = colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
         colorSlots = colorInventory.colorSlots;
 
         //Attach local functions to UnityActions.
