@@ -35,6 +35,7 @@ public class ItemController : MonoBehaviour
     [SerializeField] Image selectedImage;
     [SerializeField] TMP_Text selectedName;
     [SerializeField] TMP_Text selectedDesc;
+    [SerializeField] int descriptionFontSize;
 
     //Event system used in inventory.
     [SerializeField] EventSystem eventSystem;
@@ -69,6 +70,8 @@ public class ItemController : MonoBehaviour
             AddBottle(colorInventory.GetColorSpell(i));
         }
         BottleNavigation();
+
+        selectedDesc.fontSize = descriptionFontSize;
 
         selectedItemContainer.SetActive(false);
         excessItemsCounter.gameObject.SetActive(false);
