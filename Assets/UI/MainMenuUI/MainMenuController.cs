@@ -10,7 +10,6 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] Button startButton;
 
     private void OnEnable() {
-        startButton.Select();
         startButton.GetComponent<IndicatorController>().ShowIndicator(true);
     }
 
