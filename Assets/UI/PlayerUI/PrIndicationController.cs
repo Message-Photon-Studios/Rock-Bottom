@@ -9,6 +9,8 @@ public class PrIndicationController : MonoBehaviour
     //Players color inventory.
     private ColorInventory colorInventory;
 
+    private ItemInventory itemInventory;
+
     //different components of the UI for the power indicator. 
     [SerializeField] TMP_Text powerText;
     [SerializeField] Image icon;
@@ -17,10 +19,12 @@ public class PrIndicationController : MonoBehaviour
 
     private void OnEnable() {
         colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
+        itemInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
         UpdatePrIndicator();
         colorInventory.onSlotChanged += OnSlotChanged;
         colorInventory.onColorUpdated += UpdatePrIndicator;
         colorInventory.onColorSpellChanged += OnSlotChanged;
+        itemInventory.onItemPickedUp += UpdatePrIndicator;
     }
 
     private void OnDisable() {
@@ -48,6 +52,10 @@ public class PrIndicationController : MonoBehaviour
             
         }
         #nullable disable
+    }
+
+    private void UpdatePrIndicator(Item item) {
+        UpdatePrIndicator();
     }
 
     /// <summary>
