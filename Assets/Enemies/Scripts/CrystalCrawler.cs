@@ -11,6 +11,7 @@ public class CrystalCrawler : Enemy
     [SerializeField] float runSpeed;
     [SerializeField] float jumpForce;
     [SerializeField] float forwardJumpForce;
+    [SerializeField] float jumpIdleTime;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;
 
@@ -41,7 +42,7 @@ public class CrystalCrawler : Enemy
 
                     new Sequence(new List<Node>{
                         new CheckBool("enableJump", false),
-                        new Wait(3),
+                        new Wait(jumpIdleTime),
                         new SetParentVariable("enableJump", true, 4)
                     }),
 
@@ -63,7 +64,7 @@ public class CrystalCrawler : Enemy
                     }),
 
                     new Sequence(new List<Node>{
-                        new CheckWall(stats,Vector2.right, 1f),
+                        new CheckWall(stats,Vector2.right, 1f,-.3f),
                         new CheckGrounded(stats,legPos),
                         new EnemyJump(stats, body, jumpForce, forwardJumpForce),
                         new SetParentVariable("enableJump", false, 4),
