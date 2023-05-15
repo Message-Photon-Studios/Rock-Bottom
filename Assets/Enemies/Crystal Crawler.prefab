@@ -84,14 +84,12 @@ MonoBehaviour:
     width: 360
     offset: {x: 0, y: 0}
     color: {r: 0, g: 0.54226303, b: 1, a: 1}
-  damageTrigger:
-    radius: 1
+  preventJump:
+    radius: 2.5
     direction: 0
     width: 360
     offset: {x: 0, y: 0}
-    color: {r: 1, g: 0, b: 0, a: 1}
-  attackDamage: 20
-  attackForce: 4000
+    color: {r: 0.048508644, g: 1, b: 0, a: 1}
   runSpeed: 2
   jumpForce: 6000
   forwardJumpForce: 1000
@@ -360,6 +358,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8908701851532999919, guid: 65c4a424b962e634c800bc5035526aef, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8972155622757345861, guid: 65c4a424b962e634c800bc5035526aef, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8972155622757345861, guid: 65c4a424b962e634c800bc5035526aef, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

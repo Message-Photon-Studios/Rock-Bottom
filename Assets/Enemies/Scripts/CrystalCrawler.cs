@@ -7,9 +7,7 @@ using UnityEditor;
 public class CrystalCrawler : Enemy
 {
     [SerializeField] Trigger viewTrigger;
-    [SerializeField] Trigger damageTrigger;
-    [SerializeField] float attackDamage;
-    [SerializeField] float attackForce;
+    [SerializeField] Trigger preventJump;
     [SerializeField] float runSpeed;
     [SerializeField] float jumpForce;
     [SerializeField] float forwardJumpForce;
@@ -29,7 +27,7 @@ public class CrystalCrawler : Enemy
                     new Sequence(new List<Node>{
                         new CheckBool("enableJump", true),
                         new CheckGrounded(stats, legPos),
-                        new Inverter(new CheckPlayerArea(stats, player, damageTrigger)),
+                        new Inverter(new CheckPlayerArea(stats, player, preventJump)),
                         new Selector(new List<Node>{
                             new CheckPlayerDirection(stats,player,Vector2.up, 0.5f, 200f),
                         }),
@@ -40,15 +38,10 @@ public class CrystalCrawler : Enemy
                         new SetParentVariable("enableDamage", true, 4)
                     }),
 
-                    new Sequence(new List<Node>{
-                        new CheckBool("attackDone", false),
-                        new NormalAttack("enableDamage", player, attackDamage, attackForce, 0.5f, damageTrigger, stats),
-                        new SetParentVariable("attackDone", true, 4)
-                    }),
 
                     new Sequence(new List<Node>{
                         new CheckBool("enableJump", false),
-                        new Wait(1),
+                        new Wait(3),
                         new SetParentVariable("enableJump", true, 4)
                     }),
 
@@ -59,10 +52,11 @@ public class CrystalCrawler : Enemy
                         }),
         
                         new CheckGrounded(stats, legPos),
-                        new SetParentVariable("attackDone", false, 4),
                         new SetParentVariable("enableDamage", false, 4),
                         new AnimationBool(animator, "move", true),
-                        new PlatformChase(stats, player.transform, body, animator, runSpeed, legPos ,"attack", "run"),
+                        new AnimationBool(animator, "run", true),
+                        new LookAtPlayer(stats, player),
+                        new RunForward(stats, runSpeed)
                     }),
 
                     new Sequence(new List<Node>{
@@ -94,18 +88,16 @@ public class CrystalCrawler : Enemy
             new Sequence(new List<Node>{
                 new CheckGrounded(stats,legPos),
                 new AnimationBool(animator, "run", false),
-                new RandomPatroll(stats, body, animator, patrollDistance, 1f, patrollIdleTime, legPos, "attack", "move")
+                new RandomPatroll(stats, body, animator, patrollDistance, 1f, patrollIdleTime, legPos, "charge", "move")
             })
         });
         
-        root.SetData("attack", false);
-        root.SetData("attackDone", false);
-        root.SetData("swordAttack", false);
+        root.SetData("charge", false);
         root.SetData("enableJump", true);
         root.SetData("prusuit", false);
 
         triggersToFlip.Add(viewTrigger);
-        triggersToFlip.Add(damageTrigger);
+        triggersToFlip.Add(preventJump);
         return root;
     }
 
@@ -117,7 +109,7 @@ public class CrystalCrawler : Enemy
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         viewTrigger.DrawTrigger(stats.GetPosition());
-        damageTrigger.DrawTrigger(stats.GetPosition());
+        preventJump.DrawTrigger(stats.GetPosition());
         Handles.color = Color.yellow;
         Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
     }
