@@ -46,13 +46,11 @@ public class CrystalCrawler : Enemy
                     }),
 
                     new Sequence(new List<Node>{
-                        new Selector(new List<Node>{
-                            new CheckPlayerDistance(stats, player, 10, 20),
-                            new CheckPlayerArea(stats, player, viewTrigger),
-                        }),
-        
+                        
+                        new CheckPlayerDistance(stats, player, 5, 20),
                         new CheckGrounded(stats, legPos),
                         new SetParentVariable("enableDamage", false, 4),
+                        new Inverter(new CheckPlayerArea(stats, player, preventJump)),
                         new AnimationBool(animator, "move", true),
                         new AnimationBool(animator, "run", true),
                         new LookAtPlayer(stats, player),
