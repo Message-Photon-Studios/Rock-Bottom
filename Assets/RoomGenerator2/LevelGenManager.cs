@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
 
 public enum LevelArea
 {
@@ -25,13 +22,27 @@ public class LevelGenManager : MonoBehaviour
     public int size;
 
     private readonly string[] paths = {"Rooms/CrystalCaves/", "Rooms/PebbleArea"};
+    private bool finished;
 
-    public void init()
+    public IEnumerator generateSceneAsync(UIController canvas)
+    {
+        StartCoroutine(levelGen.insertPrefabs(paths[(int)levelType]));
+        while (!levelGen.instantiated)
+            yield return new WaitForEndOfFrame();
+        GetComponent<ItemSpellManager>().SpawnItems();
+        if (levelGen.endRoomPos != null) 
+            endCircle.transform.position = levelGen.endRoomPos.Value;
+
+        if (canvas != null)
+            canvas.loaded = true;
+        finished = true;
+    }
+
+    public void init(UIController canvas)
     {
         levelGen = new LevelGenerator();
         levelGen.generate(size, paths[(int)levelType]);
-        GetComponent<ItemSpellManager>().SpawnItems();
-        endCircle.transform.position = levelGen.endRoomPos.Value;
+        StartCoroutine(generateSceneAsync(canvas));
     }
 
     public void reset()
@@ -40,10 +51,6 @@ public class LevelGenManager : MonoBehaviour
         levelGen?.initGeneration(paths[(int)levelType]);
     }
 
-    public void step()
-    {
-        levelGen?.stepGenerate(size, paths[(int)levelType]);
-    }
 #if UNITY_EDITOR
     void OnDrawGizmos() 
     {
@@ -54,7 +61,8 @@ public class LevelGenManager : MonoBehaviour
 
     private void Update()
     {
-        levelGen?.cullElements();
+        if (finished)
+            levelGen?.cullElements();
     }
 
     private void FixedUpdate()
