@@ -57,8 +57,6 @@ public class Spikey : Enemy
                 new Sequence(new List<Node>{
                     new CheckBool("attack", true),
                     new Inverter(new CheckGrounded(stats, .5f)),
-                    new LookAtPlayer(stats, player),
-                    new RunForward(stats, dropHomingFactor),
                     new KeepHeight(stats, stats.GetPosition().y-droppHeight, 1f)
                     }),
 
