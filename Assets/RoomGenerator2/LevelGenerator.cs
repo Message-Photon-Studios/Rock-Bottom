@@ -498,7 +498,7 @@ public class LevelGenerator
             usedRooms.Add(room);
         }
 
-        // If we have no more doors, we are instantiated
+        // If we have no more doors, we are done
         return (remainingDoors.Count == 0, true);
     }
 

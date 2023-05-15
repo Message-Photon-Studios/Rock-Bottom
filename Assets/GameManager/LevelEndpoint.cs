@@ -29,7 +29,7 @@ public class LevelEndpoint : MonoBehaviour
     void ExitLevel (InputAction.CallbackContext ctx)
     {
         if(!enableExit) return;
-        EndScene();
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().EndLevel();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -48,10 +48,5 @@ public class LevelEndpoint : MonoBehaviour
             canvas.gameObject.SetActive(false);
             enableExit = false;
         }
-    }
-
-    void EndScene()
-    {
-        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().EndLevel();
     }
 }
