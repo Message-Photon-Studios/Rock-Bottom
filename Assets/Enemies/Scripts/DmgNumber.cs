@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class DmgNumber : MonoBehaviour
 {
+    [SerializeField] private Color nullColor;
     [SerializeField] private Color smallColor;
     [SerializeField] private Color normalColor;
     [SerializeField] private Color criticalColor;
@@ -39,8 +40,16 @@ public class DmgNumber : MonoBehaviour
         var prefab = Resources.Load<DmgNumber>("DmgNumbers/DmgNumber");
         DmgNumber dmgNumber = Instantiate(prefab, position, Quaternion.identity);
         dmgNumber.textMesh = dmgNumber.GetComponent<TextMeshPro>();
-        dmgNumber.textMesh.SetText(numberInt.ToString(CultureInfo.InvariantCulture));
-        if (numberInt <= prefab.smallThreshold)
+        if (numberInt == 0)
+            dmgNumber.textMesh.SetText("Immune");
+        else
+            dmgNumber.textMesh.SetText(numberInt.ToString(CultureInfo.InvariantCulture));
+        if (numberInt == 0)
+        {
+            dmgNumber.size = 0.60f;
+            dmgNumber.textMesh.color = prefab.nullColor;
+        }
+        else if (numberInt <= prefab.smallThreshold)
         {
             dmgNumber.size = 0.75f;
             dmgNumber.textMesh.color = prefab.smallColor;
@@ -52,6 +61,7 @@ public class DmgNumber : MonoBehaviour
         }
         else
             dmgNumber.textMesh.color =  prefab.normalColor;
+        Debug.Log(dmgNumber.size);
         dmgNumber.transform.localScale = Vector3.zero;
     }
 }
