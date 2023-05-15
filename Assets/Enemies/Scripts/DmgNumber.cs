@@ -15,6 +15,7 @@ public class DmgNumber : MonoBehaviour
     [SerializeField] private AnimationCurve sizeCurve;
     [SerializeField] private float upwardsSpeed;
     [SerializeField] private float duration;
+    [SerializeField] private string immuneMsg;
     private TextMeshPro textMesh;
 
     private float timer = 0;
@@ -41,12 +42,12 @@ public class DmgNumber : MonoBehaviour
         DmgNumber dmgNumber = Instantiate(prefab, position, Quaternion.identity);
         dmgNumber.textMesh = dmgNumber.GetComponent<TextMeshPro>();
         if (numberInt == 0)
-            dmgNumber.textMesh.SetText("Immune");
+            dmgNumber.textMesh.SetText(prefab.immuneMsg);
         else
             dmgNumber.textMesh.SetText(numberInt.ToString(CultureInfo.InvariantCulture));
         if (numberInt == 0)
         {
-            dmgNumber.size = 0.60f;
+            dmgNumber.size = 0.75f;
             dmgNumber.textMesh.color = prefab.nullColor;
         }
         else if (numberInt <= prefab.smallThreshold)
@@ -61,7 +62,6 @@ public class DmgNumber : MonoBehaviour
         }
         else
             dmgNumber.textMesh.color =  prefab.normalColor;
-        Debug.Log(dmgNumber.size);
         dmgNumber.transform.localScale = Vector3.zero;
     }
 }
