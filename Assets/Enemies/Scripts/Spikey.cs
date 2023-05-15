@@ -10,7 +10,6 @@ public class Spikey : Enemy
     [SerializeField] float sideDistTrigger;
     [SerializeField] float heightDistTrigger;
     [SerializeField] float droppHeight;
-    [SerializeField] float dropHomingFactor;
     [SerializeField] float dropIdleTime;
     [SerializeField] float hoverSpeedFactor;
     [SerializeField] float patrollSpeedFactor;
