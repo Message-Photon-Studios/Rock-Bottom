@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
@@ -11,9 +10,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] string nextLevelName;
     [SerializeField] string mainMenuName;
     [SerializeField] InputActionReference menuAction;
-    private void Start() 
+    [SerializeField] UIController canvas;
+    
+    private void Start()
     {
-        levelGenerator?.init();
+        if (levelGenerator)
+            levelGenerator.init(canvas);
+        else
+            canvas.loaded = true;
     }
 
     void OnEnable()
@@ -30,14 +34,30 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(mainMenuName);
     }
+    public IEnumerator EndLevelAsync()
+    {
+        SceneManager.LoadSceneAsync(nextLevelName);
+        yield break;
+    }
 
     public void EndLevel()
     {
-        SceneManager.LoadScene(nextLevelName);
+        StartCoroutine(canvas.FadeOutCoroutine(false, EndLevelAsync));
+    }
+
+    public IEnumerator PlayerDiedAsync()
+    {
+        SceneManager.LoadSceneAsync(onDeathLevel);
+        yield break;
     }
 
     public void PlayerDied()
     {
-        SceneManager.LoadScene(onDeathLevel);
+        StartCoroutine(canvas.FadeOutCoroutine(false, PlayerDiedAsync));
+    }
+
+    public void ShowGame()
+    {
+
     }
 }
