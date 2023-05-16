@@ -67,6 +67,7 @@ public class PlayerStats : MonoBehaviour
         health -= damage;
         invincibilityTimer = hitInvincibilityTime;
         GetComponent<PlayerCombatSystem>().RemoveAttackRoot();
+        GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
         if(health <= 0)
         {
             animator.SetBool("dead", true);
