@@ -29,6 +29,5 @@ public class GreenColorEffect : ColorEffect
         instantiatedParticles.transform.parent = enemyObj.transform;
 
         enemy.PoisonDamage(damageOverTime * power, useTime);
-        enemy.DamageEnemy(damage);
     }
 }
