@@ -188,8 +188,11 @@ public struct BottleSprite
 {
     public Sprite bigSprite;
     public Sprite bigSpriteMask;
+    public Sprite bigSpriteCapMask;
     public Sprite mediumSprite;
     public Sprite mediumSpriteMask;
+    public Sprite mediumSpriteCapMask;
     public Sprite smallSprite;
     public Sprite smallSpriteMask;
+    public Sprite smallSpriteCapMask;
 }

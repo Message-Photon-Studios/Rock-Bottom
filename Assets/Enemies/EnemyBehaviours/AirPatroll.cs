@@ -34,7 +34,7 @@ public class AirPatroll : Node
     /// <param name="moveAnimationBool">This animation bool will be set to true when the enemy is moving</param>
     /// <returns></returns>
     public AirPatroll(EnemyStats stats, Rigidbody2D body, Animator animator, float patrollDistance, float patrollSpeedFactor, float maxIdleTime, float wallLookDist, string stopBool, string moveAnimationBool) : 
-    base(new List<Node>{new CheckWall(stats, Vector2.right, wallLookDist)})
+    base(new List<Node>{new CheckWall(stats, Vector2.right, wallLookDist,0f)})
     {
         this.stats = stats;
         this.patrollDistance = patrollDistance;

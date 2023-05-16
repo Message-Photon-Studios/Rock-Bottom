@@ -16,7 +16,7 @@ public class LevelGenManager : MonoBehaviour
     public static int twoDoorRoomBias = 6;
     public static int threeDoorRoomBias = 2;
 
-    public static float cullDistance = 2.5f;
+    public static float cullDistance = 3.5f;
     private LevelGenerator levelGen;
     public GameObject player;
     public SpriteRenderer endCircle;

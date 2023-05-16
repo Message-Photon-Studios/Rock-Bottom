@@ -448,7 +448,9 @@ public class EnemyStats : MonoBehaviour
             instantiatedParticles.transform.parent = transform;
             sleepParticles = instantiatedParticles;
         }
-
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if(player)
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
         animator.SetBool("sleep", true);
     }
 
@@ -472,6 +474,9 @@ public class EnemyStats : MonoBehaviour
     {
         enemySleep = false;
         sleepTimer = 0;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if(player)
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), player.GetComponent<Collider2D>(), false);
     }
 
     /// <summary>
