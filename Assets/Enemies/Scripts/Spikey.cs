@@ -7,10 +7,12 @@ using Sequence = BehaviourTree.Sequence;
 public class Spikey : Enemy
 {
     [SerializeField] Trigger attackTrigger;
+    [SerializeField] Trigger damageTrigger;
+    [SerializeField] float dropDamage;
+    [SerializeField] Vector2 dropPlayerForce;
     [SerializeField] float sideDistTrigger;
     [SerializeField] float heightDistTrigger;
     [SerializeField] float droppHeight;
-    [SerializeField] float dropHomingFactor;
     [SerializeField] float dropIdleTime;
     [SerializeField] float hoverSpeedFactor;
     [SerializeField] float patrollSpeedFactor;
@@ -50,16 +52,21 @@ public class Spikey : Enemy
 
                 new Sequence(new List<Node>{
                     new CheckBool("attack", true),
-                    new CheckGrounded(stats, .5f),
+                    new CheckGrounded(stats, .2f),
                     new AnimationBool(animator, "stuck", true)
                 }),
 
                 new Sequence(new List<Node>{
                     new CheckBool("attack", true),
+                    new CheckPlayerArea(stats, player, damageTrigger),
+                    new DamagePlayer(player, dropDamage),
+                    new AddForcePlayer(stats, player, dropPlayerForce)
+                }),
+
+                new Sequence(new List<Node>{
+                    new CheckBool("attack", true),
                     new Inverter(new CheckGrounded(stats, .5f)),
-                    new LookAtPlayer(stats, player),
-                    new RunForward(stats, dropHomingFactor),
-                    new KeepHeight(stats, stats.GetPosition().y-droppHeight, 1f)
+                    new KeepHeight(stats, stats.GetPosition().y-droppHeight, 1f),
                     }),
 
                 new Sequence(new List<Node>{
@@ -80,6 +87,7 @@ public class Spikey : Enemy
         root.SetData("attack", false);
         root.SetData("spawnAttack", false);
         triggersToFlip.Add(attackTrigger);
+        triggersToFlip.Add(damageTrigger);
         return root;
     }
 
@@ -94,6 +102,7 @@ public class Spikey : Enemy
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         attackTrigger.DrawTrigger(stats.GetPosition());
+        damageTrigger.DrawTrigger(stats.GetPosition());
         Handles.color = Color.yellow;
         Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
         Handles.color = Color.red;
