@@ -35,6 +35,12 @@ public class PlayerDefaultAttack : MonoBehaviour
     {
         for (int i = 0; i < targetedEnemies.Count; i++)
         {
+            if(targetedEnemies[i] == null)
+            {
+                targetedEnemies.RemoveAt(i);
+                i--;
+                continue;
+            }
             onDefaultHit?.Invoke(targetedEnemies[i]);
         }
     }
