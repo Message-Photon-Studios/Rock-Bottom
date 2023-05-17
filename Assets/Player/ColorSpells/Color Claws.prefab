@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4874330200776334801}
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
+  - component: {fileID: 1585154843906230144}
   - component: {fileID: 1473584480591637448}
   - component: {fileID: 2146103257369105666}
   m_Layer: 8
@@ -32,7 +33,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.49, y: 0.89, z: 0}
+  m_LocalPosition: {x: -0.45, y: 0.89, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52,13 +53,13 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 5
   m_AngularDrag: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!58 &3293947447571823584
 CircleCollider2D:
@@ -75,7 +76,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.7}
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.4
 --- !u!114 &3321278458073070407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +185,7 @@ MonoBehaviour:
   lifeTime: 2
   animationTrigger: handSpell
   onImpact:
-  - {fileID: 1473584480591637448}
+  - {fileID: 1585154843906230144}
   spellSprite:
     bigSprite: {fileID: 21300000, guid: 4897bd49fdbe1ab449c161d71fc21487, type: 3}
     bigSpriteMask: {fileID: 21300000, guid: 3fc7d6ff5040b024392a747eaee76d5b, type: 3}
@@ -195,6 +196,19 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: fcb07cba04c2fd541a3eb2efd14b27a7, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: a1c2025957c93cb45bf00eec7808c574, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 5792eb689c8852341943f02d5e40ca80, type: 3}
+--- !u!114 &1585154843906230144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ca9402bae3a571439b3d0f49f872a70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  refer: {fileID: 1473584480591637448}
 --- !u!114 &1473584480591637448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,4 +236,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1dd204a55e67044e8c4b75a10622fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnForce: {x: 300, y: 100}
+  spawnForce: {x: 800, y: 200}
