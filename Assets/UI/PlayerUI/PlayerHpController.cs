@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 using Time = UnityEngine.Time;
 
 public class PlayerHpController : MonoBehaviour
@@ -14,6 +15,7 @@ public class PlayerHpController : MonoBehaviour
     [SerializeField] Slider secondarySlider;
     [SerializeField] AnimationCurve maxHpChangeCurve;
     [SerializeField] float secondaryRate;
+    [SerializeField] TextMeshProUGUI text;
  
     private RectTransform rect;
     private RectTransform secondaryRect;
@@ -25,6 +27,17 @@ public class PlayerHpController : MonoBehaviour
     private float targetValue = 100;
     private float movingValue = 0;
 
+    private float healthSliderValue
+    {
+        get => healthSlider.value;
+
+        set
+        {
+            text.text = $"{(int)Math.Ceiling(value / healthMultiplier)}/{(int)maxHealth}";
+            healthSlider.value = value;
+        }
+    }
+
     private void OnEnable() {
         rect = healthSlider.GetComponent<RectTransform>();
         secondaryRect = secondarySlider.GetComponent<RectTransform>();
@@ -35,7 +48,7 @@ public class PlayerHpController : MonoBehaviour
         playerStats.onHealthChanged += HpChanged;
         playerStats.onPlayerDied += PlayerDied;
         gameObject.SetActive(true);
-        healthSlider.value = 0;
+        healthSliderValue = 0;
 
         HpChanged(playerStats.GetHealth());
     }
@@ -58,8 +71,9 @@ public class PlayerHpController : MonoBehaviour
 
         maxHealth = newMaxHp;
         healthMultiplier = 100 / maxHealth;
-        if(maxHealth < healthSlider.value) {
-            healthSlider.value = 100;
+        text.text = $"{(int)Math.Ceiling(healthSliderValue / healthMultiplier)}/{(int)maxHealth}";
+        if(maxHealth < healthSliderValue) {
+            healthSliderValue = 100;
             secondarySlider.value = 100;
             targetValue = 100; 
             movingValue = 100;
@@ -108,12 +122,12 @@ public class PlayerHpController : MonoBehaviour
         if (targetValue > movingValue)
         {
             secondarySlider.value = targetValue;
-            healthSlider.value = Math.Min(healthSlider.value + Time.deltaTime * secondaryRate, targetValue);
-            movingValue = healthSlider.value;
+            healthSliderValue = Math.Min(healthSliderValue + Time.deltaTime * secondaryRate, targetValue);
+            movingValue = healthSliderValue;
         }
         else if (targetValue < movingValue)
         {
-            healthSlider.value = targetValue;
+            healthSliderValue = targetValue;
             secondarySlider.value = Math.Max(secondarySlider.value - Time.deltaTime * secondaryRate, targetValue);
             movingValue = secondarySlider.value;
         }
