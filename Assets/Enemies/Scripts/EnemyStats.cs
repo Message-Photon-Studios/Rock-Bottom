@@ -143,7 +143,9 @@ public class EnemyStats : MonoBehaviour
                     float damage = poisonEffects[i].damage;
                     if (damage >= health)
                     {
-                        damage = 0;
+                        if(damage > 1)
+                            damage = health -1;
+                        else damage = 0;
                     }
                     
                     DamageEnemy(damage);

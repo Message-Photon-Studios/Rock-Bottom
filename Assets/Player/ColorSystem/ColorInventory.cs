@@ -220,6 +220,7 @@ public class ColorInventory : MonoBehaviour
     public void AddColor(GameColor color, int amount)
     {
         GameColor setColor;
+        if(ActiveSlot().gameColor?.name == "Rainbow" && ActiveSlot().charge > 0) return;
         if(ActiveSlot().charge > 0)
             setColor = ActiveSlot().gameColor.MixColor(color);
         else

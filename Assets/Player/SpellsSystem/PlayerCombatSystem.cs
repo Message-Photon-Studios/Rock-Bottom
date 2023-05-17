@@ -26,11 +26,14 @@ public class PlayerCombatSystem : MonoBehaviour
     Action<InputAction.CallbackContext> specialAttackHandler;
     Action<InputAction.CallbackContext> defaultAttackHandler;
 
+
     #region Setup
     private void OnEnable() {
         specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
         defaultAttackHandler = (InputAction.CallbackContext ctx) => {
             if(animator.GetBool("grapple")) return;
+            if(attacking) return;
+            attacking = true;
             animator.SetTrigger("defaultAttack");
             body.constraints |= RigidbodyConstraints2D.FreezePositionY;
             playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
@@ -95,7 +98,7 @@ public class PlayerCombatSystem : MonoBehaviour
         if(currentSpell == null) return;
         if(attacking) return;
         if(!colorInventory.CheckActveColor()) return;
-        //if(playerMovement.airTime > 0) return;
+        
         attacking = true;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
@@ -127,6 +130,13 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         attacking = false;
         playerMovement.movementRoot.SetTotalRoot("attackRoot", false);
+    }
+
+    /// <summary>
+    /// Removes the player being locked in the air when attacking
+    /// </summary>
+    public void RemovePlayerAirlock()
+    {
         body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
     }
 }

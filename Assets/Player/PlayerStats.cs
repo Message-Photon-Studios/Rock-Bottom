@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -32,6 +30,8 @@ public class PlayerStats : MonoBehaviour
     /// The player died
     /// </summary>
     public UnityAction onPlayerDied;
+
+    private bool isDeathExecuted;
 
     void OnEnable()
     {
@@ -67,6 +67,7 @@ public class PlayerStats : MonoBehaviour
         health -= damage;
         invincibilityTimer = hitInvincibilityTime;
         GetComponent<PlayerCombatSystem>().RemoveAttackRoot();
+        GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
         if(health <= 0)
         {
             animator.SetBool("dead", true);
@@ -123,6 +124,9 @@ public class PlayerStats : MonoBehaviour
     /// </summary>
     public void KillPlayer()
     {
+        if (isDeathExecuted)
+            return;
+        isDeathExecuted = true;
         //TODO
         Debug.Log("Player died. Player deaths not implemented");
         onPlayerDied?.Invoke();

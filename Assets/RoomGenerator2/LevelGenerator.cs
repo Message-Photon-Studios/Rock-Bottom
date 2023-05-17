@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -283,17 +284,7 @@ public class LevelGenerator
 
     public Vector3? endRoomPos = null;
 
-    public void stepGenerate(int size, string areaPath)
-    {
-        if (graph == null)
-        {
-            initGeneration(areaPath);
-        }
-        
-        var (finished, success) = nextRoom(size, areaPath);
-        if (finished) Debug.Log("Finished successfully");
-        if (!success) Debug.Log("Failed to generate");
-    }
+    public bool instantiated = false;
 
     public void generate(int size, string areaPath)
     {
@@ -313,12 +304,9 @@ public class LevelGenerator
             endGeneration(areaPath);
 
         } while (!graph.validate());
-        insertPrefabs(areaPath);
-        
-        minimap = new Minimap(graph);
     }
 
-    private void insertPrefabs(string areaPath)
+    public IEnumerator insertPrefabs(string areaPath)
     {
         // Try to find the object RoomHolder and if it exists, delete it
         var dungeon = GameObject.Find("Dungeon");
@@ -329,7 +317,7 @@ public class LevelGenerator
         // Create a roomHolder game object
         var roomHolder = new GameObject("RoomHolder");
         roomHolder.transform.parent = dungeon.transform;
-
+        
         // Create an enemyHolder game object
         enemyHolder = new GameObject("EnemyHolder");
         enemyHolder.transform.parent = dungeon.transform;
@@ -342,6 +330,8 @@ public class LevelGenerator
         var itemHolder = GameObject.Find("ItemHolder");
         if (itemHolder != null)
             Object.DestroyImmediate(itemHolder);
+
+        yield return null;
 
         // Create an itemHolder game object
         itemHolder = new GameObject("ItemHolder");
@@ -376,6 +366,7 @@ public class LevelGenerator
                         enemyObj.transform.parent = enemyHolder.transform;
                         break;
                     }
+
                 }
 
                 foreach (var enemy in enemies.GetComponentsInChildren<EnemyStats>())
@@ -395,6 +386,8 @@ public class LevelGenerator
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
             prefabs.Add((pos, roomObj));
+
+            yield return null;
         }
 
         // Get minimum and maximum coordinates of the graph
@@ -421,11 +414,17 @@ public class LevelGenerator
                 fillObj.transform.position = pos;
                 fillObj.transform.parent = fillHolder.transform;
                 filledPrefabs.Add((pos, fillObj));
+                
             }
+            
+            yield return null;
         }
-
+        
         // Add the roomHolder to the current scene
         SceneManager.MoveGameObjectToScene(dungeon, SceneManager.GetActiveScene());
+
+        minimap = new Minimap(graph);
+        instantiated = true;
     }
 
     public void initGeneration(string areaPath)
