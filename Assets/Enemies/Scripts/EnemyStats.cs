@@ -21,6 +21,8 @@ public class EnemyStats : MonoBehaviour
 
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
 
+    [SerializeField] private bool setColorByHand;
+
     /// <summary>
     /// The direction that the enemy is looking
     /// </summary>
@@ -63,7 +65,8 @@ public class EnemyStats : MonoBehaviour
     #region Setup and Timers
     void Awake()
     {
-        color = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
+        if(!setColorByHand)
+            color = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
         normalMovementSpeed = movementSpeed;
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
