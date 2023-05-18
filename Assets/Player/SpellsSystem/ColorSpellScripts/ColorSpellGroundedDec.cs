@@ -18,7 +18,7 @@ public class ColorSpellGroundedDec : SpellImpact
     {
         base.Init(spell);
         success.Init(spell);
-        fail.Init(spell);
+        if (fail != null) fail.Init(spell);
     }
 
     public override void Impact(Collider2D other)
@@ -28,7 +28,7 @@ public class ColorSpellGroundedDec : SpellImpact
         if (test)
         {
             success.Impact(other);
-        } else
+        } else if (fail != null)
         {
             fail.Impact(other);
         }
