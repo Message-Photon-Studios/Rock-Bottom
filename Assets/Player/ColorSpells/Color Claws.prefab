@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 3321278458073070405}
   - component: {fileID: 3321278458073070400}
   - component: {fileID: 3293947447571823584}
-  - component: {fileID: 3321278458073070407}
   - component: {fileID: 4874330200776334801}
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
   - component: {fileID: 1585154843906230144}
   - component: {fileID: 1473584480591637448}
+  - component: {fileID: 3321278458073070407}
   - component: {fileID: 2146103257369105666}
   m_Layer: 8
   m_Name: Color Claws
@@ -33,7 +33,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.45, y: 0.89, z: 0}
+  m_LocalPosition: {x: -0.45, y: 0.5, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -77,19 +77,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.7}
   serializedVersion: 2
   m_Radius: 0.4
---- !u!114 &3321278458073070407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0900cb19f680a734ba6a9d1fcb2ffcdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -174,10 +161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Paint a small cat that will lurk and attack enemies that comes close
-    to it
-
-    Power: 120%'
+  description: "Paint a small cat that flies forward. Landing on the ground causes
+    the cat to lurk for enemies. \nPower: 120%"
   spellCost: 30
   powerScale: 1.2
   destroyOnImpact: 1
@@ -208,7 +193,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca9402bae3a571439b3d0f49f872a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  refer: {fileID: 1473584480591637448}
+  success: {fileID: 1473584480591637448}
+  fail: {fileID: 3321278458073070407}
+  radius: 0.2
 --- !u!114 &1473584480591637448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +211,19 @@ MonoBehaviour:
   detonateTimer: 10
   spawnPrefabs:
   - {fileID: 3321278458073070463, guid: dfe8842ad4b73444eba08a6f0181a4f9, type: 3}
+--- !u!114 &3321278458073070407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0900cb19f680a734ba6a9d1fcb2ffcdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!114 &2146103257369105666
 MonoBehaviour:
   m_ObjectHideFlags: 0
