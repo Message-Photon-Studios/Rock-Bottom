@@ -130,6 +130,8 @@ public class ColorInventory : MonoBehaviour
             GameColor ret = ActiveSlot().gameColor;
 
             int charge = ActiveSlot().charge - 1;
+            if(charge > 0 && ActiveSlot().gameColor.name == "Rainbow")
+                charge --;
             ActiveSlot().SetCharge(charge);
             
             onColorUpdated?.Invoke();
@@ -220,7 +222,7 @@ public class ColorInventory : MonoBehaviour
     public void AddColor(GameColor color, int amount)
     {
         GameColor setColor;
-        if(ActiveSlot().gameColor?.name == "Rainbow" && ActiveSlot().charge > 0) return;
+        //if(ActiveSlot().gameColor?.name == "Rainbow" && ActiveSlot().charge > 0) return;
         if(ActiveSlot().charge > 0)
             setColor = ActiveSlot().gameColor.MixColor(color);
         else
