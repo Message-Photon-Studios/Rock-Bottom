@@ -7,10 +7,15 @@ public class LevelEndpoint : MonoBehaviour
 {
     [SerializeField] InputActionReference interactAction;
     [SerializeField] GameObject canvas;
+
+    [SerializeField] Sprite[] LoadingSprites;
+
+    private UIController uiController;
     bool enableExit = false;
 
     void OnEnable()
     {
+        uiController = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
         if(interactAction)
             interactAction.action.performed += ExitLevel;
     }
@@ -31,7 +36,7 @@ public class LevelEndpoint : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            canvas.SetActive(true);
+            canvas.gameObject.SetActive(true);
             enableExit = true;
         }
     }
@@ -40,7 +45,7 @@ public class LevelEndpoint : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            canvas.SetActive(false);
+            canvas.gameObject.SetActive(false);
             enableExit = false;
         }
     }
