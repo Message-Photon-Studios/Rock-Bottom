@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float wallJumpPower;
     [SerializeField] float jumpJetpack; //A small extra power over time for the jump that alows the player to controll the height of the jump
     [SerializeField] float jumpFalloff; //The falloff power of the jump jetpack
-    [SerializeField] float cayoteTime; //A small second affter leaving a platform you can still jump as normal. 
+    [SerializeField] float coyoteTime; //A small second affter leaving a platform you can still jump as normal. 
 
     /*
     * The jumpJetpack and the jumpFalloff does controll the extra force over time for the players jump that allows the player to controll the heigh of the jump.
@@ -33,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform focusPoint; //The point tha the camera will try to focus on
     [SerializeField] float checkPointY;
     [SerializeField] CapsuleCollider2D playerCollider;
+    [SerializeField] ParticleSystem dustParticles;
+    [SerializeField] ParticleSystem jumpParticles;
+    [SerializeField] ParticleSystem wallParticles;
+    [SerializeField] ParticleSystem wallJumpParticles;
 
     /// <summary>
     /// The time that the player has spent in the air. Is 0 if the player is standing on the ground.
@@ -58,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     private bool doubleJumpActive = false;
     private float jump;
 
-    private float cayoteTimer = 0;
+    private float coyoteTimer = 0;
 
     [SerializeField] PlayerSounds playerSounds;
 
@@ -114,13 +118,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if(movementRoot.rooted) return;
 
-        if (IsGrounded() || cayoteTimer > 0)
+        if (IsGrounded() || coyoteTimer > 0)
         {
             body.AddForce(new Vector2(movement, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
             doubleJumpActive = false;
             playerSounds.PlayJump();
+            jumpParticles.Play();
+            dustParticles.Stop();
+            coyoteTimer = 0;
             return;
         } else if(IsGrappeling())
         {
@@ -129,6 +136,9 @@ public class PlayerMovement : MonoBehaviour
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
             playerSounds.PlayJump();
+            wallJumpParticles.transform.eulerAngles = wallRight ? new Vector3(0, 0, 0) : new Vector3(0, 180, 0);
+            wallJumpParticles.transform.localPosition = wallRight ? new Vector3(0.44f, 0.202f, 0f) : new Vector3(-0.44f, 0.202f, 0f);
+            wallJumpParticles.Play();
         } else if(!doubleJumpActive)
         {
             body.AddForce(new Vector2(movement*leapPower, 0));
@@ -211,7 +221,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrounded())
         {
-            cayoteTimer = cayoteTime;
+            coyoteTimer = coyoteTime;
             playerAnimator.SetInteger("velocityY", 0);
 
             doubleJumpActive = false;
@@ -220,13 +230,25 @@ public class PlayerMovement : MonoBehaviour
             fallTime = 0;
             if(!movementRoot.rooted) body.velocity = new Vector2(movement, body.velocity.y);
             if(doubleJumpActive) doubleJumpActive = false;
-            if(!playerAnimator.GetBool("walking") && body.velocity.x != 0) playerAnimator.SetBool("walking", true);
-            else if(playerAnimator.GetBool("walking") && body.velocity.x == 0) playerAnimator.SetBool("walking", false);
+            if(!playerAnimator.GetBool("walking") && body.velocity.x != 0)
+            {
+                dustParticles.Play();
+                playerAnimator.SetBool("walking", true);
+            }
+            else if(playerAnimator.GetBool("walking") && body.velocity.x == 0)
+            {
+                dustParticles.Stop();
+                playerAnimator.SetBool("walking", false);
+            }
     
         } else
         {
-            cayoteTimer -= Time.fixedDeltaTime;
-            if(playerAnimator.GetBool("walking")) playerAnimator.SetBool("walking", false);
+            coyoteTimer -= Time.fixedDeltaTime;
+            if(playerAnimator.GetBool("walking"))
+            {
+                dustParticles.Stop();
+                playerAnimator.SetBool("walking", false);
+            }
             if(!movementRoot.rooted)
                 body.AddForce(new Vector2(movement*10, 0));
             airTime += Time.fixedDeltaTime;
@@ -255,26 +277,28 @@ public class PlayerMovement : MonoBehaviour
             airTime = 0;
             CheckCancel();
             doubleJumpActive = false;
-
+            wallParticles.transform.localPosition = wallRight ? new Vector3(0.692f, 0.592f, 0f) : new Vector3(-0.692f, 0.592f, 0f);
 
             if(walkDir != 0)
             {
                 playerAnimator.SetInteger("velocityY", 1);
                 body.velocity = new Vector2(body.velocity.x, climbSpeed);
+                wallParticles.Stop();
             }
             else if(body.velocity.y < 0)
             {
                 body.velocity = new Vector2(body.velocity.x, -2);
                 playerAnimator.SetInteger("velocityY", -1);
+                wallParticles.Play();
             }
         } else
         {
             playerAnimator.SetBool("grapple", false);
+            wallParticles.Stop();
         }
        
         if(!movementRoot.rooted)
             body.AddForce(new Vector2(0,jump));
-
     }
 
     /// <summary>
