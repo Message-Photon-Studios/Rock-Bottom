@@ -5,6 +5,8 @@ using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class UIController : MonoBehaviour
 {
@@ -18,15 +20,44 @@ public class UIController : MonoBehaviour
     public bool loaded = false;
     private bool loadScreenFinished;
 
+    [SerializeField] GameObject lightbox;
+
+    [SerializeField] GameObject pauseMenuContainer;
+    [SerializeField] GameObject mapContainer;
+    [SerializeField] GameObject inventoryContainer;
+
+    private bool anyMenuOpen = false;
+    private bool pauseMenuOpen = false;
+    private bool mapOpen = false;
+    private bool inventoryOpen = false;
+    [SerializeField] InputActionReference openPauseMenu;
+    [SerializeField] InputActionReference openMap;
+    [SerializeField] InputActionReference openInventory;
+
+    private PlayerMovement playerMovement;
+
     private void OnEnable() {
         StartCoroutine(FadeOutCoroutine(true));
         colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
+        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         colorInventory.onColorSlotsChanged += colorSlotUpdate;
         colorSlotUpdate();
+
+        openPauseMenu.action.performed += OpenPauseMenu;
+        openMap.action.performed += OpenMap;
+        openInventory.action.performed += OpenInventory;
+        lightbox.SetActive(false);
+        pauseMenuContainer.SetActive(false);
+        mapContainer.SetActive(false);
+        inventoryContainer.SetActive(false);
+
     }
 
     private void OnDisable() {
         colorInventory.onColorSlotsChanged -= colorSlotUpdate;
+        openPauseMenu.action.performed -= OpenPauseMenu;
+        openMap.action.performed -= OpenMap;
+        openInventory.action.performed -= OpenInventory;
     }
 
 
@@ -37,6 +68,74 @@ public class UIController : MonoBehaviour
 
         var initialSlotCount = 3;
         colorSlotContainers[colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
+    }
+
+    private void OpenPauseMenu(InputAction.CallbackContext ctx) {OpenPauseMenu();}
+    public void OpenPauseMenu() {
+        pauseMenuOpen = !pauseMenuOpen;
+        if(pauseMenuOpen) {
+            Pause();
+        } else {
+            Resume();
+        }
+        anyMenuOpen = pauseMenuOpen;
+        pauseMenuContainer.SetActive(pauseMenuOpen);
+        lightbox.SetActive(pauseMenuOpen);
+        playerMovement.movementRoot.SetTotalRoot("menuOpen", pauseMenuOpen);
+        mapOpen = false;
+        mapContainer.SetActive(mapOpen);
+        inventoryOpen = false;
+        inventoryContainer.SetActive(inventoryOpen);
+    }
+
+    private void OpenMap(InputAction.CallbackContext ctx) {OpenMap();}
+    public void OpenMap() {
+        mapOpen = !mapOpen;
+        if(mapOpen) {
+            Pause();
+        } else {
+            Resume();
+        }
+        anyMenuOpen = mapOpen;
+        mapContainer.SetActive(mapOpen);
+        lightbox.SetActive(mapOpen);
+        playerMovement.movementRoot.SetTotalRoot("menuOpen", mapOpen);
+        pauseMenuOpen = false;
+        pauseMenuContainer.SetActive(pauseMenuOpen);
+        inventoryOpen = false;
+        inventoryContainer.SetActive(inventoryOpen);
+    }
+
+    private void OpenInventory(InputAction.CallbackContext ctx) {OpenInventory();}
+    public void OpenInventory() {
+        inventoryOpen = !inventoryOpen;
+        if(inventoryOpen) {
+            Pause();
+        } else {
+            Resume();
+        }
+        anyMenuOpen = inventoryOpen;
+        inventoryContainer.SetActive(inventoryOpen);
+        lightbox.SetActive(inventoryOpen);
+        playerMovement.movementRoot.SetTotalRoot("menuOpen", inventoryOpen);
+        pauseMenuOpen = false;
+        pauseMenuContainer.SetActive(pauseMenuOpen);
+        mapOpen = false;
+        mapContainer.SetActive(mapOpen);
+    }
+
+     private void Pause()
+    {
+        Time.timeScale = 0f;
+        Debug.Log("Ganme is paused...");
+
+    }
+
+    private void Resume()
+    {
+        Time.timeScale = 1f;
+        Debug.Log("Game is resumed...");
+
     }
 
     private IEnumerator Loading()

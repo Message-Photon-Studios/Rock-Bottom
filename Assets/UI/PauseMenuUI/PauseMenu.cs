@@ -4,47 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
+    [SerializeField] EventSystem eventSystem;
 
-    // [SerializedField] 
+    [SerializeField] Button resumeButton;
 
-    public GameObject pauseMenuUI;
-    public static bool GameIsPaused = false;
+    [SerializeField] UIController uiController;
 
-    // Start is called before the first frame update
-    /*void Start()
-    {
-        pauseMenu.SetActive(false);
-
-    }*/
-
-    // Update is called once per frame
-
-    public void Pause()
-    {
-        pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        GameIsPaused = true;
-        Debug.Log("Ganme is paused...");
-
+    private void OnEnable() {
+        eventSystem.SetSelectedGameObject(null);
+        resumeButton.GetComponent<Selectable>().Select();
     }
 
-    public void Resume()
-    {
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        GameIsPaused = false;
-        Debug.Log("Game is resumed...");
-
+    public void ResumeButton(){
+        uiController.OpenPauseMenu();
     }
 
-    
+    public void OpenMap() {
+        uiController.OpenMap();
+    }
+
+    public void OpenInventory() {
+        uiController.OpenInventory();
+    }
 
     public void GoToMainMenu()
     {
-        // Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
         Debug.Log("Loading to main menu...");
     }
