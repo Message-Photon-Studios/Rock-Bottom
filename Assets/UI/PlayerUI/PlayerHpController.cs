@@ -22,10 +22,10 @@ public class PlayerHpController : MonoBehaviour
     private float origSize;
     private float sizeMultiplier = 1;
 
-    private float maxHealth = 100;
+    private float maxHealth = 0;
     private float healthMultiplier = 1;
-    private float targetValue = 100;
-    private float movingValue = 0;
+    private float targetValue = 1;
+    private float movingValue = 100;
 
     private float healthSliderValue
     {
@@ -33,7 +33,7 @@ public class PlayerHpController : MonoBehaviour
 
         set
         {
-            text.text = $"{(int)Math.Ceiling(value / healthMultiplier)}/{(int)maxHealth}";
+            text.text = $"{(int)Math.Max(Math.Ceiling(value / healthMultiplier), 0)}/{(int)maxHealth}";
             healthSlider.value = value;
         }
     }
@@ -44,13 +44,14 @@ public class PlayerHpController : MonoBehaviour
         origSize = rect.rect.width;
 
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        
         playerStats.onMaxHealthChanged += MaxHpChanged;
         playerStats.onHealthChanged += HpChanged;
         playerStats.onPlayerDied += PlayerDied;
-        gameObject.SetActive(true);
-        healthSliderValue = 0;
 
+        MaxHpChanged(playerStats.GetMaxHealth());
         HpChanged(playerStats.GetHealth());
+        healthSliderValue = 100;
     }
 
     private void OnDisable() {
@@ -67,11 +68,13 @@ public class PlayerHpController : MonoBehaviour
     /// <param name="newMaxHp"></param> Float with new max hp.
     private void MaxHpChanged(float newMaxHp)
     {
-        StartCoroutine(IncreaseHealthBar(newMaxHp > maxHealth));
+        if (newMaxHp == maxHealth) return;
+        if (maxHealth != 0)
+            StartCoroutine(IncreaseHealthBar(newMaxHp > maxHealth));
 
         maxHealth = newMaxHp;
         healthMultiplier = 100 / maxHealth;
-        text.text = $"{(int)Math.Ceiling(healthSliderValue / healthMultiplier)}/{(int)maxHealth}";
+        healthSliderValue = healthSliderValue;
         if(maxHealth < healthSliderValue) {
             healthSliderValue = 100;
             secondarySlider.value = 100;
