@@ -8,8 +8,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] LevelGenManager levelGenerator;
     [SerializeField] string onDeathLevel;
     [SerializeField] string nextLevelName;
-    [SerializeField] string mainMenuName;
-    [SerializeField] InputActionReference menuAction;
     [SerializeField] UIController canvas;
     
     private void Start()
@@ -20,20 +18,7 @@ public class GameManager : MonoBehaviour
             canvas.loaded = true;
     }
 
-    void OnEnable()
-    {
-        menuAction.action.performed += LoadMainMenu;
-    }
-
-    void OnDisable()
-    {
-        menuAction.action.performed -= LoadMainMenu;
-    }
-
-    private void LoadMainMenu(InputAction.CallbackContext ctx)
-    {
-        SceneManager.LoadScene(mainMenuName);
-    }
+    
     public IEnumerator EndLevelAsync()
     {
         SceneManager.LoadSceneAsync(nextLevelName);
