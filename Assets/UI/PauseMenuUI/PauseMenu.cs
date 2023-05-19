@@ -7,6 +7,9 @@ using UnityEngine.EventSystems;
 
 public class PauseMenu : MonoBehaviour
 {
+
+    // [SerializedField] 
+
     public GameObject pauseMenuUI;
     public static bool GameIsPaused = false;
 
@@ -15,7 +18,7 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
 
-    }*/
+    }
 
     // Update is called once per frame
     void Update()
@@ -33,6 +36,18 @@ public class PauseMenu : MonoBehaviour
 
         }
 
+    }*/
+
+    public void OnEnable()
+    {
+        if(GameIsPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
     }
 
     public void Pause()
