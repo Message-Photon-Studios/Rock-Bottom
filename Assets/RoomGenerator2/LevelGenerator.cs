@@ -387,6 +387,11 @@ public class LevelGenerator
                 spell.transform.parent = itemHolder.transform;
             }
 
+            foreach (var npc in roomObj.transform.GetComponentsInChildren<NPCScript>())
+            {
+                npc.transform.parent = itemHolder.transform;
+            }
+
             // Finish setting up the room
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
