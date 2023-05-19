@@ -11,7 +11,8 @@ public class ItemPickup : MonoBehaviour
 {
     [SerializeField] float spawnChance = 1f;
     [SerializeField] bool needsPayment;
-    Item item;
+    [SerializeField] bool setByhand;
+    [SerializeField] Item item;
     [SerializeField] GameObject canvas;
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text nameText;
@@ -20,6 +21,14 @@ public class ItemPickup : MonoBehaviour
     ItemInventory inventory;
 
     private Coroutine hoverCoroutine;
+
+    void OnEnable()
+    {
+        if(setByhand)
+        {
+            SetItem(item);
+        }
+    }
 
     /// <summary>
     /// Sets the item for this spawnpoint
