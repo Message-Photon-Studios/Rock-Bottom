@@ -6,10 +6,6 @@ using UnityEngine.InputSystem;
 
 public class TutorialManager : MonoBehaviour
 {
-    [SerializeField] InputActionReference interactAction;
-    [SerializeField] TMP_Text tutorialText;
-    [SerializeField] GameObject tutorialCanvas;
-    [SerializeField] [TextArea(10,40)] string[] tutorialTexts;
     int textNr = 0;
 
     [SerializeField] GameObject dummyTemplate;
@@ -25,17 +21,6 @@ public class TutorialManager : MonoBehaviour
             spawnPoints[i] = dummys[i].transform.position;
         }
 
-        tutorialText.text = tutorialTexts[0];
-    }
-
-    void OnEnable()
-    {
-        interactAction.action.performed += NextTutorial;
-    }
-
-    void OnDisable()
-    {
-        interactAction.action.performed -= NextTutorial;
     }
 
     void Update()
@@ -49,17 +34,5 @@ public class TutorialManager : MonoBehaviour
                 dummys[i] = newDummy;
             }
         }
-    }
-
-    void NextTutorial(InputAction.CallbackContext ctx)
-    {
-        textNr ++;
-        if(tutorialTexts.Length <= textNr)
-        {
-            tutorialCanvas.SetActive(false);
-            return;
-        }
-
-        tutorialText.text = tutorialTexts[textNr];
     }
 }

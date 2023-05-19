@@ -66,6 +66,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] PlayerSounds playerSounds;
 
+    private LayerMask ignoreLayers;
+
     Action<InputAction.CallbackContext> movementRootTrue;
     Action<InputAction.CallbackContext> movementRootFalse;
     Action<InputAction.CallbackContext> checkBelow;
@@ -75,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
 
     #region Setup
     private void OnEnable() {
+        ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item");
         movementRootTrue = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", true);};
         movementRootFalse = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", false);};
         checkBelow = (InputAction.CallbackContext ctx) => {CheckBelowStart();};
@@ -183,22 +186,22 @@ public class PlayerMovement : MonoBehaviour
     #region Collision checks
     private bool IsGrounded()
     {  
-        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3) ||
+        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) ||
                 Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3);
     }
 
     private bool HitCeling ()
     {
-        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, 3) ||
-                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, 3);
+        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, ignoreLayers) ||
+                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, ignoreLayers);
     }
 
     private bool IsGrappeling()
     {
-        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3) ||
-                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3)) &&
-                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .5f, 3))  ||
-                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .5f, 3)));
+        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) ||
+                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers)) &&
+                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .5f, ignoreLayers))  ||
+                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .5f, ignoreLayers)));
     }
    
     #endregion
