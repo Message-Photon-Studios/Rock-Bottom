@@ -55,7 +55,6 @@ public class UIController : MonoBehaviour
         pauseMenuContainer.SetActive(false);
         mapContainer.SetActive(false);
         inventoryContainer.SetActive(false);
-
     }
 
     private void OnDisable() {
