@@ -33,8 +33,15 @@ public class PauseMenu : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        StartCoroutine(uiController.FadeOutCoroutine(false, GoToMainMenuAsync));
+        uiController.Resume();
         Debug.Log("Loading to main menu...");
+    }
+
+    public IEnumerator GoToMainMenuAsync()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
+        yield break;
     }
 
     public void QuitGame()

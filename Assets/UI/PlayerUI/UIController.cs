@@ -150,7 +150,7 @@ public class UIController : MonoBehaviour
     /// <summary>
     /// Resumes the game by setting timescale to 1.
     /// </summary>
-    private void Resume()
+    public void Resume()
     {
         Time.timeScale = 1f;
         Debug.Log("Game is resumed...");
