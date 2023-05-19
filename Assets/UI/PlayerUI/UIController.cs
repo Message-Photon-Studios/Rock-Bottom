@@ -22,18 +22,23 @@ public class UIController : MonoBehaviour
 
     [SerializeField] GameObject lightbox;
 
+    //Containers for the various menus.
     [SerializeField] GameObject pauseMenuContainer;
     [SerializeField] GameObject mapContainer;
     [SerializeField] GameObject inventoryContainer;
 
+    //Bools for tracking which menu is open.
     private bool anyMenuOpen = false;
     private bool pauseMenuOpen = false;
     private bool mapOpen = false;
     private bool inventoryOpen = false;
+
+    //Input actions for opening the various menus.
     [SerializeField] InputActionReference openPauseMenu;
     [SerializeField] InputActionReference openMap;
     [SerializeField] InputActionReference openInventory;
 
+    //Reference to player movement to freeze the player.
     private PlayerMovement playerMovement;
 
     private void OnEnable() {
@@ -71,6 +76,9 @@ public class UIController : MonoBehaviour
     }
 
     private void OpenPauseMenu(InputAction.CallbackContext ctx) {OpenPauseMenu();}
+    /// <summary>
+    /// Opens the pause menu and closes all other menus.
+    /// </summary>
     public void OpenPauseMenu() {
         pauseMenuOpen = !pauseMenuOpen;
         if(pauseMenuOpen) {
@@ -88,6 +96,9 @@ public class UIController : MonoBehaviour
         inventoryContainer.SetActive(inventoryOpen);
     }
 
+    /// <summary>
+    /// Opens the map menu and closes all other menus.
+    /// </summary>
     private void OpenMap(InputAction.CallbackContext ctx) {OpenMap();}
     public void OpenMap() {
         mapOpen = !mapOpen;
@@ -107,6 +118,9 @@ public class UIController : MonoBehaviour
     }
 
     private void OpenInventory(InputAction.CallbackContext ctx) {OpenInventory();}
+    /// <summary>
+    /// Opens the inventory menu and closes all other menus.
+    /// </summary>
     public void OpenInventory() {
         inventoryOpen = !inventoryOpen;
         if(inventoryOpen) {
@@ -124,6 +138,9 @@ public class UIController : MonoBehaviour
         mapContainer.SetActive(mapOpen);
     }
 
+    /// <summary>
+    /// Pauses the game by setting timescale to 0.
+    /// </summary>
      private void Pause()
     {
         Time.timeScale = 0f;
@@ -131,6 +148,9 @@ public class UIController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Resumes the game by setting timescale to 1.
+    /// </summary>
     private void Resume()
     {
         Time.timeScale = 1f;
