@@ -49,6 +49,8 @@ public class PlayerHpController : MonoBehaviour
         playerStats.onHealthChanged += HpChanged;
         playerStats.onPlayerDied += PlayerDied;
 
+        MaxHpChanged(playerStats.GetMaxHealth());
+        HpChanged(playerStats.GetHealth());
         healthSliderValue = 100;
     }
 
