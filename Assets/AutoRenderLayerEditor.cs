@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(AutoRenderLayer))]
 public class AutoRenderLayerEditor : Editor
 {
@@ -15,3 +16,4 @@ public class AutoRenderLayerEditor : Editor
         }
     }
 }
+#endif

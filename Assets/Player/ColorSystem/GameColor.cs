@@ -51,6 +51,7 @@ public class GameColor : ScriptableObject
             enemyObj.GetComponent<EnemyStats>().DamageEnemy(0);
             return;
         }
+        power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
     }
 

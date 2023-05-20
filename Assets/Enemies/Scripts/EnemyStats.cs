@@ -33,7 +33,7 @@ public class EnemyStats : MonoBehaviour
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0; 
-    private float sleepDamageBonus = 1.2f; //The extra damage dealt to a slept enemy
+    private float sleepPowerBonus = 1.2f; //The extra damage dealt to a slept enemy
     GameObject sleepParticles;
     private float comboTime = 1; //The timelimit for the next move of a combo
     private float comboTimer = 0;
@@ -210,7 +210,6 @@ public class EnemyStats : MonoBehaviour
     {
         if(enemySleep)
         {
-            damage *= sleepDamageBonus;
             WakeEnemyAnimation();
         }
 
@@ -438,8 +437,8 @@ public class EnemyStats : MonoBehaviour
     {
         if(sleepTimer > 0)
         {
-            if(sleepDamageBonus < sleepPower) sleepDamageBonus = sleepPower;
-        } else sleepDamageBonus = sleepPower;
+            if(sleepPowerBonus < sleepPower) sleepPowerBonus = sleepPower;
+        } else sleepPowerBonus = sleepPower;
 
         sleepTimer = timer;
         enemySleep = true;
@@ -491,6 +490,12 @@ public class EnemyStats : MonoBehaviour
     public bool IsAsleep()
     {
         return enemySleep;
+    }
+
+    public float GetSleepPowerBonus()
+    {
+        if(!enemySleep) return 0;
+        return sleepPowerBonus;
     }
 
     #endregion
