@@ -187,6 +187,9 @@ public class DungeonGraph
             };
         }
         rooms.Add((shift, prefab));
+        
+        if (prefab.maxSpawns > 0) 
+            prefab.maxSpawns--;
 
         var remainingDoors = new List<Door>();
         // Return the list of doors that can be used to connect to other rooms
@@ -277,7 +280,11 @@ public class LevelGenerator
     private List<(Vector2, CustomRoom)> prefabs;
     private List<(Vector2, GameObject)> filledPrefabs;
 
+    private GameObject dungeon;
     private GameObject enemyHolder;
+    private GameObject itemHolder;
+    private GameObject fillHolder;
+    private GameObject roomHolder;
 
     public List<Door> remainingDoors;
     public Door topDoor;
@@ -306,16 +313,16 @@ public class LevelGenerator
         } while (!graph.validate());
     }
 
-    public IEnumerator insertPrefabs(string areaPath)
+    private void recreateGameObjs()
     {
         // Try to find the object RoomHolder and if it exists, delete it
-        var dungeon = GameObject.Find("Dungeon");
+        dungeon = GameObject.Find("Dungeon");
         if (dungeon != null)
             Object.DestroyImmediate(dungeon);
         dungeon = new GameObject("Dungeon");
 
         // Create a roomHolder game object
-        var roomHolder = new GameObject("RoomHolder");
+        roomHolder = new GameObject("RoomHolder");
         roomHolder.transform.parent = dungeon.transform;
         
         // Create an enemyHolder game object
@@ -323,22 +330,21 @@ public class LevelGenerator
         enemyHolder.transform.parent = dungeon.transform;
 
         // Create an fillHolder game object
-        var fillHolder = new GameObject("FillHolder");
+        fillHolder = new GameObject("FillHolder");
         fillHolder.transform.parent = dungeon.transform;
 
         // Try to find the object ItemHolder and if it exists, delete it
-        var itemHolder = GameObject.Find("ItemHolder");
+        itemHolder = GameObject.Find("ItemHolder");
         if (itemHolder != null)
             Object.DestroyImmediate(itemHolder);
 
-        yield return null;
-
         // Create an itemHolder game object
         itemHolder = new GameObject("ItemHolder");
+    }
 
-        foreach (var room in graph.rooms)
-        {
-            // Instantiate the room
+    private void instantiateRoom((Vector2, CustomRoom) room)
+    {
+        // Instantiate the room
             var pos = room.Item1 * 2 * ROOMSIZE;
             var roomObj = Object.Instantiate(room.Item2, pos, Quaternion.identity);
             // Get child object called "enemies"
@@ -391,37 +397,56 @@ public class LevelGenerator
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
             prefabs.Add((pos, roomObj));
+    }
 
-            yield return null;
-        }
-
+    private (Vector2, Vector2) getDungeonSize()
+    {
         // Get minimum and maximum coordinates of the graph
         var minX = graph.rooms.Min(room => room.Item2.getDownLeftCorner().x + room.Item1.x);
         var maxX = graph.rooms.Max(room => room.Item2.getDownLeftCorner().x + room.Item2.getSize().x + room.Item1.x);
         var minY = graph.rooms.Min(room => room.Item2.getDownLeftCorner().y + room.Item1.y);
         var maxY = graph.rooms.Max(room => room.Item2.getDownLeftCorner().y + room.Item2.getSize().y + room.Item1.y);
 
+        return (new Vector2(minX, minY), new Vector2(maxX, maxY));
+    }
+
+    private void instantiateFillRow(float x, IReadOnlyList<GameObject> fillRooms, float minY, float maxY)
+    {
+        for (var y = minY - 2; y < maxY + 2; y++)
+        {
+            // If there already is a node, continue
+            if (graph.nodes.ContainsKey(new Vector2(x, y))) continue;
+
+            if (!graph.checkExistNear(new Vector2(x, y), 2)) continue;
+
+            //Pick a random fillRoom and instantiate it
+            var fillRoom = fillRooms[Random.Range(0, fillRooms.Count - 1)];
+            var pos = new Vector2(x, y) * 2 * ROOMSIZE;
+            var fillObj = Object.Instantiate(fillRoom, pos, Quaternion.identity);
+            fillObj.transform.position = pos;
+            fillObj.transform.parent = fillHolder.transform;
+            filledPrefabs.Add((pos, fillObj));
+        }
+
+    }
+
+    public IEnumerator insertPrefabsAsync(string areaPath)
+    {
+        recreateGameObjs();
+        yield return null;
+
+        foreach (var room in graph.rooms)
+        {
+            instantiateRoom(room);
+            yield return null;
+        }
+
+        var (min, max) = getDungeonSize();
         var fillRooms = Resources.LoadAll<GameObject>(areaPath + "filledRooms");
 
-        for (var x = minX - 2; x < maxX + 2; x++)
+        for (float x = min.x - 2; x < max.x + 2; x++)
         {
-            for (var y = minY - 2; y < maxY + 2; y++)
-            {
-                // If there already is a node, continue
-                if (graph.nodes.ContainsKey(new Vector2(x, y))) continue;
-
-                if (!graph.checkExistNear(new Vector2(x, y), 2)) continue;
-
-                //Pick a random fillRoom and instantiate it
-                var fillRoom = fillRooms[Random.Range(0, fillRooms.Length - 1)];
-                var pos = new Vector2(x, y) * 2 * ROOMSIZE;
-                var fillObj = Object.Instantiate(fillRoom, pos, Quaternion.identity);
-                fillObj.transform.position = pos;
-                fillObj.transform.parent = fillHolder.transform;
-                filledPrefabs.Add((pos, fillObj));
-                
-            }
-            
+            instantiateFillRow(x, fillRooms, min.y, max.y);
             yield return null;
         }
         
@@ -459,7 +484,8 @@ public class LevelGenerator
         // If we are out of rooms but still have to continue, we refill the normal room list
         if (normalRooms.All(roomElem => roomElem.repeatable))
         {
-            normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").Where(roomElem => !roomElem.repeatable).ToList();
+            normalRooms.AddRange(usedRooms);
+            usedRooms.Clear();
         }
 
         // Get a random element from the list and remove it
@@ -500,7 +526,8 @@ public class LevelGenerator
         if (normalRooms.Contains(room) && !room.repeatable)
         {
             normalRooms.Remove(room);
-            usedRooms.Add(room);
+            if (room.maxSpawns != 0)
+                usedRooms.Add(room);
         }
 
         // If we have no more doors, we are done
@@ -669,5 +696,29 @@ public class LevelGenerator
 
             enemy.gameObject.SetActive(cullSquare.Overlaps(enemySquare));
         }
+    }
+
+    public void insertPrefabs(string areaPath)
+    {
+        recreateGameObjs();
+
+        foreach (var room in graph.rooms)
+        {
+            instantiateRoom(room);
+        }
+
+        var (min, max) = getDungeonSize();
+        var fillRooms = Resources.LoadAll<GameObject>(areaPath + "filledRooms");
+
+        for (float x = min.x - 2; x < max.x + 2; x++)
+        {
+            instantiateFillRow(x, fillRooms, min.y, max.y);
+        }
+        
+        // Add the roomHolder to the current scene
+        SceneManager.MoveGameObjectToScene(dungeon, SceneManager.GetActiveScene());
+
+        minimap = new Minimap(graph);
+        instantiated = true;
     }
 }

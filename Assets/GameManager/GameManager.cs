@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         if (levelGenerator)
-            levelGenerator.init(canvas);
+            levelGenerator.init(canvas, true);
         else
             canvas.loaded = true;
     }
