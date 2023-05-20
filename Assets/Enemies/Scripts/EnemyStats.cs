@@ -70,7 +70,10 @@ public class EnemyStats : MonoBehaviour
         normalMovementSpeed = movementSpeed;
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
-        GetComponent<SpriteRenderer>().material = color.colorMat;
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
     }
 
     void Start()
@@ -82,7 +85,10 @@ public class EnemyStats : MonoBehaviour
     void OnValidate()
     {
         myCollider = GetComponent<Collider2D>();
-        GetComponent<SpriteRenderer>().material = color.colorMat;
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
     }
 
     void OnDisable()
