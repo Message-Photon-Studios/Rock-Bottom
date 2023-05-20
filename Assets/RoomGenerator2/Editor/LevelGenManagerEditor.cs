@@ -10,7 +10,7 @@ public class LevelGenManagerEditor : Editor
         base.OnInspectorGUI();
         if (GUILayout.Button("Generate graph"))
         {
-            genManager.init(null);
+            genManager.init(null, false);
         }
         
         GUILayout.Space(20);
