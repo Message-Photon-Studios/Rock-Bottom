@@ -26,7 +26,7 @@ public class LevelGenManager : MonoBehaviour
 
     public IEnumerator generateSceneAsync(UIController canvas)
     {
-        StartCoroutine(levelGen.insertPrefabs(paths[(int)levelType]));
+        StartCoroutine(levelGen.insertPrefabsAsync(paths[(int)levelType]));
         while (!levelGen.instantiated)
             yield return new WaitForEndOfFrame();
         GetComponent<ItemSpellManager>().SpawnItems();
@@ -38,11 +38,26 @@ public class LevelGenManager : MonoBehaviour
         finished = true;
     }
 
-    public void init(UIController canvas)
+    private void generateScene(UIController canvas)
+    {
+        levelGen.insertPrefabs(paths[(int)levelType]);
+        GetComponent<ItemSpellManager>().SpawnItems();
+        if (levelGen.endRoomPos != null) 
+            endCircle.transform.position = levelGen.endRoomPos.Value;
+
+        if (canvas != null)
+            canvas.loaded = true;
+        finished = true;
+    }
+
+    public void init(UIController canvas, bool async)
     {
         levelGen = new LevelGenerator();
         levelGen.generate(size, paths[(int)levelType]);
-        StartCoroutine(generateSceneAsync(canvas));
+        if (async)
+            StartCoroutine(generateSceneAsync(canvas));
+        else
+            generateScene(canvas);
     }
 
     public void reset()
