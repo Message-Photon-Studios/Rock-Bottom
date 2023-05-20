@@ -30,7 +30,7 @@ public class CrystalCrawler : Enemy
                         new CheckGrounded(stats, legPos),
                         new Inverter(new CheckPlayerArea(stats, player, preventJump)),
                         new Selector(new List<Node>{
-                            new CheckPlayerDirection(stats,player,Vector2.up, 2f, 200f),
+                            new CheckPlayerDirection(stats,player,Vector2.up, 1.6f, 200f),
                         }),
                         new Inverter(new CheckPlayerBehind(stats, player)),
                         new Inverter(new CheckRoof(stats)),

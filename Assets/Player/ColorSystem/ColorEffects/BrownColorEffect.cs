@@ -7,12 +7,13 @@ using UnityEngine;
 [CreateAssetMenu( menuName = "Gameplay Color/Color Effect/BrownColorEffect")]
 public class BrownColorEffect : ColorEffect
 {
+    [SerializeField] int uncoloredDamage;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         if(enemy.GetColor() == null)
         {
-            enemy.DamageEnemy(0);
+            enemy.DamageEnemy(uncoloredDamage*power);
             return;
         }
 

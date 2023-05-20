@@ -9,7 +9,7 @@ using System;
 /// </summary>
 public class PlayerCombatSystem : MonoBehaviour
 {
-    [SerializeField] float defaultAttackDamage;
+    //[SerializeField] float defaultAttackDamage;
     [SerializeField] float defaultAttackForce;
     [SerializeField] public float comboBaseDamage;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
@@ -81,7 +81,7 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         (GameColor absorb, int ammount) = enemy.AbsorbColor();
-        enemy.DamageEnemy(defaultAttackDamage);
+        //enemy.DamageEnemy(defaultAttackDamage);
         colorInventory.AddColor(absorb, ammount);
         enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
         enemy.enemySounds?.PlayOnHit();
