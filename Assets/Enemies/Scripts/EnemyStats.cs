@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
@@ -76,6 +77,7 @@ public class EnemyStats : MonoBehaviour
     void Start()
     {
         onDamageTaken += DmgNumber.create;
+        onEnemyDeath += () => dropCoins(coinsDropped.GetReward());
         enemySounds = GetComponent<EnemySounds>();
     }
 
@@ -289,10 +291,14 @@ public class EnemyStats : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>().AddCoins(coinsDropped.GetReward());
         onEnemyDeath?.Invoke();
     }
-    
+
+    public void DropCoins()
+    {
+
+    }
+
     /// <summary>
     /// Delets the enemy
     /// </summary>
@@ -496,6 +502,29 @@ public class EnemyStats : MonoBehaviour
     {
         if(!enemySleep) return 0;
         return sleepPowerBonus;
+    }
+
+    #endregion
+
+    #region Coins
+
+    public void dropCoins(int amount)
+    {
+        GameObject coin5 = Resources.Load<GameObject>("Coins/coin5");
+        GameObject coin1 = Resources.Load<GameObject>("Coins/coin1");
+
+        int coin5Amount = amount / 5;
+        int coin1Amount = amount % 5;
+        
+        for (int i = 0; i < coin5Amount; i++)
+        {
+            Instantiate(coin5, transform.position, Quaternion.identity);
+        }
+        
+        for (int i = 0; i < coin1Amount; i++)
+        {
+            Instantiate(coin1, transform.position, Quaternion.identity);
+        }
     }
 
     #endregion

@@ -13,6 +13,7 @@ public class ItemInventory : MonoBehaviour
     [SerializeField] int coins;
     [SerializeField] List<Item> items = new List<Item>();
     [SerializeField] InputActionReference pickUpAction;
+    [SerializeField] CoinPickupEffect coinPickupEffect;
     
     private List<ItemPickup> pickUpItems = new List<ItemPickup>();
 
@@ -125,6 +126,9 @@ public class ItemInventory : MonoBehaviour
     {
         coins += addCoins;
         onCoinsChanged?.Invoke(addCoins);
+
+        CoinPickupEffect coinPickupEffectInstance = Instantiate(coinPickupEffect, transform.position, Quaternion.identity);
+        coinPickupEffectInstance.transform.parent = transform;
     }
 
     /// <summary>
