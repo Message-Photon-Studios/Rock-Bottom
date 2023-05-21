@@ -33,6 +33,7 @@ public class PlayerDefaultAttack : MonoBehaviour
 
     public void HitEnemies()
     {
+        GameObject target = null;
         for (int i = 0; i < targetedEnemies.Count; i++)
         {
             if(targetedEnemies[i] == null)
@@ -41,7 +42,21 @@ public class PlayerDefaultAttack : MonoBehaviour
                 i--;
                 continue;
             }
-            onDefaultHit?.Invoke(targetedEnemies[i]);
+
+            if(target == null || target.GetComponent<EnemyStats>().GetColor() == null)
+            {
+                target = targetedEnemies[i];
+                continue;
+            }
+
+            float mD = targetedEnemies[i].transform.position.x - transform.parent.transform.position.x;
+            float tD = target.transform.position.x - transform.parent.transform.position.x;
+            if(tD*tD > mD*mD)
+                target = targetedEnemies[i];
         }
+
+
+        if(target != null)
+            onDefaultHit?.Invoke(target);
     }
 }

@@ -11,7 +11,6 @@ public class PlayerCombatSystem : MonoBehaviour
 {
     //[SerializeField] float defaultAttackDamage;
     [SerializeField] float defaultAttackForce;
-    [SerializeField] public float comboBaseDamage;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
     [SerializeField] PlayerDefaultAttack defaultAttackHitbox; //The object that controlls the default attack hitbox
     [SerializeField] Vector2 defaultAttackOffset; //The offset that the default attack will be set to
@@ -23,16 +22,23 @@ public class PlayerCombatSystem : MonoBehaviour
     private bool attacking;
     private Rigidbody2D body;
 
+    private bool defaultAirHit = false;
+    private bool spellAirHit = false;
     Action<InputAction.CallbackContext> specialAttackHandler;
     Action<InputAction.CallbackContext> defaultAttackHandler;
 
 
     #region Setup
     private void OnEnable() {
+
         specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
         defaultAttackHandler = (InputAction.CallbackContext ctx) => {
+            if(!playerMovement.IsGrounded() && defaultAirHit) return;
             if(animator.GetBool("grapple")) return;
             if(attacking) return;
+
+            if(!playerMovement.IsGrounded()) defaultAirHit = true;
+
             attacking = true;
             animator.SetTrigger("defaultAttack");
             body.constraints |= RigidbodyConstraints2D.FreezePositionY;
@@ -40,6 +46,7 @@ public class PlayerCombatSystem : MonoBehaviour
         };
         
         body = GetComponent<Rigidbody2D>();
+        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
         specialAttackAction.action.performed += specialAttackHandler;
         defaultAttackAction.action.performed += defaultAttackHandler;
         defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
@@ -58,6 +65,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void DefaultAttack()
     {
+        playerSounds.PlayDefaultAttack();
         Debug.Log("Default attack");
         //TODO add attacking = true;
         FlipDefaultAttack();
@@ -81,10 +89,10 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         (GameColor absorb, int ammount) = enemy.AbsorbColor();
+        if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
         //enemy.DamageEnemy(defaultAttackDamage);
         colorInventory.AddColor(absorb, ammount);
         enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
-        enemy.enemySounds?.PlayOnHit();
     }
 
     private GameObject currentSpell = null;
@@ -93,12 +101,14 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpecialAttackAnimation()
     {
+        if(!playerMovement.IsGrounded() && spellAirHit) return;
         if(animator.GetBool("grapple")) return;
         currentSpell= colorInventory.GetActiveColorSpell().gameObject;
         if(currentSpell == null) return;
         if(attacking) return;
         if(!colorInventory.CheckActveColor()) return;
         
+        if(!playerMovement.IsGrounded()) spellAirHit = true;
         attacking = true;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
@@ -138,5 +148,14 @@ public class PlayerCombatSystem : MonoBehaviour
     public void RemovePlayerAirlock()
     {
         body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    /// <summary>
+    /// Reset the combat system to be grounded
+    /// </summary>
+    public void SetPlayerGrounded()
+    {
+        defaultAirHit = false;
+        spellAirHit = false;
     }
 }

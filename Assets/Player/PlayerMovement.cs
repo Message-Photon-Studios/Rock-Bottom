@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     * jumpFalloff will decrease the time and the power of the jetpack. This does also work in reverse for decreasing variables.
     */
 
-    [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction, aboveCheckAction, lockCamera; //Input actiuons for controlling the movement and camera checks
+    [SerializeField] InputActionReference walkAction, jumpAction, lookAction; //Input actiuons for controlling the movement and camera checks
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator playerAnimator;
@@ -68,41 +68,32 @@ public class PlayerMovement : MonoBehaviour
 
     private LayerMask ignoreLayers;
 
-    Action<InputAction.CallbackContext> movementRootTrue;
-    Action<InputAction.CallbackContext> movementRootFalse;
-    Action<InputAction.CallbackContext> checkBelow;
-    Action<InputAction.CallbackContext> checkAbove;
+    Action<InputAction.CallbackContext> checkAction;
     Action<InputAction.CallbackContext> checkCancle;
-
-
     #region Setup
     private void OnEnable() {
+        movementRoot.SetTotalRoot("loading", true);
         ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item");
-        movementRootTrue = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", true);};
-        movementRootFalse = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", false);};
-        checkBelow = (InputAction.CallbackContext ctx) => {CheckBelowStart();};
-        checkAbove = (InputAction.CallbackContext ctx) => {CheckAboveStart();};
+        checkAction = (InputAction.CallbackContext ctx) => {
+            if(lookAction.action.ReadValue<float>() < 0f)
+                CheckBelowStart();
+            else if(lookAction.action.ReadValue<float>() > 0f)
+                CheckAboveStart();
+        };
+
         checkCancle = (InputAction.CallbackContext ctx) => {CheckCancel();};
         
         jumpAction.action.started += Jump;
         jumpAction.action.canceled += JumpCancel;
-        belowCheckAction.action.started += checkBelow;
-        belowCheckAction.action.canceled += checkCancle;
-        aboveCheckAction.action.started += checkAbove;
-        aboveCheckAction.action.canceled += checkCancle;
-        lockCamera.action.started += movementRootTrue;
-        lockCamera.action.canceled += movementRootFalse;
+        lookAction.action.performed += checkAction;
+        lookAction.action.canceled += checkCancle;
     }
 
     private void OnDisable() {
         jumpAction.action.started -= Jump;
         jumpAction.action.canceled -= JumpCancel;
-        belowCheckAction.action.started -= checkBelow;
-        belowCheckAction.action.canceled -= checkCancle;
-        aboveCheckAction.action.started -= checkAbove;
-        aboveCheckAction.action.canceled -= checkCancle;
-        lockCamera.action.started -= movementRootTrue;
-        lockCamera.action.canceled -= movementRootFalse;
+        lookAction.action.performed -= checkAction;
+        lookAction.action.canceled -= checkCancle;
     }
 
     void Start()
@@ -184,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Collision checks
-    private bool IsGrounded()
+    public bool IsGrounded()
     {  
         return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) ||
                 Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3);
@@ -224,6 +215,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrounded())
         {
+            GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
             coyoteTimer = coyoteTime;
             playerAnimator.SetInteger("velocityY", 0);
 
@@ -273,6 +265,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrappeling())
         {
+            GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
             bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
             if(wallRight == spriteRenderer.flipX) Flip();
             playerAnimator.SetBool("grapple", true);

@@ -23,6 +23,6 @@ public class BlueColorEffect : ColorEffect
         instantiatedParticles.transform.parent = enemyObj.transform;
         enemy.GetComponent<Rigidbody2D>()?.AddForce((enemy.transform.position-playerObj.transform.position).normalized * force * power);
         enemy.ChangeSpeed(enemy.GetNormalMovementSpeed() / slow, duration*power);
-        enemy.DamageEnemy(damage*power);
+        enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
     }
 }

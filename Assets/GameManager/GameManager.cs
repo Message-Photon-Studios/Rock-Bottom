@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     public void EndLevel()
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("endLevel", true);
         StartCoroutine(canvas.FadeOutCoroutine(false, EndLevelAsync));
     }
 

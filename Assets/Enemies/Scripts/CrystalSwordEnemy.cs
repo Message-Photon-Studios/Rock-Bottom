@@ -10,7 +10,7 @@ using UnityEditor;
 public class CrystalSwordEnemy : Enemy
 {   
     [SerializeField] Trigger attackTrigger;
-    [SerializeField] float swordDamage;
+    [SerializeField] int swordDamage;
     [SerializeField] float swordForce;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;

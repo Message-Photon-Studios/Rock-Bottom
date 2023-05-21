@@ -45,8 +45,10 @@ public class YellowColorEffect : ColorEffect
             // Set enemy as parent of the particle system
             instantiatedParticles.transform.parent = enemyObj.transform;
             affected.Add(obj);
-            obj?.GetComponent<Rigidbody2D>()?.AddForce((enemyObj.transform.position - obj.transform.position).normalized * force);
-            obj.GetComponent<EnemyStats>().DamageEnemy(damage*power);
+            Vector3 forceDir =  (enemyObj.transform.position - obj.transform.position);
+            if(forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
+            obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir * force);
+            obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power));
         }
     }
 }

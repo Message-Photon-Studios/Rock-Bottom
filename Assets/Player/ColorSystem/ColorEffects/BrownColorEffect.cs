@@ -13,7 +13,7 @@ public class BrownColorEffect : ColorEffect
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         if(enemy.GetColor() == null)
         {
-            enemy.DamageEnemy(uncoloredDamage*power);
+            enemy.DamageEnemy(Mathf.RoundToInt(uncoloredDamage*power));
             return;
         }
 
@@ -22,7 +22,7 @@ public class BrownColorEffect : ColorEffect
         Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
-        enemy.DamageEnemy(damage*power);
+        enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
         enemy.AbsorbColor();
     }
 }

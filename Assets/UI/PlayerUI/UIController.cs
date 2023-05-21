@@ -182,6 +182,9 @@ public class UIController : MonoBehaviour
             StartCoroutine(Loading());
             while (!loadScreenFinished) 
                 yield return new WaitForEndOfFrame();
+
+            playerMovement.movementRoot.SetTotalRoot("loading", false);
+            playerMovement.GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
         }
 
         while ((fadeToBlackImg.color.a < 1 && !fadeIn) || (fadeToBlackImg.color.a > 0 && fadeIn))
@@ -193,7 +196,7 @@ public class UIController : MonoBehaviour
         if (!fadeIn)
         {
             loaded = false;
-        sylviaLoading.gameObject.SetActive(true);
+            sylviaLoading.gameObject.SetActive(true);
             StartCoroutine(Loading());
         }
 

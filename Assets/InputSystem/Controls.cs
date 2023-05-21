@@ -46,33 +46,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""CheckBelow"",
-                    ""type"": ""Button"",
-                    ""id"": ""b8633071-045b-428e-94a8-fb5445e2b6d4"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""CheckAbove"",
-                    ""type"": ""Button"",
-                    ""id"": ""595926fd-bd32-4c52-b611-61e69044088d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""CheckRoot"",
-                    ""type"": ""Button"",
-                    ""id"": ""adf4ab43-8659-40e9-ab5c-d46d2f0c3877"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""DropDown"",
                     ""type"": ""Button"",
                     ""id"": ""1d1c586c-efe5-46b3-a455-927d2af4b744"",
@@ -278,17 +251,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""90866b31-3252-4745-bcbc-25b35e5ec7a3"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse;Keyboard"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""05f71816-30a8-4e1d-8868-7060c2ebb7df"",
                     ""path"": ""<DualShockGamepad>/buttonSouth"",
                     ""interactions"": """",
@@ -297,215 +259,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cf9429f2-978b-4373-8c70-d1c6f3f84604"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""c3944a61-fe87-418e-b00d-75fb9ade14dc"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CheckBelow"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""5f2317be-221c-4fa2-8b0c-4a9ca409b023"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse;Keyboard"",
-                    ""action"": ""CheckBelow"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""fed6fbda-fbed-4fcb-abc2-5e4bad5a32f5"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""CheckBelow"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""32a211b9-ed18-4bc6-a567-3ddcfbe0012a"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CheckBelow"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""2ce66c94-6240-442d-a0ec-cf8044fe4d6a"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XboxController;PlayStation"",
-                    ""action"": ""CheckBelow"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""83de5027-58c5-4bd9-88d9-01a069cd4df3"",
-                    ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XboxController;PlayStation"",
-                    ""action"": ""CheckBelow"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""3566dbab-ba70-4672-8be5-b1e7c5b1d03b"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CheckBelow"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""964c78df-8352-47d0-a8d6-bbfd7af839d2"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
-                    ""action"": ""CheckBelow"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""bbc83f4e-fdce-489f-a6a0-024265d2cf96"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
-                    ""action"": ""CheckBelow"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""4b637ed3-c9e4-4575-9964-3b6a9504089f"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CheckAbove"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""ef98a8b2-99db-4c9a-ae94-446bb500f687"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse;Keyboard"",
-                    ""action"": ""CheckAbove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""955f4395-f9cb-43f7-ac41-12ca91f1653a"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""CheckAbove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""a49d798d-f09f-4dff-8150-cb083314e852"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CheckAbove"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""e275b1da-74a4-469c-9c5b-98d65747652a"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
-                    ""action"": ""CheckAbove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""d1f8b445-71f6-430e-966c-7c9e4bba83df"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
-                    ""action"": ""CheckAbove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""f19c8de5-cfce-4641-bda5-25938ffb3e8a"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CheckAbove"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""71c05f7c-793d-4566-a3b1-2bf48c2fa2e4"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
-                    ""action"": ""CheckAbove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""2a968090-987f-4fa9-bb38-6791c14bb3ff"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
-                    ""action"": ""CheckAbove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -669,28 +422,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""PlayStation;XboxController"",
                     ""action"": ""Map"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b57c0832-75c8-4dd1-bba3-3ba703e9ffab"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""CheckRoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""17b100e5-b9aa-4ddb-b8cf-39255d2b5c62"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
-                    ""action"": ""CheckRoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -918,7 +649,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""name"": ""1D Axis"",
                     ""id"": ""df854b3e-cc1c-4d20-a75c-7f3882fa564c"",
                     ""path"": ""1DAxis"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.6,pressPoint=0.8)"",
                     ""processors"": ""AxisDeadzone(min=0.5),Scale(factor=10),Clamp(min=-1,max=1)"",
                     ""groups"": """",
                     ""action"": ""VerticalLook"",
@@ -1006,9 +737,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_CheckBelow = m_Player.FindAction("CheckBelow", throwIfNotFound: true);
-        m_Player_CheckAbove = m_Player.FindAction("CheckAbove", throwIfNotFound: true);
-        m_Player_CheckRoot = m_Player.FindAction("CheckRoot", throwIfNotFound: true);
         m_Player_DropDown = m_Player.FindAction("DropDown", throwIfNotFound: true);
         m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
@@ -1079,9 +807,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Walk;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_CheckBelow;
-    private readonly InputAction m_Player_CheckAbove;
-    private readonly InputAction m_Player_CheckRoot;
     private readonly InputAction m_Player_DropDown;
     private readonly InputAction m_Player_Menu;
     private readonly InputAction m_Player_Interact;
@@ -1097,9 +822,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Walk => m_Wrapper.m_Player_Walk;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @CheckBelow => m_Wrapper.m_Player_CheckBelow;
-        public InputAction @CheckAbove => m_Wrapper.m_Player_CheckAbove;
-        public InputAction @CheckRoot => m_Wrapper.m_Player_CheckRoot;
         public InputAction @DropDown => m_Wrapper.m_Player_DropDown;
         public InputAction @Menu => m_Wrapper.m_Player_Menu;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
@@ -1124,15 +846,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @CheckBelow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckBelow;
-                @CheckBelow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckBelow;
-                @CheckBelow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckBelow;
-                @CheckAbove.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckAbove;
-                @CheckAbove.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckAbove;
-                @CheckAbove.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckAbove;
-                @CheckRoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckRoot;
-                @CheckRoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckRoot;
-                @CheckRoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCheckRoot;
                 @DropDown.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropDown;
                 @DropDown.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropDown;
                 @DropDown.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropDown;
@@ -1170,15 +883,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @CheckBelow.started += instance.OnCheckBelow;
-                @CheckBelow.performed += instance.OnCheckBelow;
-                @CheckBelow.canceled += instance.OnCheckBelow;
-                @CheckAbove.started += instance.OnCheckAbove;
-                @CheckAbove.performed += instance.OnCheckAbove;
-                @CheckAbove.canceled += instance.OnCheckAbove;
-                @CheckRoot.started += instance.OnCheckRoot;
-                @CheckRoot.performed += instance.OnCheckRoot;
-                @CheckRoot.canceled += instance.OnCheckRoot;
                 @DropDown.started += instance.OnDropDown;
                 @DropDown.performed += instance.OnDropDown;
                 @DropDown.canceled += instance.OnDropDown;
@@ -1250,9 +954,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     {
         void OnWalk(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnCheckBelow(InputAction.CallbackContext context);
-        void OnCheckAbove(InputAction.CallbackContext context);
-        void OnCheckRoot(InputAction.CallbackContext context);
         void OnDropDown(InputAction.CallbackContext context);
         void OnMenu(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
