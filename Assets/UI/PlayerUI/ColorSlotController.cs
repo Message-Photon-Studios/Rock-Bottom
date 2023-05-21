@@ -55,7 +55,6 @@ public class ColorSlotController : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
-        rotationTime = Math.Max(0.1f, rotationTime);
         //Fetch the players current colors.
         colorInventory = colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
         colorSlots = colorInventory.colorSlots;
@@ -158,6 +157,8 @@ public class ColorSlotController : MonoBehaviour
             RectTransform rect = slotList[i];
             rect.anchoredPosition = slotPositions[trueIndex];
             rect.transform.localScale = slotScales[trueIndex];
+            if (!bottleChangedDone)
+                BottleChanged(i, trueIndex);
         }
     }
 
