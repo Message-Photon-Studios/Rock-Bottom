@@ -24,33 +24,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "CheckBelow",
-                    "type": "Button",
-                    "id": "b8633071-045b-428e-94a8-fb5445e2b6d4",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "CheckAbove",
-                    "type": "Button",
-                    "id": "595926fd-bd32-4c52-b611-61e69044088d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "CheckRoot",
-                    "type": "Button",
-                    "id": "adf4ab43-8659-40e9-ab5c-d46d2f0c3877",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "DropDown",
                     "type": "Button",
                     "id": "1d1c586c-efe5-46b3-a455-927d2af4b744",
@@ -267,72 +240,6 @@
                 },
                 {
                     "name": "",
-                    "id": "b9969a63-1581-4d39-a53e-6c9f112b4404",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard;KeyboardMouse",
-                    "action": "CheckBelow",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "05104d6f-81a0-4580-8608-d31f1afa075b",
-                    "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "XboxController;PlayStation",
-                    "action": "CheckBelow",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "be173d0c-f858-48c1-835d-e1f4c338e54c",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "Hold(duration=0.6,pressPoint=0.8)",
-                    "processors": "",
-                    "groups": "PlayStation;XboxController",
-                    "action": "CheckBelow",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4a7286ed-f84e-49be-b928-1b6aba3e1d91",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse;Keyboard",
-                    "action": "CheckAbove",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a17ca957-5779-4fc7-b059-abc269915ca4",
-                    "path": "<Gamepad>/dpad/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "XboxController;PlayStation",
-                    "action": "CheckAbove",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d2a10c3f-4e83-49b4-b9c7-782c12d2a489",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "Hold(duration=0.6,pressPoint=0.8)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "CheckAbove",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "5e7c1d50-2e08-4e90-8208-19841e0f39e8",
                     "path": "<Keyboard>/s",
                     "interactions": "",
@@ -493,28 +400,6 @@
                     "processors": "",
                     "groups": "PlayStation;XboxController",
                     "action": "Map",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b57c0832-75c8-4dd1-bba3-3ba703e9ffab",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard;KeyboardMouse",
-                    "action": "CheckRoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "17b100e5-b9aa-4ddb-b8cf-39255d2b5c62",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PlayStation;XboxController",
-                    "action": "CheckRoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -742,7 +627,7 @@
                     "name": "1D Axis",
                     "id": "df854b3e-cc1c-4d20-a75c-7f3882fa564c",
                     "path": "1DAxis",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.6,pressPoint=0.8)",
                     "processors": "AxisDeadzone(min=0.5),Scale(factor=10),Clamp(min=-1,max=1)",
                     "groups": "",
                     "action": "VerticalLook",
