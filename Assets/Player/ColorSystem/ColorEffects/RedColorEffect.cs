@@ -8,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu( menuName = "Gameplay Color/Color Effect/RedColorEffect")]
 public class RedColorEffect : ColorEffect
 {
-    [SerializeField] float healing;
+    [SerializeField] int healing;
     [SerializeField] float force;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
@@ -22,7 +22,7 @@ public class RedColorEffect : ColorEffect
         instantiatedParticles.transform.parent = enemyObj.transform;
 
         enemy?.GetComponent<Rigidbody2D>()?.AddForce((player.transform.position- enemy.transform.position).normalized * force);
-        enemy.DamageEnemy(damage*power);
-        player.HealPlayer(healing*power);
+        enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
+        player.HealPlayer(Mathf.RoundToInt(healing*power));
     }
 }

@@ -33,7 +33,7 @@ public class PlayerHpController : MonoBehaviour
 
         set
         {
-            text.text = $"{(int)Math.Max(Math.Ceiling(value / healthMultiplier), 0)}/{(int)maxHealth}";
+            text.text = $"{(int)Math.Max(Math.Round(value / healthMultiplier), 0)}/{(int)maxHealth}";
             healthSlider.value = value;
         }
     }

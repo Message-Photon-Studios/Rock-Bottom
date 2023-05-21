@@ -8,7 +8,7 @@ public class Spikey : Enemy
 {
     [SerializeField] Trigger attackTrigger;
     [SerializeField] Trigger damageTrigger;
-    [SerializeField] float dropDamage;
+    [SerializeField] int dropDamage;
     [SerializeField] Vector2 dropPlayerForce;
     [SerializeField] float sideDistTrigger;
     [SerializeField] float heightDistTrigger;

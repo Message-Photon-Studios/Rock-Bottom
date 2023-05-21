@@ -8,7 +8,7 @@ public class BigCryss : Enemy
 {
     [SerializeField] Trigger viewTrigger;
     [SerializeField] Trigger attackTrigger;
-    [SerializeField] float swordDamage;
+    [SerializeField] int swordDamage;
     [SerializeField] float swordForce;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;

@@ -6,14 +6,14 @@ using BehaviourTree;
 public class DamagePlayer : Node
 {
     PlayerStats player;
-    float damage;
+    int damage;
     
     /// <summary>
     /// The DamagePlayer damages the player with the specified damage and then returns success
     /// </summary>
     /// <param name="player"></param>
     /// <param name="damage"></param>
-    public DamagePlayer (PlayerStats player, float damage)
+    public DamagePlayer (PlayerStats player, int damage)
     {
         this.player = player;
         this.damage = damage;

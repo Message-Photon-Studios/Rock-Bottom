@@ -10,7 +10,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class EnemyStats : MonoBehaviour
 {
-    [SerializeField] float health; //The health of the enemy
+    [SerializeField] int health; //The health of the enemy
     [SerializeField] GameColor color; //The colorMat of the enemy
     [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
@@ -43,9 +43,9 @@ public class EnemyStats : MonoBehaviour
 
     [HideInInspector] public EnemySounds enemySounds;
 
-    private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
+    private List<(int damage, float timer)> poisonEffects = new List<(int damage, float time)>(); //Damage dealt over time
 
-    private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
+    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -101,7 +101,7 @@ public class EnemyStats : MonoBehaviour
         animator.SetBool("sleep", false);
         WakeEnemy();
         movementSpeed = normalMovementSpeed;
-        poisonEffects = new List<(float damage, float timer)>();
+        poisonEffects = new List<(int damage, float timer)>();
         burning = (0, 0, 0, null, null);
         Material mat = GetComponent<SpriteRenderer>().material;
         mat.SetFloat("_takingDmg", 0);
@@ -136,7 +136,7 @@ public class EnemyStats : MonoBehaviour
             {
                 for (int i = 0; i < poisonEffects.Count; i++)
                 {
-                    float damage = poisonEffects[i].damage;
+                    int damage = poisonEffects[i].damage;
                     if (damage >= health)
                     {
                         if(damage > 1)
@@ -199,7 +199,7 @@ public class EnemyStats : MonoBehaviour
     /// Damage the enemy with the specified damage
     /// </summary>
     /// <param name="damage"></param>
-    public void DamageEnemy(float damage)
+    public void DamageEnemy(int damage)
     {
         if(enemySleep)
         {
@@ -230,7 +230,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     /// <param name="damage"></param>
     /// <param name="timer"></param>
-    public void PoisonDamage(float damage, float timer)
+    public void PoisonDamage(int damage, float timer)
     {
         poisonEffects.Add((damage, timer));
     }
@@ -247,7 +247,7 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     /// <param name="range"></param>
     /// <param name="burnParticles"></param>
-    public void BurnDamage(float damage, float timer, float range, GameObject burnParticles)
+    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles)
     {
         if(timer <= 0) return;
         if(burning.timer > 0) return;

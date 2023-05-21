@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class CrystalBombarderBomb : Enemy
 {
-    [SerializeField] float damage;
+    [SerializeField] int damage;
     [SerializeField] Vector2 force;
     [SerializeField] Trigger attackTrigger;
 

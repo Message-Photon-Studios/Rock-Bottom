@@ -6,12 +6,12 @@ using UnityEngine.Events;
 /// </summary>
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] float health = 100;
+    [SerializeField] int health = 100;
     [SerializeField] float hitInvincibilityTime;
     [SerializeField] GameManager gameManager;
     [SerializeField] Animator animator;
     [SerializeField] PlayerMovement movement;
-    float maxHealth;
+    int maxHealth;
     float invincibilityTimer = 0;
 
     [SerializeField] PlayerSounds playerSounds;
@@ -59,7 +59,7 @@ public class PlayerStats : MonoBehaviour
     /// Damage the player
     /// </summary>
     /// <param name="damage"></param>
-    public void DamagePlayer(float damage)
+    public void DamagePlayer(int damage)
     {
         if(invincibilityTimer > 0) return;
         if(damage == 0) return;
@@ -83,7 +83,7 @@ public class PlayerStats : MonoBehaviour
     /// Heal the player
     /// </summary>
     /// <param name="healing"></param>
-    public void HealPlayer (float healing) 
+    public void HealPlayer (int healing) 
     {
         health += healing;
         if(health > maxHealth) health = maxHealth;
@@ -111,7 +111,7 @@ public class PlayerStats : MonoBehaviour
     /// Adds health points to the players max health and also heals the player the same ammount
     /// </summary>
     /// <param name="addMaxHealth"></param>
-    public void AddMaxHealth(float addMaxHealth)
+    public void AddMaxHealth(int addMaxHealth)
     {
         maxHealth += addMaxHealth;
         health += addMaxHealth;
