@@ -52,6 +52,9 @@ public class CustomRoom : MonoBehaviour
 
     public DisplayMode displayMode;
     public int maxSpawns = -1;
+
+    [HideInInspector] 
+    public int spawnCount = 0;
     
     private Vector2? _size;
     private Vector2? _minNode;
