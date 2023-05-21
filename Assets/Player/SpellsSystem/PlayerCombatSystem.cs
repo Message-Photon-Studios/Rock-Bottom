@@ -23,16 +23,23 @@ public class PlayerCombatSystem : MonoBehaviour
     private bool attacking;
     private Rigidbody2D body;
 
+    private bool defaultAirHit = false;
+    private bool spellAirHit = false;
     Action<InputAction.CallbackContext> specialAttackHandler;
     Action<InputAction.CallbackContext> defaultAttackHandler;
 
 
     #region Setup
     private void OnEnable() {
+
         specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
         defaultAttackHandler = (InputAction.CallbackContext ctx) => {
+            if(!playerMovement.IsGrounded() && defaultAirHit) return;
             if(animator.GetBool("grapple")) return;
             if(attacking) return;
+
+            if(!playerMovement.IsGrounded()) defaultAirHit = true;
+
             attacking = true;
             animator.SetTrigger("defaultAttack");
             body.constraints |= RigidbodyConstraints2D.FreezePositionY;
@@ -94,12 +101,14 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpecialAttackAnimation()
     {
+        if(!playerMovement.IsGrounded() && spellAirHit) return;
         if(animator.GetBool("grapple")) return;
         currentSpell= colorInventory.GetActiveColorSpell().gameObject;
         if(currentSpell == null) return;
         if(attacking) return;
         if(!colorInventory.CheckActveColor()) return;
         
+        if(!playerMovement.IsGrounded()) spellAirHit = true;
         attacking = true;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
@@ -139,5 +148,14 @@ public class PlayerCombatSystem : MonoBehaviour
     public void RemovePlayerAirlock()
     {
         body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    /// <summary>
+    /// Reset the combat system to be grounded
+    /// </summary>
+    public void SetPlayerGrounded()
+    {
+        defaultAirHit = false;
+        spellAirHit = false;
     }
 }

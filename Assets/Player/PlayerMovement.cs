@@ -185,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Collision checks
-    private bool IsGrounded()
+    public bool IsGrounded()
     {  
         return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) ||
                 Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3);
@@ -225,6 +225,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrounded())
         {
+            GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
             coyoteTimer = coyoteTime;
             playerAnimator.SetInteger("velocityY", 0);
 
@@ -274,6 +275,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrappeling())
         {
+            GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
             bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
             if(wallRight == spriteRenderer.flipX) Flip();
             playerAnimator.SetBool("grapple", true);
