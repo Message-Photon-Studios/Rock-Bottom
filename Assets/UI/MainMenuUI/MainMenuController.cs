@@ -9,6 +9,10 @@ public class MainMenuController : MonoBehaviour
 {
     //Button to start the navigation at when starting the game.
     [SerializeField] Button startButton;
+    [SerializeField] Button settingsButton;
+    [SerializeField] Button creditsButton;
+    [SerializeField] Button exitButton;
+
     [SerializeField] Image fadeToBlackImg;
     [SerializeField] Image sylviaLoading;
     [SerializeField] Image mainMenuTitle;
@@ -17,6 +21,7 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] IndicatorController startController;
     [SerializeField] IndicatorController settingstController;
+    [SerializeField] IndicatorController creditsController;
     [SerializeField] IndicatorController exitController;
 
     [SerializeField] AnimationCurve indicatorCurve;
@@ -25,12 +30,18 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] Sprite[] LoadingSprites;
 
+    [SerializeField] GameObject credits;
+    [SerializeField] GameObject dontDestroyBGMusic;
+
+    [HideInInspector] public bool areCreditsOpen = false;
+
     private void OnEnable()
     {
         sylviaLoading.gameObject.SetActive(false);
         StartCoroutine(FadeOutCoroutine(true));
         StartCoroutine(tiltCamera());
         startButton.GetComponent<IndicatorController>().ShowIndicator(true);
+        dontDestroyBGMusic.SetActive(true);
     }
 
     //Load scene "Gem" when pressed.
@@ -63,6 +74,8 @@ public class MainMenuController : MonoBehaviour
             StartCoroutine(startController.appear(indicatorCurve));
             yield return new WaitForSeconds(0.1f);
             StartCoroutine(settingstController.appear(indicatorCurve));
+            yield return new WaitForSeconds(0.1f);
+            StartCoroutine(creditsController.appear(indicatorCurve));
             yield return new WaitForSeconds(0.1f);
             StartCoroutine(exitController.appear(indicatorCurve));
             yield break;
@@ -104,5 +117,29 @@ public class MainMenuController : MonoBehaviour
             cam.transform.position = new Vector3(centerPos - sinVal, cam.transform.position.y, cam.transform.position.z);
             yield return new WaitForSeconds(0.03f);
         }   
+    }
+
+    public void showCredits()
+    {
+        startButton.interactable = false;
+        settingsButton.interactable = false;
+        creditsButton.interactable = false;
+        exitButton.interactable = false;
+
+        areCreditsOpen = true;
+        credits.SetActive(true);
+    }
+
+    public void hideCredits()
+    {
+        startButton.interactable = true;
+        settingsButton.interactable = true;
+        creditsButton.interactable = true;
+        exitButton.interactable = true;
+        
+        creditsButton.Select();
+
+        areCreditsOpen = false;
+        credits.SetActive(false);
     }
 }

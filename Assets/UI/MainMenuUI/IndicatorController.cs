@@ -17,6 +17,9 @@ public class IndicatorController : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] Color32 active;
     [SerializeField] Color32 nonActive;
 
+    [Space(10)]
+    [SerializeField] MainMenuController controller;
+
     [CanBeNull] private Coroutine cor;
 
     //On enable hide the acorn.
