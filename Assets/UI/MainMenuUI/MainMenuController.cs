@@ -11,12 +11,25 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] Button startButton;
     [SerializeField] Image fadeToBlackImg;
     [SerializeField] Image sylviaLoading;
+    [SerializeField] Image mainMenuTitle;
+
+    [SerializeField] AnimationCurve titleCurve;
+
+    [SerializeField] IndicatorController startController;
+    [SerializeField] IndicatorController settingstController;
+    [SerializeField] IndicatorController exitController;
+
+    [SerializeField] AnimationCurve indicatorCurve;
+
+    [SerializeField] Camera cam;
 
     [SerializeField] Sprite[] LoadingSprites;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         sylviaLoading.gameObject.SetActive(false);
         StartCoroutine(FadeOutCoroutine(true));
+        StartCoroutine(tiltCamera());
         startButton.GetComponent<IndicatorController>().ShowIndicator(true);
     }
 
@@ -27,7 +40,8 @@ public class MainMenuController : MonoBehaviour
     }
 
     //Exit application when pressed.
-    public void ExitGame() {
+    public void ExitGame()
+    {
         Application.Quit();
         Debug.Log("Exit");
     }
@@ -43,7 +57,16 @@ public class MainMenuController : MonoBehaviour
         }
 
         if (fadeIn)
+        {
+            StartCoroutine(initTitle());
+            yield return new WaitForSeconds(0.1f);
+            StartCoroutine(startController.appear(indicatorCurve));
+            yield return new WaitForSeconds(0.1f);
+            StartCoroutine(settingstController.appear(indicatorCurve));
+            yield return new WaitForSeconds(0.1f);
+            StartCoroutine(exitController.appear(indicatorCurve));
             yield break;
+        }
 
         SceneManager.LoadSceneAsync("Tutorial");
 
@@ -55,5 +78,31 @@ public class MainMenuController : MonoBehaviour
             count = (count + 1) % LoadingSprites.Length;
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    private IEnumerator initTitle()
+    {
+        for (float i = 0; i < 1; i += 0.013f)
+        {
+            mainMenuTitle.rectTransform.anchoredPosition = new Vector2(
+                mainMenuTitle.rectTransform.anchoredPosition.x, 
+                Mathf.Lerp(215, 856, titleCurve.Evaluate(i))
+            );
+            
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+    private IEnumerator tiltCamera()
+    {
+        // Tilt the worldUp of the camera in a sinewave pattern
+        var centerPos = cam.transform.position.x;
+        while (true)
+        {
+            var sinVal = (Mathf.Sin(Time.time / 3) - 0.5f) * 0.15f;
+            cam.transform.eulerAngles = new Vector3(0, 0, sinVal);
+            cam.transform.position = new Vector3(centerPos - sinVal, cam.transform.position.y, cam.transform.position.z);
+            yield return new WaitForSeconds(0.03f);
+        }   
     }
 }
