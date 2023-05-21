@@ -12,6 +12,7 @@ public class PlayerSounds : MonoBehaviour
     public AudioSource sliding;
     public AudioSource dying;
     public AudioSource takingDamage;
+    [SerializeField] private AudioSource defaultAttack;
     public AudioSource castingSpell;
 
     private string walkingBool = "walking";
@@ -116,6 +117,11 @@ public class PlayerSounds : MonoBehaviour
     public void PlayCastingSpell()
     {
         castingSpell.Play();
+    }
+
+    public void PlayDefaultAttack()
+    {
+        defaultAttack.Play();
     }
     public void PlayTakingDamage()
     {

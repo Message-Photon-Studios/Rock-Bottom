@@ -65,6 +65,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void DefaultAttack()
     {
+        playerSounds.PlayDefaultAttack();
         Debug.Log("Default attack");
         //TODO add attacking = true;
         FlipDefaultAttack();
@@ -88,10 +89,10 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         (GameColor absorb, int ammount) = enemy.AbsorbColor();
+        if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
         //enemy.DamageEnemy(defaultAttackDamage);
         colorInventory.AddColor(absorb, ammount);
         enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
-        enemy.enemySounds?.PlayOnHit();
     }
 
     private GameObject currentSpell = null;
