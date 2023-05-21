@@ -124,6 +124,9 @@ public class DungeonGraph
 
     public (int, Vector2) testRoom(Vector2 doorPos, Direction doorDir, CustomRoom room)
     {
+        if (room.maxSpawns > -1 && room.spawnCount >= room.maxSpawns)
+            return (-1, new Vector2());
+
         // Get all entrances of the room that have a mirrored direction to the one provided
         var doors = room.getDoors();
         var mirroredEntrances = doors
@@ -187,9 +190,6 @@ public class DungeonGraph
             };
         }
         rooms.Add((shift, prefab));
-        
-        if (prefab.maxSpawns > 0) 
-            prefab.maxSpawns--;
 
         var remainingDoors = new List<Door>();
         // Return the list of doors that can be used to connect to other rooms
@@ -393,6 +393,11 @@ public class LevelGenerator
                 spell.transform.parent = itemHolder.transform;
             }
 
+            foreach (var npc in roomObj.transform.GetComponentsInChildren<NPCScript>())
+            {
+                npc.transform.parent = itemHolder.transform;
+            }
+
             // Finish setting up the room
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
@@ -463,6 +468,7 @@ public class LevelGenerator
         var initRoom = initRooms[Random.Range(0, initRooms.Length - 1)];
         remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0)};
         normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").ToList();
+        foreach (var room in normalRooms) room.spawnCount = 0;
         closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "ClosingRooms").ToList();
         usedRooms = new List<CustomRoom>();
         prefabs = new List<(Vector2, CustomRoom)>();
@@ -521,13 +527,13 @@ public class LevelGenerator
         remainingDoors = remainingDoors
             .Where(door => !graph.nodes.ContainsKey(door.pos + CustomRoom.dirVectors[(int)door.dir]))
             .ToList();
-
+        
+        room.spawnCount++;
         // If it's a normal room, we remove so it does not repeat
         if (normalRooms.Contains(room) && !room.repeatable)
         {
             normalRooms.Remove(room);
-            if (room.maxSpawns != 0)
-                usedRooms.Add(room);
+            usedRooms.Add(room);
         }
 
         // If we have no more doors, we are done
