@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
@@ -30,16 +32,29 @@ public class ColorSlotController : MonoBehaviour
 
     // Spline to animate the filling effect of the color slots
     public AnimationCurve fillCurve;
+
+    [Space(10)]
+    // Spline to determine how "square" the movement of the bottles is.
+    // A straight line will make the bottles go directly to their new position
+    // A very accentuated curve will make the bottles go in a square pattern
+    // Very mild curve is recommnded to make them go in a circular pattern
+    [SerializeField] AnimationCurve movementCurve;
+    // The rate at which the bottles will move to their new position. Inverse cubic spline will make it look snappy
+    [SerializeField] AnimationCurve movementRateCurve;
+    [SerializeField] float rotationTime;
+
+    private Coroutine movementCoroutine;
+
     [ItemCanBeNull] private List<Coroutine> activeCoroutines = new List<Coroutine>();
 
     [SerializeField] public Sprite[] FullBottleEffectSprites;
-
 
     # region Setup
     /// <summary>
     /// When enabling the Player In game UI, set up the script.
     /// </summary>
-    private void OnEnable() {
+    private void OnEnable()
+    {
         //Fetch the players current colors.
         colorInventory = colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
         colorSlots = colorInventory.colorSlots;
@@ -97,15 +112,56 @@ public class ColorSlotController : MonoBehaviour
 /// Also keeps the slotList[] sorted so that the active color is slotList[0].
 /// </summary>
 /// <param name="dir"></param> Which direction the slots are rotating in.
-    private void RotateSlots(int dir) {
+    private IEnumerator RotateSlots(int dir) {
+        bool middleOfAnim = false;
+        bool bottleChangedDone = false;
+        float halfTime = rotationTime / 2;
+        // AnimationCurve
+        for (float time = 0; time < rotationTime; time += Time.deltaTime)
+        {
+            float splineValue = time / rotationTime;
+            if (time > halfTime)
+                middleOfAnim = true;
+            for (int i = 0; i < slotList.Count; i++)
+            {
+                int trueIndex = (i + slotList.Count - colorInventory.activeSlot) % slotList.Count;
+                int currIndex = (trueIndex + slotList.Count + dir) % slotList.Count;
+                RectTransform rect = slotList[i];
+                // We get two values of the curve, the normal and the inverse and reversed
+                float value1 = movementCurve.Evaluate(movementRateCurve.Evaluate(splineValue));
+                float value2 = 1 - movementCurve.Evaluate(1 - movementRateCurve.Evaluate(splineValue));
+                // Depending on the position, the bottle will accelerate at a certain rate for each bottle
+                // This creates the notion of circular movement
+                rect.anchoredPosition = new Vector2(
+                    Mathf.Lerp(slotPositions[currIndex].x, slotPositions[trueIndex].x, currIndex % 2 == 1 ? value1 : value2),
+                    Mathf.Lerp(slotPositions[currIndex].y, slotPositions[trueIndex].y, currIndex % 2 == 0 ? value1 : value2)
+                );
+
+                rect.transform.localScale = Vector2.Lerp(
+                    slotScales[currIndex], 
+                    slotScales[trueIndex], 
+                    currIndex % 2 == 0 ? value1 : value2);
+
+                // We want the change of resolution to happen in the middle of the movement, so it's not noticeable
+                // But it must only happen once
+                if (middleOfAnim && !bottleChangedDone)
+                    BottleChanged(i, trueIndex);
+            }
+            bottleChangedDone = middleOfAnim;
+            yield return new WaitForEndOfFrame();
+        }
+
+        // Bottles don't always move all the way, so we do one last update to set them in their exact place
         for(int i = 0; i < slotList.Count; i++) {
             int trueIndex = (i + slotList.Count - colorInventory.activeSlot) % slotList.Count;
             RectTransform rect = slotList[i];
             rect.anchoredPosition = slotPositions[trueIndex];
             rect.transform.localScale = slotScales[trueIndex];
-            BottleChanged(i, trueIndex);
+            if (!bottleChangedDone)
+                BottleChanged(i, trueIndex);
         }
     }
+
     #endregion
 
     #region UnityActions
@@ -179,8 +235,11 @@ public class ColorSlotController : MonoBehaviour
     /// When active color has changed, rotate UI according to direction.
     /// </summary>
     /// <param name="dir"></param> Direction to rotate in.
-    private void ActiveColorChanged(int dir) {
-       RotateSlots(dir);
+    private void ActiveColorChanged(int dir)
+    {
+        if (movementCoroutine != null)
+            StopCoroutine(movementCoroutine);
+        movementCoroutine = StartCoroutine(RotateSlots(dir));
     }
 
     /// <summary>
