@@ -35,9 +35,6 @@ public class EnemyStats : MonoBehaviour
     private float sleepTimer = 0; 
     private float sleepPowerBonus = 1.2f; //The extra damage dealt to a slept enemy
     GameObject sleepParticles;
-    private float comboTime = 1; //The timelimit for the next move of a combo
-    private float comboTimer = 0;
-    private GameColor comboColor; //The colorMat that currently affects the enemy in a combo
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
     private float secTimer = 0f;
@@ -114,16 +111,6 @@ public class EnemyStats : MonoBehaviour
     {
         if(secTimer > 1f)
         {
-            if(comboTimer > 0)
-            {
-                comboTimer --;
-                if(comboTimer <= 0) 
-                {
-                    comboTimer = 0;
-                    comboColor = null;
-                    currentCombo = 0;
-                }
-            }
 
             if(movementSpeedTimer > 0)
             {
@@ -358,29 +345,6 @@ public class EnemyStats : MonoBehaviour
             GetComponent<SpriteRenderer>().material = color.colorMat;
         else
             GetComponent<SpriteRenderer>().material = defaultColor;
-    }
-
-    #endregion
-
-    #region Combo Color
-
-    /// <summary>
-    /// Sets the combo colorMat for the player
-    /// </summary>
-    /// <param name="comboColor"></param>
-    public void SetComboColor(GameColor comboColor)
-    {
-        this.comboColor = comboColor;
-        comboTimer = comboTime;
-    }
-
-    /// <summary>
-    /// Get the current combo colorMat of the player
-    /// </summary>
-    /// <returns></returns>
-    public GameColor GetComboColor()
-    {
-        return comboColor;
     }
 
     #endregion

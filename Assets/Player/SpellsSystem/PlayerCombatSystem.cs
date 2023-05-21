@@ -11,7 +11,6 @@ public class PlayerCombatSystem : MonoBehaviour
 {
     //[SerializeField] float defaultAttackDamage;
     [SerializeField] float defaultAttackForce;
-    [SerializeField] public float comboBaseDamage;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
     [SerializeField] PlayerDefaultAttack defaultAttackHitbox; //The object that controlls the default attack hitbox
     [SerializeField] Vector2 defaultAttackOffset; //The offset that the default attack will be set to
