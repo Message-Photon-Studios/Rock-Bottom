@@ -41,7 +41,7 @@ public class ColorSlotController : MonoBehaviour
     [SerializeField] AnimationCurve movementCurve;
     // The rate at which the bottles will move to their new position. Inverse cubic spline will make it look snappy
     [SerializeField] AnimationCurve movementRateCurve;
-    [SerializeField] float movementSpeed;
+    [SerializeField] float rotationTime;
 
     private Coroutine movementCoroutine;
 
@@ -53,7 +53,9 @@ public class ColorSlotController : MonoBehaviour
     /// <summary>
     /// When enabling the Player In game UI, set up the script.
     /// </summary>
-    private void OnEnable() {
+    private void OnEnable()
+    {
+        rotationTime = Math.Max(0.1f, rotationTime);
         //Fetch the players current colors.
         colorInventory = colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
         colorSlots = colorInventory.colorSlots;
@@ -114,10 +116,12 @@ public class ColorSlotController : MonoBehaviour
     private IEnumerator RotateSlots(int dir) {
         bool middleOfAnim = false;
         bool bottleChangedDone = false;
+        float halfTime = rotationTime / 2;
         // AnimationCurve
-        for (float time = 0; time < 1; time += 0.05f)
+        for (float time = 0; time < rotationTime; time += Time.deltaTime)
         {
-            if (time > 0.5f)
+            float splineValue = time / rotationTime;
+            if (time > halfTime)
                 middleOfAnim = true;
             for (int i = 0; i < slotList.Count; i++)
             {
@@ -125,8 +129,8 @@ public class ColorSlotController : MonoBehaviour
                 int currIndex = (trueIndex + slotList.Count + dir) % slotList.Count;
                 RectTransform rect = slotList[i];
                 // We get two values of the curve, the normal and the inverse and reversed
-                float value1 = movementCurve.Evaluate(movementRateCurve.Evaluate(time));
-                float value2 = 1 - movementCurve.Evaluate(1 - movementRateCurve.Evaluate(time));
+                float value1 = movementCurve.Evaluate(movementRateCurve.Evaluate(splineValue));
+                float value2 = 1 - movementCurve.Evaluate(1 - movementRateCurve.Evaluate(splineValue));
                 // Depending on the position, the bottle will accelerate at a certain rate for each bottle
                 // This creates the notion of circular movement
                 rect.anchoredPosition = new Vector2(
@@ -145,7 +149,7 @@ public class ColorSlotController : MonoBehaviour
                     BottleChanged(i, trueIndex);
             }
             bottleChangedDone = middleOfAnim;
-            yield return new WaitForSeconds(1 / movementSpeed);
+            yield return new WaitForEndOfFrame();
         }
 
         // Bottles don't always move all the way, so we do one last update to set them in their exact place
