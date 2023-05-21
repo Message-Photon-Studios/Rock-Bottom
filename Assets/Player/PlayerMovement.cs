@@ -86,9 +86,9 @@ public class PlayerMovement : MonoBehaviour
         
         jumpAction.action.started += Jump;
         jumpAction.action.canceled += JumpCancel;
-        belowCheckAction.action.started += checkBelow;
+        belowCheckAction.action.performed += checkBelow;
         belowCheckAction.action.canceled += checkCancle;
-        aboveCheckAction.action.started += checkAbove;
+        aboveCheckAction.action.performed += checkAbove;
         aboveCheckAction.action.canceled += checkCancle;
         lockCamera.action.started += movementRootTrue;
         lockCamera.action.canceled += movementRootFalse;
@@ -97,9 +97,9 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable() {
         jumpAction.action.started -= Jump;
         jumpAction.action.canceled -= JumpCancel;
-        belowCheckAction.action.started -= checkBelow;
+        belowCheckAction.action.performed -= checkBelow;
         belowCheckAction.action.canceled -= checkCancle;
-        aboveCheckAction.action.started -= checkAbove;
+        aboveCheckAction.action.performed -= checkAbove;
         aboveCheckAction.action.canceled -= checkCancle;
         lockCamera.action.started -= movementRootTrue;
         lockCamera.action.canceled -= movementRootFalse;
