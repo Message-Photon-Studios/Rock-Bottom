@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     * jumpFalloff will decrease the time and the power of the jetpack. This does also work in reverse for decreasing variables.
     */
 
-    [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction, aboveCheckAction, lockCamera; //Input actiuons for controlling the movement and camera checks
+    [SerializeField] InputActionReference walkAction, jumpAction, lookAction; //Input actiuons for controlling the movement and camera checks
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator playerAnimator;
@@ -68,42 +68,32 @@ public class PlayerMovement : MonoBehaviour
 
     private LayerMask ignoreLayers;
 
-    Action<InputAction.CallbackContext> movementRootTrue;
-    Action<InputAction.CallbackContext> movementRootFalse;
-    Action<InputAction.CallbackContext> checkBelow;
-    Action<InputAction.CallbackContext> checkAbove;
+    Action<InputAction.CallbackContext> checkAction;
     Action<InputAction.CallbackContext> checkCancle;
-
-
     #region Setup
     private void OnEnable() {
         movementRoot.SetTotalRoot("loading", true);
         ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item");
-        movementRootTrue = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", true);};
-        movementRootFalse = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", false);};
-        checkBelow = (InputAction.CallbackContext ctx) => {CheckBelowStart();};
-        checkAbove = (InputAction.CallbackContext ctx) => {CheckAboveStart();};
+        checkAction = (InputAction.CallbackContext ctx) => {
+            if(lookAction.action.ReadValue<float>() < 0f)
+                CheckBelowStart();
+            else if(lookAction.action.ReadValue<float>() > 0f)
+                CheckAboveStart();
+        };
+
         checkCancle = (InputAction.CallbackContext ctx) => {CheckCancel();};
         
         jumpAction.action.started += Jump;
         jumpAction.action.canceled += JumpCancel;
-        belowCheckAction.action.performed += checkBelow;
-        belowCheckAction.action.canceled += checkCancle;
-        aboveCheckAction.action.performed += checkAbove;
-        aboveCheckAction.action.canceled += checkCancle;
-        lockCamera.action.started += movementRootTrue;
-        lockCamera.action.canceled += movementRootFalse;
+        lookAction.action.performed += checkAction;
+        lookAction.action.canceled += checkCancle;
     }
 
     private void OnDisable() {
         jumpAction.action.started -= Jump;
         jumpAction.action.canceled -= JumpCancel;
-        belowCheckAction.action.performed -= checkBelow;
-        belowCheckAction.action.canceled -= checkCancle;
-        aboveCheckAction.action.performed -= checkAbove;
-        aboveCheckAction.action.canceled -= checkCancle;
-        lockCamera.action.started -= movementRootTrue;
-        lockCamera.action.canceled -= movementRootFalse;
+        lookAction.action.performed -= checkAction;
+        lookAction.action.canceled -= checkCancle;
     }
 
     void Start()
