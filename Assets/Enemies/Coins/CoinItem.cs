@@ -53,11 +53,12 @@ public class CoinItem : MonoBehaviour
     }
     private IEnumerator hoverAnimation()
     {
+        float offset = Random.Range(0, 100);
         while (true)
         {
             sprite.transform.position = new Vector3(
                 sprite.transform.position.x, 
-                sprite.transform.position.y + Mathf.Sin(Time.time * 2) * 0.002f, 
+                sprite.transform.position.y + Mathf.Sin(offset + Time.time * 5) * 0.004f, 
                 sprite.transform.position.z);
             yield return new WaitForFixedUpdate();
         }
