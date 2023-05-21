@@ -12,9 +12,13 @@ public class IndicatorController : MonoBehaviour, IPointerEnterHandler, IPointer
     
     //Indicator for current button, In main menu it's the acorn.
     [SerializeField] RectTransform container;
+    [SerializeField] RectTransform visualContainer;
     [SerializeField] TMP_Text text;
     [SerializeField] Color32 active;
     [SerializeField] Color32 nonActive;
+
+    [Space(10)]
+    [SerializeField] MainMenuController controller;
 
     [CanBeNull] private Coroutine cor;
 
@@ -74,7 +78,7 @@ public class IndicatorController : MonoBehaviour, IPointerEnterHandler, IPointer
         for (float i = 0; i < 1; i += 0.1f)
         {
             // Linearly interpolate scale of the container
-            container.localScale = new Vector3(
+            visualContainer.localScale = new Vector3(
                               Mathf.Lerp(from, to, i),
                               Mathf.Lerp(from, to, i),
                               Mathf.Lerp(from, to, i)

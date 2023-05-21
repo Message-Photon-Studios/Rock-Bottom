@@ -34,6 +34,8 @@ public class TutorialEndpoint : MonoBehaviour
     void StartTrailer (InputAction.CallbackContext ctx)
     {
         if(!enableExit) return;
+        DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
+        bgMusic.disableChildren();
         trailer.SetActive(true);
         player.Play();
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("trailer", true);
