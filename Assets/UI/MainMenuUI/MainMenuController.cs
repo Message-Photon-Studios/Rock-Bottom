@@ -31,7 +31,6 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] Sprite[] LoadingSprites;
 
     [SerializeField] GameObject credits;
-    [SerializeField] GameObject dontDestroyBGMusic;
 
     [HideInInspector] public bool areCreditsOpen = false;
 
@@ -41,7 +40,9 @@ public class MainMenuController : MonoBehaviour
         StartCoroutine(FadeOutCoroutine(true));
         StartCoroutine(tiltCamera());
         startButton.GetComponent<IndicatorController>().ShowIndicator(true);
-        dontDestroyBGMusic.SetActive(true);
+
+        DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
+        bgMusic.enableChildren();
     }
 
     //Load scene "Gem" when pressed.
