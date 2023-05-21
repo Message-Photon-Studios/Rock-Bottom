@@ -77,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
 
     #region Setup
     private void OnEnable() {
+        movementRoot.SetTotalRoot("loading", true);
         ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item");
         movementRootTrue = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", true);};
         movementRootFalse = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", false);};

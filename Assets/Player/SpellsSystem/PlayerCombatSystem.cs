@@ -40,6 +40,7 @@ public class PlayerCombatSystem : MonoBehaviour
         };
         
         body = GetComponent<Rigidbody2D>();
+        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
         specialAttackAction.action.performed += specialAttackHandler;
         defaultAttackAction.action.performed += defaultAttackHandler;
         defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
