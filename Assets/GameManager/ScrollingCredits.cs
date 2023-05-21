@@ -18,7 +18,7 @@ public class ScrollingCredits : MonoBehaviour
     {
         // Set the rectTransform height to -90
         rect = gameObject.GetComponent<RectTransform>();
-        rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -500);
+        rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -700);
         exitCreditsMenu.action.performed += ExitCreditsMenu;
     }
 
@@ -31,9 +31,9 @@ public class ScrollingCredits : MonoBehaviour
     {
         rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y + 1);
 
-        if (rect.anchoredPosition.y > 2619)
+        if (rect.anchoredPosition.y > 3474)
         {
-            rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -850);
+            rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -1100);
         }
     }
 
