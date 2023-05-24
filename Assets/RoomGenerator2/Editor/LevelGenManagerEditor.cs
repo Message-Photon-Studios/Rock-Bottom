@@ -10,15 +10,10 @@ public class LevelGenManagerEditor : Editor
         base.OnInspectorGUI();
         if (GUILayout.Button("Generate graph"))
         {
-            genManager.init();
+            genManager.init(null, false);
         }
         
         GUILayout.Space(20);
-        
-        if (GUILayout.Button("Step"))
-        {
-            genManager.step();
-        }
 
         if (GUILayout.Button("Reset"))
         {

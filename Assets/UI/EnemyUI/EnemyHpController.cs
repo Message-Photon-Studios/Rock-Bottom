@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,26 +7,24 @@ using UnityEngine.UI;
 public class EnemyHpController : MonoBehaviour
 {
     // The UI component for the enemy health bar.
-    [SerializeField] Slider healthSliderLeft;
-    [SerializeField] Slider healthSliderRight;
-    [SerializeField] EnemyStats enemy;
-
-    private void OnEnable() {
+    public EnemyStats enemy;
+    [SerializeField] Slider healthSlider;
+    [SerializeField] Slider healthSubSlider;
+    [SerializeField] float subBarRate;
+    
+    private void Start() {
         gameObject.SetActive(true);
         enemy.onHealthChanged +=  HpChanged;
         enemy.onEnemyDeath += EnemyDied;
+        
+        var sliders = GetComponents<Slider>();
 
-        healthSliderLeft.maxValue = enemy.GetHealth();
-        healthSliderRight.maxValue = enemy.GetHealth();
-
-        healthSliderLeft.gameObject.SetActive(false);
-        healthSliderRight.gameObject.SetActive(false);
-    }
-
-    private void OnDisable() {
-        gameObject.SetActive(false);
-        enemy.onHealthChanged -=  HpChanged;
-        enemy.onEnemyDeath -= EnemyDied;
+        healthSlider.maxValue = enemy.GetHealth();
+        healthSubSlider.maxValue = enemy.GetHealth();
+        healthSlider.value = enemy.GetHealth();
+        healthSubSlider.value = enemy.GetHealth();
+        healthSlider.gameObject.SetActive(false);
+        healthSubSlider.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -33,11 +32,21 @@ public class EnemyHpController : MonoBehaviour
     /// </summary>
     /// <param name="newHp"></param> Float with value to update. 
     private void HpChanged(float newHp) {
-        healthSliderLeft.value = newHp;
-        healthSliderRight.value = newHp;
+        healthSlider.value = newHp;
+        healthSlider.gameObject.SetActive(true);
+        healthSubSlider.gameObject.SetActive(true);
+    }
 
-        healthSliderLeft.gameObject.SetActive(true);
-        healthSliderRight.gameObject.SetActive(true);
+    private void Update()
+    {
+        if (healthSubSlider.value == healthSlider.value) return;
+
+        if (healthSubSlider.value < healthSlider.value)
+        {
+            healthSubSlider.value = healthSlider.value;
+            return;
+        }
+        healthSubSlider.value -= Math.Min(healthSubSlider.value - healthSlider.value, subBarRate * Time.deltaTime);
     }
 
     /// <summary>

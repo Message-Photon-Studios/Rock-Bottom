@@ -25,6 +25,9 @@ public class GameColor : ScriptableObject
     /// </summary>
     [SerializeField] ColorEffect colorEffect;
     [SerializeField] List<ColorMix> mixes;
+
+    //Icon representing the color.
+    [SerializeField] public Sprite colorIcon;
     
     /// <summary>
     /// Returns the mix of this color with the specified color
@@ -43,9 +46,20 @@ public class GameColor : ScriptableObject
 
     public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
-        if(enemyObj.GetComponent<EnemyStats>().GetColor() == this) return;
+        if(enemyObj.GetComponent<EnemyStats>().GetColor() == this)
+        {
+            enemyObj.GetComponent<EnemyStats>().DamageEnemy(0);
+            return;
+        }
+        power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
     }
+
+    /// <summary>
+    /// Returns the color effect of this color
+    /// </summary>
+    /// <returns></returns>
+    public ColorEffect GetColorEffect() { return colorEffect; }
 }
 
 [System.Serializable]

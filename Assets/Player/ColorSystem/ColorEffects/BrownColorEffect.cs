@@ -7,17 +7,22 @@ using UnityEngine;
 [CreateAssetMenu( menuName = "Gameplay Color/Color Effect/BrownColorEffect")]
 public class BrownColorEffect : ColorEffect
 {
+    [SerializeField] int uncoloredDamage;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
-        if(enemy.GetColor() == null) return;
+        if(enemy.GetColor() == null)
+        {
+            enemy.DamageEnemy(Mathf.RoundToInt(uncoloredDamage*power));
+            return;
+        }
 
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
         Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
-        enemy.DamageEnemy(damage*power);
+        enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
         enemy.AbsorbColor();
     }
 }

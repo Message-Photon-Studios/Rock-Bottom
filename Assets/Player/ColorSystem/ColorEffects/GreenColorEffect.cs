@@ -8,11 +8,13 @@ using UnityEngine;
 [CreateAssetMenu( menuName = "Gameplay Color/Color Effect/GreenColorEffect")]
 public class GreenColorEffect : ColorEffect
 {
-    [SerializeField] float damageOverTime;
+    [SerializeField] int damageOverTime;
     [SerializeField] float time;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
+        enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
+        
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
         var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
 
@@ -28,7 +30,7 @@ public class GreenColorEffect : ColorEffect
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
 
-        enemy.PoisonDamage(damageOverTime * power, useTime);
-        enemy.DamageEnemy(damage);
+
+        enemy.PoisonDamage(Mathf.RoundToInt(damageOverTime * power), useTime);
     }
 }

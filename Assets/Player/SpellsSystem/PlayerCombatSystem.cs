@@ -9,32 +9,44 @@ using System;
 /// </summary>
 public class PlayerCombatSystem : MonoBehaviour
 {
-    [SerializeField] float defaultAttackDamage;
-    [SerializeField] float defaultAttackForce; 
-    [SerializeField] public float comboBaseDamage;
+    //[SerializeField] float defaultAttackDamage;
+    [SerializeField] float defaultAttackForce;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
     [SerializeField] PlayerDefaultAttack defaultAttackHitbox; //The object that controlls the default attack hitbox
     [SerializeField] Vector2 defaultAttackOffset; //The offset that the default attack will be set to
-    [SerializeField] InputActionReference defaultAttackAction, specialAttackAction, verticalLookDir; 
+    [SerializeField] InputActionReference defaultAttackAction, specialAttackAction, verticalLookDir;
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
+    [SerializeField] PlayerSounds playerSounds;
     private bool attacking;
     private Rigidbody2D body;
 
+    private bool defaultAirHit = false;
+    private bool spellAirHit = false;
     Action<InputAction.CallbackContext> specialAttackHandler;
     Action<InputAction.CallbackContext> defaultAttackHandler;
 
+
     #region Setup
     private void OnEnable() {
+
         specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
         defaultAttackHandler = (InputAction.CallbackContext ctx) => {
+            if(!playerMovement.IsGrounded() && defaultAirHit) return;
             if(animator.GetBool("grapple")) return;
+            if(attacking) return;
+
+            if(!playerMovement.IsGrounded()) defaultAirHit = true;
+
+            attacking = true;
             animator.SetTrigger("defaultAttack");
+            body.constraints |= RigidbodyConstraints2D.FreezePositionY;
             playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         };
         
         body = GetComponent<Rigidbody2D>();
+        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
         specialAttackAction.action.performed += specialAttackHandler;
         defaultAttackAction.action.performed += defaultAttackHandler;
         defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
@@ -53,11 +65,20 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void DefaultAttack()
     {
+        playerSounds.PlayDefaultAttack();
         Debug.Log("Default attack");
         //TODO add attacking = true;
+        FlipDefaultAttack();
+        defaultAttackHitbox.HitEnemies();
+    }
+
+    /// <summary>
+    /// Flips the default attack
+    /// </summary>
+    public void FlipDefaultAttack()
+    {
         float offsetX = defaultAttackOffset.x * playerMovement.lookDir;
         defaultAttackHitbox.transform.position = new Vector3(transform.position.x + offsetX, defaultAttackHitbox.transform.position.y, transform.position.z);
-        defaultAttackHitbox.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -68,7 +89,8 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         (GameColor absorb, int ammount) = enemy.AbsorbColor();
-        enemy.DamageEnemy(defaultAttackDamage);
+        if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
+        //enemy.DamageEnemy(defaultAttackDamage);
         colorInventory.AddColor(absorb, ammount);
         enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
     }
@@ -79,17 +101,20 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpecialAttackAnimation()
     {
+        if(!playerMovement.IsGrounded() && spellAirHit) return;
         if(animator.GetBool("grapple")) return;
         currentSpell= colorInventory.GetActiveColorSpell().gameObject;
         if(currentSpell == null) return;
         if(attacking) return;
         if(!colorInventory.CheckActveColor()) return;
-        //if(playerMovement.airTime > 0) return;
+        
+        if(!playerMovement.IsGrounded()) spellAirHit = true;
         attacking = true;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
         playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        playerSounds.PlayCastingSpell();
     }
 
     /// <summary>
@@ -105,17 +130,32 @@ public class PlayerCombatSystem : MonoBehaviour
                                         currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
         GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
         spell?.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
-        body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
         transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
     }
 
     /// <summary>
     /// Removes the attack root. Called by animation event
     /// </summary>
-    private void RemoveAttackRoot()
+    public void RemoveAttackRoot()
     {
         attacking = false;
-        defaultAttackHitbox.gameObject.SetActive(false);
         playerMovement.movementRoot.SetTotalRoot("attackRoot", false);
+    }
+
+    /// <summary>
+    /// Removes the player being locked in the air when attacking
+    /// </summary>
+    public void RemovePlayerAirlock()
+    {
+        body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    /// <summary>
+    /// Reset the combat system to be grounded
+    /// </summary>
+    public void SetPlayerGrounded()
+    {
+        defaultAirHit = false;
+        spellAirHit = false;
     }
 }

@@ -6,7 +6,7 @@ using BehaviourTree;
 public class NormalAttack : Node
 {
     PlayerStats player;
-    float damage;
+    int damage;
     float force;
     float rootTime;
     string attackName;
@@ -25,7 +25,7 @@ public class NormalAttack : Node
     /// <param name="attackTrigger"> The area where the player needs to be to make the attack land.</param>
     /// <param name="stats"></param>
     /// <returns></returns>
-    public NormalAttack (string attackName, PlayerStats player, float damage, float force, float rootTime, Trigger attackTrigger, EnemyStats stats) : 
+    public NormalAttack (string attackName, PlayerStats player, int damage, float force, float rootTime, Trigger attackTrigger, EnemyStats stats) : 
         base(new List<Node>{new CheckPlayerArea(stats, player, attackTrigger)})
     {
         this.attackName = attackName;

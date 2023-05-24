@@ -11,7 +11,7 @@ using BehaviourTree;
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class Enemy : BehaviourTree.Tree
 {
-    [SerializeField] float playerCollisionDamage = 10; //The damage that will be dealt to the player if they walk into the enemy
+    [SerializeField] int playerCollisionDamage = 10; //The damage that will be dealt to the player if they walk into the enemy
     [SerializeField] Vector2 playerCollisionForce = new Vector2(2000, 0.5f); //The force that will be added to the player if they walk into the enemy
     protected EnemyStats stats;
     protected Animator animator;
@@ -103,23 +103,38 @@ public abstract class Enemy : BehaviourTree.Tree
 /// <summary>
 /// A small class that handles triggers
 /// </summary>
+
 [System.Serializable]
-public class Trigger
-{
+public class Trigger {
+
     [SerializeField] public float radius;
+    [SerializeField] public float direction;
+    [SerializeField] public float width = 360;
     [SerializeField] public Vector2 offset;
     [SerializeField] private Color color;
 
     public void Flip()
     {
         offset = new Vector2(-offset.x, offset.y);
+        direction = ((-(direction-90))+90)%360;
     }
-    
+
+    public void RotateRight()
+    {
+        direction = (direction - 90) % 360;
+        float lengh = Mathf.Sqrt(Mathf.Pow(offset.x,2) + Mathf.Pow(offset.y,2));
+        if (lengh == 0) return;
+        float rad = Mathf.Atan2(offset.y, offset.x);
+        offset = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad))*lengh;
+    }
+
 #if UNITY_EDITOR
     public void DrawTrigger(Vector2 position)
     {
         Handles.color = color;
-        Handles.DrawWireDisc(position+offset, Vector3.forward, radius);
+        Handles.DrawWireDisc(position + offset, Vector3.forward, radius);
+        Handles.DrawLine(position + offset, new Vector2(Mathf.Cos((direction + (width / 2)) * Mathf.Deg2Rad)*radius + position.x,Mathf.Sin((direction + (width / 2))*Mathf.Deg2Rad)*radius+position.y) + offset);
+        Handles.DrawLine(position + offset, new Vector2(Mathf.Cos((direction - (width / 2)) * Mathf.Deg2Rad) * radius + position.x, Mathf.Sin((direction - (width / 2)) * Mathf.Deg2Rad) * radius + position.y) + offset);
     }
 #endif
 }

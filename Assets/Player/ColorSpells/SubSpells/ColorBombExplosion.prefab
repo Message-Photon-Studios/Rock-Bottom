@@ -57,7 +57,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 6
 --- !u!58 &3321278458073070462
 CircleCollider2D:
@@ -114,7 +114,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 3
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: -786573894, guid: a1e837a6fbe09ca47bb02a0a92d7beda, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -159,7 +159,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerScale: 1
+  description: 
+  spellCost: 0
+  powerScale: 0
   destroyOnImpact: 0
   destroyOnHit: 0
   lifeTime: 0.5
@@ -169,10 +171,13 @@ MonoBehaviour:
   spellSprite:
     bigSprite: {fileID: 0}
     bigSpriteMask: {fileID: 0}
+    bigSpriteCapMask: {fileID: 0}
     mediumSprite: {fileID: 0}
     mediumSpriteMask: {fileID: 0}
+    mediumSpriteCapMask: {fileID: 0}
     smallSprite: {fileID: 0}
     smallSpriteMask: {fileID: 0}
+    smallSpriteCapMask: {fileID: 0}
 --- !u!114 &816937159620727808
 MonoBehaviour:
   m_ObjectHideFlags: 0

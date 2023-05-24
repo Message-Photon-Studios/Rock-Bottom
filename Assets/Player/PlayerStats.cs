@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,13 +6,15 @@ using UnityEngine.Events;
 /// </summary>
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] float health = 100;
+    [SerializeField] int health = 100;
     [SerializeField] float hitInvincibilityTime;
     [SerializeField] GameManager gameManager;
     [SerializeField] Animator animator;
     [SerializeField] PlayerMovement movement;
-    float maxHealth;
+    int maxHealth;
     float invincibilityTimer = 0;
+
+    [SerializeField] PlayerSounds playerSounds;
 
     /// <summary>
     /// This event fires when the player health is changed. The float is the new health.
@@ -30,6 +30,8 @@ public class PlayerStats : MonoBehaviour
     /// The player died
     /// </summary>
     public UnityAction onPlayerDied;
+
+    private bool isDeathExecuted;
 
     void OnEnable()
     {
@@ -57,17 +59,21 @@ public class PlayerStats : MonoBehaviour
     /// Damage the player
     /// </summary>
     /// <param name="damage"></param>
-    public void DamagePlayer(float damage)
+    public void DamagePlayer(int damage)
     {
         if(invincibilityTimer > 0) return;
+        if(damage == 0) return;
         Physics2D.IgnoreLayerCollision(3,6);
         health -= damage;
         invincibilityTimer = hitInvincibilityTime;
+        GetComponent<PlayerCombatSystem>().RemoveAttackRoot();
+        GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
         if(health <= 0)
         {
             animator.SetBool("dead", true);
             movement.movementRoot.SetTotalRoot("dead", true);
             invincibilityTimer = 3f;
+            playerSounds.PlayDeath();
         }
         animator.SetTrigger("damaged");
         onHealthChanged?.Invoke(health);
@@ -77,7 +83,7 @@ public class PlayerStats : MonoBehaviour
     /// Heal the player
     /// </summary>
     /// <param name="healing"></param>
-    public void HealPlayer (float healing) 
+    public void HealPlayer (int healing) 
     {
         health += healing;
         if(health > maxHealth) health = maxHealth;
@@ -105,7 +111,7 @@ public class PlayerStats : MonoBehaviour
     /// Adds health points to the players max health and also heals the player the same ammount
     /// </summary>
     /// <param name="addMaxHealth"></param>
-    public void AddMaxHealth(float addMaxHealth)
+    public void AddMaxHealth(int addMaxHealth)
     {
         maxHealth += addMaxHealth;
         health += addMaxHealth;
@@ -118,11 +124,14 @@ public class PlayerStats : MonoBehaviour
     /// </summary>
     public void KillPlayer()
     {
+        if (isDeathExecuted)
+            return;
+        isDeathExecuted = true;
         //TODO
         Debug.Log("Player died. Player deaths not implemented");
         onPlayerDied?.Invoke();
         
-        gameManager?.EndLevel();
+        gameManager?.PlayerDied();
     }
 
     /// <summary>

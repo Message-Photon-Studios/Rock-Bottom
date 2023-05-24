@@ -1,4 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,16 +11,18 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class EnemyStats : MonoBehaviour
 {
-    [SerializeField] float health; //The health of the enemy
+    [SerializeField] int health; //The health of the enemy
     [SerializeField] GameColor color; //The colorMat of the enemy
     [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
 
-    private Collider2D myCollider;  
+    private Collider2D myCollider;
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
 
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
+
+    [SerializeField] private bool setColorByHand;
 
     /// <summary>
     /// The direction that the enemy is looking
@@ -29,124 +34,159 @@ public class EnemyStats : MonoBehaviour
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0; 
-    private float sleepDamageBonus = 1.2f; //The extra damage dealt to a slept enemy
+    private float sleepPowerBonus = 1.2f; //The extra damage dealt to a slept enemy
     GameObject sleepParticles;
-    private float comboTime = 1; //The timelimit for the next move of a combo
-    private float comboTimer = 0;
-    private GameColor comboColor; //The colorMat that currently affects the enemy in a combo
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
+
+    private float secTimer = 0f;
 
     private Animator animator;
 
-    private List<(float damage, float timer)> poisonEffects = new List<(float damage, float time)>(); //Damage dealt over time
-    
-    private (float damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
+    [HideInInspector] public EnemySounds enemySounds;
+
+    private List<(int damage, float timer)> poisonEffects = new List<(int damage, float time)>(); //Damage dealt over time
+
+    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
     /// <summary>
-    /// This event fires when the enemys health is changed. The float is the new health.
+    /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
     public UnityAction<float> onHealthChanged;
+    public UnityAction<float, Vector2> onDamageTaken;
 
     /// <summary>
     /// The enemy died
     /// </summary>
     public UnityAction onEnemyDeath;
 
+    [CanBeNull] private Coroutine currentCoroutine;
+
     #region Setup and Timers
     void Awake()
     {
-        color = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
+        if(!setColorByHand)
+            color = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
         normalMovementSpeed = movementSpeed;
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
-        GetComponent<SpriteRenderer>().material = color.colorMat;
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
+    }
+
+    void Start()
+    {
+        onDamageTaken += DmgNumber.create;
+        onEnemyDeath += () => dropCoins(coinsDropped.GetReward());
+        enemySounds = GetComponent<EnemySounds>();
     }
 
     void OnValidate()
     {
         myCollider = GetComponent<Collider2D>();
-        GetComponent<SpriteRenderer>().material = color.colorMat;
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
+    }
+
+    void OnDisable()
+    {
+        CleanEffects();
+    }
+
+    /// <summary>
+    /// Removes all effects on enemy
+    /// </summary>
+    void CleanEffects()
+    {
+        animator.SetBool("sleep", false);
+        WakeEnemy();
+        movementSpeed = normalMovementSpeed;
+        poisonEffects = new List<(int damage, float timer)>();
+        burning = (0, 0, 0, null, null);
+        Material mat = GetComponent<SpriteRenderer>().material;
+        mat.SetFloat("_takingDmg", 0);
     }
 
     void Update()
     {
-        if(comboTimer > 0)
+        if(secTimer > 1f)
         {
-            comboTimer -= Time.deltaTime;
-            if(comboTimer <= 0) 
-            {
-                comboTimer = 0;
-                comboColor = null;
-                currentCombo = 0;
-            }
-        }
 
-        if(movementSpeedTimer > 0)
-        {
-            movementSpeedTimer -= Time.deltaTime;
-            if(movementSpeedTimer <= 0)
+            if(movementSpeedTimer > 0)
             {
-                movementSpeedTimer = 0;
-                movementSpeed = normalMovementSpeed;
-            }
-        }
-
-        if(sleepTimer > 0)
-        {
-            sleepTimer -= Time.deltaTime;
-            if(sleepTimer <= 0)
-            {
-                sleepTimer = 0;
-                WakeEnemyAnimation();
-            }
-        }
-
-        if(poisonEffects.Count > 0)
-        {
-            for (int i = 0; i < poisonEffects.Count; i++)
-            {
-                float damage = poisonEffects[i].damage * Time.deltaTime;
-                if (damage >= health)
+                movementSpeedTimer --;
+                if(movementSpeedTimer <= 0)
                 {
-                    poisonEffects.RemoveAt(i);
-                    i--;
-                    continue;
+                    movementSpeedTimer = 0;
+                    movementSpeed = normalMovementSpeed;
+                }
+            }
+
+            if(sleepTimer > 0)
+            {
+                sleepTimer --;
+                if(sleepTimer <= 0)
+                {
+                    sleepTimer = 0;
+                    WakeEnemyAnimation();
+                }
+            }
+
+            if(poisonEffects.Count > 0)
+            {
+                for (int i = 0; i < poisonEffects.Count; i++)
+                {
+                    int damage = poisonEffects[i].damage;
+                    if (damage >= health)
+                    {
+                        if(damage > 1)
+                            damage = health -1;
+                        else damage = 0;
+                    }
+                    
+                    DamageEnemy(damage);
+                    poisonEffects[i] = (damage, poisonEffects[i].timer -1);
+                    if(poisonEffects[i].timer <= 0)
+                    {
+                        poisonEffects.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+
+            if(burning.timer > 0)
+            {
+                if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
+                else DamageEnemy(0);
+                float timer = burning.timer;
+                timer --;
+                burning.timer = timer;
+
+                //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
+
+                if(timer <= 0)
+                {
+                    burning = (0, 0, 0, null, null);
+                    return;
                 }
                 
-                DamageEnemy(damage);
-                poisonEffects[i] = (poisonEffects[i].damage, poisonEffects[i].timer - Time.deltaTime);
-                if(poisonEffects[i].timer <= 0)
+
+                foreach(GameObject obj in burning.burnable)
                 {
-                    poisonEffects.RemoveAt(i);
-                    i--;
+                    if(obj == null) return;
+                    float dist = Vector2.Distance(transform.position, obj.transform.position);
+                    if(dist < burning.range)
+                    {
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles);
+                    }
                 }
             }
+            secTimer = 0f;
+
         }
-
-        if(burning.timer > 0)
-        {
-            DamageEnemy(burning.damage * Time.deltaTime);
-            float timer = burning.timer;
-            timer -= Time.deltaTime;
-            burning.timer = timer;
-
-            //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
-
-            if(timer <= 0)
-            {
-                burning = (0, 0, 0, null, null);
-                return;
-            }
-
-            foreach(GameObject obj in burning.burnable)
-            {
-                if(obj == null) return;
-                float dist = Vector2.Distance(transform.position, obj.transform.position);
-                if(dist < burning.range)
-                {
-                    obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles);
-                }
-            }
-        }
+        secTimer += Time.deltaTime;
 
         if(IsAsleep())
         {
@@ -161,18 +201,30 @@ public class EnemyStats : MonoBehaviour
     /// Damage the enemy with the specified damage
     /// </summary>
     /// <param name="damage"></param>
-    public void DamageEnemy(float damage)
+    public void DamageEnemy(int damage)
     {
         if(enemySleep)
         {
-            damage *= sleepDamageBonus;
             WakeEnemyAnimation();
         }
 
         health -= damage;
 
         onHealthChanged?.Invoke(health);
+        onDamageTaken?.Invoke(damage, transform.position);
+        if (currentCoroutine != null)
+            StopCoroutine(currentCoroutine);
         if(health <= 0) KillEnemy();
+        else currentCoroutine = StartCoroutine(dmgResponse());
+    }
+
+    public IEnumerator dmgResponse()
+    {
+        Material mat = GetComponent<SpriteRenderer>().material;
+
+        mat.SetFloat("_takingDmg", 1);
+        yield return new WaitForSeconds(0.1f);
+        mat.SetFloat("_takingDmg", 0);
     }
 
     /// <summary>
@@ -180,9 +232,14 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     /// <param name="damage"></param>
     /// <param name="timer"></param>
-    public void PoisonDamage(float damage, float timer)
+    public void PoisonDamage(int damage, float timer)
     {
         poisonEffects.Add((damage, timer));
+    }
+
+    public bool isPoisoned()
+    {
+        return poisonEffects.Count > 0;
     }
 
     /// <summary>
@@ -192,7 +249,7 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     /// <param name="range"></param>
     /// <param name="burnParticles"></param>
-    public void BurnDamage(float damage, float timer, float range, GameObject burnParticles)
+    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles)
     {
         if(timer <= 0) return;
         if(burning.timer > 0) return;
@@ -208,23 +265,33 @@ public class EnemyStats : MonoBehaviour
         instantiatedParticles.transform.parent = gameObject.transform;
     }
 
+    public bool isBurning()
+    {
+        return burning.timer > 0;
+    }
+
     /// <summary>
     /// Kill then enemy
     /// </summary>
     public void KillEnemy()
     {
+        enemySounds?.PlayDeath();
         //TODO
-        if(animator.GetBool("dead")) return;
+        if (animator.GetBool("dead")) return;
         Debug.Log(gameObject.name + " died");
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>().AddCoins(coinsDropped.GetReward());
         onEnemyDeath?.Invoke();
     }
-    
+
+    public void DropCoins()
+    {
+
+    }
+
     /// <summary>
     /// Delets the enemy
     /// </summary>
@@ -240,6 +307,11 @@ public class EnemyStats : MonoBehaviour
     public float GetHealth()
     {
         return health;
+    }
+
+    public bool isFrozen()
+    {
+        return movementSpeedTimer > 0;
     }
 
     #endregion
@@ -279,29 +351,6 @@ public class EnemyStats : MonoBehaviour
             GetComponent<SpriteRenderer>().material = color.colorMat;
         else
             GetComponent<SpriteRenderer>().material = defaultColor;
-    }
-
-    #endregion
-
-    #region Combo Color
-
-    /// <summary>
-    /// Sets the combo colorMat for the player
-    /// </summary>
-    /// <param name="comboColor"></param>
-    public void SetComboColor(GameColor comboColor)
-    {
-        this.comboColor = comboColor;
-        comboTimer = comboTime;
-    }
-
-    /// <summary>
-    /// Get the current combo colorMat of the player
-    /// </summary>
-    /// <returns></returns>
-    public GameColor GetComboColor()
-    {
-        return comboColor;
     }
 
     #endregion
@@ -364,8 +413,8 @@ public class EnemyStats : MonoBehaviour
     {
         if(sleepTimer > 0)
         {
-            if(sleepDamageBonus < sleepPower) sleepDamageBonus = sleepPower;
-        } else sleepDamageBonus = sleepPower;
+            if(sleepPowerBonus < sleepPower) sleepPowerBonus = sleepPower;
+        } else sleepPowerBonus = sleepPower;
 
         sleepTimer = timer;
         enemySleep = true;
@@ -379,7 +428,9 @@ public class EnemyStats : MonoBehaviour
             instantiatedParticles.transform.parent = transform;
             sleepParticles = instantiatedParticles;
         }
-
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if(player)
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
         animator.SetBool("sleep", true);
     }
 
@@ -403,6 +454,9 @@ public class EnemyStats : MonoBehaviour
     {
         enemySleep = false;
         sleepTimer = 0;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if(player)
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), player.GetComponent<Collider2D>(), false);
     }
 
     /// <summary>
@@ -412,6 +466,35 @@ public class EnemyStats : MonoBehaviour
     public bool IsAsleep()
     {
         return enemySleep;
+    }
+
+    public float GetSleepPowerBonus()
+    {
+        if(!enemySleep) return 0;
+        return sleepPowerBonus;
+    }
+
+    #endregion
+
+    #region Coins
+
+    public void dropCoins(int amount)
+    {
+        GameObject coin5 = Resources.Load<GameObject>("Coins/coin5");
+        GameObject coin1 = Resources.Load<GameObject>("Coins/coin1");
+
+        int coin5Amount = amount / 5;
+        int coin1Amount = amount % 5;
+        
+        for (int i = 0; i < coin5Amount; i++)
+        {
+            Instantiate(coin5, transform.position, Quaternion.identity);
+        }
+        
+        for (int i = 0; i < coin1Amount; i++)
+        {
+            Instantiate(coin1, transform.position, Quaternion.identity);
+        }
     }
 
     #endregion

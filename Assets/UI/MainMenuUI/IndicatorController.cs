@@ -4,34 +4,37 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using System.Security.Cryptography;
+using JetBrains.Annotations;
 
 public class IndicatorController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     
     //Indicator for current button, In main menu it's the acorn.
-    [SerializeField] GameObject indicator;
+    [SerializeField] RectTransform container;
+    [SerializeField] RectTransform visualContainer;
     [SerializeField] TMP_Text text;
-    private Color32 active = new Color32(248,195,94, 255);
-    private Color32 nonActive = new Color32(163,104,58, 255);
+    [SerializeField] Color32 active;
+    [SerializeField] Color32 nonActive;
 
+    [Space(10)]
+    [SerializeField] MainMenuController controller;
+
+    [CanBeNull] private Coroutine cor;
 
     //On enable hide the acorn.
     private void OnEnable() {
-        indicator.SetActive(false);
-        text.color = nonActive;
+        StartCoroutine(selectedEffect(false));
     }
 
     /// <summary>
     /// sets the indicator as active or not depending on what called it.
     /// </summary>
     /// <param name="inp"></param>
-    public void ShowIndicator(bool inp) {
-        indicator.SetActive(inp);
-        if(inp) {
-            text.color = active;
-        } else {
-            text.color = nonActive;
-        }
+    public void ShowIndicator(bool inp)
+    {
+        StartCoroutine(selectedEffect(inp));
+        text.color = inp ? active : nonActive;
     }
 
     //On mouse entering the button area.
@@ -54,5 +57,33 @@ public class IndicatorController : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnDeselect(BaseEventData eventData)
     {
         ShowIndicator(false);
+    }
+
+    public IEnumerator appear(AnimationCurve curve)
+    {
+        for (float i = 0; i < 1; i += 0.013f)
+        {
+            container.anchoredPosition = new Vector2(
+                Mathf.Lerp(-270, 50, curve.Evaluate(i)),
+                container.anchoredPosition.y 
+            );
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+    public IEnumerator selectedEffect(bool sel)
+    {
+        var to = sel ? 1.2f : 1;
+        var from = sel ? 1 : 1.2f;
+        for (float i = 0; i < 1; i += 0.1f)
+        {
+            // Linearly interpolate scale of the container
+            visualContainer.localScale = new Vector3(
+                              Mathf.Lerp(from, to, i),
+                              Mathf.Lerp(from, to, i),
+                              Mathf.Lerp(from, to, i)
+                          );
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 }

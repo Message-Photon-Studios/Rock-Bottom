@@ -25,7 +25,19 @@ public class CheckPlayerArea : Node
     public override NodeState Evaluate()
     {
         var hit = Physics2D.Raycast(stats.GetPosition() + trigger.offset, (Vector2)player.transform.position -  trigger.offset - stats.GetPosition(), trigger.radius, ~LayerMask.GetMask("Enemy","Spell", "Ignore Raycast", "Item"));
-        state = (!stats.IsAsleep() && hit.collider != null && hit.collider.CompareTag("Player"))? NodeState.SUCCESS : NodeState.FAILURE;
+        state = (!stats.IsAsleep() && hit.collider != null && hit.collider.CompareTag("Player") && inside())? NodeState.SUCCESS : NodeState.FAILURE;
         return state;
+    }
+
+    private bool inside()
+    {
+        float dX = player.transform.position.x - (stats.GetPosition().x + trigger.offset.x);
+        float dY = player.transform.position.y - (stats.GetPosition().y + trigger.offset.y);
+        float deg = Mathf.Atan2(dY, dX) * Mathf.Rad2Deg;
+        deg = ((deg % 360) - (trigger.direction % 360)+360)%360;
+        //Debug.Log("Min" + (trigger.direction - trigger.width / 2) % 360);
+        //Debug.Log("Max" + (trigger.direction + trigger.width / 2) % 360);
+        if (deg >= 360-(trigger.width/2) || deg <= trigger.width/2) return true;
+        return false;
     }
 }

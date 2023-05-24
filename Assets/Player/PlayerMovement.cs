@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float wallJumpPower;
     [SerializeField] float jumpJetpack; //A small extra power over time for the jump that alows the player to controll the height of the jump
     [SerializeField] float jumpFalloff; //The falloff power of the jump jetpack
-    [SerializeField] float cayoteTime; //A small second affter leaving a platform you can still jump as normal. 
+    [SerializeField] float coyoteTime; //A small second affter leaving a platform you can still jump as normal. 
 
     /*
     * The jumpJetpack and the jumpFalloff does controll the extra force over time for the players jump that allows the player to controll the heigh of the jump.
@@ -26,13 +26,17 @@ public class PlayerMovement : MonoBehaviour
     * jumpFalloff will decrease the time and the power of the jetpack. This does also work in reverse for decreasing variables.
     */
 
-    [SerializeField] InputActionReference walkAction, jumpAction, belowCheckAction, aboveCheckAction, lockCamera; //Input actiuons for controlling the movement and camera checks
+    [SerializeField] InputActionReference walkAction, jumpAction, lookAction; //Input actiuons for controlling the movement and camera checks
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator playerAnimator;
     [SerializeField] Transform focusPoint; //The point tha the camera will try to focus on
     [SerializeField] float checkPointY;
     [SerializeField] CapsuleCollider2D playerCollider;
+    [SerializeField] ParticleSystem dustParticles;
+    [SerializeField] ParticleSystem jumpParticles;
+    [SerializeField] ParticleSystem wallParticles;
+    [SerializeField] ParticleSystem wallJumpParticles;
 
     /// <summary>
     /// The time that the player has spent in the air. Is 0 if the player is standing on the ground.
@@ -58,42 +62,38 @@ public class PlayerMovement : MonoBehaviour
     private bool doubleJumpActive = false;
     private float jump;
 
-    private float cayoteTimer = 0;
-    
-    Action<InputAction.CallbackContext> movementRootTrue;
-    Action<InputAction.CallbackContext> movementRootFalse;
-    Action<InputAction.CallbackContext> checkBelow;
-    Action<InputAction.CallbackContext> checkAbove;
+    private float coyoteTimer = 0;
+
+    [SerializeField] PlayerSounds playerSounds;
+
+    private LayerMask ignoreLayers;
+
+    Action<InputAction.CallbackContext> checkAction;
     Action<InputAction.CallbackContext> checkCancle;
-
-
     #region Setup
     private void OnEnable() {
-        movementRootTrue = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", true);};
-        movementRootFalse = (InputAction.CallbackContext ctx) => {movementRoot.SetRoot("CameraRoot", false);};
-        checkBelow = (InputAction.CallbackContext ctx) => {CheckBelowStart();};
-        checkAbove = (InputAction.CallbackContext ctx) => {CheckAboveStart();};
+        movementRoot.SetTotalRoot("loading", true);
+        ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item");
+        checkAction = (InputAction.CallbackContext ctx) => {
+            if(lookAction.action.ReadValue<float>() < 0f)
+                CheckBelowStart();
+            else if(lookAction.action.ReadValue<float>() > 0f)
+                CheckAboveStart();
+        };
+
         checkCancle = (InputAction.CallbackContext ctx) => {CheckCancel();};
         
         jumpAction.action.started += Jump;
         jumpAction.action.canceled += JumpCancel;
-        belowCheckAction.action.performed += checkBelow;
-        belowCheckAction.action.canceled += checkCancle;
-        aboveCheckAction.action.started += checkAbove;
-        aboveCheckAction.action.canceled += checkCancle;
-        lockCamera.action.started += movementRootTrue;
-        lockCamera.action.canceled += movementRootFalse;
+        lookAction.action.performed += checkAction;
+        lookAction.action.canceled += checkCancle;
     }
 
     private void OnDisable() {
         jumpAction.action.started -= Jump;
         jumpAction.action.canceled -= JumpCancel;
-        belowCheckAction.action.started -= checkBelow;
-        belowCheckAction.action.canceled -= checkCancle;
-        aboveCheckAction.action.started -= checkAbove;
-        aboveCheckAction.action.canceled -= checkCancle;
-        lockCamera.action.started -= movementRootTrue;
-        lockCamera.action.canceled -= movementRootFalse;
+        lookAction.action.performed -= checkAction;
+        lookAction.action.canceled -= checkCancle;
     }
 
     void Start()
@@ -112,12 +112,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if(movementRoot.rooted) return;
 
-        if(IsGrounded() || cayoteTimer > 0)
+        if (IsGrounded() || coyoteTimer > 0)
         {
             body.AddForce(new Vector2(movement, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
             doubleJumpActive = false;
+            playerSounds.PlayJump();
+            jumpParticles.Play();
+            dustParticles.Stop();
+            coyoteTimer = 0;
             return;
         } else if(IsGrappeling())
         {
@@ -125,6 +129,10 @@ public class PlayerMovement : MonoBehaviour
             body.AddForce(new Vector2((wallRight?-1:1)*wallJumpPower, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
+            playerSounds.PlayJump();
+            wallJumpParticles.transform.eulerAngles = wallRight ? new Vector3(0, 0, 0) : new Vector3(0, 180, 0);
+            wallJumpParticles.transform.localPosition = wallRight ? new Vector3(0.44f, 0.202f, 0f) : new Vector3(-0.44f, 0.202f, 0f);
+            wallJumpParticles.Play();
         } else if(!doubleJumpActive)
         {
             body.AddForce(new Vector2(movement*leapPower, 0));
@@ -132,6 +140,7 @@ public class PlayerMovement : MonoBehaviour
             body.AddForce(Vector2.up * jumpPower);
             doubleJumpActive = true;
             jump = jumpJetpack;
+            playerSounds.PlayJump();
         }
     }
 
@@ -166,24 +175,24 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Collision checks
-    private bool IsGrounded()
+    public bool IsGrounded()
     {  
-        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3) ||
+        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) ||
                 Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3);
     }
 
     private bool HitCeling ()
     {
-        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, 3) ||
-                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, 3);
+        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, ignoreLayers) ||
+                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, ignoreLayers);
     }
 
     private bool IsGrappeling()
     {
-        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3) ||
-                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3)) &&
-                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .5f, 3))  ||
-                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .5f, 3)));
+        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) ||
+                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers)) &&
+                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .5f, ignoreLayers))  ||
+                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .5f, ignoreLayers)));
     }
    
     #endregion
@@ -206,7 +215,8 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrounded())
         {
-            cayoteTimer = cayoteTime;
+            GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
+            coyoteTimer = coyoteTime;
             playerAnimator.SetInteger("velocityY", 0);
 
             doubleJumpActive = false;
@@ -215,13 +225,25 @@ public class PlayerMovement : MonoBehaviour
             fallTime = 0;
             if(!movementRoot.rooted) body.velocity = new Vector2(movement, body.velocity.y);
             if(doubleJumpActive) doubleJumpActive = false;
-            if(!playerAnimator.GetBool("walking") && body.velocity.x != 0) playerAnimator.SetBool("walking", true);
-            else if(playerAnimator.GetBool("walking") && body.velocity.x == 0) playerAnimator.SetBool("walking", false);
+            if(!playerAnimator.GetBool("walking") && body.velocity.x != 0)
+            {
+                dustParticles.Play();
+                playerAnimator.SetBool("walking", true);
+            }
+            else if(playerAnimator.GetBool("walking") && body.velocity.x == 0)
+            {
+                dustParticles.Stop();
+                playerAnimator.SetBool("walking", false);
+            }
     
         } else
         {
-            cayoteTimer -= Time.fixedDeltaTime;
-            if(playerAnimator.GetBool("walking")) playerAnimator.SetBool("walking", false);
+            coyoteTimer -= Time.fixedDeltaTime;
+            if(playerAnimator.GetBool("walking"))
+            {
+                dustParticles.Stop();
+                playerAnimator.SetBool("walking", false);
+            }
             if(!movementRoot.rooted)
                 body.AddForce(new Vector2(movement*10, 0));
             airTime += Time.fixedDeltaTime;
@@ -243,6 +265,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrappeling())
         {
+            GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
             bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
             if(wallRight == spriteRenderer.flipX) Flip();
             playerAnimator.SetBool("grapple", true);
@@ -250,26 +273,28 @@ public class PlayerMovement : MonoBehaviour
             airTime = 0;
             CheckCancel();
             doubleJumpActive = false;
-
+            wallParticles.transform.localPosition = wallRight ? new Vector3(0.692f, 0.592f, 0f) : new Vector3(-0.692f, 0.592f, 0f);
 
             if(walkDir != 0)
             {
                 playerAnimator.SetInteger("velocityY", 1);
                 body.velocity = new Vector2(body.velocity.x, climbSpeed);
+                wallParticles.Stop();
             }
             else if(body.velocity.y < 0)
             {
                 body.velocity = new Vector2(body.velocity.x, -2);
                 playerAnimator.SetInteger("velocityY", -1);
+                wallParticles.Play();
             }
         } else
         {
             playerAnimator.SetBool("grapple", false);
+            wallParticles.Stop();
         }
        
         if(!movementRoot.rooted)
             body.AddForce(new Vector2(0,jump));
-
     }
 
     /// <summary>
@@ -280,6 +305,7 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer.flipX = !spriteRenderer.flipX;
         lookDir = (!spriteRenderer.flipX)?1:-1 ;
         focusPoint.localPosition = new Vector3(-focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
+        GetComponent<PlayerCombatSystem>().FlipDefaultAttack();
     }
 
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
@@ -7,31 +6,44 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] LevelGenManager levelGenerator;
+    [SerializeField] string onDeathLevel;
     [SerializeField] string nextLevelName;
-    [SerializeField] string mainMenuName;
-    [SerializeField] InputActionReference menuAction;
-    private void Start() 
+    [SerializeField] UIController canvas;
+    
+    private void Start()
     {
-        levelGenerator.init();
+        if (levelGenerator)
+            levelGenerator.init(canvas, true);
+        else
+            canvas.loaded = true;
     }
 
-    void OnEnable()
+    
+    public IEnumerator EndLevelAsync()
     {
-        menuAction.action.performed += LoadMainMenu;
-    }
-
-    void OnDisable()
-    {
-        menuAction.action.performed -= LoadMainMenu;
-    }
-
-    private void LoadMainMenu(InputAction.CallbackContext ctx)
-    {
-        SceneManager.LoadScene(mainMenuName);
+        SceneManager.LoadSceneAsync(nextLevelName);
+        yield break;
     }
 
     public void EndLevel()
     {
-        SceneManager.LoadScene(nextLevelName);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("endLevel", true);
+        StartCoroutine(canvas.FadeOutCoroutine(false, EndLevelAsync));
+    }
+
+    public IEnumerator PlayerDiedAsync()
+    {
+        SceneManager.LoadSceneAsync(onDeathLevel);
+        yield break;
+    }
+
+    public void PlayerDied()
+    {
+        StartCoroutine(canvas.FadeOutCoroutine(false, PlayerDiedAsync));
+    }
+
+    public void ShowGame()
+    {
+
     }
 }

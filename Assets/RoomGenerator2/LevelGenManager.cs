@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
 
 public enum LevelArea
 {
@@ -16,7 +13,7 @@ public class LevelGenManager : MonoBehaviour
     public static int twoDoorRoomBias = 6;
     public static int threeDoorRoomBias = 2;
 
-    public static float cullDistance = 2.5f;
+    public static float cullDistance = 3.5f;
     private LevelGenerator levelGen;
     public GameObject player;
     public SpriteRenderer endCircle;
@@ -25,13 +22,42 @@ public class LevelGenManager : MonoBehaviour
     public int size;
 
     private readonly string[] paths = {"Rooms/CrystalCaves/", "Rooms/PebbleArea"};
+    private bool finished;
 
-    public void init()
+    public IEnumerator generateSceneAsync(UIController canvas)
+    {
+        StartCoroutine(levelGen.insertPrefabsAsync(paths[(int)levelType]));
+        while (!levelGen.instantiated)
+            yield return new WaitForEndOfFrame();
+        finishGen(canvas);
+    }
+
+    private void generateScene(UIController canvas)
+    {
+        levelGen.insertPrefabs(paths[(int)levelType]);
+        finishGen(canvas);
+
+    }
+
+    private void finishGen(UIController canvas)
+    {
+        GetComponent<ItemSpellManager>().SpawnItems();
+        if (levelGen.endRoomPos != null)
+            endCircle.transform.position = levelGen.endRoomPos.Value + Vector3.up * ROOMSIZE * 2;
+
+        if (canvas != null)
+            canvas.loaded = true;
+        finished = true;
+    }
+
+    public void init(UIController canvas, bool async)
     {
         levelGen = new LevelGenerator();
         levelGen.generate(size, paths[(int)levelType]);
-        GetComponent<ItemSpellManager>().SpawnItems();
-        endCircle.transform.position = levelGen.endRoomPos.Value;
+        if (async)
+            StartCoroutine(generateSceneAsync(canvas));
+        else
+            generateScene(canvas);
     }
 
     public void reset()
@@ -40,10 +66,6 @@ public class LevelGenManager : MonoBehaviour
         levelGen?.initGeneration(paths[(int)levelType]);
     }
 
-    public void step()
-    {
-        levelGen?.stepGenerate(size, paths[(int)levelType]);
-    }
 #if UNITY_EDITOR
     void OnDrawGizmos() 
     {
@@ -54,7 +76,8 @@ public class LevelGenManager : MonoBehaviour
 
     private void Update()
     {
-        levelGen?.cullElements();
+        if (finished)
+            levelGen?.cullElements();
     }
 
     private void FixedUpdate()

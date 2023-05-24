@@ -18,27 +18,11 @@ public class ColorSpellImpact : SpellImpact
 
             EnemyStats enemy = other.gameObject.GetComponent<EnemyStats>();
 
-            GameColor comboColor = spell.GetColor().MixColor(enemy.GetComboColor());
-
-            enemy.SetComboColor(comboColor);
-            
-
-            if(comboColor != spell.GetColor())
+            if (enemy != null)
             {
-                enemy.currentCombo *= 2;
-                if(enemy.currentCombo == 0) enemy.currentCombo = 1;
-
-                if(comboColor.name == "Brown" ) 
-                {
-                    enemy.SetComboColor(null);
-                    float comboDamage = spell.GetPlayerObj().GetComponent<PlayerCombatSystem>().comboBaseDamage * enemy.currentCombo;
-                    enemy.currentCombo = 0;
-                    enemy.DamageEnemy(comboDamage);
-                }
+                spell.GetColor().ApplyColorEffect(other.gameObject, transform.position, spell.GetPlayerObj(), spell.GetPower());
+                enemy.enemySounds?.PlaySpellHit();
             }
-
-
-            if(enemy != null) spell.GetColor().ApplyColorEffect(other.gameObject, transform.position, spell.GetPlayerObj(), spell.GetPower());
         }
 
         var instantiatedParticles = GameObject.Instantiate(onImpactParticles, transform.position, transform.rotation);

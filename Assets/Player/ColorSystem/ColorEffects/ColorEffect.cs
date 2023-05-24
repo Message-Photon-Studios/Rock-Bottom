@@ -8,7 +8,7 @@ using UnityEngine;
 public abstract class ColorEffect : ScriptableObject
 {
     [SerializeField] protected GameObject particles;
-    [SerializeField] protected float damage;
+    [SerializeField] protected int damage;
 
     /// <summary>
     /// Apply this color effect to the enemy

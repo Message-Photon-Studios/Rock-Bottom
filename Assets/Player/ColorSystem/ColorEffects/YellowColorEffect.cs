@@ -13,6 +13,7 @@ public class YellowColorEffect : ColorEffect
         foreach (GameObject obj in objs)
         {
             if(obj == null) continue;
+            if(obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) continue; 
             if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange*power,2))
             {
                 AffectObject(obj);
@@ -25,6 +26,7 @@ public class YellowColorEffect : ColorEffect
             {
                 if(obj == null) continue;
                 if(affected[i] == null) continue;
+                if(obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) continue; 
                 if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange*power,2))
                 {
                     AffectObject(obj);
@@ -43,8 +45,10 @@ public class YellowColorEffect : ColorEffect
             // Set enemy as parent of the particle system
             instantiatedParticles.transform.parent = enemyObj.transform;
             affected.Add(obj);
-            obj?.GetComponent<Rigidbody2D>()?.AddForce((enemyObj.transform.position - obj.transform.position).normalized * force);
-            obj.GetComponent<EnemyStats>().DamageEnemy(damage*power);
+            Vector3 forceDir =  (enemyObj.transform.position - obj.transform.position);
+            if(forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
+            obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir * force);
+            obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power));
         }
     }
 }

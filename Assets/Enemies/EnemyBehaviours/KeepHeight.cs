@@ -37,7 +37,7 @@ public class KeepHeight : Node
         }
 
         int dir = (stats.GetPosition().y - height < 0)?1:-1;
-        stats.GetComponent<Rigidbody2D>().AddForce(Vector2.up*dir*stats.GetSpeed()*movementFactor);
+        stats.GetComponent<Rigidbody2D>().AddForce(Vector2.up*dir*stats.GetSpeed()*movementFactor*Time.deltaTime);
 
         state = NodeState.RUNNING;
         return state;

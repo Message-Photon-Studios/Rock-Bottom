@@ -14,7 +14,7 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// Scales the power for this specific color spell
     /// </summary>
-    [SerializeField] protected float powerScale = 1;
+    [SerializeField] public float powerScale = 1;
 
     /// <summary>
     /// The projectile will be destroyed on impact with any object
@@ -110,7 +110,7 @@ public class ColorSpell : MonoBehaviour
     void OnTriggerStay2D(Collider2D other)
     {
         if(other.CompareTag("Item") || other.CompareTag("Player")) return;
-        if(destroyOnImpact && !hitEnemies.Contains(other.gameObject.name)) 
+        if(destroyOnImpact && !other.CompareTag("Enemy") && !hitEnemies.Contains(other.gameObject.name)) 
         {
             Impact(other);
             Destroy(gameObject);
@@ -188,8 +188,11 @@ public struct BottleSprite
 {
     public Sprite bigSprite;
     public Sprite bigSpriteMask;
+    public Sprite bigSpriteCapMask;
     public Sprite mediumSprite;
     public Sprite mediumSpriteMask;
+    public Sprite mediumSpriteCapMask;
     public Sprite smallSprite;
     public Sprite smallSpriteMask;
+    public Sprite smallSpriteCapMask;
 }

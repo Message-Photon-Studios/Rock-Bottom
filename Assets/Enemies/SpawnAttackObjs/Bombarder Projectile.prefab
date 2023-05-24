@@ -59,8 +59,10 @@ MonoBehaviour:
     max: 0
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   sleepForcedown: 0
+  setColorByHand: 0
   lookDir: -1
   currentCombo: 0
+  enemySounds: {fileID: 0}
 --- !u!114 &6776652896614623255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,12 +75,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0b4d89169d8598408867473de3a4116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
-  damage: 30
+  playerCollisionDamage: 1
+  playerCollisionForce: {x: 0, y: 0}
+  damage: 25
   force: {x: 5500, y: 1000}
   attackTrigger:
-    radius: 2.8
+    radius: 2.5
+    direction: 0
+    width: 360
     offset: {x: 0, y: 0}
     color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!212 &8094419970937011934
