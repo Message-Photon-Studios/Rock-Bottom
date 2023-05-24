@@ -182,7 +182,7 @@ public class MainMenuController : MonoBehaviour
     private void FixedUpdate()
     {
         var timeElapsed = Time.time - timeSinceLastInput;
-        if (timeElapsed > 15 && !playing)
+        if (timeElapsed > 60 && !playing)
         {
             playing = true;
             startButton.interactable = false;
