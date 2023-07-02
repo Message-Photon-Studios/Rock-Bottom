@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -32,7 +34,13 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] GameObject credits;
 
+    [SerializeField] InputActionReference cancel;
+    [SerializeField] GameObject trailer;
+    [SerializeField] VideoPlayer player;
+
     [HideInInspector] public bool areCreditsOpen = false;
+    public float timeSinceLastInput = 0;
+    private bool playing = false;
 
     private void OnEnable()
     {
@@ -43,6 +51,10 @@ public class MainMenuController : MonoBehaviour
 
         DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
         bgMusic.enableChildren();
+        timeSinceLastInput = Time.time;
+        trailer.SetActive(false);
+        //cancel.action.performed += CancelTrailer;
+        playing = false;
     }
 
     //Load scene "Gem" when pressed.
@@ -58,7 +70,7 @@ public class MainMenuController : MonoBehaviour
         Debug.Log("Exit");
     }
 
-    IEnumerator FadeOutCoroutine(bool fadeIn)
+    IEnumerator FadeOutCoroutine(bool fadeIn, bool load = true)
     {
         int direction = fadeIn ? -1 : 1;
         fadeToBlackImg.color = new Color(0, 0, 0, fadeIn ? 1 : 0);
@@ -83,6 +95,8 @@ public class MainMenuController : MonoBehaviour
         }
 
         SceneManager.LoadSceneAsync("Tutorial");
+
+        if (!load) yield break;
 
         int count = 0;
         sylviaLoading.gameObject.SetActive(true);
@@ -129,6 +143,7 @@ public class MainMenuController : MonoBehaviour
 
         areCreditsOpen = true;
         credits.SetActive(true);
+        timeSinceLastInput = Time.time;
     }
 
     public void hideCredits()
@@ -142,5 +157,54 @@ public class MainMenuController : MonoBehaviour
 
         areCreditsOpen = false;
         credits.SetActive(false);
+        timeSinceLastInput = Time.time;
     }
+
+    /*
+    IEnumerator StartTrailer()
+    {
+        fadeToBlackImg.color = new Color(0, 0, 0, 0);
+        while ((fadeToBlackImg.color.a < 1))
+        {
+            fadeToBlackImg.color = new Color(0, 0, 0, fadeToBlackImg.color.a + Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+        
+        DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
+        bgMusic.disableChildren();
+        player.Play();
+        trailer.SetActive(true);
+
+        yield return new WaitForSeconds(0.1f);
+
+        fadeToBlackImg.color = new Color(0, 0, 0, 0);
+    }
+    */
+
+    private void FixedUpdate()
+    {
+        var timeElapsed = Time.time - timeSinceLastInput;
+        /*if (timeElapsed > 60 && !playing)
+        {
+            playing = true;
+            startButton.interactable = false;
+            settingsButton.interactable = false;
+            creditsButton.interactable = false;
+            exitButton.interactable = false;
+
+            StartCoroutine(StartTrailer());
+        }*/
+
+        if (areCreditsOpen)
+            timeSinceLastInput = Time.time;
+    }
+
+    /*
+    private void CancelTrailer(InputAction.CallbackContext obj)
+    {
+        if (!playing) return;
+
+        playing = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }*/
 }
