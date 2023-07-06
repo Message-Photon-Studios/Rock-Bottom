@@ -35,11 +35,13 @@ public class TutorialEndpoint : MonoBehaviour
     {
         if(!enableExit) return;
         DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
-        bgMusic.disableChildren();
+        bgMusic?.disableChildren();
         trailer.SetActive(true);
         player.Play();
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("trailer", true);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLevelMananger>().ForceKillPlayer();
     }
+        
 
     void ExitLevel(VideoPlayer vp)
     {

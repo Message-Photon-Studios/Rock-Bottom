@@ -663,6 +663,7 @@ public class LevelGenerator
 
     public void cullElements()
     {
+        if(!GameObject.FindGameObjectWithTag("Player")) return;
         // Get the player position
         var camPos = Camera.main.transform.position;
         var cameraSize = Camera.main.orthographicSize;

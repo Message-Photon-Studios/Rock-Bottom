@@ -19,6 +19,7 @@ public class CoinController : MonoBehaviour
    }
 
       private void OnDisable() {
+        inventory.onCoinsChanged -= UpdateCoins;
     
    }
 

@@ -42,7 +42,7 @@ public class UIController : MonoBehaviour
     private PlayerMovement playerMovement;
 
     private void OnEnable() {
-        StartCoroutine(FadeOutCoroutine(true));
+        //StartCoroutine(FadeOutCoroutine(true));
         colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         colorInventory.onColorSlotsChanged += colorSlotUpdate;

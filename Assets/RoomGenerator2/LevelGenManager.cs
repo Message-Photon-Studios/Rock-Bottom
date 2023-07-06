@@ -25,6 +25,11 @@ public class LevelGenManager : MonoBehaviour
     private readonly string[] paths = {"Rooms/CrystalCaves/Level_", "Rooms/PebbleArea/Level_"};
     private bool finished;
 
+    void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
     public IEnumerator generateSceneAsync(UIController canvas)
     {
         StartCoroutine(levelGen.insertPrefabsAsync(paths[(int)levelType]+level));
@@ -49,6 +54,8 @@ public class LevelGenManager : MonoBehaviour
         if (canvas != null)
             canvas.loaded = true;
         finished = true;
+        
+        GetComponent<GameManager>().FinishedGeneration();
     }
 
     public void init(UIController canvas, bool async)

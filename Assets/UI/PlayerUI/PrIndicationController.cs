@@ -31,6 +31,7 @@ public class PrIndicationController : MonoBehaviour
         colorInventory.onSlotChanged -= OnSlotChanged;
         colorInventory.onColorUpdated -= UpdatePrIndicator;
         colorInventory.onColorSpellChanged -= OnSlotChanged;
+        itemInventory.onItemPickedUp -= UpdatePrIndicator;
     }
 
     /// <summary>
