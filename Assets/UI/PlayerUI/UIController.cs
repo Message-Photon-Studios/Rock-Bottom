@@ -33,6 +33,8 @@ public class UIController : MonoBehaviour
     private bool mapOpen = false;
     private bool inventoryOpen = false;
 
+    public bool disablePausing = false;
+
     //Input actions for opening the various menus.
     [SerializeField] InputActionReference openPauseMenu;
     [SerializeField] InputActionReference openMap;
@@ -142,8 +144,9 @@ public class UIController : MonoBehaviour
     /// </summary>
      private void Pause()
     {
+        if(disablePausing) return;
         Time.timeScale = 0f;
-        Debug.Log("Ganme is paused...");
+        Debug.Log("Game is paused...");
 
     }
 

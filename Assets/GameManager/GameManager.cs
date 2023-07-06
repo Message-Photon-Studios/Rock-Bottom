@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
         {
             obj.GetComponent<PlayerLevelMananger>().SetStartLevel(this);
         }
-
         StartCoroutine(canvas.FadeOutCoroutine(true));
+        canvas.disablePausing = false;
     }
 
     public IEnumerator EndLevelAsync()
@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     public void EndLevel()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        canvas.disablePausing = true;
         if(player) player.GetComponent<Rigidbody2D>().simulated = false;
         player?.GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("endLevel", true);
         StartCoroutine(canvas.FadeOutCoroutine(false, EndLevelAsync));
