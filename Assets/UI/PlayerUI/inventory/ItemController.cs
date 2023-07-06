@@ -79,6 +79,8 @@ public class ItemController : MonoBehaviour
 
     private void OnDisable() {
         itemInventory.onItemPickedUp -= AddItem;
+        colorInventory.onColorSpellChanged -= BottleChanged;
+        colorInventory.onColorSlotsChanged -= BottleAmountChanged;
         foreach(SelectedColor color in statColorList) {
             color.onInventoryColorSelected -= ShowSelectedColor;
             color.onColorLoaded -= ItemsLoaded;

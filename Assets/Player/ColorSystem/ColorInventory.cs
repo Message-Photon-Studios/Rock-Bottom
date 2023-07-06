@@ -30,7 +30,7 @@ public class ColorInventory : MonoBehaviour
 
     public Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
     SpellPickup pickUpSpell = null;
-    System.Action<InputAction.CallbackContext> pickUp;
+
     #region Actions for UI
     
     /// <summary>
@@ -76,22 +76,7 @@ public class ColorInventory : MonoBehaviour
         changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
         onColorUpdated += updateBrushColor;
         onSlotChanged += slotChangedBrush;
-
-        pickUp = (InputAction.CallbackContext ctx) => {
-            if(pickUpSpell == null) return;
-            if(pickUpSpell.GetNeedsPayement())
-            {
-                if(GetComponent<ItemInventory>().PayCost(pickUpSpell.GetSpell().spellCost))
-                {
-                    pickUpSpell.PickedUp();
-                }
-            } else
-            {
-                pickUpSpell.PickedUp();
-            }
-        };
-
-        pickUpAction.action.performed += pickUp;
+        pickUpAction.action.performed += PickUp;
     }
 
     void OnDisable()
@@ -100,7 +85,7 @@ public class ColorInventory : MonoBehaviour
         onColorUpdated -= updateBrushColor;
         onSlotChanged -= slotChangedBrush;
         
-        pickUpAction.action.performed -= pickUp;
+        pickUpAction.action.performed -= PickUp;
     }
 
     #endregion
@@ -267,6 +252,21 @@ public class ColorInventory : MonoBehaviour
     #endregion
 
     #region Change color spells
+    public void PickUp(InputAction.CallbackContext ctx)
+    {
+        if(pickUpSpell == null) return;
+        if(pickUpSpell.GetNeedsPayement())
+        {
+            if(GetComponent<ItemInventory>().PayCost(pickUpSpell.GetSpell().spellCost))
+            {
+                pickUpSpell.PickedUp();
+            }
+        } else
+        {
+            pickUpSpell.PickedUp();
+        }
+    }
+
     /// <summary>
     /// Enables a spell to be picked up
     /// </summary>
