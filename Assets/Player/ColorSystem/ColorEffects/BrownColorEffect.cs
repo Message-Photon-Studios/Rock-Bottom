@@ -23,6 +23,6 @@ public class BrownColorEffect : ColorEffect
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
-        enemy.AbsorbColor();
+        enemy.RemoveColor();
     }
 }

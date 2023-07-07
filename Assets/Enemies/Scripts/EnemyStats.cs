@@ -329,10 +329,18 @@ public class EnemyStats : MonoBehaviour
         GameColor ret = color;
         int ammount = colorAmmount;
         if (colorAmmount == 0) ret = null;
+        RemoveColor();
+        return (ret, ammount);
+    }
+    
+    /// <summary>
+    /// Removes the color from the enemy
+    /// </summary>
+    public void RemoveColor()
+    {
         color = null;
         colorAmmount = 0;
         GetComponent<SpriteRenderer>().material = defaultColor;
-        return (ret, ammount);
     }
 
     /// <summary>
