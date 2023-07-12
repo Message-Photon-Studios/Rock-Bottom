@@ -20,6 +20,11 @@ public class CameraFocus : MonoBehaviour
         y = aim.position.y;
     }
 
+    public void SetStartLevel()
+    {
+        OnEnable();
+    }
+
     void FixedUpdate()
     {
         if(Mathf.Abs(aim.position.x-x) > maxXspeed)

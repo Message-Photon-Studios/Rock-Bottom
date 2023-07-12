@@ -11,6 +11,7 @@ using UnityEngine.Events;
 public class ItemInventory : MonoBehaviour
 {
     [SerializeField] int coins;
+    private int startCoins;
     [SerializeField] List<Item> items = new List<Item>();
     [SerializeField] InputActionReference pickUpAction;
     [SerializeField] CoinPickupEffect coinPickupEffect;
@@ -40,6 +41,7 @@ public class ItemInventory : MonoBehaviour
 
     void OnEnable()
     {
+        startCoins = coins;
         pickUp = (InputAction.CallbackContext ctx) => {
             while(pickUpItems.Count > 0)
             {

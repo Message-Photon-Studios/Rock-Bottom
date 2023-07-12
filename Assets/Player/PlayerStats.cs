@@ -33,6 +33,11 @@ public class PlayerStats : MonoBehaviour
 
     private bool isDeathExecuted;
 
+    public void Setup(GameManager gameManager)
+    {
+        this.gameManager = gameManager;
+    }
+
     void OnEnable()
     {
         //TODO: Check so this doesnt cause a problem when changing scene.
@@ -129,9 +134,8 @@ public class PlayerStats : MonoBehaviour
         isDeathExecuted = true;
         //TODO
         Debug.Log("Player died. Player deaths not implemented");
-        onPlayerDied?.Invoke();
-        
         gameManager?.PlayerDied();
+        onPlayerDied?.Invoke();
     }
 
     /// <summary>

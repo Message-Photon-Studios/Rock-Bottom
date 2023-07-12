@@ -36,8 +36,13 @@ public class CameraMovement : MonoBehaviour
     private Vignette vignette;
     private float timer = 0;
 
+    private Vector3 startPos;
+    private Vector3 focusStartPos;
+
     private void Start()
     {
+        startPos = transform.position;
+        focusStartPos = focusPoint.position;
         var ratio = Screen.height / 1080.0;
         if (Math.Floor(ratio) > 0)
             ratio /= Math.Floor(ratio);
@@ -47,6 +52,16 @@ public class CameraMovement : MonoBehaviour
         pixelPerfectCamera.assetsPPU = (int)Math.Floor(ratio);
         vignette = GetComponentInChildren<Volume>().profile.components[1] as Vignette;
         setIntenseVingette(false);
+    }
+
+    /// <summary>
+    /// Is called when a new level starts
+    /// </summary>
+    public void SetStartLevel()
+    {
+        focusPoint.position = focusStartPos;
+        transform.position = startPos;
+        focusPoint.GetComponent<CameraFocus>().SetStartLevel();
     }
 
     private void FixedUpdate() {

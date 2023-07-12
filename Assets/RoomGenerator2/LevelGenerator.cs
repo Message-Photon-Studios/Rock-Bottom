@@ -447,7 +447,7 @@ public class LevelGenerator
         }
 
         var (min, max) = getDungeonSize();
-        var fillRooms = Resources.LoadAll<GameObject>(areaPath + "filledRooms");
+        var fillRooms = Resources.LoadAll<GameObject>(areaPath + "/filledRooms");
 
         for (float x = min.x - 2; x < max.x + 2; x++)
         {
@@ -464,12 +464,12 @@ public class LevelGenerator
 
     public void initGeneration(string areaPath)
     {
-        var initRooms = Resources.LoadAll<CustomRoom>(areaPath + "InitRooms");
+        var initRooms = Resources.LoadAll<CustomRoom>(areaPath + "/InitRooms");
         var initRoom = initRooms[Random.Range(0, initRooms.Length - 1)];
         remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0)};
-        normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "NormalRooms").ToList();
+        normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "/NormalRooms").ToList();
         foreach (var room in normalRooms) room.spawnCount = 0;
-        closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "ClosingRooms").ToList();
+        closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "/ClosingRooms").ToList();
         usedRooms = new List<CustomRoom>();
         prefabs = new List<(Vector2, CustomRoom)>();
         filledPrefabs = new List<(Vector2, GameObject)>();
@@ -479,7 +479,7 @@ public class LevelGenerator
 
     private void endGeneration(string areaPath)
     {
-        var endRooms = Resources.LoadAll<CustomRoom>(areaPath + "EndRooms");
+        var endRooms = Resources.LoadAll<CustomRoom>(areaPath + "/EndRooms");
         var endRoom = endRooms[Random.Range(0, endRooms.Length - 1)];
         graph.placeRoom(topDoor.pos, new Vector2(0, 0), Direction.Up, endRoom);
         endRoomPos = topDoor.pos * 2 * LevelGenManager.ROOMSIZE;
@@ -663,6 +663,7 @@ public class LevelGenerator
 
     public void cullElements()
     {
+        if(!GameObject.FindGameObjectWithTag("Player")) return;
         // Get the player position
         var camPos = Camera.main.transform.position;
         var cameraSize = Camera.main.orthographicSize;
@@ -714,7 +715,7 @@ public class LevelGenerator
         }
 
         var (min, max) = getDungeonSize();
-        var fillRooms = Resources.LoadAll<GameObject>(areaPath + "filledRooms");
+        var fillRooms = Resources.LoadAll<GameObject>(areaPath + "/filledRooms");
 
         for (float x = min.x - 2; x < max.x + 2; x++)
         {

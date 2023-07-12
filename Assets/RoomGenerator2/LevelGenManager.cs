@@ -19,14 +19,20 @@ public class LevelGenManager : MonoBehaviour
     public SpriteRenderer endCircle;
 
     public LevelArea levelType;
+    public int level;
     public int size;
 
-    private readonly string[] paths = {"Rooms/CrystalCaves/", "Rooms/PebbleArea"};
+    private readonly string[] paths = {"Rooms/CrystalCaves/Level_", "Rooms/PebbleArea/Level_"};
     private bool finished;
+
+    void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
 
     public IEnumerator generateSceneAsync(UIController canvas)
     {
-        StartCoroutine(levelGen.insertPrefabsAsync(paths[(int)levelType]));
+        StartCoroutine(levelGen.insertPrefabsAsync(paths[(int)levelType]+level));
         while (!levelGen.instantiated)
             yield return new WaitForEndOfFrame();
         finishGen(canvas);
@@ -34,7 +40,7 @@ public class LevelGenManager : MonoBehaviour
 
     private void generateScene(UIController canvas)
     {
-        levelGen.insertPrefabs(paths[(int)levelType]);
+        levelGen.insertPrefabs(paths[(int)levelType]+level);
         finishGen(canvas);
 
     }
@@ -48,12 +54,14 @@ public class LevelGenManager : MonoBehaviour
         if (canvas != null)
             canvas.loaded = true;
         finished = true;
+        
+        GetComponent<GameManager>().FinishedGeneration();
     }
 
     public void init(UIController canvas, bool async)
     {
         levelGen = new LevelGenerator();
-        levelGen.generate(size, paths[(int)levelType]);
+        levelGen.generate(size, paths[(int)levelType]+level);
         if (async)
             StartCoroutine(generateSceneAsync(canvas));
         else
@@ -63,7 +71,7 @@ public class LevelGenManager : MonoBehaviour
     public void reset()
     {
         levelGen = new LevelGenerator();
-        levelGen?.initGeneration(paths[(int)levelType]);
+        levelGen?.initGeneration(paths[(int)levelType]+level);
     }
 
 #if UNITY_EDITOR

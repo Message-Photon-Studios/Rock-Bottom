@@ -5223,9 +5223,9 @@ GameObject:
   - component: {fileID: 8210922060710586880}
   - component: {fileID: 2907638193198340670}
   - component: {fileID: -572800373142562677}
+  - component: {fileID: -140540763044656077}
   - component: {fileID: 468746527930208031}
   - component: {fileID: 468746527930208002}
-  - component: {fileID: 468746527930208004}
   - component: {fileID: 5589058685384803136}
   - component: {fileID: 8035332531517541450}
   m_Layer: 3
@@ -5366,7 +5366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f52fbe53cb41994d8a51040781a40e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorBuff: 0.5
+  colorBuff: 0.3
   colorSlots:
   - imageScale: 0
     maxCapacity: 12
@@ -5409,6 +5409,19 @@ MonoBehaviour:
   items: []
   pickUpAction: {fileID: -4679931084075046408, guid: fd04459890e791843a48243064f9151b, type: 3}
   coinPickupEffect: {fileID: 2940649854964536645, guid: 3fc8f0f54bafda54f8ae88f52cb50fe4, type: 3}
+--- !u!114 &-140540763044656077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468746527930208030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b412a4e0b4d8584184023c9b6fe3b49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadWithPlayerObjects: []
 --- !u!212 &468746527930208031
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5448,7 +5461,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1472463759
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -948051758, guid: 75a072cc573e65f4abf6b065786d44fb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5477,36 +5490,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.13}
   m_Size: {x: 0.8, y: 1.4}
   m_Direction: 0
---- !u!114 &468746527930208004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468746527930208030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: fd04459890e791843a48243064f9151b, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!95 &5589058685384803136
 Animator:
   serializedVersion: 5
@@ -21149,7 +21132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2939323158989546680, guid: 6db698f34a3f444469b77df3ab59a609, type: 3}
       propertyPath: m_SortingLayer
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2939323158989546680, guid: 6db698f34a3f444469b77df3ab59a609, type: 3}
       propertyPath: m_SortingLayerID
