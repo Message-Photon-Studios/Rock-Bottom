@@ -36,7 +36,7 @@ public class GameColor : ScriptableObject
     /// <returns></returns>
     public GameColor MixColor(GameColor color)
     {
-        if(mixes.Exists(item => item.mixWith == color))
+        if(color != null && mixes.Exists(item => item.mixWith == color))
         {
             return mixes.Find(item => item.mixWith == color).mixTo;
         }
@@ -46,13 +46,17 @@ public class GameColor : ScriptableObject
 
     public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
-        if(enemyObj.GetComponent<EnemyStats>().GetColor() == this)
+        EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
+
+        if(enemy.GetColor() == this)
         {
-            enemyObj.GetComponent<EnemyStats>().DamageEnemy(0);
+            enemy.DamageEnemy(0);
             return;
         }
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
+
+        enemy.SetColor(MixColor(enemy.GetColor()), 1);
     }
 
     /// <summary>

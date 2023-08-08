@@ -361,6 +361,12 @@ public class EnemyStats : MonoBehaviour
             GetComponent<SpriteRenderer>().material = defaultColor;
     }
 
+    public void SetColor(GameColor color, int ammount)
+    {
+        SetColor(color);
+        colorAmmount = ammount;
+    }
+
     #endregion
 
     #region Movement Speed
