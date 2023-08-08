@@ -13,7 +13,8 @@ public class EnemyStats : MonoBehaviour
 {
     [SerializeField] int health; //The health of the enemy
     [SerializeField] GameColor color; //The colorMat of the enemy
-    [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy
+    [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy'
+    [SerializeField] int colorComboDamage = 40; // The damage that the enemy will take when becoming rainbow color
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
 
@@ -113,6 +114,11 @@ public class EnemyStats : MonoBehaviour
     {
         if(secTimer > 1f)
         {
+            if(color != null && color.name == "Rainbow")
+            {
+                DamageEnemy(colorComboDamage);
+                AbsorbColor();
+            }
 
             if(movementSpeedTimer > 0)
             {
@@ -158,8 +164,9 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.timer > 0)
             {
-                if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
-                else DamageEnemy(0);
+                DamageEnemy(burning.damage);
+                //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
+                //else DamageEnemy(0);
                 float timer = burning.timer;
                 timer --;
                 burning.timer = timer;
@@ -365,6 +372,11 @@ public class EnemyStats : MonoBehaviour
     {
         SetColor(color);
         colorAmmount = ammount;
+    }
+
+    public int GetColorAmmount()
+    {
+        return colorAmmount;
     }
 
     #endregion
