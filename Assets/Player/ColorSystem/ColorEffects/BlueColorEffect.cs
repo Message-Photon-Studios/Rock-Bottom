@@ -13,6 +13,7 @@ public class BlueColorEffect : ColorEffect
     [SerializeField] float duration;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
+        
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
         var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
