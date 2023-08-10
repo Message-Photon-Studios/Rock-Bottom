@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// This class controls the cameras movement
@@ -59,6 +60,7 @@ public class CameraMovement : MonoBehaviour
     /// </summary>
     public void SetStartLevel()
     {
+        if (SceneManager.GetActiveScene().name == "Tutorial") return;
         focusPoint.position = focusStartPos;
         transform.position = startPos;
         focusPoint.GetComponent<CameraFocus>().SetStartLevel();
