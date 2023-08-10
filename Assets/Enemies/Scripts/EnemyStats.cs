@@ -4,6 +4,7 @@ using System.Drawing;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.ParticleSystem;
 
 /// <summary>
 /// Important stats for an enemy.
@@ -13,12 +14,13 @@ public class EnemyStats : MonoBehaviour
 {
     [SerializeField] int health; //The health of the enemy
     [SerializeField] GameColor color; //The colorMat of the enemy
-    [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy
+    [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy'
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
 
     private Collider2D myCollider;
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
+    [SerializeField] private GameObject comboParticles;
 
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
 
@@ -30,7 +32,10 @@ public class EnemyStats : MonoBehaviour
     public float lookDir = -1;
 
     private float normalMovementSpeed; //The normal movement speed of the enemy
-    private float movementSpeedTimer; 
+    private float movementSpeedTimer;
+
+    private int colorComboDamage = 40; // The damage that the enemy will take when becoming rainbow color
+    private float colorComboTimer = 2f; //The timer before the enemy explode
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0; 
@@ -38,7 +43,7 @@ public class EnemyStats : MonoBehaviour
     GameObject sleepParticles;
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
-    private float secTimer = 0f;
+    private float secTimer = 0f; //Makes sure that all timers are updated only each second. 
 
     private Animator animator;
 
@@ -113,6 +118,23 @@ public class EnemyStats : MonoBehaviour
     {
         if(secTimer > 1f)
         {
+            if(color != null && color.name == "Rainbow")
+            {
+                colorComboTimer--;
+
+                if (colorComboTimer <= 0)
+                {
+                    DamageEnemy(colorComboDamage);
+                    AbsorbColor();
+                    colorComboTimer = 2f;
+
+                    GameObject instantiatedParticles = GameObject.Instantiate(comboParticles, transform.position, transform.rotation);
+                    instantiatedParticles.GetComponent<ParticleSystem>().Play();
+                    Destroy(instantiatedParticles, 1f);
+                    // Set enemy as parent of the particle system
+                    instantiatedParticles.transform.parent = transform;
+                }
+            }
 
             if(movementSpeedTimer > 0)
             {
@@ -158,8 +180,9 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.timer > 0)
             {
-                if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
-                else DamageEnemy(0);
+                DamageEnemy(burning.damage);
+                //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
+                //else DamageEnemy(0);
                 float timer = burning.timer;
                 timer --;
                 burning.timer = timer;
@@ -359,6 +382,17 @@ public class EnemyStats : MonoBehaviour
             GetComponent<SpriteRenderer>().material = color.colorMat;
         else
             GetComponent<SpriteRenderer>().material = defaultColor;
+    }
+
+    public void SetColor(GameColor color, int ammount)
+    {
+        SetColor(color);
+        colorAmmount = ammount;
+    }
+
+    public int GetColorAmmount()
+    {
+        return colorAmmount;
     }
 
     #endregion
