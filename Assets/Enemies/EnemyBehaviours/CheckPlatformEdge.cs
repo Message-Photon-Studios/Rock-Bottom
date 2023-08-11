@@ -20,11 +20,11 @@ public class CheckPlatformEdge : Node
     }
     public override NodeState Evaluate()
     {
-        bool test = !Physics2D.Raycast(stats.GetPosition() + Vector2.right* legPos, Vector2.down, 1f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item")) ||
-                    !Physics2D.Raycast(stats.GetPosition() - Vector2.right* legPos, Vector2.down, 1f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item")) ||
+        bool test = !Physics2D.Raycast(stats.GetPosition() + Vector2.right* legPos, Vector2.down, 2f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item")) ||
+                    !Physics2D.Raycast(stats.GetPosition() - Vector2.right* legPos, Vector2.down, 2f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item")) ||
                     Physics2D.Raycast(stats.GetPosition() + Vector2.right * legPos, Vector2.right, .2f, ~LayerMask.GetMask("Player", "Enemy", "Spell", "Ignore Raycast", "Item")) ||
                     Physics2D.Raycast(stats.GetPosition() - Vector2.right * legPos, Vector2.left, .2f, ~LayerMask.GetMask("Player", "Enemy", "Spell", "Ignore Raycast", "Item"));
-        state = (test)?NodeState.SUCCESS:NodeState.FAILURE;
+        state = (test)?NodeState.SUCCESS:NodeState.FAILURE;;
         return state;
     }
 }
