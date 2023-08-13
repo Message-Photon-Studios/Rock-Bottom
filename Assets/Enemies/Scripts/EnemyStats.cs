@@ -40,7 +40,7 @@ public class EnemyStats : MonoBehaviour
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0; 
-    private float sleepPowerBonus = 1.2f; //The extra damage dealt to a slept enemy
+    private float sleepPowerBonus = 0f; //The extra damage dealt to a slept enemy
     GameObject sleepParticles;
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
@@ -460,10 +460,8 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     public void SleepEnemy(float timer, float sleepPower, GameObject particles)
     {
-        if(sleepTimer > 0)
-        {
-            if(sleepPowerBonus < sleepPower) sleepPowerBonus = sleepPower;
-        } else sleepPowerBonus = sleepPower;
+        if(sleepTimer <= 0)
+            sleepPowerBonus = sleepPower;
 
         sleepTimer = timer;
         enemySleep = true;
