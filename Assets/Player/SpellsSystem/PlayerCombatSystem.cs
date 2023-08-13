@@ -92,7 +92,8 @@ public class PlayerCombatSystem : MonoBehaviour
         if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
         //enemy.DamageEnemy(defaultAttackDamage);
         colorInventory.AddColor(absorb, ammount);
-        enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
+        if (!enemy.IsKnockbackImune())
+            enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
     }
 
     private GameObject currentSpell = null;

@@ -22,6 +22,7 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
     [SerializeField] private GameObject comboParticles;
 
+    [SerializeField] private bool knockbackImune = false;
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
 
     [SerializeField] private bool setColorByHand;
@@ -427,6 +428,12 @@ public class EnemyStats : MonoBehaviour
     {
         return normalMovementSpeed;
     }
+    
+    /// <summary>
+    /// Returs wether this enemy is knockbackimune
+    /// </summary>
+    /// <returns></returns>
+    public bool IsKnockbackImune() { return knockbackImune; }
 
     #endregion
 
