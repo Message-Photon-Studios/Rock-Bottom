@@ -10,6 +10,7 @@ public class YellowColorEffect : ColorEffect
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
         List<GameObject> affected = new List<GameObject>();
+
         foreach (GameObject obj in objs)
         {
             if(obj == null) continue;
@@ -20,14 +21,23 @@ public class YellowColorEffect : ColorEffect
             }
         }
 
+        int depth = 1;
+        int with = affected.Count;
+
         for (int i = 0; i < affected.Count; i++)
         {
+            if(i == with)
+            {
+                depth ++;
+                with = affected.Count;
+            }
+            if(effectRange*power <= with) return;
             foreach (GameObject obj in objs)
             {
                 if(obj == null) continue;
                 if(affected[i] == null) continue;
                 if(obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) continue; 
-                if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange*power,2))
+                if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange*power-depth,2))
                 {
                     AffectObject(obj);
                 }
