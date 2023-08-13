@@ -17,7 +17,7 @@ public class YellowColorEffect : ColorEffect
             if(obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) continue; 
             if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange*power,2))
             {
-                AffectObject(obj);
+                AffectObject(obj, 0);
             }
         }
 
@@ -39,14 +39,14 @@ public class YellowColorEffect : ColorEffect
                 if(obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) continue; 
                 if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange*power-depth,2))
                 {
-                    AffectObject(obj);
+                    AffectObject(obj, depth);
                 }
             }
 
         }
 
 
-        void AffectObject(GameObject obj)
+        void AffectObject(GameObject obj, int depth)
         {
             if(affected.Contains(obj)) return;
             GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
@@ -59,7 +59,7 @@ public class YellowColorEffect : ColorEffect
             if(forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
             if (!obj.GetComponent<EnemyStats>().IsKnockbackImune())
                 obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir * force);
-            obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power));
+            obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power-depth*5));
         }
     }
 }
