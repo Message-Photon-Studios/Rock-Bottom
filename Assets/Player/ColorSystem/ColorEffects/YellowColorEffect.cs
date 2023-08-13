@@ -58,7 +58,7 @@ public class YellowColorEffect : ColorEffect
             Vector3 forceDir =  (enemyObj.transform.position - obj.transform.position);
             if(forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
             if (!obj.GetComponent<EnemyStats>().IsKnockbackImune())
-                obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir * force);
+                obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir);
             obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power-depth*5));
         }
     }
