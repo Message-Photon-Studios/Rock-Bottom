@@ -31,7 +31,7 @@ public class YellowColorEffect : ColorEffect
                 depth ++;
                 with = affected.Count;
             }
-            if(effectRange*power <= with) return;
+            if(effectRange*power <= depth) return;
             foreach (GameObject obj in objs)
             {
                 if(obj == null) continue;
