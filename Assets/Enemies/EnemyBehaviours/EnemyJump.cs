@@ -32,12 +32,12 @@ public class EnemyJump : Node
             state = NodeState.FAILURE;
             return state;
         }
-        float factor = 0;
+        /*float factor = 0;
         if(stats.GetNormalMovementSpeed() != 0)
-            factor = stats.GetSpeed()/stats.GetNormalMovementSpeed();
+            factor = stats.GetSpeed()/stats.GetNormalMovementSpeed();*/
 
-        body.AddForce(Vector2.up * jumpForce*factor);
-        body.AddForce(Vector2.right*stats.lookDir*forwardForce*factor);
+        body.AddForce(Vector2.up * jumpForce);
+        body.AddForce(Vector2.right*stats.lookDir*forwardForce);
         state = NodeState.SUCCESS;
         return state;
     }

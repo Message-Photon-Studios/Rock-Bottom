@@ -77,7 +77,7 @@ public class ColorSpell : MonoBehaviour
         {
             spriteRenderer.flipX = lookDir == -1;
         }
-        spriteRenderer.material = gameColor.colorMat;
+        spriteRenderer.material = gameColor?.colorMat;
         
         var ballTray = GetComponentInChildren<ParticleSystem>();
         if (ballTray != null)

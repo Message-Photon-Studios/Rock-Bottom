@@ -32,7 +32,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public float lookDir = -1;
 
-    private float normalMovementSpeed; //The normal movement speed of the enemy
+    private float normalMovementDrag; //The normal movement drag of the enemy
     private float movementSpeedTimer;
 
     private int colorComboDamage = 40; // The damage that the enemy will take when becoming rainbow color
@@ -40,7 +40,7 @@ public class EnemyStats : MonoBehaviour
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0; 
-    private float sleepPowerBonus = 1.2f; //The extra damage dealt to a slept enemy
+    private float sleepPowerBonus = 0f; //The extra damage dealt to a slept enemy
     GameObject sleepParticles;
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
@@ -71,7 +71,7 @@ public class EnemyStats : MonoBehaviour
     {
         if(!setColorByHand)
             color = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
-        normalMovementSpeed = movementSpeed;
+        normalMovementDrag = GetComponent<Rigidbody2D>().drag;
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         if(color != null)
@@ -108,7 +108,7 @@ public class EnemyStats : MonoBehaviour
     {
         animator.SetBool("sleep", false);
         WakeEnemy();
-        movementSpeed = normalMovementSpeed;
+        GetComponent<Rigidbody2D>().drag = normalMovementDrag;
         poisonEffects = new List<(int damage, float timer)>();
         burning = (0, 0, 0, null, null);
         Material mat = GetComponent<SpriteRenderer>().material;
@@ -143,7 +143,7 @@ public class EnemyStats : MonoBehaviour
                 if(movementSpeedTimer <= 0)
                 {
                     movementSpeedTimer = 0;
-                    movementSpeed = normalMovementSpeed;
+                    GetComponent<Rigidbody2D>().drag = normalMovementDrag;
                 }
             }
 
@@ -401,13 +401,13 @@ public class EnemyStats : MonoBehaviour
     #region Movement Speed
 
     /// <summary>
-    /// Change the enemys movement speed for a certain amount of time
+    /// Change the enemys movement drag for a certain amount of time
     /// </summary>
-    /// <param name="speed"></param>
+    /// <param name="speedFactor">Is multiplied with the original drag</param>
     /// <param name="time"></param>
-    public void ChangeSpeed (float speed, float time)
+    public void ChangeDrag (float speedFactor, float time)
     {
-        movementSpeed = speed;
+        GetComponent<Rigidbody2D>().drag *= speedFactor;
         movementSpeedTimer = time;
     }
 
@@ -424,10 +424,11 @@ public class EnemyStats : MonoBehaviour
     /// Return the normal movement speed without any effects of this enemy
     /// </summary>
     /// <returns></returns>
+    /*
     public float GetNormalMovementSpeed()
     {
-        return normalMovementSpeed;
-    }
+        return normalMovementDrag;
+    }*/
     
     /// <summary>
     /// Returs wether this enemy is knockbackimune
@@ -460,10 +461,8 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     public void SleepEnemy(float timer, float sleepPower, GameObject particles)
     {
-        if(sleepTimer > 0)
-        {
-            if(sleepPowerBonus < sleepPower) sleepPowerBonus = sleepPower;
-        } else sleepPowerBonus = sleepPower;
+        if(sleepTimer <= 0)
+            sleepPowerBonus = sleepPower;
 
         sleepTimer = timer;
         enemySleep = true;

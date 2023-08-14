@@ -45,7 +45,8 @@ public abstract class Enemy : BehaviourTree.Tree
 
     protected virtual void Update()
     {
-        if(Mathf.Abs(body.velocity.x) > .1f && ((body.velocity.x < 0) != (!spriteRenderer.flipX))) SwitchDirection();
+        if(body != null)
+            if(Mathf.Abs(body.velocity.x) > .1f && ((body.velocity.x < 0) != (!spriteRenderer.flipX))) SwitchDirection();
     }
 
     #endregion

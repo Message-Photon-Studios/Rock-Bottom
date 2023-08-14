@@ -23,8 +23,8 @@ public class BlueColorEffect : ColorEffect
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
         if(!enemy.IsKnockbackImune())
-            enemy.GetComponent<Rigidbody2D>()?.AddForce((enemy.transform.position-playerObj.transform.position).normalized * force * power);
-        enemy.ChangeSpeed(enemy.GetNormalMovementSpeed() / slow, duration*power);
+            enemy.GetComponent<Rigidbody2D>()?.AddForce((enemy.transform.position-playerObj.transform.position).normalized * force);
+        enemy.ChangeDrag(slow*power, duration*power);
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
     }
 }

@@ -19,12 +19,18 @@ public class AddForcePlayer : Node
     public AddForcePlayer(EnemyStats stats, PlayerStats player, Vector2 force)
     {
         this.stats = stats;
-        this.player = player.GetComponent<Rigidbody2D>();
+        if(player != null)
+            this.player = player.GetComponent<Rigidbody2D>();
         this.force = force;
     }
 
     public override NodeState Evaluate()
     {
+        if(player == null)
+        {
+            state = NodeState.FAILURE;
+            return state;
+        }
         int dir = (stats.GetPosition().x > player.transform.position.x)?-1:1;
         player.AddForce(force*(Vector2.right*dir+Vector2.up));
         state = NodeState.SUCCESS;
