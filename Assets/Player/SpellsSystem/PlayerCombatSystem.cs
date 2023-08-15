@@ -85,15 +85,18 @@ public class PlayerCombatSystem : MonoBehaviour
     /// Is called when the player hits an enemy with the default attack
     /// </summary>
     /// <param name="enemyObj"></param>
-    private void EnemyHitDefault(GameObject enemyObj)
+    private void EnemyHitDefault(List<GameObject> enemyObjs)
     {
-        EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
-        (GameColor absorb, int ammount) = enemy.AbsorbColor();
-        if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
-        //enemy.DamageEnemy(defaultAttackDamage);
-        colorInventory.AddColor(absorb, ammount);
-        if (!enemy.IsKnockbackImune())
-            enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
+        foreach (GameObject enemyObj in enemyObjs)
+        {
+            EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
+            (GameColor absorb, int ammount) = enemy.AbsorbColor();
+            if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
+            //enemy.DamageEnemy(defaultAttackDamage);
+            colorInventory.AddColor(absorb, ammount);
+            if (!enemy.IsKnockbackImune())
+                enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
+        }
     }
 
     private GameObject currentSpell = null;
