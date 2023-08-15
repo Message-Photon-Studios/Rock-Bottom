@@ -15,7 +15,7 @@ public class PlayerDefaultAttack : MonoBehaviour
     /// <summary>
     /// This action is called when the player hits an with the default attack
     /// </summary>
-    public UnityAction<List<GameObject>> onDefaultHit;
+    public UnityAction<(List<GameObject>, List<GameObject>)> onDefaultHit;
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Enemy") && !targetedEnemies.Contains(other.gameObject))
@@ -65,6 +65,6 @@ public class PlayerDefaultAttack : MonoBehaviour
             if(targetedEnemies[i].GetComponent<EnemyStats>().GetColor() == target.GetComponent<EnemyStats>().GetColor())
                 returnList.Add(targetedEnemies[i]);
         }
-        onDefaultHit?.Invoke(returnList);
+        onDefaultHit?.Invoke((returnList, targetedEnemies));
     }
 }
