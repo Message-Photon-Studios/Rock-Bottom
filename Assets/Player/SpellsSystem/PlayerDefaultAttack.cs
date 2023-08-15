@@ -42,8 +42,8 @@ public class PlayerDefaultAttack : MonoBehaviour
                 i--;
                 continue;
             }
-
-            if(target == null || target.GetComponent<EnemyStats>().GetColor() == null)
+            
+            if(target == null || (target.GetComponent<EnemyStats>().GetColor() == null && targetedEnemies[i].GetComponent<EnemyStats>().GetColor() != null))
             {
                 target = targetedEnemies[i];
                 continue;
