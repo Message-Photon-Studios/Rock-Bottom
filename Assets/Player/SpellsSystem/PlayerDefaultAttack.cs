@@ -9,12 +9,13 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerDefaultAttack : MonoBehaviour
 {
+    [SerializeField] ColorInventory colorInventory;
     List<GameObject> targetedEnemies = new List<GameObject>();
 
     /// <summary>
     /// This action is called when the player hits an with the default attack
     /// </summary>
-    public UnityAction<GameObject> onDefaultHit;
+    public UnityAction<(List<GameObject>, List<GameObject>)> onDefaultHit;
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Enemy") && !targetedEnemies.Contains(other.gameObject))
@@ -42,8 +43,10 @@ public class PlayerDefaultAttack : MonoBehaviour
                 i--;
                 continue;
             }
-
-            if(target == null || target.GetComponent<EnemyStats>().GetColor() == null)
+            
+            if(target == null || 
+                (target.GetComponent<EnemyStats>().GetColor() == null && targetedEnemies[i].GetComponent<EnemyStats>().GetColor() != null) ||
+                (colorInventory.CheckActveColor() != null && target.GetComponent<EnemyStats>().GetColor() != colorInventory.CheckActveColor() && targetedEnemies[i].GetComponent<EnemyStats>().GetColor() == colorInventory.CheckActveColor()))
             {
                 target = targetedEnemies[i];
                 continue;
@@ -55,8 +58,13 @@ public class PlayerDefaultAttack : MonoBehaviour
                 target = targetedEnemies[i];
         }
 
+        List<GameObject> returnList = new List<GameObject>();
 
-        if(target != null)
-            onDefaultHit?.Invoke(target);
+        for (int i = 0; i < targetedEnemies.Count; i++)
+        {
+            if(targetedEnemies[i].GetComponent<EnemyStats>().GetColor() == target.GetComponent<EnemyStats>().GetColor())
+                returnList.Add(targetedEnemies[i]);
+        }
+        onDefaultHit?.Invoke((returnList, targetedEnemies));
     }
 }

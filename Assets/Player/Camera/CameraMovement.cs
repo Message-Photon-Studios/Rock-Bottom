@@ -60,7 +60,7 @@ public class CameraMovement : MonoBehaviour
     /// </summary>
     public void SetStartLevel()
     {
-        if (SceneManager.GetActiveScene().name == "Tutorial" || SceneManager.GetActiveScene().name == "PlayerColorsCombatTest") return;
+        if (SceneManager.GetActiveScene().name == "Tutorial" || SceneManager.GetActiveScene().name == "PlayerColorsCombatTest" || SceneManager.GetActiveScene().name == "TutorialCaves") return;
         focusPoint.position = focusStartPos;
         transform.position = startPos;
         focusPoint.GetComponent<CameraFocus>().SetStartLevel();
