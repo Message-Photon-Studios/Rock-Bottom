@@ -67,6 +67,12 @@ public class ItemInspector : Editor
         {
             item.effects.Add(new CoinBoostItem());
         }
+
+        if (GUILayout.Button("Add block damage"))
+        {
+            item.effects.Add(new BlockDamageItem());
+        }
+
     }
 }
 
