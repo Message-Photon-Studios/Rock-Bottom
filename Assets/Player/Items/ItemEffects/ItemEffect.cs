@@ -14,4 +14,13 @@ public abstract class ItemEffect
     {
         return GameObject.FindGameObjectWithTag("Player");
     }
+
+    /// <summary>
+    /// Retuns true if the item can be spawned
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool CanBeSpawned()
+    {
+        return true;
+    }
 }

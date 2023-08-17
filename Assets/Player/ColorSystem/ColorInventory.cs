@@ -350,6 +350,7 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     public void AddColorSlot()
     {
+        if(colorSlots.Count >= 6) return;
         colorSlots.Add(new ColorSlot());
         onColorSlotsChanged?.Invoke();
     }
@@ -359,6 +360,7 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     public void RemoveColorSlot()
     {
+        if(colorSlots.Count <= 3) return;
         colorSlots.RemoveAt(colorSlots.Count-1);
         if(activeSlot >= colorSlots.Count) 
             activeSlot = colorSlots.Count-1;
