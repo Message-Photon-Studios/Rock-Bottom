@@ -73,6 +73,11 @@ public class ItemInspector : Editor
             item.effects.Add(new BlockDamageItem());
         }
 
+        if (GUILayout.Button("Add block drain color"))
+        {
+            item.effects.Add(new BlockUseColor());
+        }
+
     }
 }
 
