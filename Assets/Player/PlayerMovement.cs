@@ -63,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
     private float jump;
 
     private float coyoteTimer = 0;
+    private float coyoteTimerWall = 0;
 
     [SerializeField] PlayerSounds playerSounds;
 
@@ -123,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
             dustParticles.Stop();
             coyoteTimer = 0;
             return;
-        } else if(IsGrappeling())
+        } else if(IsGrappeling() || coyoteTimerWall > 0)
         {
             bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
             body.AddForce(new Vector2((wallRight?-1:1)*wallJumpPower, 0));
@@ -133,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
             wallJumpParticles.transform.eulerAngles = wallRight ? new Vector3(0, 0, 0) : new Vector3(0, 180, 0);
             wallJumpParticles.transform.localPosition = wallRight ? new Vector3(0.44f, 0.202f, 0f) : new Vector3(-0.44f, 0.202f, 0f);
             wallJumpParticles.Play();
+            coyoteTimerWall = 0;
         } else if(!doubleJumpActive)
         {
             body.AddForce(new Vector2(movement*leapPower, 0));
@@ -265,6 +267,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrappeling())
         {
+            coyoteTimerWall = coyoteTime;
             GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
             bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
             if(wallRight == spriteRenderer.flipX) Flip();
@@ -289,6 +292,7 @@ public class PlayerMovement : MonoBehaviour
             }
         } else
         {
+            coyoteTimerWall -= Time.fixedDeltaTime;
             playerAnimator.SetBool("grapple", false);
             wallParticles.Stop();
         }

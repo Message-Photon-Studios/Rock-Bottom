@@ -22,6 +22,20 @@ public class Item : ScriptableObject
             item.ActivateEffect();
         }
     }
+
+    /// <summary>
+    /// Returns true if the item can be spawned.
+    /// </summary>
+    /// <returns></returns> <summary>
+    public bool CanBeSpawned()
+    {
+        bool ret = true;
+        foreach (ItemEffect item in effects)
+        {
+            ret &= item.CanBeSpawned();
+        }
+        return ret;
+    }
 }
 
 #if UNITY_EDITOR
@@ -42,6 +56,28 @@ public class ItemInspector : Editor
         {
             item.effects.Add(new ChangeHealthIItem());
         }
+
+        
+        if(GUILayout.Button("Add spell slot"))
+        {
+            item.effects.Add(new AddSpellSlot());
+        }
+
+        if(GUILayout.Button("Add coin boost"))
+        {
+            item.effects.Add(new CoinBoostItem());
+        }
+
+        if (GUILayout.Button("Add block damage"))
+        {
+            item.effects.Add(new BlockDamageItem());
+        }
+
+        if (GUILayout.Button("Add block drain color"))
+        {
+            item.effects.Add(new BlockUseColor());
+        }
+
     }
 }
 

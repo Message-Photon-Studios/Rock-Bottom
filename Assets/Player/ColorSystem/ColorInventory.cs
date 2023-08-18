@@ -31,6 +31,8 @@ public class ColorInventory : MonoBehaviour
     public Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
     SpellPickup pickUpSpell = null;
 
+    public int blockDrainColor = 0;
+
     #region Actions for UI
     
     /// <summary>
@@ -109,17 +111,18 @@ public class ColorInventory : MonoBehaviour
     public GameColor UseActiveColor()
     {
         if(ActiveSlot().charge > 0)
-        {
-
-            
+        {   
             GameColor ret = ActiveSlot().gameColor;
 
-            int charge = ActiveSlot().charge - 1;
-            if(charge > 0 && ActiveSlot().gameColor.name == "Rainbow")
-                charge --;
-            ActiveSlot().SetCharge(charge);
-            
-            onColorUpdated?.Invoke();
+            if (Random.Range(0, 100) > blockDrainColor)
+            {
+                int charge = ActiveSlot().charge - 1;
+                if (charge > 0 && ActiveSlot().gameColor.name == "Rainbow")
+                    charge--;
+                ActiveSlot().SetCharge(charge);
+
+                onColorUpdated?.Invoke();
+            }
 
             return ret;
             
@@ -350,6 +353,7 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     public void AddColorSlot()
     {
+        if(colorSlots.Count >= 6) return;
         colorSlots.Add(new ColorSlot());
         onColorSlotsChanged?.Invoke();
     }
@@ -359,6 +363,7 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     public void RemoveColorSlot()
     {
+        if(colorSlots.Count <= 3) return;
         colorSlots.RemoveAt(colorSlots.Count-1);
         if(activeSlot >= colorSlots.Count) 
             activeSlot = colorSlots.Count-1;
