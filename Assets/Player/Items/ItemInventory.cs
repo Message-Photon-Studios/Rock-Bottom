@@ -15,6 +15,7 @@ public class ItemInventory : MonoBehaviour
     [SerializeField] List<Item> items = new List<Item>();
     [SerializeField] InputActionReference pickUpAction;
     [SerializeField] CoinPickupEffect coinPickupEffect;
+    public float coinBoost {get; private set;} = 1;
     
     private List<ItemPickup> pickUpItems = new List<ItemPickup>();
 
@@ -148,6 +149,15 @@ public class ItemInventory : MonoBehaviour
     /// <returns></returns>
     public List<Item> getItems() {
         return items;
+    }
+
+    /// <summary>
+    /// Adds a coin boost modifier
+    /// </summary>
+    /// <param name="boost"></param>
+    public void AddCoinBoost(float boost)
+    {
+        coinBoost += boost;
     }
 
     /// <summary>

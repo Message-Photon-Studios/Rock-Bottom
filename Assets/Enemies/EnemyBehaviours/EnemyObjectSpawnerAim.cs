@@ -32,14 +32,14 @@ public class EnemyObjectSpawnerAim : Node
     {
         float dX = player.transform.position.x - (stats.GetPosition().x + offset.x);
         float dY = player.transform.position.y - (stats.GetPosition().y + offset.y);
-        float deg = Mathf.Atan2(dY, dX);
+        float deg = Mathf.Rad2Deg*Mathf.Atan2(dY, dX);
 
 
         Vector2 useOffset = offset * (Vector2.left * stats.lookDir + Vector2.up);
 
         GameObject spwn = GameObject.Instantiate(spawnTemp, stats.GetPosition()+useOffset, stats.gameObject.transform.rotation) as GameObject;
         
-        spwn.transform.rotation = Quaternion.EulerAngles(0,0,deg);
+        spwn.transform.rotation = Quaternion.Euler(0,0,deg);
 
         spwn.GetComponent<Rigidbody2D>()?.AddForce(spwn.transform.localToWorldMatrix.MultiplyPoint((force * Vector2.right)));
 

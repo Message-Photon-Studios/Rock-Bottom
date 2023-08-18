@@ -13,6 +13,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] PlayerMovement movement;
     int maxHealth;
     float invincibilityTimer = 0;
+    public int chanceToBlock = 0;
 
     [SerializeField] PlayerSounds playerSounds;
 
@@ -68,6 +69,11 @@ public class PlayerStats : MonoBehaviour
     {
         if(invincibilityTimer > 0) return;
         if(damage == 0) return;
+        if (Random.Range(0, 100) < chanceToBlock)
+        {
+            Debug.Log("Damage blocked");
+            return;
+        }
         Physics2D.IgnoreLayerCollision(3,6);
         health -= damage;
         invincibilityTimer = hitInvincibilityTime;

@@ -556,6 +556,6 @@ public struct CoinRange
 
     public int GetReward()
     {
-        return UnityEngine.Random.Range(min, max+1);
+        return (int)(UnityEngine.Random.Range(min, max+1)*GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>().coinBoost);
     }
 }

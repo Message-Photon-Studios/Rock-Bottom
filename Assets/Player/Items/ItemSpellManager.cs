@@ -21,8 +21,25 @@ public class ItemSpellManager : MonoBehaviour
         {
             obj.GetComponent<ItemPickup>().RandomSpawnDestroy();
             if(obj == null) continue;
-            int rng = UnityEngine.Random.Range(0,spawnSet.Count);
-            Item item = spawnSet[rng];
+            Item item = null;
+            int rng = 0;
+            while(!item)
+            {
+                rng = UnityEngine.Random.Range(0,spawnSet.Count);
+                item = spawnSet[rng];
+                if(!item.CanBeSpawned())
+                {
+                    spawnSet.RemoveAt(rng);
+                    item = null;
+                }
+
+                if(spawnSet.Count <= 0)
+                {
+                    spawnSet.AddRange(spawnableItems);
+                }
+            }
+
+
             spawnSet.RemoveAt(rng);
             obj.GetComponent<ItemPickup>().SetItem(item);
             if(spawnSet.Count <= 0) spawnSet.AddRange(spawnableItems);
