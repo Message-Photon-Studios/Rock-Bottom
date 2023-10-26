@@ -58,6 +58,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public UnityAction<float> onHealthChanged;
     public UnityAction<float, Vector2> onDamageTaken;
+    public UnityAction<GameColor> onColorChanged;
 
     /// <summary>
     /// The enemy died
@@ -85,6 +86,7 @@ public class EnemyStats : MonoBehaviour
         onDamageTaken += DmgNumber.create;
         onEnemyDeath += () => dropCoins(coinsDropped.GetReward());
         enemySounds = GetComponent<EnemySounds>();
+        onColorChanged?.Invoke(color);
     }
 
     void OnValidate()
@@ -365,6 +367,7 @@ public class EnemyStats : MonoBehaviour
         color = null;
         colorAmmount = 0;
         GetComponent<SpriteRenderer>().material = defaultColor;
+        onColorChanged?.Invoke(null);
     }
 
     /// <summary>
@@ -379,6 +382,7 @@ public class EnemyStats : MonoBehaviour
     public void SetColor(GameColor color)
     {
         this.color = color;
+        onColorChanged?.Invoke(color);
         if(color != null)
             GetComponent<SpriteRenderer>().material = color.colorMat;
         else
