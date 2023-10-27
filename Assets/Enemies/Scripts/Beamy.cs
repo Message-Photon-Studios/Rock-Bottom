@@ -63,7 +63,6 @@ public class Beamy : Enemy
         attackTrigger.DrawTrigger(stats.GetPosition());
         Handles.color = Color.yellow;
         Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
-        Handles.DrawSolidDisc(transform.position + (Vector3)spawnOffset, Vector3.forward, .05f);
     }
 #endif
 }
