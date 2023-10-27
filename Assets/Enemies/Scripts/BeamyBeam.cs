@@ -10,10 +10,12 @@ public class BeamyBeam : MonoBehaviour
     [SerializeField] ParticleSystem rootParticles;
     [SerializeField] Color defaultColor;
     private PlayerStats player;
+    private EnemyStats enemyStats;
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-        parent.GetComponent<EnemyStats>().onColorChanged += ChangeColor;
+        enemyStats = parent.GetComponent<EnemyStats>();
+        enemyStats.onColorChanged += ChangeColor;
     }
 
     private void Update()
@@ -21,6 +23,12 @@ public class BeamyBeam : MonoBehaviour
         Vector3 direction = player.transform.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle-90));
+
+        if(enemyStats.IsAsleep())
+        {
+            particles.Stop();
+            rootParticles.Stop();  
+        }
     }
 
     private void OnParticleCollision(GameObject other) { 

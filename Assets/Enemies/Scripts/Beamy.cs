@@ -29,10 +29,11 @@ public class Beamy : Enemy
                 }),
 
                 new Sequence(new List<Node>{
+                    new CheckBool("sleeping", false),
                     new CheckPlayerArea(stats, player, attackTrigger),
                     new LookAtPlayer(stats, player),
-                    new AnimationBool(animator, "attack", true),
-                    new SetParentVariable("attack", true, 3)
+                    new SetParentVariable("attack", true, 3),
+                    new AnimationBool(animator, "attack", true)
                     }),
 
                 new Sequence(new List<Node> {
@@ -49,6 +50,7 @@ public class Beamy : Enemy
         
         root.SetData("activateBeam", false);
         root.SetData("attack", false);
+        root.SetData("sleeping", false);
         triggersToFlip.Add(attackTrigger);
         return root;
     }
