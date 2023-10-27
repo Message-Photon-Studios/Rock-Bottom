@@ -10,8 +10,6 @@ public class Beamy : Enemy
     [SerializeField] Trigger attackTrigger;
     [SerializeField] ParticleSystem attackOrb;
     [SerializeField] ParticleSystem attackBeam;
-    [SerializeField] Vector2 spawnOffset;
-    [SerializeField] Vector2 spawnBombForce;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;
 
