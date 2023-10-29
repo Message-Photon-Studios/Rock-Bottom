@@ -16,6 +16,7 @@ public class BeamyBeam : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         enemyStats = parent.GetComponent<EnemyStats>();
         enemyStats.onColorChanged += ChangeColor;
+        ChangeColor(enemyStats.GetColor());
     }
 
     private void Update()
