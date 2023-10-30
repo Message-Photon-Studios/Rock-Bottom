@@ -4,7 +4,7 @@ using UnityEngine;
 using BehaviourTree;
 using UnityEditor;
 
-public class BigCryss : Enemy
+public class Peblit : Enemy
 {
     [SerializeField] Trigger viewTrigger;
     [SerializeField] Trigger attackTrigger;
