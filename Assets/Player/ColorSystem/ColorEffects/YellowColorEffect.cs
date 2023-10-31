@@ -6,6 +6,7 @@ public class YellowColorEffect : ColorEffect
 {
     [SerializeField] float effectRange;
     [SerializeField] float force;
+    [SerializeField] int maxBounces;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
@@ -31,7 +32,9 @@ public class YellowColorEffect : ColorEffect
                 depth ++;
                 with = affected.Count;
             }
-            if(effectRange*power <= depth) return;
+            if (depth > maxBounces) return;
+            if (effectRange*power <= depth) return;
+
             foreach (GameObject obj in objs)
             {
                 if(obj == null) continue;
