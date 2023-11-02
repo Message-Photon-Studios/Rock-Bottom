@@ -64,15 +64,18 @@ public class PlayerStats : MonoBehaviour
                 
         }
 
-        clockTime -= Time.deltaTime;
-
-        if(clockTime <= 0) 
+        if (gameManager && gameManager.allowsClockTimer)
         {
-            secTimer -= Time.deltaTime;
-            if(secTimer<=0)
+            clockTime -= Time.deltaTime;
+
+            if (clockTime <= 0)
             {
-                TickDamagePlayer(clockDamage);
-                secTimer = 1f;
+                secTimer -= Time.deltaTime;
+                if (secTimer <= 0)
+                {
+                    TickDamagePlayer(clockDamage);
+                    secTimer = 1f;
+                }
             }
         }
     }

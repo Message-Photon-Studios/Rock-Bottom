@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] string onDeathLevel;
     [SerializeField] string nextLevelName;
     [SerializeField] UIController canvas;
+     public bool allowsClockTimer = true;
 
     private void Start()
     {
