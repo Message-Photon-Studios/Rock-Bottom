@@ -1370,6 +1370,59 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 0}
+--- !u!1 &848935209092142318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4888772665118940533}
+  - component: {fileID: 3143327717070509749}
+  m_Layer: 5
+  m_Name: Timer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4888772665118940533
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848935209092142318}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9092013345306721951}
+  m_Father: {fileID: 1905754977137966822}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -75}
+  m_SizeDelta: {x: 180, y: 72}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3143327717070509749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848935209092142318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be0065e557a99442822a806ff1ef75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeText: {fileID: 7104630416455823256}
+  timer: {fileID: 4192069911210808777}
+  UIController: {fileID: 4327467504881031851}
 --- !u!1 &859392889898649095
 GameObject:
   m_ObjectHideFlags: 0
@@ -6165,11 +6218,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9092013345306721951}
-  - component: {fileID: 574760209481127056}
   - component: {fileID: 3953382501976250098}
   - component: {fileID: 4963846401842258388}
   m_Layer: 5
-  m_Name: ClockTimer
+  m_Name: ClockTimerContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6189,27 +6241,14 @@ RectTransform:
   m_Children:
   - {fileID: 7228655211358665922}
   - {fileID: 7349032786355786430}
-  m_Father: {fileID: 1905754977137966822}
-  m_RootOrder: 10
+  m_Father: {fileID: 4888772665118940533}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -39}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 180, y: 72}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &574760209481127056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4192069911210808777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5be0065e557a99442822a806ff1ef75e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeText: {fileID: 7104630416455823256}
 --- !u!222 &3953382501976250098
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12269,7 +12308,7 @@ RectTransform:
   - {fileID: 1742278350253980286}
   - {fileID: 3478722437495380988}
   - {fileID: 4377888192794383474}
-  - {fileID: 9092013345306721951}
+  - {fileID: 4888772665118940533}
   - {fileID: 7715171771039273690}
   - {fileID: 6285802459354418484}
   - {fileID: 3280994514122321551}

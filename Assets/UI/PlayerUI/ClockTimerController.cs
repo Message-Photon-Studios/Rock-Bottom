@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ClockTimerController : MonoBehaviour
 {
     [SerializeField] TMP_Text timeText;
+    [SerializeField] GameObject timer;
+    [SerializeField] UIController UIController;
     private PlayerStats player;
 
     /* Here are the useful methods to get the current clock time.
@@ -19,12 +22,18 @@ public class ClockTimerController : MonoBehaviour
 
     private void OnEnable()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>(); 
+        UIController.UILoaded += LoadClock;
     }
 
     // Update is called once per frame
     void Update()
     {
         timeText.text = player.GetClockTimeString();
+    }
+
+    //Sets clocks active state acording to if it's active or not.
+    private void LoadClock() {
+        timer.SetActive(GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().allowsClockTimer);
     }
 }
