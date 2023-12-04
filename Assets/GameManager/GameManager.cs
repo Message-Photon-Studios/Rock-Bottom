@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
         {
             canvas.loaded = true;
             FinishedGeneration();
+            GetComponent<ItemSpellManager>()?.SpawnItems();
         }
     }
     
