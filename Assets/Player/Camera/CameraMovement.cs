@@ -42,6 +42,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Start()
     {
+        transform.position = new Vector3(transform.position.x, transform.position.y, -10);
         startPos = transform.position;
         focusStartPos = focusPoint.position;
         var ratio = Screen.height / 1080.0;

@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] string onDeathLevel;
     [SerializeField] string nextLevelName;
     [SerializeField] UIController canvas;
-     public bool allowsClockTimer = true;
+    public bool allowsClockTimer = true;
+    [SerializeField] bool clearInventoryOnLevelEnd = false;
 
     private void Start()
     {
@@ -47,9 +48,17 @@ public class GameManager : MonoBehaviour
     public void EndLevel()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        canvas.disablePausing = true;
-        if(player) player.GetComponent<Rigidbody2D>().simulated = false;
-        player?.GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("endLevel", true);
+
+        if (!clearInventoryOnLevelEnd)
+        {
+            canvas.disablePausing = true;
+            if (player) player.GetComponent<Rigidbody2D>().simulated = false;
+            player?.GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("endLevel", true);
+        } else
+        {
+            player?.GetComponent<PlayerStats>()?.onPlayerDied?.Invoke();
+        }
+
         StartCoroutine(canvas.FadeOutCoroutine(false, EndLevelAsync));
     }
 
