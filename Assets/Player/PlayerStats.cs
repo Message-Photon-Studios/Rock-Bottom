@@ -17,6 +17,10 @@ public class PlayerStats : MonoBehaviour
 
     [SerializeField] PlayerSounds playerSounds;
 
+    [SerializeField] public float clockTime;
+    [SerializeField] int clockDamage;
+    float secTimer = 1;
+
     /// <summary>
     /// This event fires when the player health is changed. The float is the new health.
     /// </summary>
@@ -59,6 +63,21 @@ public class PlayerStats : MonoBehaviour
             }
                 
         }
+
+        if (gameManager && gameManager.allowsClockTimer)
+        {
+            clockTime -= Time.deltaTime;
+
+            if (clockTime <= 0)
+            {
+                secTimer -= Time.deltaTime;
+                if (secTimer <= 0)
+                {
+                    TickDamagePlayer(clockDamage);
+                    secTimer = 1f;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -81,13 +100,34 @@ public class PlayerStats : MonoBehaviour
         GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
         if(health <= 0)
         {
-            animator.SetBool("dead", true);
-            movement.movementRoot.SetTotalRoot("dead", true);
-            invincibilityTimer = 3f;
-            playerSounds.PlayDeath();
+            PlayerReachZeroHp();
         }
         animator.SetTrigger("damaged");
         onHealthChanged?.Invoke(health);
+    }
+
+    /// <summary>
+    /// For very small instances of damage over time. Does not add invincibility or amiation.
+    /// This damage is unblockable.
+    /// </summary>
+    /// <param name="damage"></param>
+    public void TickDamagePlayer(int damage)
+    {
+        if(damage <= 0) return;
+        health-= damage;
+        if(health <= 0)
+        {
+            PlayerReachZeroHp();
+        }
+        onHealthChanged?.Invoke(health);
+    }
+
+    private void PlayerReachZeroHp()
+    {
+        animator.SetBool("dead", true);
+        movement.movementRoot.SetTotalRoot("dead", true);
+        invincibilityTimer = 3f;
+        playerSounds.PlayDeath();
     }
 
     /// <summary>
@@ -151,5 +191,16 @@ public class PlayerStats : MonoBehaviour
     public bool IsInvincible()
     {
         return invincibilityTimer > 0;
+    }
+
+    /// <summary>
+    /// Returns the clock time as a formated string in the format "min:sec"
+    /// </summary>
+    /// <returns></returns>
+    public string GetClockTimeString()
+    {
+        int min = (int)clockTime/ 60;
+        int sec = (int)clockTime % 60;
+        return ((min < 0) ? "00" : (min < 10) ? "0" + min : min) + ":" + ((sec<0)?"00":(sec<10)?"0"+sec:sec);
     }
 }

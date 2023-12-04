@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class UIController : MonoBehaviour
 {
@@ -34,6 +35,9 @@ public class UIController : MonoBehaviour
     private bool inventoryOpen = false;
 
     public bool disablePausing = false;
+
+    //When UIController is loaded, sends out action.
+    public UnityAction UILoaded;
 
     //Input actions for opening the various menus.
     [SerializeField] InputActionReference openPauseMenu;
@@ -172,6 +176,7 @@ public class UIController : MonoBehaviour
         }
         sylviaLoading.gameObject.SetActive(false);
         loadScreenFinished = true;
+        UILoaded?.Invoke();
     }
 
     public IEnumerator FadeOutCoroutine(bool fadeIn, [CanBeNull] Func<IEnumerator> doLater = null)
