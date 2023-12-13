@@ -87,7 +87,7 @@ public class PlayerStats : MonoBehaviour
     public void DamagePlayer(int damage)
     {
         if(invincibilityTimer > 0) return;
-        if(damage == 0) return;
+        //if(damage == 0) return;
         if (Random.Range(0, 100) < chanceToBlock)
         {
             Debug.Log("Damage blocked");
