@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
         {
             canvas.disablePausing = true;
             if (player) player.GetComponent<Rigidbody2D>().simulated = false;
+            if(player) player.GetComponent<Rigidbody2D>().velocity= Vector3.zero;
             player?.GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("endLevel", true);
         } else
         {
