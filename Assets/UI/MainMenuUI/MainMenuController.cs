@@ -33,6 +33,7 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] Sprite[] LoadingSprites;
 
     [SerializeField] GameObject credits;
+    [SerializeField] GameObject settings;
 
     [SerializeField] InputActionReference cancel;
     [SerializeField] GameObject trailer;
@@ -157,6 +158,30 @@ public class MainMenuController : MonoBehaviour
 
         areCreditsOpen = false;
         credits.SetActive(false);
+        timeSinceLastInput = Time.time;
+    }
+
+    public void showSettings()
+    {
+        startButton.interactable = false;
+        settingsButton.interactable = false;
+        creditsButton.interactable = false;
+        exitButton.interactable = false;
+
+        settings.SetActive(true);
+        timeSinceLastInput = Time.time;
+    }
+
+    public void hideSettings()
+    {
+        startButton.interactable = true;
+        settingsButton.interactable = true;
+        creditsButton.interactable = true;
+        exitButton.interactable = true;
+
+        creditsButton.Select();
+
+        settings.SetActive(false);
         timeSinceLastInput = Time.time;
     }
 
