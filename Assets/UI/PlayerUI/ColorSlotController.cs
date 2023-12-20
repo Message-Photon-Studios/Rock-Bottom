@@ -107,6 +107,7 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onSlotChanged -= ActiveColorChanged;
         colorInventory.onColorSpellChanged -= BottleChanged;
         uiController.ColorSlotAmountChanged -= UpdateAllSprites;
+        uiController.ColorSlotAmountChanged -= UpdateAllSprites;
     }
     #endregion
     #region SlotMovement
@@ -273,6 +274,9 @@ public class ColorSlotController : MonoBehaviour
         BottleChanged(index, ((index + slotList.Count - colorInventory.activeSlot) % slotList.Count));
     }
 
+    /// <summary>
+    /// Updates all bottles, their caps and colors.
+    /// </summary>
     private void UpdateAllSprites() {
         for (int i = 0; i < slotList.Count; i++){
             BottleChanged(i);
