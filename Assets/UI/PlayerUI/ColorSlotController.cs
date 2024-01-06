@@ -78,7 +78,6 @@ public class ColorSlotController : MonoBehaviour
         var materials = Resources.LoadAll<Material>("Bottles/Materials/Body");
         var capMaterials = Resources.LoadAll<Material>("Bottles/Materials/Cap");
         for(int i = 0; i < slotList.Count; i++) {
-
             Image frameImage = slotList[i].GetChild(0).GetChild(0).GetComponent<Image>();
             frameImage.material = materials[i];
             ColorSlot slot = colorSlots[i];
@@ -271,7 +270,7 @@ public class ColorSlotController : MonoBehaviour
     }
 
     private void BottleChanged(int index) {
-        BottleChanged(index, ((index + slotList.Count - colorInventory.activeSlot) % slotList.Count));
+        BottleChanged(index, (index + slotList.Count - colorInventory.activeSlot) % slotList.Count);
     }
 
     /// <summary>
@@ -279,8 +278,8 @@ public class ColorSlotController : MonoBehaviour
     /// </summary>
     private void UpdateAllSprites() {
         for (int i = 0; i < slotList.Count; i++){
-            BottleChanged(i);
             ColorUpdate(i);
+            BottleChanged(i);
         }
     }
 
