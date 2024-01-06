@@ -106,7 +106,7 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onColorUpdated -= ColorUpdate;
         colorInventory.onSlotChanged -= ActiveColorChanged;
         colorInventory.onColorSpellChanged -= BottleChanged;
-        uiController.ColorSlotAmountChanged -= UpdateAllSprites;
+        uiController.UILoaded -= UpdateAllSprites;
         uiController.ColorSlotAmountChanged -= UpdateAllSprites;
     }
     #endregion
