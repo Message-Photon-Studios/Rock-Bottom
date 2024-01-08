@@ -354,6 +354,9 @@ public class ColorInventory : MonoBehaviour
     public void AddColorSlot()
     {
         if(colorSlots.Count >= 6) return;
+        while(activeSlot != 0) {
+            RotateActive(1);
+        }
         colorSlots.Add(new ColorSlot());
         onColorSlotsChanged?.Invoke();
     }
