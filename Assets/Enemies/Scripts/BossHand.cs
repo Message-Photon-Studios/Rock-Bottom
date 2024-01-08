@@ -6,7 +6,6 @@ using UnityEditor;
 
 public class BossHand : Enemy
 {
-    [SerializeField] float modeTimer;
     [SerializeField] Trigger viewTrigger;
     [SerializeField] Trigger attackTrigger;
     [SerializeField] int swordDamage;
@@ -36,15 +35,8 @@ public class BossHand : Enemy
             }),
 
             new Sequence(new List<Node>{
-                new Wait(modeTimer),
-                new Selector(new List<Node>{
-                    new Sequence(new List<Node> {
-                        new CheckBool("spellMode", true),
-                        new SetParentVariable("spellMode", false, 4)
-                    }),
-
-                    new SetParentVariable("spellMode", true, 3)
-                })
+                new CheckBool("idle", true),
+                new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .5f, "attack", "walk")
             }),
 
             new Sequence(new List<Node>{
@@ -75,11 +67,12 @@ public class BossHand : Enemy
             })
             });
         
+        root.SetData("idle", false);
         root.SetData("attack", false);
         root.SetData("attackDone", false);
         root.SetData("swordAttack", false);
         root.SetData("castSpell", false);
-        root.SetData("spellMode", Random.Range(0,2) == 1);
+        root.SetData("spellMode", false);
         triggersToFlip.Add(attackTrigger);
         triggersToFlip.Add(viewTrigger);
         return root;
