@@ -74,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
     #region Setup
     private void OnEnable() {
         movementRoot.SetTotalRoot("loading", true);
-        ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item");
+        ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item", "BossEnemy");
         checkAction = (InputAction.CallbackContext ctx) => {
             if(lookAction.action.ReadValue<float>() < 0f)
                 CheckBelowStart();
