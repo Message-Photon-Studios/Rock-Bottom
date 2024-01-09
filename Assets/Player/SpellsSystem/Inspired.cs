@@ -19,13 +19,13 @@ public class Inspired : MonoBehaviour
 
     public void OnEnable() {
         triggered = false;
-       UI = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
+        UI = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
     }
     
     public void OnTriggerEnter2D(Collider2D other) {
-         if(other.CompareTag("Player") && !triggered) {
+        if(other.CompareTag("Player") && !triggered) {
             triggered = true;
             UI.inspired(spell, text);
-         }
+        }
     }
 }
