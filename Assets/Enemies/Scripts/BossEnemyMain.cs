@@ -6,6 +6,10 @@ using UnityEditor;
 
 public class BossEnemyMain : Enemy
 {
+    [SerializeField] float wispTimer;
+    [SerializeField] GameObject wispTmp;
+    [SerializeField] Vector2 spawnOffset;
+    [SerializeField] Vector2 spawnForce;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;
 
@@ -17,6 +21,11 @@ public class BossEnemyMain : Enemy
             new KeepHeight(stats, transform.position.y, 1f),
 
             new Selector(new List<Node>{
+
+                new Sequence(new List<Node>{
+                    new Wait(wispTimer),
+                    new EnemyObjectSpawner(stats, wispTmp, spawnOffset, spawnForce)
+                }),
 
                 new AirPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .7f, "attack", "move")
             })

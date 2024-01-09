@@ -81,8 +81,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e5a80ab1ec1fa449a4bd7580f1e842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
+  playerCollisionDamage: 10
   playerCollisionForce: {x: 2000, y: 0.5}
+  wispTimer: 4
+  wispTmp: {fileID: 3904210810762673740, guid: 48fd111d4ca293846a0368a316105c0b, type: 3}
+  spawnOffset: {x: 0, y: 3}
+  spawnForce: {x: 0, y: 3000}
   patrollDistance: 6
   patrollIdleTime: 5
 --- !u!114 &-4186342883332449447
@@ -101,6 +105,14 @@ MonoBehaviour:
   handDeathTime: 10
   startingHands: []
   secondPhaseHands: []
+  bossColors:
+  - {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
+  - {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
+  - {fileID: 11400000, guid: fb4a5352fdc867147b0b07d399cd221d, type: 2}
+  - {fileID: 11400000, guid: 515b8e0cc06f688409aca84476871b24, type: 2}
+  - {fileID: 11400000, guid: a43a3607f70897249a36fdff7162cc2a, type: 2}
+  - {fileID: 11400000, guid: a5087b0e29c5b414795753d6fe24755a, type: 2}
+  changeColorTime: 5
 --- !u!50 &657598516249302101
 Rigidbody2D:
   serializedVersion: 4

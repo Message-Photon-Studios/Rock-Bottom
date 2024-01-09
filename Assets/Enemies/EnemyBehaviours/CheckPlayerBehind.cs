@@ -16,7 +16,7 @@ public class CheckPlayerBehind : Node
     public CheckPlayerBehind(EnemyStats stats, PlayerStats player)
     {
         this.stats = stats;
-        this.player = player.transform;
+        this.player = player?.transform;
     }
 
     public override NodeState Evaluate()

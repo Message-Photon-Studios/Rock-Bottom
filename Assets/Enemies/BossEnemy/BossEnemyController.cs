@@ -8,6 +8,8 @@ public class BossEnemyController : MonoBehaviour
     [SerializeField] float handDeathTime;
     [SerializeField] List<Enemy> startingHands;
     [SerializeField] List<Enemy> secondPhaseHands;
+    [SerializeField] GameColor[] bossColors;
+    [SerializeField] float changeColorTime;
 
     EnemyStats stats;
     List<Enemy> hands = new List<Enemy>(0);
@@ -17,6 +19,9 @@ public class BossEnemyController : MonoBehaviour
     float handDeathTimer;
     float bossStartHealth;
     bool secondPhase = false;
+    Transform wispTarget = null;
+
+    float changeColorTimer;
     void Start()
     {
         AddHands(startingHands);
@@ -65,6 +70,13 @@ public class BossEnemyController : MonoBehaviour
                 AddHands(secondPhaseHands);
             }
         }
+
+        changeColorTimer -= Time.deltaTime;
+        if(changeColorTimer <= 0)
+        {
+            stats.SetColor(bossColors[Random.Range(0, bossColors.Length)], 4);
+            changeColorTimer = changeColorTime;
+        }
     }
 
     void ChangeSpellHand()
@@ -110,5 +122,16 @@ public class BossEnemyController : MonoBehaviour
         hand.gameObject.SetActive(false);
         hand.SetColor(stats.GetColor());
         handDeathTimer = handDeathTime;
+    }
+
+    public void WispSpawned(GameObject wisp)
+    {
+        int i = Random.Range(0, hands.Count);
+        GameObject target = GameObject.FindGameObjectWithTag("Player");
+        if(i != hands.Count)
+        {
+            target = hands[i].gameObject;
+            wisp.GetComponent<Wisp>().SetTarget(target);
+        }
     }
 }
