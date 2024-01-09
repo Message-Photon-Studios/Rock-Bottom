@@ -13,9 +13,12 @@ public class InspiredPopup : MonoBehaviour
     [SerializeField] TMP_Text unlockedText;
 
     [SerializeField] GameObject lightBox;
+
+    [SerializeField] UIController UIController;
     
     private void OnEnable() {
         container.SetActive(false);
+        UIController.inspired += Load;
     }
 
     /// <summary>
@@ -23,9 +26,9 @@ public class InspiredPopup : MonoBehaviour
     /// </summary>
     /// <param name="spell">Image to be displayed</param>
     /// <param name="info">Accompanying text</param>
-    private void Load(Image spell, string info) {
+    public void Load(Sprite spell, string info) {
         
-        image = spell;
+        image.sprite = spell;
         unlockedText.SetText(info);
         StartCoroutine(FadeCorutine(true));
         StartCoroutine(wait());
