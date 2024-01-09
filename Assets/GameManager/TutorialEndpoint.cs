@@ -35,7 +35,7 @@ public class TutorialEndpoint : MonoBehaviour
     {
         if(!enableExit) return;
         DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
-        GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>().disablePausing = true;
+        FindObjectOfType<UIController>().disablePausing = true;
         bgMusic?.disableChildren();
         trailer.SetActive(true);
         player.Play();
