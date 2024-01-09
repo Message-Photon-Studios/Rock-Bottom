@@ -15,7 +15,7 @@ public class Wisp : Enemy
             new Selector(new List<Node>{
 
                 new Sequence(new List<Node>{
-                    new CheckTargetDistance(stats, "target", 1.5f),
+                    new CheckTargetDistance(stats, "target", 2f),
                     new SetEnemyColorToMine(stats, "target"),
                     new AnimationTrigger(animator, "dead")
                 }),

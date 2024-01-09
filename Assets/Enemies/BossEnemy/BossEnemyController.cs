@@ -10,6 +10,7 @@ public class BossEnemyController : MonoBehaviour
     [SerializeField] List<Enemy> secondPhaseHands;
     [SerializeField] GameColor[] bossColors;
     [SerializeField] float changeColorTime;
+    [SerializeField] GameObject deathUnlock;
 
     EnemyStats stats;
     List<Enemy> hands = new List<Enemy>(0);
@@ -99,6 +100,8 @@ public class BossEnemyController : MonoBehaviour
         {
             hand.GetComponent<EnemyStats>().KillEnemy();
         }
+
+        deathUnlock.SetActive(true);
     }
 
     void ChangeSpellHand()
