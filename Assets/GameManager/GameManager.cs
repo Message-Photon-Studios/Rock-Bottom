@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] UIController canvas;
     public bool allowsClockTimer = true;
     [SerializeField] bool clearInventoryOnLevelEnd = false;
+    [SerializeField] VideoPlayer videoOnPlayerDeath;
+    [SerializeField] GameObject videoObjecCanvas;
+    [SerializeField] GameObject backgroundMusic;
 
     private void Start()
     {
@@ -71,9 +75,33 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDied()
     {
-        StartCoroutine(canvas.FadeOutCoroutine(false, PlayerDiedAsync));
-
+        if(videoOnPlayerDeath)
+        {
+            Time.timeScale = 0f;
+            StartDeathVideo();
+            
+        } else
+        {
+            StartCoroutine(canvas.FadeOutCoroutine(false, PlayerDiedAsync));
+        }
     }
+
+    void DeathPlayerStopped(VideoPlayer vp)
+    {   
+        Time.timeScale = 1f;
+        StartCoroutine(canvas.FadeOutCoroutine(false, PlayerDiedAsync));
+    }
+
+    void StartDeathVideo ()
+    {
+        GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>().disablePausing = true;
+        backgroundMusic.SetActive(false);
+        videoObjecCanvas.SetActive(true);
+        videoOnPlayerDeath.Play();
+        videoOnPlayerDeath.loopPointReached += DeathPlayerStopped;
+    }
+
+
 
     public void ShowGame()
     {

@@ -21,6 +21,8 @@ public class BossEnemyController : MonoBehaviour
     bool secondPhase = false;
     Transform wispTarget = null;
 
+    PlayerStats player;
+    bool playerDied = false;
     float changeColorTimer;
     void Start()
     {
@@ -28,10 +30,21 @@ public class BossEnemyController : MonoBehaviour
         changeTimer = Random.Range(0, changeHandTime);
         stats = GetComponent<EnemyStats>();
         bossStartHealth = stats.GetHealth();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
     }
 
     void Update()
     {
+        if (player.GetHealth() <= 0 && !playerDied)
+        {
+            GetComponent<Enemy>().enabled = false;
+            foreach(Enemy hand in hands)
+            {
+                hand.enabled = false;
+            }
+            playerDied = true;
+            return;
+        }
         changeTimer -= Time.deltaTime;
         if(changeTimer <= 0)
         {
