@@ -5,12 +5,16 @@ using UnityEngine;
 public class BossEnemyEye : MonoBehaviour
 {
     [SerializeField] float pivotDistance;
+    [SerializeField] EnemyStats stats;
+
+    SpriteRenderer spriteRenderer;
 
     Transform playerTrans; 
     Vector2 originPosition;
     void Start()
     {
         playerTrans = GameObject.FindGameObjectWithTag("Player").transform;
+        spriteRenderer = GetComponent<SpriteRenderer>();
         originPosition = transform.localPosition;
     }
 
@@ -21,5 +25,13 @@ public class BossEnemyEye : MonoBehaviour
         towardsPlayer.Normalize();
 
         transform.localPosition = originPosition+towardsPlayer*pivotDistance;
+
+        if(stats.IsAsleep())
+        {
+            spriteRenderer.enabled = false;
+        } else
+        {
+            spriteRenderer.enabled = true;
+        }
     }
 }
