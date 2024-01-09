@@ -38,6 +38,7 @@ public class UIController : MonoBehaviour
 
     //When UIController is loaded, sends out action.
     public UnityAction UILoaded;
+    public UnityAction ColorSlotAmountChanged; 
 
     //Input actions for opening the various menus.
     [SerializeField] InputActionReference openPauseMenu;
@@ -78,6 +79,7 @@ public class UIController : MonoBehaviour
 
         var initialSlotCount = 3;
         colorSlotContainers[colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
+        ColorSlotAmountChanged?.Invoke();
     }
 
     private void OpenPauseMenu(InputAction.CallbackContext ctx) {OpenPauseMenu();}

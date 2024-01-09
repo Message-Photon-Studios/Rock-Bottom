@@ -14,6 +14,7 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 public class ColorSlotController : MonoBehaviour
 {
     ColorInventory colorInventory;
+    [SerializeField] UIController uiController;
 
     //Color slots the player currently has.
     List<ColorSlot> colorSlots;
@@ -63,6 +64,8 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onColorUpdated += ColorUpdate;
         colorInventory.onSlotChanged += ActiveColorChanged;
         colorInventory.onColorSpellChanged += BottleChanged;
+        uiController.UILoaded += UpdateAllSprites;
+        uiController.ColorSlotAmountChanged += UpdateAllSprites;
 
         //fetch each colorSlots position and scale and save it.
         foreach(RectTransform rect in slotList) {
@@ -75,7 +78,6 @@ public class ColorSlotController : MonoBehaviour
         var materials = Resources.LoadAll<Material>("Bottles/Materials/Body");
         var capMaterials = Resources.LoadAll<Material>("Bottles/Materials/Cap");
         for(int i = 0; i < slotList.Count; i++) {
-
             Image frameImage = slotList[i].GetChild(0).GetChild(0).GetComponent<Image>();
             frameImage.material = materials[i];
             ColorSlot slot = colorSlots[i];
@@ -103,6 +105,8 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onColorUpdated -= ColorUpdate;
         colorInventory.onSlotChanged -= ActiveColorChanged;
         colorInventory.onColorSpellChanged -= BottleChanged;
+        uiController.UILoaded -= UpdateAllSprites;
+        uiController.ColorSlotAmountChanged -= UpdateAllSprites;
     }
     #endregion
     #region SlotMovement
@@ -166,10 +170,10 @@ public class ColorSlotController : MonoBehaviour
 
     #region UnityActions
     //When a color is updated, call this.
-    private void ColorUpdate() {
-        Image frameImage = slotList[colorInventory.activeSlot].GetChild(0).GetChild(0).GetComponent<Image>();
-        Image capImage = slotList[colorInventory.activeSlot].GetChild(0).GetChild(1).GetComponent<Image>();
-        ColorSlot slot = colorInventory.colorSlots[colorInventory.activeSlot];
+    private void ColorUpdate(int index) {
+        Image frameImage = slotList[index].GetChild(0).GetChild(0).GetComponent<Image>();
+        Image capImage = slotList[index].GetChild(0).GetChild(1).GetComponent<Image>();
+        ColorSlot slot = colorInventory.colorSlots[index];
         
         frameImage.material.SetColor("_Color", slot.gameColor != null ? slot.gameColor.plainColor : colorInventory.defaultColor.GetColor("_Color")); 
         capImage.material.SetColor("_Color", slot.gameColor != null ? slot.gameColor.colorMat.GetColor("_Color") : colorInventory.defaultColor.GetColor("_Color"));
@@ -180,14 +184,13 @@ public class ColorSlotController : MonoBehaviour
         else if (capImage.material.GetFloat("_Alpha") == 1f && slot.charge == 0)
             StartCoroutine(setActivateCap(capImage, slot, false));
 
-        if (capImage.material.GetFloat("_BloomPower") == 0f && slot.charge == slot.maxCapacity)
-        {
-            
-        }
+        if (activeCoroutines[index] != null)
+            StopCoroutine(activeCoroutines[index]);
+        activeCoroutines[index] = StartCoroutine(fillSlotGradually(frameImage, slot));
+    }
 
-        if (activeCoroutines[colorInventory.activeSlot] != null)
-            StopCoroutine(activeCoroutines[colorInventory.activeSlot]);
-        activeCoroutines[colorInventory.activeSlot] = StartCoroutine(fillSlotGradually(frameImage, slot));
+    private void ColorUpdate() {
+        ColorUpdate(colorInventory.activeSlot);
     }
 
     private IEnumerator  fillSlotGradually(Graphic frame, ColorSlot color)
@@ -267,7 +270,17 @@ public class ColorSlotController : MonoBehaviour
     }
 
     private void BottleChanged(int index) {
-        BottleChanged(index, ((index + slotList.Count - colorInventory.activeSlot) % slotList.Count));
+        BottleChanged(index, (index + slotList.Count - colorInventory.activeSlot) % slotList.Count);
+    }
+
+    /// <summary>
+    /// Updates all bottles, their caps and colors.
+    /// </summary>
+    private void UpdateAllSprites() {
+        for (int i = 0; i < slotList.Count; i++){
+            ColorUpdate(i);
+            BottleChanged(i);
+        }
     }
 
     private void Update()
