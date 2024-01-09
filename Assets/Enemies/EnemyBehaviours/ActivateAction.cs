@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using BehaviourTree;
 using System;
-using UnityEditor.Events;
-using UnityEngine.Events;
 
 public class ActivateAction : Node
 {
-    UnityAction action;
+    Action action;
 
     /// <summary>
     /// Activates the action and then returns
     /// </summary>
     /// <param name="action"></param>
-    public ActivateAction(UnityAction action)
+    public ActivateAction(Action action)
     {
         this.action = action;
     }
