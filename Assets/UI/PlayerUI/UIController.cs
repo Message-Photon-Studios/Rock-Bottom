@@ -38,11 +38,14 @@ public class UIController : MonoBehaviour
 
     //When UIController is loaded, sends out action.
     public UnityAction UILoaded;
+    public UnityAction ColorSlotAmountChanged; 
 
     //Input actions for opening the various menus.
     [SerializeField] InputActionReference openPauseMenu;
     [SerializeField] InputActionReference openMap;
     [SerializeField] InputActionReference openInventory;
+
+    public UnityAction<Sprite, String> inspired;
 
     //Reference to player movement to freeze the player.
     private PlayerMovement playerMovement;
@@ -78,6 +81,7 @@ public class UIController : MonoBehaviour
 
         var initialSlotCount = 3;
         colorSlotContainers[colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
+        ColorSlotAmountChanged?.Invoke();
     }
 
     private void OpenPauseMenu(InputAction.CallbackContext ctx) {OpenPauseMenu();}
@@ -141,6 +145,10 @@ public class UIController : MonoBehaviour
         pauseMenuContainer.SetActive(pauseMenuOpen);
         mapOpen = false;
         mapContainer.SetActive(mapOpen);
+    }
+
+    public void Inspired(Sprite spell, String text) {
+        inspired?.Invoke(spell, text);
     }
 
     /// <summary>

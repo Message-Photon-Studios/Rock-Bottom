@@ -8,13 +8,14 @@ public class SpellPickup : MonoBehaviour
 {
     [SerializeField] float spawnChance = 1f;
     [SerializeField] bool needsPayment;
-    ColorSpell colorSpell;
+    [SerializeField] ColorSpell colorSpell;
     [SerializeField] GameObject canvas;
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
     SpriteRenderer spriteRenderer;
     ColorInventory inventory;
+    bool pickedup = false;
 
     /// <summary>
     /// Sets the color spell for this spawnpoint
@@ -22,7 +23,7 @@ public class SpellPickup : MonoBehaviour
     /// <param name="setItem"></param>
     public void SetSpell(ColorSpell setSpell)
     {
-        this.colorSpell = setSpell;
+        if (colorSpell == null || pickedup) this.colorSpell = setSpell;
                 
         descriptionText.text = colorSpell.description;
         nameText.text = colorSpell.name;
@@ -79,6 +80,7 @@ public class SpellPickup : MonoBehaviour
     /// </summary>
     public void PickedUp()
     {
+        pickedup = true;
         ColorSpell tmp = inventory.GetActiveColorSpell();
         inventory.ChangeActiveSlotColorSpell(colorSpell);
         needsPayment = false;
