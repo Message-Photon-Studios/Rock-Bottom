@@ -97,6 +97,11 @@ public abstract class Enemy : BehaviourTree.Tree
         root.SetData(name, false);
     }
 
+    public void SetVarData(string varName, object value)
+    {
+        root.SetData(varName, value);
+    }
+
     #endregion
 }
 

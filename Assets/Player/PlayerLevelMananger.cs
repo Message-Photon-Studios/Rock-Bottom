@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,11 @@ public class PlayerLevelMananger : MonoBehaviour
         //Singelton that ensures that only one player exists
         if(me && me != this.gameObject) 
         {
+            me.transform.position = this.gameObject.transform.position;
+            me.GetComponent<PlayerLevelMananger>().SetStartPosition(transform.position);
+
+            Debug.Log("Set new start position " + startPosition);
+
             foreach (GameObject obj in loadWithPlayerObjects)
             {
                 Destroy(obj);
@@ -38,7 +44,12 @@ public class PlayerLevelMananger : MonoBehaviour
                 DontDestroyOnLoad(obj);
             }
             DontDestroyOnLoad(this); 
-            startPosition = transform.position;
+
+            if (startPosition == Vector3.zero) 
+            {
+                startPosition = this.transform.position;
+                Debug.Log("Set original start position " + startPosition );
+            }
         }
 
         movement = GetComponent<PlayerMovement>();
@@ -47,6 +58,13 @@ public class PlayerLevelMananger : MonoBehaviour
 
         stats.onPlayerDied += ForceKillPlayer;
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        Debug.Log("Finished setup");
+    }
+
+    public void SetStartPosition(Vector3 newStartPosition)
+    {
+        startPosition = newStartPosition;
     }
 
     /// <summary>
@@ -66,6 +84,11 @@ public class PlayerLevelMananger : MonoBehaviour
             movement.movementRoot.SetTotalRoot("dead", false);
         }
         GetComponent<Rigidbody2D>().simulated = true;
+
+        foreach(GameObject obj in loadWithPlayerObjects)
+        {
+            obj.transform.position = new Vector3(startPosition.x, startPosition.y, obj.transform.position.z);
+        }
         
         if(stats) stats.Setup(gameManager);
     }

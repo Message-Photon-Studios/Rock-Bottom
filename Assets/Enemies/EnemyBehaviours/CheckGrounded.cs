@@ -20,8 +20,8 @@ public class CheckGrounded : Node
     }
     public override NodeState Evaluate()
     {
-        bool test = Physics2D.Raycast(stats.GetPosition() + Vector2.right* legPos, Vector2.down, 1f, ~LayerMask.GetMask("Enemy", "Player", "Spell")) ||
-                    Physics2D.Raycast(stats.GetPosition() - Vector2.right* legPos, Vector2.down, 1f, ~LayerMask.GetMask("Enemy", "Player", "Spell"));
+        bool test = Physics2D.Raycast(stats.GetPosition() + Vector2.right* legPos, Vector2.down, 1f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "BossEnemy")) ||
+                    Physics2D.Raycast(stats.GetPosition() - Vector2.right* legPos, Vector2.down, 1f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "BossEnemy"));
         state = test?NodeState.SUCCESS:NodeState.FAILURE;
         return state;
     }

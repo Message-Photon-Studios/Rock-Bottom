@@ -11,7 +11,7 @@ public class LookAtPlayer : Node
     base (new List<Node>{new CheckPlayerBehind(stats, player)})
     {
         this.stats = stats;
-        this.player = player.gameObject.transform;
+        this.player = player?.gameObject.transform;
     }
     public override NodeState Evaluate()
     {

@@ -42447,10 +42447,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelGenerator: {fileID: 0}
   onDeathLevel: Tutorial
-  nextLevelName: TutorialCaves
+  nextLevelName: BossTutorialArena
   canvas: {fileID: 392287931}
   allowsClockTimer: 0
-  clearInventoryOnLevelEnd: 1
+  clearInventoryOnLevelEnd: 0
+  videoOnPlayerDeath: {fileID: 0}
+  videoObjecCanvas: {fileID: 0}
+  backgroundMusic: {fileID: 0}
 --- !u!114 &677141307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54089,7 +54092,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1462840947}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: ae653370233aa634ea3e3b42c4e69ed7, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 1eb21a42d1a0c264ea5b2ec0b89dca32, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -56587,7 +56590,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7584247180477944385, guid: 97c977ab1cf9bb94891cb8204055ff09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.8
+      value: 10.84
       objectReference: {fileID: 0}
     - target: {fileID: 7584247180477944385, guid: 97c977ab1cf9bb94891cb8204055ff09, type: 3}
       propertyPath: m_LocalPosition.y

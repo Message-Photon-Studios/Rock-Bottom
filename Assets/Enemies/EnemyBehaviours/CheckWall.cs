@@ -26,7 +26,7 @@ public class CheckWall : Node
 
     public override NodeState Evaluate()
     {
-        bool test = Physics2D.Raycast(stats.GetPosition()+ Vector2.up*yPos, new Vector2(direction.x*stats.lookDir, direction.y), distance, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Item"));
+        bool test = Physics2D.Raycast(stats.GetPosition()+ Vector2.up*yPos, new Vector2(direction.x*stats.lookDir, direction.y), distance, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Item", "BossEnemy"));
         state = test?NodeState.SUCCESS:NodeState.FAILURE;
         return state;
     }
