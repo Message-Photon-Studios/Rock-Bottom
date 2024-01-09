@@ -31,6 +31,7 @@ public class BossEnemyController : MonoBehaviour
         stats = GetComponent<EnemyStats>();
         bossStartHealth = stats.GetHealth();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        stats.onEnemyDeath += BossDied;
     }
 
     void Update()
@@ -92,6 +93,14 @@ public class BossEnemyController : MonoBehaviour
         }
     }
 
+    void BossDied()
+    {
+        foreach(Enemy hand in hands)
+        {
+            hand.GetComponent<EnemyStats>().KillEnemy();
+        }
+    }
+
     void ChangeSpellHand()
     {
         hands[spellHand].SetBoolFalse("spellMode");
@@ -118,8 +127,6 @@ public class BossEnemyController : MonoBehaviour
         {
             EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
             enemyStats.onDamageTaken += (float damageTaken, Vector2 tmp) => {HandTookDamage(damageTaken);};
-
-            enemyStats.onEnemyDeath += () => {HandDied(enemyStats);};
         }
 
         hands.AddRange(handsAdded);
@@ -130,12 +137,7 @@ public class BossEnemyController : MonoBehaviour
         stats.DamageEnemy((int)damageTaken);
     }
 
-    void HandDied(EnemyStats hand)
-    {
-        hand.gameObject.SetActive(false);
-        hand.SetColor(stats.GetColor());
-        handDeathTimer = handDeathTime;
-    }
+
 
     public void WispSpawned(GameObject wisp)
     {

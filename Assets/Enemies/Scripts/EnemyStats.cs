@@ -65,6 +65,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public UnityAction onEnemyDeath;
 
+    private bool enemyDead = false;
     [CanBeNull] private Coroutine currentCoroutine;
 
     #region Setup and Timers
@@ -301,6 +302,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
+        enemyDead = true;
         enemySounds?.PlayDeath();
         //TODO
         if (animator.GetBool("dead")) return;
@@ -311,6 +313,11 @@ public class EnemyStats : MonoBehaviour
         Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
         onEnemyDeath?.Invoke();
+    }
+
+    public bool IsDead()
+    {
+        return enemyDead;
     }
 
     public void DropCoins()

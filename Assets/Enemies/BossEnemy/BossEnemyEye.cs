@@ -26,7 +26,7 @@ public class BossEnemyEye : MonoBehaviour
 
         transform.localPosition = originPosition+towardsPlayer*pivotDistance;
 
-        if(stats.IsAsleep())
+        if(stats.IsAsleep() || stats.IsDead())
         {
             spriteRenderer.enabled = false;
         } else
