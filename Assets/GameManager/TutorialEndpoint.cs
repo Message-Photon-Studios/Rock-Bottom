@@ -35,7 +35,8 @@ public class TutorialEndpoint : MonoBehaviour
     {
         if(!enableExit) return;
         DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
-        FindObjectOfType<UIController>().disablePausing = true;
+        UIController controller = FindObjectOfType<UIController>();
+        if (controller) controller.disablePausing = true;
         bgMusic?.disableChildren();
         trailer.SetActive(true);
         player.Play();
