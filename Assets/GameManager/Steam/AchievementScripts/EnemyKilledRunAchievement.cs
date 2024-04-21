@@ -24,7 +24,6 @@ public class EnemyKilledRunAchievement : Achievement
 
     public override void ProgressAchievement()
     {
-        Debug.Log("Enemy killed " + kills);
         kills ++;
         if(kills >= enemyKills) RewardAchievement();
     }
