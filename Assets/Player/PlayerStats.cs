@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -43,7 +44,6 @@ public class PlayerStats : MonoBehaviour
     public UnityAction onPlayerDied;
 
     private bool isDeathExecuted;
-
     public void Setup(GameManager gameManager)
     {
         this.gameManager = gameManager;
@@ -94,7 +94,7 @@ public class PlayerStats : MonoBehaviour
     {
         if(invincibilityTimer > 0) return;
         //if(damage == 0) return;
-        if (Random.Range(0, 100) < chanceToBlock)
+        if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
         {
             Debug.Log("Damage blocked");
             return;

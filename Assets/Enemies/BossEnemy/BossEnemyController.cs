@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class BossEnemyController : MonoBehaviour
     [SerializeField] GameColor[] bossColors;
     [SerializeField] float changeColorTime;
     [SerializeField] GameObject deathUnlock;
+
+    public static Action onBossDefeated;
 
     EnemyStats stats;
     List<Enemy> hands = new List<Enemy>(0);
@@ -28,7 +31,7 @@ public class BossEnemyController : MonoBehaviour
     void Start()
     {
         AddHands(startingHands);
-        changeTimer = Random.Range(0, changeHandTime);
+        changeTimer = UnityEngine.Random.Range(0, changeHandTime);
         stats = GetComponent<EnemyStats>();
         bossStartHealth = stats.GetHealth();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
@@ -50,7 +53,7 @@ public class BossEnemyController : MonoBehaviour
         changeTimer -= Time.deltaTime;
         if(changeTimer <= 0)
         {
-            changeTimer = Random.Range(0, changeHandTime);
+            changeTimer = UnityEngine.Random.Range(0, changeHandTime);
             ChangeSpellHand();
             if(hands.Count > 2)
             {
@@ -89,7 +92,7 @@ public class BossEnemyController : MonoBehaviour
         changeColorTimer -= Time.deltaTime;
         if(changeColorTimer <= 0)
         {
-            stats.SetColor(bossColors[Random.Range(0, bossColors.Length)], 4);
+            stats.SetColor(bossColors[UnityEngine.Random.Range(0, bossColors.Length)], 4);
             changeColorTimer = changeColorTime;
         }
     }
@@ -101,20 +104,21 @@ public class BossEnemyController : MonoBehaviour
             hand.GetComponent<EnemyStats>().KillEnemy();
         }
 
+        onBossDefeated?.Invoke();
         deathUnlock.SetActive(true);
     }
 
     void ChangeSpellHand()
     {
         hands[spellHand].SetBoolFalse("spellMode");
-        spellHand = Random.Range(0, hands.Count);
+        spellHand = UnityEngine.Random.Range(0, hands.Count);
         hands[spellHand].SetBoolTrue("spellMode");
     }
 
     void ChangeIdleHand()
     {
         hands[idleHand].SetBoolFalse("idle");
-        idleHand = Random.Range(0, hands.Count);
+        idleHand = UnityEngine.Random.Range(0, hands.Count);
         if(idleHand == spellHand)
         {
             idleHand++;
@@ -144,7 +148,7 @@ public class BossEnemyController : MonoBehaviour
 
     public void WispSpawned(GameObject wisp)
     {
-        int i = Random.Range(0, hands.Count);
+        int i = UnityEngine.Random.Range(0, hands.Count);
         GameObject target = GameObject.FindGameObjectWithTag("Player");
         if(i != hands.Count)
         {
