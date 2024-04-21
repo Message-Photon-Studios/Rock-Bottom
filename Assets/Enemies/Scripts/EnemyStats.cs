@@ -396,6 +396,11 @@ public class EnemyStats : MonoBehaviour
             GetComponent<SpriteRenderer>().material = color.colorMat;
         else
             GetComponent<SpriteRenderer>().material = defaultColor;
+        
+        if(color.name.Equals("Rainbow"))
+        {
+            AchievementsManager.instance.ProgressAchievement("Painter");
+        }
     }
 
     public void SetColor(GameColor color, int ammount)

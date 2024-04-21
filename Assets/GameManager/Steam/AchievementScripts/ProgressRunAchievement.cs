@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyKilledRunAchievement : Achievement
+public class ProgressRunAchievement : Achievement
 {
-    [SerializeField] int enemyKills;
-    int kills = 0;
+    [SerializeField] int progressGoal;
+    int progress = 0;
     protected override void Start()
     {
         base.Start();
@@ -14,7 +14,7 @@ public class EnemyKilledRunAchievement : Achievement
 
     void ResetAchievement()
     {
-        kills = 0;
+        progress = 0;
     }
 
     void OnDisable()
@@ -24,7 +24,7 @@ public class EnemyKilledRunAchievement : Achievement
 
     public override void ProgressAchievement()
     {
-        kills ++;
-        if(kills >= enemyKills) RewardAchievement();
+        progress ++;
+        if(progress >= progressGoal) RewardAchievement();
     }
 }
