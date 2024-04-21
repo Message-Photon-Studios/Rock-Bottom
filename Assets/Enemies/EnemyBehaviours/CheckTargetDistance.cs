@@ -25,7 +25,8 @@ public class CheckTargetDistance : Node
     public override NodeState Evaluate()
     {
         GameObject target = GetData(targetVar) as GameObject;
-        state = (Vector2.Distance(target.transform.position, stats.GetPosition()) < distance)? NodeState.SUCCESS:NodeState.FAILURE;
+        if(target != null && stats != null)
+            state = (Vector2.Distance(target.transform.position, stats.GetPosition()) < distance)? NodeState.SUCCESS:NodeState.FAILURE;
         return state;
     }
 }

@@ -5228,6 +5228,7 @@ GameObject:
   - component: {fileID: 468746527930208002}
   - component: {fileID: 5589058685384803136}
   - component: {fileID: 8035332531517541450}
+  - component: {fileID: 4358217284664026906}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -5276,6 +5277,10 @@ MonoBehaviour:
   animator: {fileID: 5589058685384803136}
   movement: {fileID: 468746527930208003}
   chanceToBlock: 0
+  colorNearbyRange: 8
+  chanceToColorNearby: 0
+  colorRainbowMaxedPower: 1
+  chanceThatEnemyDontMix: 0
   playerSounds: {fileID: 8219171091925355652}
   clockTime: 1200
   clockDamage: 1
@@ -5530,6 +5535,18 @@ MonoBehaviour:
   takingDamage: {fileID: 3357437830393179160}
   defaultAttack: {fileID: 0}
   castingSpell: {fileID: 0}
+--- !u!114 &4358217284664026906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468746527930208030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c03b79df2379d45419d1fc1669073a18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &468746528245736197
 GameObject:
   m_ObjectHideFlags: 0

@@ -128,7 +128,9 @@ public class EnemyStats : MonoBehaviour
 
                 if (colorComboTimer <= 0)
                 {
-                    DamageEnemy(colorComboDamage);
+                    GameObject player = GameObject.FindGameObjectWithTag("Player");
+                    if(player)
+                        DamageEnemy((int)(colorComboDamage*player.GetComponent<PlayerStats>().colorRainbowMaxedPower));
                     AbsorbColor();
                     colorComboTimer = 2f;
 

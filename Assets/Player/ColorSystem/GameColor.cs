@@ -53,10 +53,28 @@ public class GameColor : ScriptableObject
             enemy.DamageEnemy(0);
             return;
         }
+
+        PlayerStats playerStats = playerObj.GetComponent<PlayerStats>();
+
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
 
-        enemy.SetColor(MixColor(enemy.GetColor()), enemy.GetColorAmmount() + 1);
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            if(Random.Range(0, 100) < playerStats.chanceToColorNearby)
+            {
+                EnemyStats objStats = obj.GetComponent<EnemyStats>();
+                    //if(objStats.GetColor() != null) return;               
+                if(obj != enemy.gameObject && Vector2.Distance(obj.transform.position, enemy.transform.position) < playerStats.colorNearbyRange)
+                {
+                    GameColor setObjColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
+                    objStats.SetColor(setObjColor, objStats.GetColorAmmount() + 1);
+                }
+            }
+        }
+
+        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
+        enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
     }
 
     /// <summary>

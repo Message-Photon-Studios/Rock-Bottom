@@ -15,6 +15,12 @@ public class PlayerStats : MonoBehaviour
     float invincibilityTimer = 0;
     public int chanceToBlock = 0;
 
+    public float colorNearbyRange = 0;
+    public int chanceToColorNearby = 0;
+    public float colorRainbowMaxedPower = 1;
+
+    public int chanceThatEnemyDontMix = 0;
+
     [SerializeField] PlayerSounds playerSounds;
 
     [SerializeField] public float clockTime;

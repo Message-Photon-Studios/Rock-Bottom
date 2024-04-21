@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
+  m_Name: Pipette
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: abc029b47ffb6ac46b44ee5908b548fe, type: 3}
+  description: 'An usefull item for picking colors.
+
+    When coloring an enemy gain
+    a +20% chance that the color will override the enemys color instead of mixing
+    with it.'
+  itemCost: 50
+  effects:
+  - rid: 7258339260076130304
+  references:
+    version: 2
+    RefIds:
+    - rid: 7258339260076130304
+      type: {class: EnemyDontMixItem, ns: , asm: Assembly-CSharp}
+      data:
+        addedChance: 20
