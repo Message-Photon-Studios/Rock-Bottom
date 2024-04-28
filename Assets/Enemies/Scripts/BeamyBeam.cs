@@ -9,8 +9,11 @@ public class BeamyBeam : MonoBehaviour
     [SerializeField] ParticleSystem particles;
     [SerializeField] ParticleSystem rootParticles;
     [SerializeField] Color defaultColor;
+    [SerializeField] float rotationSpeed;
     private PlayerStats player;
     private EnemyStats enemyStats;
+
+    
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
@@ -23,9 +26,15 @@ public class BeamyBeam : MonoBehaviour
     {
         Vector3 direction = player.transform.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle-90));
+        Quaternion newDir = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), Time.deltaTime*rotationSpeed);
+        transform.rotation = newDir;
 
-        if(enemyStats.IsAsleep())
+        /*if (!particles.isEmitting)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle-90));
+        }*/
+
+        if (enemyStats.IsAsleep())
         {
             particles.Stop();
             rootParticles.Stop();  
@@ -51,5 +60,12 @@ public class BeamyBeam : MonoBehaviour
             main.startColor = defaultColor;
             rootMain.startColor = defaultColor;
         }
+    }
+
+    public void TargetSet()
+    {
+        Vector3 direction = player.transform.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
     }
 }
