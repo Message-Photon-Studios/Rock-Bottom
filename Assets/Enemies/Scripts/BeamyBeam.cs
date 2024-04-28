@@ -30,7 +30,12 @@ public class BeamyBeam : MonoBehaviour
         //transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle-90));
         transform.rotation = newDir;
 
-        if(enemyStats.IsAsleep())
+        if (!particles.isEmitting)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle-90));
+        }
+
+        if (enemyStats.IsAsleep())
         {
             particles.Stop();
             rootParticles.Stop();  
