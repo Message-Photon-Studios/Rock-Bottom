@@ -22,6 +22,7 @@ public class CheckTargetBehind : Node
     public override NodeState Evaluate()
     {
         GameObject target = GetData(targetVar) as GameObject;
+        if(target == null || stats == null) return state;
         state = ((target.transform.position.x - stats.GetPosition().x)*stats.lookDir<0)? NodeState.SUCCESS:NodeState.FAILURE;
         return state;
     }

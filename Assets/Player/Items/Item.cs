@@ -92,6 +92,11 @@ public class ItemInspector : Editor
         {
             item.effects.Add(new EnemyDontMixItem());
         }
+
+        if(GUILayout.Button("Add brush damage"))
+        {
+            item.effects.Add(new BrushDamageItem());
+        }
     }
 }
 

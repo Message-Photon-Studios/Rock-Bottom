@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
+  m_Name: Sharp Brush
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: cdf153e3e5a3fab42a35ea9cc0d79f34, type: 3}
+  description: "Oh, this looks like one of my old brushes, but the color has congealated
+    and created sharp edges. \nMakes the absorb color ability deal +15 damage."
+  itemCost: 50
+  effects:
+  - rid: 7258339796023508992
+  references:
+    version: 2
+    RefIds:
+    - rid: 7258339796023508992
+      type: {class: BrushDamageItem, ns: , asm: Assembly-CSharp}
+      data:
+        brushDamage: 15
