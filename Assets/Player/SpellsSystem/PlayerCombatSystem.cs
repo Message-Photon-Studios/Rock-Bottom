@@ -94,7 +94,8 @@ public class PlayerCombatSystem : MonoBehaviour
             EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
             (GameColor absorb, int ammount) = enemy.AbsorbColor();
             if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
-            enemy.DamageEnemy(defaultAttackDamage);
+            if(defaultAttackDamage > 0)
+                enemy.DamageEnemy(defaultAttackDamage);
             colorInventory.AddColor(absorb, ammount);
         }
         foreach (GameObject enemyObj in enemies.pushList)
