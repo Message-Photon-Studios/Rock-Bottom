@@ -26,7 +26,7 @@ public class BeamyBeam : MonoBehaviour
     {
         Vector3 direction = player.transform.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        Quaternion newDir = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), Time.fixedDeltaTime*rotationSpeed);
+        Quaternion newDir = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), Time.deltaTime*rotationSpeed);
         transform.rotation = newDir;
 
         /*if (!particles.isEmitting)
