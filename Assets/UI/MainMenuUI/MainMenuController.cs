@@ -47,7 +47,7 @@ public class MainMenuController : MonoBehaviour
     {
         sylviaLoading.gameObject.SetActive(false);
         StartCoroutine(FadeOutCoroutine(true));
-        StartCoroutine(tiltCamera());
+        //StartCoroutine(tiltCamera()); //Disabled this with the new camera
         startButton.GetComponent<IndicatorController>().ShowIndicator(true);
 
         DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
@@ -122,6 +122,7 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
+    /*
     private IEnumerator tiltCamera()
     {
         // Tilt the worldUp of the camera in a sinewave pattern
@@ -133,7 +134,7 @@ public class MainMenuController : MonoBehaviour
             cam.transform.position = new Vector3(centerPos - sinVal, cam.transform.position.y, cam.transform.position.z);
             yield return new WaitForSeconds(0.03f);
         }   
-    }
+    }*/
 
     public void showCredits()
     {
