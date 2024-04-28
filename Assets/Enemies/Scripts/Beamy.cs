@@ -60,6 +60,11 @@ public class Beamy : Enemy
         player.DamagePlayer(damage);
     }
 
+    public void ChooseBeamTarget()
+    {
+        GetComponentInChildren<BeamyBeam>().TargetSet();
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         attackTrigger.DrawTrigger(stats.GetPosition());
