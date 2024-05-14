@@ -19,6 +19,8 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
     [SerializeField] PlayerSounds playerSounds;
+
+    public int defaultAttackDamage = 0;
     private bool attacking;
     private Rigidbody2D body;
 
@@ -92,11 +94,13 @@ public class PlayerCombatSystem : MonoBehaviour
             EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
             (GameColor absorb, int ammount) = enemy.AbsorbColor();
             if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
-            //enemy.DamageEnemy(defaultAttackDamage);
+            if(defaultAttackDamage > 0)
+                enemy.DamageEnemy(defaultAttackDamage);
             colorInventory.AddColor(absorb, ammount);
         }
         foreach (GameObject enemyObj in enemies.pushList)
         {
+            if(enemyObj == null) continue;
             EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
             if (!enemy.IsKnockbackImune())
                 enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);

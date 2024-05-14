@@ -77,7 +77,7 @@ public class EffectIconController : MonoBehaviour
 
     void removeIcon(EffectIcon icon)
     {
-        if (!iconPositions.ContainsKey(icon)) return;
+        if (iconPositions == null || !iconPositions.ContainsKey(icon)) return;
         for (int i = iconPositions[icon]; i < 3; i++)
         {
             icons[i].sprite = icons[i + 1].sprite;

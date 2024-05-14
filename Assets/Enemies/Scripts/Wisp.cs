@@ -4,6 +4,7 @@ using UnityEngine;
 using BehaviourTree;
 using UnityEditor;
 using System;
+using System.Linq;
 
 public class Wisp : Enemy
 {
@@ -35,7 +36,8 @@ public class Wisp : Enemy
                 })
             });
 
-        FindObjectOfType<BossEnemyController>().WispSpawned(gameObject);
+        if(gameObject != null && FindObjectsOfType<BossEnemyController>().Count() > 0)
+            FindObjectOfType<BossEnemyController>().WispSpawned(gameObject);
         
         root.SetData("target", target);
         return root;

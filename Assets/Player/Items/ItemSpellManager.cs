@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class ItemSpellManager : MonoBehaviour
 {
+    [SerializeField] float stageCostMultiplier = 1;
     [SerializeField] Item[] spawnableItems;
     [SerializeField] ColorSpell[] spawnableSpells;
 
@@ -41,7 +42,7 @@ public class ItemSpellManager : MonoBehaviour
 
 
             spawnSet.RemoveAt(rng);
-            obj.GetComponent<ItemPickup>().SetItem(item);
+            obj.GetComponent<ItemPickup>().SetItem(item, Mathf.RoundToInt(item.itemCost * stageCostMultiplier));
             if(spawnSet.Count <= 0) spawnSet.AddRange(spawnableItems);
         }
 

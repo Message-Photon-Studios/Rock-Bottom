@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,6 +15,12 @@ public class PlayerStats : MonoBehaviour
     int maxHealth;
     float invincibilityTimer = 0;
     public int chanceToBlock = 0;
+
+    public float colorNearbyRange = 0;
+    public int chanceToColorNearby = 0;
+    public float colorRainbowMaxedPower = 1;
+
+    public int chanceThatEnemyDontMix = 0;
 
     [SerializeField] PlayerSounds playerSounds;
 
@@ -37,7 +44,6 @@ public class PlayerStats : MonoBehaviour
     public UnityAction onPlayerDied;
 
     private bool isDeathExecuted;
-
     public void Setup(GameManager gameManager)
     {
         this.gameManager = gameManager;
@@ -88,7 +94,7 @@ public class PlayerStats : MonoBehaviour
     {
         if(invincibilityTimer > 0) return;
         //if(damage == 0) return;
-        if (Random.Range(0, 100) < chanceToBlock)
+        if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
         {
             Debug.Log("Damage blocked");
             return;

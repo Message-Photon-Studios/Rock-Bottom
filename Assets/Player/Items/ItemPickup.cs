@@ -22,11 +22,13 @@ public class ItemPickup : MonoBehaviour
 
     private Coroutine hoverCoroutine;
 
+    int itemCost;
+
     void OnEnable()
     {
         if(setByhand)
         {
-            SetItem(item);
+            SetItem(item, item.itemCost);
         }
     }
 
@@ -34,13 +36,14 @@ public class ItemPickup : MonoBehaviour
     /// Sets the item for this spawnpoint
     /// </summary>
     /// <param name="setItem"></param>
-    public void SetItem(Item setItem)
+    public void SetItem(Item setItem, int itemCost)
     {
         this.item = setItem;
+        this.itemCost = itemCost;
                 
         descriptionText.text = item.description;
         nameText.text = item.name;
-        cost.text = "Cost: " + item.itemCost;
+        cost.text = "Cost: " + itemCost;
 
         spriteRenderer.sprite = item.sprite;
 
@@ -112,7 +115,15 @@ public class ItemPickup : MonoBehaviour
     public Item GetItem()
     {
         return item;
-        
+    }
+
+    /// <summary>
+    /// Returns the cost of this item
+    /// </summary>
+    /// <returns></returns>
+    public int GetItemCost()
+    {
+        return itemCost;
     }
     private IEnumerator hoverAnimation()
     {

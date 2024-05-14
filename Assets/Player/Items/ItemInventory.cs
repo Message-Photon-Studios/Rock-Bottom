@@ -51,7 +51,7 @@ public class ItemInventory : MonoBehaviour
 
             while (buyItems.Count > 0)
             {
-                if(PayCost(buyItems[0].GetItem().itemCost))
+                if(PayCost(buyItems[0].GetItemCost()))
                 {
                     buyItems[0].PickedUp();
                 } else buyItems.RemoveAt(0);

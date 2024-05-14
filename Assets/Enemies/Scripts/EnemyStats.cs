@@ -128,7 +128,9 @@ public class EnemyStats : MonoBehaviour
 
                 if (colorComboTimer <= 0)
                 {
-                    DamageEnemy(colorComboDamage);
+                    GameObject player = GameObject.FindGameObjectWithTag("Player");
+                    if(player)
+                        DamageEnemy((int)(colorComboDamage*player.GetComponent<PlayerStats>().colorRainbowMaxedPower));
                     AbsorbColor();
                     colorComboTimer = 2f;
 
@@ -391,9 +393,16 @@ public class EnemyStats : MonoBehaviour
         this.color = color;
         onColorChanged?.Invoke(color);
         if(color != null)
+        {
             GetComponent<SpriteRenderer>().material = color.colorMat;
+            if(color.name.Equals("Rainbow"))
+            {
+                AchievementsManager.instance.ProgressAchievement("Painter");
+            }
+        }
         else
             GetComponent<SpriteRenderer>().material = defaultColor;
+        
     }
 
     public void SetColor(GameColor color, int ammount)

@@ -78,6 +78,25 @@ public class ItemInspector : Editor
             item.effects.Add(new BlockUseColor());
         }
 
+        if(GUILayout.Button("Add Color Nearby"))
+        {
+            item.effects.Add(new ColorNearbyUncolored());
+        }
+
+        if(GUILayout.Button("Add Rainbow Maxed buff"))
+        {
+            item.effects.Add(new RainbowMaxedBuff());
+        }
+
+        if(GUILayout.Button("Add enemy color don't mix"))
+        {
+            item.effects.Add(new EnemyDontMixItem());
+        }
+
+        if(GUILayout.Button("Add brush damage"))
+        {
+            item.effects.Add(new BrushDamageItem());
+        }
     }
 }
 
