@@ -29,15 +29,10 @@ public class BeamyBeam : MonoBehaviour
         Quaternion newDir = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), Time.deltaTime*rotationSpeed);
         transform.rotation = newDir;
 
-        /*if (!particles.isEmitting)
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle-90));
-        }*/
-
         if (enemyStats.IsAsleep())
         {
             particles.Stop();
-            rootParticles.Stop();  
+            rootParticles.Stop();
         }
     }
 
@@ -61,7 +56,6 @@ public class BeamyBeam : MonoBehaviour
             rootMain.startColor = defaultColor;
         }
     }
-
     public void TargetSet()
     {
         Vector3 direction = player.transform.position - transform.position;

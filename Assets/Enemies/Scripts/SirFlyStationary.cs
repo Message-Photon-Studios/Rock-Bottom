@@ -15,6 +15,7 @@ public class SirFlyStationary : Enemy
     [SerializeField] GameObject attackSpawn;
     [SerializeField] Vector2 spawnOffset;
     [SerializeField] float spawnForce;
+    [SerializeField] ParticleSystem aimTarget;
 
     protected override Node SetupTree()
     {
@@ -24,7 +25,8 @@ public class SirFlyStationary : Enemy
             new Sequence(new List<Node>{
                 new CheckBool("attackDone", true),
                 new EnemyObjectSpawnerAim(stats, attackSpawn, spawnOffset, player, spawnForce),
-                new SetParentVariable("attackDone", false, 2)
+                new SetParentVariable("attackDone", false, 2),
+                new ParticlesPlay (aimTarget, false)
             }),
             new Sequence(new List<Node>{
                 new CheckBool("inRange", true),
@@ -32,18 +34,20 @@ public class SirFlyStationary : Enemy
                 new AnimationTrigger(animator,"attack"),
                 new SetParentVariable("inRange", false, 2),
                 new SetParentVariable("attackReady", false, 2),
-
+                new ParticlesPlay (aimTarget, false)
             }),
             new Sequence(new List<Node>{
-                new CheckBool("inRange", true),
                 new Inverter( new CheckPlayerArea(stats, player, rangeTrigger)),
+                new ParticlesPlay (aimTarget, false),
+                new CheckBool("inRange", true),
                 new SetParentVariable("inRange", false, 2),
                 new AnimationBool(animator, "inRange", false)
             }),
             new Sequence(new List<Node>{
                 new CheckBool("inRange", false),
                 new CheckPlayerArea(stats, player, rangeTrigger),
-                new AnimationBool(animator, "inRange",true)
+                new AnimationBool(animator, "inRange",true),
+                new ParticlesPlay (aimTarget, true)
                 })
             }); 
         
