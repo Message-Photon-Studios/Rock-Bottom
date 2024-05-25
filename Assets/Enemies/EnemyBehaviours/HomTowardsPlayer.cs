@@ -1,6 +1,9 @@
 ﻿using BehaviourTree;
 using UnityEngine;
 
+/// <summary>
+/// Moves the object towards the target. Does not roate the sprite. 
+/// </summary>
 internal class HomTowardsPlayer : Node
 {
     private EnemyStats stats;
