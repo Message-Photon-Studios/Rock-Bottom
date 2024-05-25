@@ -8,6 +8,7 @@ public class CrystalBombarderBomb : Enemy
 {
     [SerializeField] int damage;
     [SerializeField] Vector2 force;
+    [SerializeField] float turnSpeed;
     [SerializeField] Trigger attackTrigger;
 
     protected override Node SetupTree()
@@ -25,16 +26,13 @@ public class CrystalBombarderBomb : Enemy
                 }),
 
                 new Sequence(new List<Node>{
-                    new Selector(new List<Node>{
-                        new EnemyCollide(GetComponent<ColliderCheck>(), "Player"),
-                        //new CheckGrounded(stats,0.2f)
-                    }),
+                    new EnemyCollide(GetComponent<ColliderCheck>(), "Player"),
                     new AnimationTrigger(animator, "Explode")
                 }),
 
                 new Sequence(new List<Node>{
                     new LookAtPlayer(stats, player),
-                    new HomTowardsPlayer(stats, player, 1f, 100)
+                    new HomTowardsPlayer(stats, player, 1f, turnSpeed)
                 })
             });
         
