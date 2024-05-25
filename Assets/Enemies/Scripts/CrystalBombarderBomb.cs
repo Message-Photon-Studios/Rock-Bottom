@@ -27,14 +27,14 @@ public class CrystalBombarderBomb : Enemy
                 new Sequence(new List<Node>{
                     new Selector(new List<Node>{
                         new EnemyCollide(GetComponent<ColliderCheck>(), "Player"),
-                        new CheckGrounded(stats,0.2f)
+                        //new CheckGrounded(stats,0.2f)
                     }),
                     new AnimationTrigger(animator, "Explode")
                 }),
 
                 new Sequence(new List<Node>{
                     new LookAtPlayer(stats, player),
-                    new RunForward(stats, 1f)
+                    new HomTowardsPlayer(stats, player, 1f, 100)
                 })
             });
         
