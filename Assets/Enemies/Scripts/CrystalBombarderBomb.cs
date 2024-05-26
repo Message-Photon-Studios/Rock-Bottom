@@ -32,7 +32,7 @@ public class CrystalBombarderBomb : Enemy
                     new Selector(new List<Node>{
                         new EnemyCollide(GetComponent<ColliderCheck>(), "Player"),
                         new CheckPlayerArea(stats, player, detectTrigger),
-                        new CheckSpeed(stats, 0, 10)
+                        new CheckSpeed(stats, 0f, 750f)
                     }),
                     new AnimationTrigger(animator, "Explode"),
                     new SetParentVariable("exploding", true, 2)

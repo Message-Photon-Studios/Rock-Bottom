@@ -6,10 +6,10 @@
 internal class CheckSpeed : Node
 {
     private EnemyStats stats;
-    private int targetSpeed;
-    private int margin;
+    private float targetSpeed;
+    private float margin;
 
-    public CheckSpeed(EnemyStats stats, int targetSpeed, int margin)
+    public CheckSpeed(EnemyStats stats, float targetSpeed, float margin)
     {
         this.stats = stats;
         this.targetSpeed = targetSpeed;
@@ -25,7 +25,7 @@ internal class CheckSpeed : Node
 
     public override NodeState Evaluate()
     {
-        if (stats.GetSpeed() == targetSpeed + margin || stats.GetSpeed() == targetSpeed - margin)
+        if (targetSpeed - margin < stats.GetSpeed() && targetSpeed + margin > stats.GetSpeed())
         {
             state = NodeState.SUCCESS;
             return state;
