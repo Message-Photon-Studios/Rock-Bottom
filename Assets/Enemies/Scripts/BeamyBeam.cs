@@ -10,9 +10,12 @@ public class BeamyBeam : MonoBehaviour
     [SerializeField] ParticleSystem rootParticles;
     [SerializeField] Color defaultColor;
     [SerializeField] float rotationSpeed;
+    [SerializeField] float laserSpeed;
     public LayerMask layersToHit;
     private PlayerStats player;
     private EnemyStats enemyStats;
+    private float currentDistance;
+    
 
     
     private void Start()
@@ -34,6 +37,7 @@ public class BeamyBeam : MonoBehaviour
             GetComponent<SpriteRenderer>().enabled = true;
         } else {
             GetComponent<SpriteRenderer>().enabled = false;
+            currentDistance = 0;
             return;
         }
 
@@ -42,15 +46,18 @@ public class BeamyBeam : MonoBehaviour
         float angle = transform.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 50f, layersToHit);
-
-        if (hit.collider == null){
-            GetComponent<SpriteRenderer>().size = new Vector3(50f, (float)1.28);
+        
+        if (currentDistance < hit.distance)
+        {
+            currentDistance += laserSpeed * Time.deltaTime;
+        } else
+        {
+            currentDistance = hit.distance;
         }
-        else {
-            GetComponent<SpriteRenderer>().size = new Vector3(hit.distance, (float)1.18);
-        }
 
-        hitterShape.position = new Vector2(hit.distance, 0);
+        GetComponent<SpriteRenderer>().size = new Vector3(currentDistance, (float)1.18);
+
+        hitterShape.position = new Vector2(currentDistance - 0.01f, 0);
 
         if (enemyStats.IsAsleep())
         {
@@ -59,14 +66,8 @@ public class BeamyBeam : MonoBehaviour
         }
     }
 
-    private void OnParticleCollision(GameObject other) { 
-        if(other.CompareTag("Player"))
-            parent.DamagePlayer();
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
+    private void OnParticleCollision(GameObject other) {
+        if (other.CompareTag("Player")) 
             parent.DamagePlayer();
     }
 
