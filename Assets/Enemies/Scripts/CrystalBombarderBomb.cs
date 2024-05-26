@@ -11,6 +11,7 @@ public class CrystalBombarderBomb : Enemy
     [SerializeField] float turnSpeed;
     [SerializeField] Trigger attackTrigger;
     [SerializeField] Trigger detectTrigger;
+    [SerializeField] Quaternion startRotation;
 
     protected override Node SetupTree()
     {
@@ -30,7 +31,8 @@ public class CrystalBombarderBomb : Enemy
                     new CheckBool("exploding", false),
                     new Selector(new List<Node>{
                         new EnemyCollide(GetComponent<ColliderCheck>(), "Player"),
-                        new CheckPlayerArea(stats, player, detectTrigger)
+                        new CheckPlayerArea(stats, player, detectTrigger),
+                        new CheckSpeed(stats, 0, 10)
                     }),
                     new AnimationTrigger(animator, "Explode"),
                     new SetParentVariable("exploding", true, 2)
@@ -39,8 +41,8 @@ public class CrystalBombarderBomb : Enemy
                 new Sequence(new List<Node>{
                     new CheckBool("exploding", false),
                     new LookAtPlayer(stats, player),
-                    new HomTowardsPlayer(stats, player, 1f, turnSpeed),
-                    new ChangeSpeed(stats, 0f, 10f)
+                    new HomTowardsPlayer(stats, startRotation, player, 1f, turnSpeed),
+                    new ChangeSpeed(stats, 0f, 500f)
                 })
             });
         

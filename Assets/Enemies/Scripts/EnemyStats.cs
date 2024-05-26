@@ -439,6 +439,11 @@ public class EnemyStats : MonoBehaviour
     {
         return movementSpeed;
     }
+
+    public void SetSpeed(float newSpeed)
+    {
+        movementSpeed = newSpeed;
+    }
     
     /// <summary>
     /// Return the normal movement speed without any effects of this enemy

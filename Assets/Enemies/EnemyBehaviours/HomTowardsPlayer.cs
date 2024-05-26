@@ -13,11 +13,11 @@ internal class HomTowardsPlayer : Node
     private float rotationSpeed;
     private Quaternion currentRotation;
 
-    public HomTowardsPlayer(EnemyStats stats, PlayerStats player, float speedFactor, float rotationSpeed)
+    public HomTowardsPlayer(EnemyStats stats, Quaternion startRotation, PlayerStats player, float speedFactor, float rotationSpeed)
     {
         this.stats = stats;
         this.body = stats.GetComponent<Rigidbody2D>();
-        currentRotation = stats.transform.rotation;
+        currentRotation = startRotation;
         this.player = player;
         this.speedFactor = speedFactor;
         this.rotationSpeed = rotationSpeed;

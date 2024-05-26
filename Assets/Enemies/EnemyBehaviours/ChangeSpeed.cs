@@ -1,5 +1,9 @@
 ﻿using BehaviourTree;
+using UnityEngine;
 
+/// <summary>
+/// Changes the speed of the enemy to the target speed. If no changeRate is provided or changerate = 0 the change will be instant. 
+/// </summary>
 internal class ChangeSpeed : Node
 {
     private EnemyStats stats;
@@ -37,21 +41,21 @@ internal class ChangeSpeed : Node
 
         if (stats.GetSpeed() > targetSpeed)
         {
-            if (stats.GetSpeed() - targetSpeed < changeRate)
+            if (stats.GetSpeed() - targetSpeed < changeRate * Time.deltaTime)
             {
-                //= targetSpeed;
+                stats.SetSpeed(targetSpeed);
             } else
             {
-                //= stats.GetSpeed() - changeRate;
+                stats.SetSpeed(stats.GetSpeed() - changeRate * Time.deltaTime);
             }
         } else if (targetSpeed > stats.GetSpeed())
         {
-            if (targetSpeed - stats.GetSpeed() < changeRate)
+            if (targetSpeed - stats.GetSpeed() < changeRate * Time.deltaTime)
             {
-                //= targetSpeed;
+                stats.SetSpeed(targetSpeed);
             } else
             {
-                //= stats.GetSpeed() + changeRate;
+                stats.SetSpeed(stats.GetSpeed() + changeRate * Time.deltaTime);
             }
         }
 
