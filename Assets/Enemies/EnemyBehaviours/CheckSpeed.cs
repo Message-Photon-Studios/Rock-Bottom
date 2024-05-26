@@ -1,5 +1,8 @@
 ﻿using BehaviourTree;
 
+/// <summary>
+/// Checks if the current speed matches the provided target with or without a margin of error. 
+/// </summary>
 internal class CheckSpeed : Node
 {
     private EnemyStats stats;
