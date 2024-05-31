@@ -54,10 +54,11 @@ public class YellowColorEffect : ColorEffect
         {
             if(affected.Contains(obj)) return;
             GameObject connector = GameObject.Instantiate(lightning, obj.transform.position, obj.transform.rotation);
-            connector.GetComponent<LineRenderer>().SetPosition(1, obj.transform.position);
             connector.GetComponent<LineRenderer>().SetPosition(0, source.transform.position);
-            connector.GetComponent<LightningAnimator>().SetSource(obj);
+            connector.GetComponent<LineRenderer>().SetPosition(1, obj.transform.position);
             connector.GetComponent<LightningAnimator>().SetSource(source);
+            connector.GetComponent<LightningAnimator>().SetTarget(obj);
+            Destroy(connector, 0.5f);
 
             GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
             Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
@@ -70,7 +71,6 @@ public class YellowColorEffect : ColorEffect
             if (!obj.GetComponent<EnemyStats>().IsKnockbackImune())
                 obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir);
             obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power-depth*5));
-            Destroy(connector, 1);
         }
     }
 }

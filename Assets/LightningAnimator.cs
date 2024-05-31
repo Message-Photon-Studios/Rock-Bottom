@@ -32,7 +32,7 @@ public class LightningAnimator : MonoBehaviour
             line.material.SetTexture("_MainTex", textures[aniStep]);
             fpsCounter = 0f;
             if (source) line.SetPosition(0, source.transform.position);
-            if (target) line.SetPosition(0, target.transform.position);
+            if (target) line.SetPosition(1, target.transform.position);
         }
     }
 
