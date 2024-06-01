@@ -10,6 +10,8 @@ public class RedColorEffect : ColorEffect
 {
     [SerializeField] int healing;
     [SerializeField] float force;
+    [SerializeField] GameObject orb;
+    [SerializeField] int orbCount;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
@@ -24,6 +26,14 @@ public class RedColorEffect : ColorEffect
         if (!enemy.IsKnockbackImune())
             enemy?.GetComponent<Rigidbody2D>()?.AddForce((player.transform.position- enemy.transform.position).normalized * force);
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
-        player.HealPlayer(Mathf.RoundToInt(healing*power));
+        //player.HealPlayer(Mathf.RoundToInt(healing*power));
+
+
+        for (int i = 0; i < Mathf.RoundToInt(orbCount * power); i++)
+        {
+            GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Random.rotation);
+            orb1.GetComponent<HealingOrb>().SetTarget(playerObj, healing);
+        }
+        
     }
 }
