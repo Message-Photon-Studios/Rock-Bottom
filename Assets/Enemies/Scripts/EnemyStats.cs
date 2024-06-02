@@ -113,7 +113,7 @@ public class EnemyStats : MonoBehaviour
         WakeEnemy();
         GetComponent<Rigidbody2D>().drag = normalMovementDrag;
         poisonEffects = new List<(int damage, float timer)>();
-        stopBurning();
+        StopBurning();
         Material mat = GetComponent<SpriteRenderer>().material;
         mat.SetFloat("_takingDmg", 0);
     }
@@ -197,37 +197,34 @@ public class EnemyStats : MonoBehaviour
 
                 if(timer <= 0)
                 {
-                    stopBurning();
+                    StopBurning();
                     return;
                 }
 
                 GameObject floorFlame = Instantiate(burning.floorParticles, GetPosition(), new Quaternion());
+                floorFlame.GetComponent<CircleCollider2D>().radius = burning.range;
                 burning.particlesList.Add(floorFlame);
                 
 
                 foreach(GameObject obj in burning.burnable)
                 {
-                    if(obj == null) return;
+                    if(obj == null) continue;
                     float dist = Vector2.Distance(transform.position, obj.transform.position);
                     if(dist < burning.range)
                     {
-                        //obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles);
                     }
                 }
 
                 foreach (GameObject flame in burning.particlesList)
                 {
-                    foreach (GameObject obj in flame.GetComponent<FloorFlame>().toBurn())
+                    foreach (GameObject obj in flame.GetComponent<FloorFlame>().ToBurn())
                     {
-                        if (obj == null) return;
+                        if (obj == null) continue;
                         obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles);
                     }
+                    flame.GetComponent<FloorFlame>().ClearBurnQueue();
                 }
-
-
-
-
-
             }
             secTimer = 0f;
 
@@ -306,7 +303,7 @@ public class EnemyStats : MonoBehaviour
         var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
         main.duration = timer;
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
-        Destroy(instantiatedParticles, timer*1.2f);
+        Destroy(instantiatedParticles, timer);
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = gameObject.transform;
     }
@@ -316,7 +313,7 @@ public class EnemyStats : MonoBehaviour
         return burning.timer > 0;
     }
 
-    public void stopBurning()
+    public void StopBurning()
     {
         if (burning.particlesList == null)
         {

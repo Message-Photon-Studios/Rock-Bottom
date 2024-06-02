@@ -20,15 +20,21 @@ public class FloorFlame : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy") && !burnQueue.Contains(collision.gameObject))
+    {     
+        if (collision.gameObject.CompareTag("Enemy") && !burnQueue.Contains(collision.gameObject))
         {
             burnQueue.Add(collision.gameObject);
+            Debug.Log("collide");
         }
     }
 
-    public List<GameObject> toBurn()
+    public List<GameObject> ToBurn()
     {
         return burnQueue;
+    }
+
+    public void ClearBurnQueue()
+    {
+        burnQueue = new List<GameObject>();
     }
 }
