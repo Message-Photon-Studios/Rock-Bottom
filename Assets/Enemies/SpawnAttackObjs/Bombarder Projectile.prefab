@@ -82,12 +82,21 @@ MonoBehaviour:
   playerCollisionForce: {x: 0, y: 0}
   damage: 25
   force: {x: 5500, y: 1000}
+  turnSpeed: 100
   attackTrigger:
     radius: 2.5
     direction: 0
     width: 360
     offset: {x: 0, y: 0}
     color: {r: 1, g: 0, b: 0, a: 1}
+  detectTrigger:
+    radius: 1
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0.92176676, g: 1, b: 0, a: 1}
+  startRotation: {x: 0, y: 0, z: -0.70710677, w: 0.70710677}
+  aim: {fileID: 8391749072378463504}
 --- !u!212 &8094419970937011934
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -187,7 +196,7 @@ Rigidbody2D:
   m_Mass: 2
   m_LinearDrag: 10
   m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -274,6 +283,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 716f197903ce2404bb5a07944d836f18, type: 3}
+--- !u!198 &8391749072378463504 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2881879537457139313, guid: 716f197903ce2404bb5a07944d836f18, type: 3}
+  m_PrefabInstance: {fileID: 6019911349609204577}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9147905637860086989 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3276622509868130220, guid: 716f197903ce2404bb5a07944d836f18, type: 3}
