@@ -10,6 +10,7 @@ public class Beamy : Enemy
     [SerializeField] Trigger attackTrigger;
     [SerializeField] ParticleSystem attackOrb;
     [SerializeField] ParticleSystem attackBeam;
+    [SerializeField] ParticleSystem attackAim;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;
 
@@ -21,10 +22,12 @@ public class Beamy : Enemy
             new KeepHeight(stats, transform.position.y, 1f),
 
             new Selector(new List<Node>{
+                
                 new Sequence(new List<Node>{
                     new CheckBool("activateBeam", true),
                     new ParticlesPlay(attackOrb, true),
                     new ParticlesPlay(attackBeam, true),
+                    //new ParticlesPlay(attackAim, false),
                     new SetParentVariable("activateBeam", false, 3)
                 }),
 
@@ -32,8 +35,13 @@ public class Beamy : Enemy
                     new CheckBool("sleeping", false),
                     new CheckPlayerArea(stats, player, attackTrigger),
                     new LookAtPlayer(stats, player),
+                    new Selector(new List<Node>{ 
+                        new CheckBool("attack", true),
+                        new ParticlesPlay(attackAim, true)
+                    }),
                     new SetParentVariable("attack", true, 3),
                     new AnimationBool(animator, "attack", true)
+                    
                     }),
 
                 new Sequence(new List<Node> {
@@ -41,9 +49,11 @@ public class Beamy : Enemy
                     new ParticlesPlay(attackOrb, false),
                     new ParticlesPlay(attackBeam, false),
                     new AnimationBool(animator, "attack", false),
+                    new ParticlesPlay(attackAim, false),
                     new SetParentVariable("attack", false, 3)
                 }),
 
+                
                 new AirPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .7f, "attack", "move")
             })
         });
