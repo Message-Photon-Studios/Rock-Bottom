@@ -7,6 +7,7 @@ public class YellowColorEffect : ColorEffect
     [SerializeField] float effectRange;
     [SerializeField] float force;
     [SerializeField] int maxBounces;
+    [SerializeField] GameObject lightning;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
@@ -18,7 +19,7 @@ public class YellowColorEffect : ColorEffect
             if(obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) continue; 
             if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange*power,2))
             {
-                AffectObject(obj, 0);
+                AffectObject(obj, 0, enemyObj);
             }
         }
 
@@ -42,16 +43,23 @@ public class YellowColorEffect : ColorEffect
                 if(obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) continue; 
                 if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange*power-depth,2))
                 {
-                    AffectObject(obj, depth);
+                    AffectObject(obj, depth, affected[i]);
                 }
             }
 
         }
 
 
-        void AffectObject(GameObject obj, int depth)
+        void AffectObject(GameObject obj, int depth, GameObject source)
         {
             if(affected.Contains(obj)) return;
+            GameObject connector = GameObject.Instantiate(lightning, obj.transform.position, obj.transform.rotation);
+            connector.GetComponent<LineRenderer>().SetPosition(0, source.transform.position);
+            connector.GetComponent<LineRenderer>().SetPosition(1, obj.transform.position);
+            connector.GetComponent<LightningAnimator>().SetSource(source);
+            connector.GetComponent<LightningAnimator>().SetTarget(obj);
+            Destroy(connector, 0.5f);
+
             GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
             Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration*2);
             instantiatedParticles.GetComponent<ParticleSystem>().Play();
