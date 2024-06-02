@@ -52,7 +52,7 @@ public class EnemyStats : MonoBehaviour
 
     private List<(int damage, float timer)> poisonEffects = new List<(int damage, float time)>(); //Damage dealt over time
 
-    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable) burning;
+    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, List<GameObject> particlesList) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -113,7 +113,7 @@ public class EnemyStats : MonoBehaviour
         WakeEnemy();
         GetComponent<Rigidbody2D>().drag = normalMovementDrag;
         poisonEffects = new List<(int damage, float timer)>();
-        burning = (0, 0, 0, null, null);
+        stopBurning();
         Material mat = GetComponent<SpriteRenderer>().material;
         mat.SetFloat("_takingDmg", 0);
     }
@@ -197,9 +197,12 @@ public class EnemyStats : MonoBehaviour
 
                 if(timer <= 0)
                 {
-                    burning = (0, 0, 0, null, null);
+                    stopBurning();
                     return;
                 }
+
+                GameObject floorFlame = Instantiate(burning.floorParticles, GetPosition(), new Quaternion());
+                burning.particlesList.Add(floorFlame);
                 
 
                 foreach(GameObject obj in burning.burnable)
@@ -208,9 +211,23 @@ public class EnemyStats : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, obj.transform.position);
                     if(dist < burning.range)
                     {
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles);
+                        //obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles);
                     }
                 }
+
+                foreach (GameObject flame in burning.particlesList)
+                {
+                    foreach (GameObject obj in flame.GetComponent<FloorFlame>().toBurn())
+                    {
+                        if (obj == null) return;
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles);
+                    }
+                }
+
+
+
+
+
             }
             secTimer = 0f;
 
@@ -278,12 +295,12 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     /// <param name="range"></param>
     /// <param name="burnParticles"></param>
-    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles)
+    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles)
     {
         if(timer <= 0) return;
         if(burning.timer > 0) return;
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
-        burning = (damage, timer, range, burnParticles, objs);
+        burning = (damage, timer, range, burnParticles, objs, floorParticles, new List<GameObject>());
 
         GameObject instantiatedParticles = GameObject.Instantiate(burnParticles, transform.position, transform.rotation);
         var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
@@ -297,6 +314,21 @@ public class EnemyStats : MonoBehaviour
     public bool isBurning()
     {
         return burning.timer > 0;
+    }
+
+    public void stopBurning()
+    {
+        if (burning.particlesList == null)
+        {
+            burning = (0, 0, 0, null, null, null, null);
+            return;
+        }
+        foreach (GameObject obj in burning.particlesList)
+        {
+            obj.GetComponent<ParticleSystem>().Stop();
+            Destroy(obj, 0.5f);
+        }
+        burning = (0, 0, 0, null, null, null, null);
     }
 
     /// <summary>
