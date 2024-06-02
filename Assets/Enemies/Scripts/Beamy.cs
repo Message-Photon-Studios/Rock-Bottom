@@ -27,7 +27,6 @@ public class Beamy : Enemy
                     new CheckBool("activateBeam", true),
                     new ParticlesPlay(attackOrb, true),
                     new ParticlesPlay(attackBeam, true),
-                    //new ParticlesPlay(attackAim, false),
                     new SetParentVariable("activateBeam", false, 3)
                 }),
 
@@ -46,6 +45,7 @@ public class Beamy : Enemy
 
                 new Sequence(new List<Node> {
                     new CheckBool("attack", true),
+                    new Wait(1, 0.1f),
                     new ParticlesPlay(attackOrb, false),
                     new ParticlesPlay(attackBeam, false),
                     new AnimationBool(animator, "attack", false),

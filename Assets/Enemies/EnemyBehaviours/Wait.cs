@@ -9,6 +9,7 @@ public class Wait : Node
 
     float timer;
     float lastUpdate;
+    float tolerance;
 
     /// <summary>
     /// Only returns success after the timer has run out. After it returns success the timer resets. 
@@ -18,6 +19,16 @@ public class Wait : Node
     public Wait(float waitForSeconds)
     {
         this.waitForSeconds = waitForSeconds;
+        this.tolerance = 0;
+        this.timer = waitForSeconds;
+        lastUpdate = -1;
+        state = NodeState.SUCCESS;
+    }
+    /// <param name="tolerance">If this not is not evaluated within this many secounds after the timer finishes, reset the timer. 0 = unlimited</param>
+    public Wait(float waitForSeconds, float tolerance)
+    {
+        this.waitForSeconds = waitForSeconds;
+        this.tolerance = tolerance;
         this.timer = waitForSeconds;
         lastUpdate = -1;
         state = NodeState.SUCCESS;
@@ -29,10 +40,16 @@ public class Wait : Node
 
         timer -= Time.fixedTime - lastUpdate;
         lastUpdate = Time.fixedTime;
-        if(timer <= 0)
+        if(timer+tolerance <= 0 && tolerance != 0)
+        {
+            state = NodeState.FAILURE;
+            timer = waitForSeconds;
+            lastUpdate = -1;
+        } else if(timer <= 0)
         {
             state = NodeState.SUCCESS;
             timer = waitForSeconds;
+            lastUpdate = -1;
         } else
         {
             state = NodeState.FAILURE;
