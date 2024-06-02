@@ -34,7 +34,7 @@ internal class ChangeSpeed : Node
 
         if (changeRate == 0)
         {
-            //= targetSpeed
+            stats.SetSpeed(targetSpeed);
             state = NodeState.SUCCESS;
             return state;
         }
