@@ -73,4 +73,8 @@ public class YellowColorEffect : ColorEffect
             obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power-depth*5));
         }
     }
+    public override string UpdateDesc(float power)
+    {
+        return " Hit: " + Mathf.RoundToInt(power*damage) + "\n Range: " + Mathf.RoundToInt(power*effectRange);
+    }
 }

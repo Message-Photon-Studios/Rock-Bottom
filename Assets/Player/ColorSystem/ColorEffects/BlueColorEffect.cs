@@ -27,4 +27,9 @@ public class BlueColorEffect : ColorEffect
         enemy.ChangeDrag(slow*power, duration*power);
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
     }
+
+    public override string UpdateDesc(float power)
+    {
+        return " Hit: "+ Mathf.RoundToInt(damage*power) + "dmg \n Freeze duratoin: " + Mathf.RoundToInt(duration*power) + "s \n Freeze power: " + 100*power*slow + "%";
+    }
 }

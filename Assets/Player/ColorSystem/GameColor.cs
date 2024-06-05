@@ -82,6 +82,8 @@ public class GameColor : ScriptableObject
     /// </summary>
     /// <returns></returns>
     public ColorEffect GetColorEffect() { return colorEffect; }
+
+    public string GetDescription(float power) { return colorEffect.UpdateDesc(power+1);  }
 }
 
 [System.Serializable]

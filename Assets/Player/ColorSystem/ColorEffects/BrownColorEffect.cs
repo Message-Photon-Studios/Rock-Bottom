@@ -25,4 +25,9 @@ public class BrownColorEffect : ColorEffect
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
         enemy.RemoveColor();
     }
+
+    public override string UpdateDesc(float power)
+    {
+        return " Hit: " + Mathf.RoundToInt(damage*power) ;
+    }
 }

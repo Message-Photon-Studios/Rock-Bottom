@@ -297,7 +297,7 @@ public class ItemController : MonoBehaviour
         selectedItemContainer.SetActive(true);
         selectedImage.sprite =color.colorIcon;
         selectedName.text = color.name;
-        selectedDesc.text = color.description;
+        selectedDesc.text = color.GetDescription(colorInventory.GetColorBuff(color));
     }
 
     /// <summary>

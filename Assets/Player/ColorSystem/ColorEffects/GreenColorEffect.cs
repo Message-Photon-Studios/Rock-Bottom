@@ -33,4 +33,10 @@ public class GreenColorEffect : ColorEffect
 
         enemy.PoisonDamage(Mathf.RoundToInt(damageOverTime * power), useTime);
     }
+
+    public override string UpdateDesc(float power)
+    {
+        string str = " Hit: " + Mathf.RoundToInt(damage * power) + "\n dmg/s:" + Mathf.RoundToInt(damageOverTime * power) + "/s \n Duration: " + Mathf.RoundToInt(time * power);
+        return str;
+    }
 }

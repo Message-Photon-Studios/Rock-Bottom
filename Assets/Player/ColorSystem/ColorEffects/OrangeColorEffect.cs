@@ -13,4 +13,9 @@ public class OrangeColorEffect : ColorEffect
         enemyObj.GetComponent<EnemyStats>().BurnDamage(Mathf.RoundToInt(damageOverTime*power), time, effectRange, particles, floorFlames);
         enemyObj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power));
     }
+
+    public override string UpdateDesc(float power)
+    {
+        return " Hit: " + Mathf.RoundToInt(damage*power) + "\n Dmg/s: " + Mathf.RoundToInt(damageOverTime*power) + "\n Duration: " + time + "s";
+    }
 }

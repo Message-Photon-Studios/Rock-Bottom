@@ -36,4 +36,8 @@ public class RedColorEffect : ColorEffect
         }
         
     }
+    public override string UpdateDesc(float power)
+    {
+        return " Hit: " + Mathf.RoundToInt(damage*power) + "\n Healing Orbs: " + Mathf.RoundToInt(orbCount*power);
+    }
 }

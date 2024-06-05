@@ -15,4 +15,9 @@ public class PurpleColorEffect : ColorEffect
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         if(enemy != null) enemy.SleepEnemy(sleepTime * power, sleepDamageBonus * power, particles);
     }
+
+    public override string UpdateDesc(float power)
+    {
+        return " Dmg bonus: " + Mathf.RoundToInt(sleepDamageBonus*power) + "\n Duration: " + Mathf.RoundToInt(sleepTime * power) + "s";
+    }
 }
