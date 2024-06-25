@@ -34,6 +34,7 @@ public class EnemyStats : MonoBehaviour
 
     private float normalMovementDrag; //The normal movement drag of the enemy
     private float movementSpeedTimer;
+    private float normalAnimationSpeed;
 
     private int colorComboDamage = 40; // The damage that the enemy will take when becoming rainbow color
     private float colorComboTimer = 2f; //The timer before the enemy explode
@@ -76,6 +77,7 @@ public class EnemyStats : MonoBehaviour
         normalMovementDrag = GetComponent<Rigidbody2D>().drag;
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
+        normalAnimationSpeed = animator.speed;
         if(color != null)
             GetComponent<SpriteRenderer>().material = color.colorMat;
         else
@@ -149,6 +151,7 @@ public class EnemyStats : MonoBehaviour
                 {
                     movementSpeedTimer = 0;
                     GetComponent<Rigidbody2D>().drag = normalMovementDrag;
+                    animator.speed = normalAnimationSpeed;
                 }
             }
 
@@ -456,6 +459,12 @@ public class EnemyStats : MonoBehaviour
     /// <param name="time"></param>
     public void ChangeDrag (float speedFactor, float time)
     {
+        if (movementSpeedTimer > 0)
+        {
+            movementSpeedTimer = time;
+            return;
+        }
+        animator.speed /= speedFactor;
         GetComponent<Rigidbody2D>().drag *= speedFactor;
         movementSpeedTimer = time;
     }
