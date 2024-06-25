@@ -12,6 +12,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] GameManager gameManager;
     [SerializeField] Animator animator;
     [SerializeField] PlayerMovement movement;
+    [SerializeField] GameObject blockAura;
     int maxHealth;
     float invincibilityTimer = 0;
     public int chanceToBlock = 0;
@@ -62,12 +63,17 @@ public class PlayerStats : MonoBehaviour
         if(invincibilityTimer >= 0)
         {
             invincibilityTimer -= Time.deltaTime;
-            if(invincibilityTimer < 0)
+            Color tmp = GetComponent<SpriteRenderer>().color;
+            tmp.a = 0.70f + Mathf.Cos(invincibilityTimer * MathF.PI * 6f)*0.15f;
+            //if (tmp.a <= 0.5) tmp.a = 0.5f;
+            //if (tmp.a >= 0.8) tmp.a = 0.8f;
+            if (invincibilityTimer < 0)
             {
                 invincibilityTimer = 0;
+                tmp.a = 1;
                 Physics2D.IgnoreLayerCollision(3,6,false);
             }
-                
+            GetComponent<SpriteRenderer>().color = tmp;
         }
 
         if (gameManager && gameManager.allowsClockTimer)
@@ -96,11 +102,17 @@ public class PlayerStats : MonoBehaviour
         //if(damage == 0) return;
         if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
         {
+            GameObject aura = Instantiate(blockAura, transform);
+            Destroy(aura, 1);
             Debug.Log("Damage blocked");
-            return;
+            //return;
+        } else
+        {
+            health -= damage;
+            animator.SetTrigger("damaged");
         }
         Physics2D.IgnoreLayerCollision(3,6);
-        health -= damage;
+        
         invincibilityTimer = hitInvincibilityTime;
         GetComponent<PlayerCombatSystem>().RemoveAttackRoot();
         GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
@@ -108,7 +120,7 @@ public class PlayerStats : MonoBehaviour
         {
             PlayerReachZeroHp();
         }
-        animator.SetTrigger("damaged");
+        
         onHealthChanged?.Invoke(health);
     }
 
