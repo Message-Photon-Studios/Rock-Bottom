@@ -64,9 +64,9 @@ public class PlayerStats : MonoBehaviour
         {
             invincibilityTimer -= Time.deltaTime;
             Color tmp = GetComponent<SpriteRenderer>().color;
-            tmp.a = MathF.Abs(Mathf.Cos(invincibilityTimer * MathF.PI * 4f));
-            if (tmp.a <= 0.1) tmp.a = 0.1f;
-            if (tmp.a >= 0.8) tmp.a = 0.8f;
+            tmp.a = 0.70f + Mathf.Cos(invincibilityTimer * MathF.PI * 6f)*0.15f;
+            //if (tmp.a <= 0.5) tmp.a = 0.5f;
+            //if (tmp.a >= 0.8) tmp.a = 0.8f;
             if (invincibilityTimer < 0)
             {
                 invincibilityTimer = 0;
