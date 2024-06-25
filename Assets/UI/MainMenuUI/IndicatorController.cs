@@ -35,7 +35,8 @@ public class IndicatorController : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         StartCoroutine(selectedEffect(inp));
         text.color = inp ? active : nonActive;
-        controller.timeSinceLastInput = Time.time;
+        if(controller != null)
+            controller.timeSinceLastInput = Time.time;
     }
 
     //On mouse entering the button area.
