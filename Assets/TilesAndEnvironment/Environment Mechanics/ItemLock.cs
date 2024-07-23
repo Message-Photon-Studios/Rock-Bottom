@@ -15,6 +15,7 @@ public abstract class ItemLock : MonoBehaviour
     [SerializeField] GameObject unlockabelUI;
     [SerializeField] InputActionReference unlockAction;
     Action<InputAction.CallbackContext> unlock;
+    bool unlocked = false;
 
     ItemInventory itemInventory;
 
@@ -28,6 +29,8 @@ public abstract class ItemLock : MonoBehaviour
     private void OnEnable() {
         unlock = (InputAction.CallbackContext ctx) => {Unlock();};
         unlockAction.action.performed += unlock;
+
+        if(unlocked) Unlock();
     }
     
     private void OnDisable() 
@@ -37,7 +40,7 @@ public abstract class ItemLock : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Player") && !unlocked)
         {
             if(itemInventory.HasItemWithName(key.name))
             {
@@ -64,8 +67,9 @@ public abstract class ItemLock : MonoBehaviour
 
     private void Unlock()
     {
-        if(unlockable)
+        if(unlockable || unlocked)
         {
+            unlocked = true;
             OpenLock();
             if(consumeKeyOnUnlock)
             {

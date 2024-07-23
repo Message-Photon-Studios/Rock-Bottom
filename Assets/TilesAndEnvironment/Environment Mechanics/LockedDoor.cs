@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class LockedDoor : ItemLock
 {
+    [SerializeField] Animator animator;
     protected override void OpenLock()
     {
-        gameObject.SetActive(false); //TODO fix this later
+        animator.SetTrigger("OpenDoor");
     }
 }
