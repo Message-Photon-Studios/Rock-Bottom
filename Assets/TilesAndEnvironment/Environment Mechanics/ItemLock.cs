@@ -14,6 +14,7 @@ public abstract class ItemLock : MonoBehaviour
     [SerializeField] GameObject lockedUI;
     [SerializeField] GameObject unlockabelUI;
     [SerializeField] InputActionReference unlockAction;
+    [SerializeField] AudioSource audioSource;
     Action<InputAction.CallbackContext> unlock;
     bool unlocked = false;
 
@@ -30,7 +31,7 @@ public abstract class ItemLock : MonoBehaviour
         unlock = (InputAction.CallbackContext ctx) => {Unlock();};
         unlockAction.action.performed += unlock;
 
-        if(unlocked) Unlock();
+        if(unlocked) SetUnlocked();
     }
     
     private void OnDisable() 
@@ -67,9 +68,16 @@ public abstract class ItemLock : MonoBehaviour
 
     private void Unlock()
     {
-        if(unlockable || unlocked)
+        if(unlocked)
+        {
+            SetUnlocked();
+            return;
+        }
+
+        if(unlockable)
         {
             unlocked = true;
+            audioSource.Play();
             OpenLock();
             if(consumeKeyOnUnlock)
             {
@@ -81,5 +89,14 @@ public abstract class ItemLock : MonoBehaviour
     }
 
 
+
+    /// <summary>
+    /// Sets the lock as already being unlocked.
+    /// </summary>
+    protected abstract void SetUnlocked();
+
+    /// <summary>
+    /// Opens the lock as normal.
+    /// </summary>
     protected abstract void OpenLock();
 }

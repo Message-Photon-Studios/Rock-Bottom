@@ -9,4 +9,9 @@ public class LockedDoor : ItemLock
     {
         animator.SetTrigger("OpenDoor");
     }
+
+    protected override void SetUnlocked()
+    {
+        animator.SetTrigger("OpenDoor");
+    }
 }
