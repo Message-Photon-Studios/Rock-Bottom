@@ -11,7 +11,12 @@ public class ColorNearbyUncolored : ItemEffect
         GetPlayer().GetComponent<PlayerStats>().chanceToColorNearby += chanceToColorNearby;
     }
 
-        public override bool CanBeSpawned()
+    public override void DisableEffect()
+    {
+        GetPlayer().GetComponent<PlayerStats>().chanceToColorNearby -= chanceToColorNearby;
+    }
+
+    public override bool CanBeSpawned()
     {
         return GetPlayer().GetComponent<PlayerStats>().chanceToColorNearby < 100;
     }
