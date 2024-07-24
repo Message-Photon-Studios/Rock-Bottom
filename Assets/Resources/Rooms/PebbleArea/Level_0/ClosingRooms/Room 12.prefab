@@ -144,7 +144,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: -3, y: -4, z: 0}
     second:
       serializedVersion: 2
@@ -174,7 +174,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: -4, y: -3, z: 0}
     second:
       serializedVersion: 2
@@ -244,7 +244,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: 0, y: -1, z: 0}
     second:
       serializedVersion: 2
@@ -264,7 +264,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: 2, y: -1, z: 0}
     second:
       serializedVersion: 2
@@ -294,7 +294,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: 0, y: 0, z: 0}
     second:
       serializedVersion: 2
@@ -314,7 +314,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: 2, y: 0, z: 0}
     second:
       serializedVersion: 2
@@ -384,7 +384,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: -3, y: 3, z: 0}
     second:
       serializedVersion: 2
@@ -414,7 +414,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 2
@@ -671,44 +671,34 @@ CompositeCollider2D:
       - X: 26999998
         Y: 36000000
       - X: 26999998
-        Y: 30200000
-      - X: 27399998
-        Y: 29899998
-      - X: 30600000
         Y: 26999998
       - X: 36000000
         Y: 26999998
     - - X: -26999998
-        Y: 28699998
+        Y: 36000000
+      - X: -36000000
+        Y: 36000000
+      - X: -36000000
+        Y: 26999998
       - X: -26999998
-        Y: 36000000
-      - X: -36000000
-        Y: 36000000
-      - X: -36000000
         Y: 26999998
-      - X: -27399998
-        Y: 26999998
-    - - X: 18000000
-        Y: -7300000
-      - X: 18000000
-        Y: 7300000
-      - X: 15599999
-        Y: 9000000
-      - X: -7700000
+    - - X: 8999999
         Y: 9000000
       - X: -9000000
-        Y: 7100000
+        Y: 9000000
       - X: -9000000
-        Y: -5800000
-      - X: -8600000
-        Y: -6100000
-      - X: -5399999
         Y: -9000000
-      - X: 17599998
+      - X: 8999999
+        Y: -9000000
+    - - X: 18000000
+        Y: 9000000
+      - X: 9000000
+        Y: 9000000
+      - X: 9000000
+        Y: -9000000
+      - X: 18000000
         Y: -9000000
     - - X: -26999998
-        Y: -28699998
-      - X: -29399998
         Y: -26999998
       - X: -36000000
         Y: -26999998
@@ -718,10 +708,8 @@ CompositeCollider2D:
         Y: -36000000
     - - X: 36000000
         Y: -26999998
-      - X: 28300000
-        Y: -26999998
       - X: 26999998
-        Y: -28899998
+        Y: -26999998
       - X: 26999998
         Y: -36000000
       - X: 36000000
@@ -731,31 +719,21 @@ CompositeCollider2D:
     - - {x: 3.5999708, y: 2.6999998}
       - {x: 3.5999708, y: 3.6000001}
       - {x: 2.6999998, y: 3.5999708}
-      - {x: 2.7000105, y: 3.019992}
-      - {x: 2.7400017, y: 2.9899983}
-      - {x: 3.06001, y: 2.6999998}
-    - - {x: -2.740022, y: 2.6999998}
-      - {x: -2.6999998, y: 2.8700027}
+      - {x: 2.7000291, y: 2.6999998}
+    - - {x: -2.7000291, y: 2.6999998}
       - {x: -2.7000291, y: 3.6000001}
       - {x: -3.6000001, y: 3.5999708}
       - {x: -3.5999708, y: 2.6999998}
-    - - {x: 1.7599776, y: -0.90000004}
-      - {x: 1.8000001, y: -0.7299971}
-      - {x: 1.7999889, y: 0.730008}
-      - {x: 1.5599918, y: 0.90000004}
-      - {x: -0.770008, y: 0.89998853}
-      - {x: -0.90000004, y: 0.7099921}
-      - {x: -0.8999894, y: -0.5800079}
-      - {x: -0.8599982, y: -0.6100015}
-      - {x: -0.5399899, y: -0.90000004}
+    - - {x: 1.7999709, y: -0.90000004}
+      - {x: 1.7999709, y: 0.90000004}
+      - {x: -0.90000004, y: 0.8999707}
+      - {x: -0.8999707, y: -0.90000004}
     - - {x: 3.5999708, y: -3.6000001}
       - {x: 3.5999708, y: -2.6999998}
-      - {x: 2.829992, y: -2.7000113}
-      - {x: 2.6999998, y: -2.8900077}
+      - {x: 2.6999998, y: -2.7000291}
       - {x: 2.7000291, y: -3.6000001}
     - - {x: -2.7000291, y: -3.6000001}
-      - {x: -2.700011, y: -2.8699918}
-      - {x: -2.940008, y: -2.6999998}
+      - {x: -2.7000291, y: -2.6999998}
       - {x: -3.6000001, y: -2.7000291}
       - {x: -3.5999708, y: -3.6000001}
   m_VertexDistance: 0.0005
@@ -811,11 +789,12 @@ MonoBehaviour:
     m_keys:
     - {x: 0, y: 0}
     m_values:
-    - doors: 01010101
+    - doors: 01000000010000000100000001000000
   displayMode: 0
   maxSpawns: -1
   spawnCount: 0
-  selectedNode: {x: 0, y: -1}
+  selectedNode: {x: 0, y: 0}
+  isClosingRoom: 0
 --- !u!1 &5677569303041783746
 GameObject:
   m_ObjectHideFlags: 0

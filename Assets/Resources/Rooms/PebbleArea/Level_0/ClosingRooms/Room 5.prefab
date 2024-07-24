@@ -1046,7 +1046,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 1
   - first: {x: -2, y: -4, z: 0}
     second:
       serializedVersion: 2
@@ -1096,7 +1096,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 1
   - first: {x: 3, y: -4, z: 0}
     second:
       serializedVersion: 2
@@ -1898,15 +1898,7 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 2808560460643931823}
     m_ColliderPaths:
-    - - X: 18000000
-        Y: -29299998
-      - X: 18300000
-        Y: -30300000
-      - X: 21400002
-        Y: -33200000
-      - X: 23699998
-        Y: -35800000
-      - X: 24400000
+    - - X: 26999998
         Y: -36000000
       - X: 36000000
         Y: -36000000
@@ -1916,31 +1908,18 @@ CompositeCollider2D:
         Y: 36000000
       - X: -36000000
         Y: -36000000
-      - X: -26399998
+      - X: -26999998
         Y: -36000000
-      - X: -24299998
-        Y: -34200000
-      - X: -22099998
-        Y: -31399998
-      - X: -17999998
-        Y: -28300000
-      - X: -17999998
+      - X: -26999998
         Y: -26999998
-      - X: 18000000
+      - X: 26999998
         Y: -26999998
   m_CompositePaths:
     m_Paths:
-    - - {x: -2.6400092, y: -3.6000001}
-      - {x: -2.4299984, y: -3.4199984}
-      - {x: -2.2099977, y: -3.139998}
-      - {x: -1.7999998, y: -2.8299868}
-      - {x: -1.7999704, y: -2.6999998}
-      - {x: 1.8000001, y: -2.7000291}
-      - {x: 1.8000013, y: -2.9300032}
-      - {x: 1.830005, y: -3.0300047}
-      - {x: 2.1400025, y: -3.3200026}
-      - {x: 2.3700068, y: -3.580002}
-      - {x: 2.4400039, y: -3.6000001}
+    - - {x: -2.7000291, y: -3.6000001}
+      - {x: -2.6999705, y: -2.6999998}
+      - {x: 2.6999998, y: -2.7000291}
+      - {x: 2.7000291, y: -3.6000001}
       - {x: 3.6000001, y: -3.5999708}
       - {x: 3.5999708, y: 3.6000001}
       - {x: -3.6000001, y: 3.5999708}
@@ -1998,8 +1977,9 @@ MonoBehaviour:
     m_keys:
     - {x: 0, y: 0}
     m_values:
-    - doors: 00010000
+    - doors: 00000000010000000000000000000000
   displayMode: 0
   maxSpawns: -1
   spawnCount: 0
   selectedNode: {x: 0, y: 0}
+  isClosingRoom: 0
