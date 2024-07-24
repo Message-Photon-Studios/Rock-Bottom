@@ -234,7 +234,7 @@ public class CustomRoom : MonoBehaviour
             //If there is a node, toggle its mirrored door
             if (neighbor != null)
             {
-                if(node.doors[(int)doorDir] != DoorColor.None)
+                if(node.doors[(int)doorDir] == doorColor)
                     neighbor.doors[mirrorDir[(int)doorDir]] = DoorColor.None;
                 else
                     neighbor.doors[mirrorDir[(int)doorDir]] = doorColor;
@@ -243,7 +243,7 @@ public class CustomRoom : MonoBehaviour
         }
         
         //node.doors[(int)doorDir] = !node.doors[(int)doorDir];
-        if(node.doors[(int)doorDir] != DoorColor.None) node.doors[(int)doorDir] = DoorColor.None;
+        if(node.doors[(int)doorDir] == doorColor) node.doors[(int)doorDir] = DoorColor.None;
         else node.doors[(int)doorDir] = doorColor;
 
         EditorUtility.SetDirty(this);
