@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public enum DisplayMode
 {
@@ -249,6 +250,23 @@ public class CustomRoom : MonoBehaviour
 
         EditorUtility.SetDirty(this);
     }
+
+    public void changeAllDoors(DoorColor doorColor)
+    {
+        if(doorColor == DoorColor.None) return;
+        foreach (var node in roomNodes)
+        {
+            var neighbors = roomNodes.getNeighbors(node.Key);
+            for (var i = 0; i < 4; i++)
+            {
+                if (node.Value.doors[i] != DoorColor.None && neighbors[i] == null)
+                    node.Value.doors[i] = doorColor;
+            }
+        }
+
+        EditorUtility.SetDirty(this);
+    }
+
 #endif
 
     public List<Door> getDoors()

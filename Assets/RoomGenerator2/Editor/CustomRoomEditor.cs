@@ -58,6 +58,12 @@ public class CustomRoomEditor : Editor
                 }
             }
         }
+
+        if(GUILayout.Button("Change all door colors"))
+        {
+            if(doorColor == DoorColor.None) return;
+            room.changeAllDoors(doorColor);
+        }
     }
 #endif
     // Start is called before the first frame update
