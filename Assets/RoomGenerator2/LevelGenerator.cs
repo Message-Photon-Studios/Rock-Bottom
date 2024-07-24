@@ -45,6 +45,7 @@ public static class ListExtensions
 
 public class DungeonNode
 {
+    public bool isClosingRoom = false;
     public DoorColor[] doors = { DoorColor.None, DoorColor.None, DoorColor.None, DoorColor.None };
 }
 
@@ -190,7 +191,7 @@ public class DungeonGraph
             var pos = node.Key + shift;
             nodes[pos] = new DungeonNode()
             {
-                doors = node.Value.doors
+                doors = node.Value.doors, isClosingRoom = prefab.isClosingRoom
             };
         }
         rooms.Add((shift, prefab));
@@ -246,7 +247,8 @@ public class DungeonGraph
                 var neighborPos = node.Key + CustomRoom.dirVectors[i];
                 if (node.Value.doors[i] != DoorColor.None
                     && nodes.ContainsKey(neighborPos)
-                    && nodes[neighborPos].doors[CustomRoom.mirrorDir[i]] != node.Value.doors[i])
+                    && nodes[neighborPos].doors[CustomRoom.mirrorDir[i]] != node.Value.doors[i] 
+                    && !node.Value.isClosingRoom && !nodes[neighborPos].isClosingRoom)
                 {
                     return false;
                 }
@@ -479,6 +481,7 @@ public class LevelGenerator
         normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "/NormalRooms").ToList();
         foreach (var room in normalRooms) room.spawnCount = 0;
         closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "/ClosingRooms").ToList();
+        foreach(CustomRoom room in closingRooms) room.isClosingRoom = true;
         usedRooms = new List<CustomRoom>();
         prefabs = new List<(Vector2, CustomRoom)>();
         filledPrefabs = new List<(Vector2, GameObject)>();
@@ -554,6 +557,7 @@ public class LevelGenerator
         // Get all doors that are looking upwards and get the one with the hightest y value
         var topDoors = newDoors
             .Where(door => door.dir == Direction.Up)
+            .Where(door => door.doorColor == DoorColor.Green)
             .Where(door => graph.isTopDoorSuitable(door.pos + CustomRoom.dirVectors[(int)Direction.Up]))
             .OrderBy(door => door.pos.y)
             .ToList();

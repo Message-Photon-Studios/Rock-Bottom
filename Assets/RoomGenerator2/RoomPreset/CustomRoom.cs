@@ -74,6 +74,7 @@ public class CustomRoom : MonoBehaviour
 
     [HideInInspector]
     public Vector2 selectedNode;
+    public bool isClosingRoom = false;
     
 #if UNITY_EDITOR
     public void draw(Vector2 shift)
