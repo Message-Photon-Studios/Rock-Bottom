@@ -1,5 +1,7 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using Unity;
 
 [CustomEditor(typeof(CustomRoom))]
 public class CustomRoomEditor : Editor
@@ -39,6 +41,14 @@ public class CustomRoomEditor : Editor
         if (GUILayout.Button("Toggle door"))
         {
             room.toggleDoor(doorDir, doorColor);
+        }
+
+        if(GUILayout.Button("Reset all Doors"))
+        {
+            foreach (RoomNodeHolder roomNode in room.roomNodes)
+            {
+                //TODO fix this.
+            }
         }
     }
 #endif
