@@ -45,9 +45,17 @@ public class CustomRoomEditor : Editor
 
         if(GUILayout.Button("Reset all Doors"))
         {
-            foreach (RoomNodeHolder roomNode in room.roomNodes)
+            foreach (KeyValuePair<Vector2, RoomNode> pairNode in room.roomNodes)
             {
-                //TODO fix this.
+                pairNode.Value.doors = new DoorColor[]{ DoorColor.None, DoorColor.None, DoorColor.None, DoorColor.None };
+                
+                RoomNode[] neighbors = room.roomNodes.getNeighbors(pairNode.Key);
+
+                for (int i = 0; i < neighbors.Length; i++)
+                {
+                    if(neighbors[i] != null)
+                        pairNode.Value.doors[i] = DoorColor.Green;
+                }
             }
         }
     }
