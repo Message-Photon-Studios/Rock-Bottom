@@ -5,6 +5,7 @@ using UnityEngine;
 public class CustomRoomEditor : Editor
 {
     public Direction newNodeDir, doorDir;
+    public DoorColor doorColor;
 #if UNITY_EDITOR
     public override void OnInspectorGUI()
     {
@@ -32,11 +33,12 @@ public class CustomRoomEditor : Editor
         
         EditorGUILayout.Space();
 
+        doorColor = (DoorColor)EditorGUILayout.EnumPopup("Door color", doorColor);
         // Add field to select the direction in which to create a door
         doorDir = (Direction)EditorGUILayout.EnumPopup("Door direction", doorDir);
         if (GUILayout.Button("Toggle door"))
         {
-            room.toggleDoor(doorDir);
+            room.toggleDoor(doorDir, doorColor);
         }
     }
 #endif

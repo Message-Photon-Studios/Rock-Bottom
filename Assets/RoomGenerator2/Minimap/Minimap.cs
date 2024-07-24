@@ -62,7 +62,7 @@ public class Minimap
         var node = nodes[nodePos].node;
         for (var i = 0; i < 4; i++)
         {
-            if (node.doors[i])
+            if (node.doors[i] != DoorColor.None)
                 continue;
 
             var wall = (GameObject) UnityEngine.Object.Instantiate(

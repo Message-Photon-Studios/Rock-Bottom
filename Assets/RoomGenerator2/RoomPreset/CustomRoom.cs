@@ -18,6 +18,15 @@ public enum Direction
     Up = 3
 }
 
+public enum DoorColor
+{
+    None = 0,
+    Green = 1,
+    Red = 2,
+    Blue = 3,
+    Yellow = 4
+}
+
 [System.Serializable]
 public class RoomNodeHolder : SerializableDictionary<Vector2, RoomNode>
 {
@@ -38,7 +47,7 @@ public class RoomNodeHolder : SerializableDictionary<Vector2, RoomNode>
 [Serializable]
 public class RoomNode
 {
-    public bool[] doors = { false, false, false, false };
+    public DoorColor[] doors = { DoorColor.None, DoorColor.None, DoorColor.None, DoorColor.None };
 }
 
 public class CustomRoom : MonoBehaviour
@@ -80,11 +89,53 @@ public class CustomRoom : MonoBehaviour
                 {
                     // Displays the room's walls. White for normal walls, green for open walls
                     case DisplayMode.Walls:
-                        if (neighbors[i] == null)
-                            Gizmos.color = !node.Value.doors[i] ? Color.white : Color.green;
+                        if(neighbors.Length <= i)
+                        {
+                            Debug.LogWarning("Neighbor doors insufficient!");
+                            Gizmos.color = Color.black;
+                            break;
+                        } 
+                        else if (neighbors[i] == null)
+                        {
+                            if(node.Value.doors.Length <= i)
+                            {
+                                Debug.LogWarning("Node doors insufficient!");
+                                Gizmos.color = Color.black;
+                            } else
+                            {
+                                switch ((DoorColor)node.Value.doors[i])
+                                {
+                                    case DoorColor.None:
+                                        Gizmos.color = Color.white;
+                                        break;
+                                    case DoorColor.Green:
+                                        Gizmos.color = Color.green;
+                                        break;
+                                    case DoorColor.Red:
+                                        Gizmos.color = Color.red;
+                                        break;
+                                    case DoorColor.Blue:
+                                        Gizmos.color = Color.blue;
+                                        break;
+                                    case DoorColor.Yellow:
+                                        Gizmos.color = Color.yellow;
+                                        break;
+                                    default:
+                                        Gizmos.color = Color.black;
+                                        break;
+                                }
+                            }
+                            //Gizmos.color = !node.Value.doors[i] ? Color.white : Color.green;
+                        }
+                           
                         else
                         {
-                            if (!node.Value.doors[i])
+                            if(node.Value.doors.Length <= i)
+                            {
+                                Debug.LogWarning("Node doors insufficient!");
+                                Gizmos.color = Color.black;
+                            }
+                            else if (node.Value.doors[i] == DoorColor.None)
                                 Gizmos.color = Color.white;
                             else
                                 continue;
@@ -94,7 +145,7 @@ public class CustomRoom : MonoBehaviour
                         Gizmos.DrawLine(firstCorner, secondCorner);
                         break;
                     case DisplayMode.Connections when neighbors[i] != null:
-                        if (!node.Value.doors[i])
+                        if (node.Value.doors[i] == DoorColor.None)
                             continue;
                         Gizmos.color = neighbors[i] == null ? Color.green : Color.white;
                         Gizmos.DrawLine((shift + node.Key) * 2*LevelGenManager.ROOMSIZE, (shift + node.Key) * 2*LevelGenManager.ROOMSIZE + dirVectors[i] * LevelGenManager.ROOMSIZE);
@@ -121,7 +172,7 @@ public class CustomRoom : MonoBehaviour
             var node = neighbors[i];
             // set the door in the right direction to false
             if (node != null)
-                node.doors[mirrorDir[i]] = false;
+                node.doors[mirrorDir[i]] = DoorColor.None;
         }
         roomNodes.Remove(selectedNode);
         EditorUtility.SetDirty(this);
@@ -161,15 +212,15 @@ public class CustomRoom : MonoBehaviour
 
             if (neighbors[i] == null)
                 continue;
-            neighbors[i].doors[mirrorDir[i]] = true;
-            node.doors[i] = true;
+            neighbors[i].doors[mirrorDir[i]] = DoorColor.Green;
+            node.doors[i] = DoorColor.Green;
         }
         selectedNode = newCoords;
         roomNodes.Add(newCoords, node);
         EditorUtility.SetDirty(this);
     }
 
-    public void toggleDoor(Direction doorDir)
+    public void toggleDoor(Direction doorDir, DoorColor doorColor)
     {
         if (!roomNodes.ContainsKey(selectedNode))
             return;
@@ -182,10 +233,19 @@ public class CustomRoom : MonoBehaviour
         
             //If there is a node, toggle its mirrored door
             if (neighbor != null)
-                neighbor.doors[mirrorDir[(int)doorDir]] = !neighbor.doors[mirrorDir[(int)doorDir]];
+            {
+                if(node.doors[(int)doorDir] != DoorColor.None)
+                    neighbor.doors[mirrorDir[(int)doorDir]] = DoorColor.None;
+                else
+                    neighbor.doors[mirrorDir[(int)doorDir]] = doorColor;
+                //neighbor.doors[mirrorDir[(int)doorDir]] = !neighbor.doors[mirrorDir[(int)doorDir]];
+            }
         }
         
-        node.doors[(int)doorDir] = !node.doors[(int)doorDir];
+        //node.doors[(int)doorDir] = !node.doors[(int)doorDir];
+        if(node.doors[(int)doorDir] != DoorColor.None) node.doors[(int)doorDir] = DoorColor.None;
+        else node.doors[(int)doorDir] = doorColor;
+
         EditorUtility.SetDirty(this);
     }
 #endif
@@ -198,7 +258,7 @@ public class CustomRoom : MonoBehaviour
             var neighbors = roomNodes.getNeighbors(node.Key);
             for (var i = 0; i < 4; i++)
             {
-                if (node.Value.doors[i] && neighbors[i] == null)
+                if (node.Value.doors[i] != DoorColor.None && neighbors[i] == null)
                     count++;
             }
         }
@@ -208,8 +268,8 @@ public class CustomRoom : MonoBehaviour
             var neighbors = roomNodes.getNeighbors(node.Key);
             for (var i = 0; i < 4; i++)
             {
-                if (node.Value.doors[i] && neighbors[i] == null)
-                    doors.Add(new Door(node.Key, (Direction)i, this, count));
+                if (node.Value.doors[i] != DoorColor.None && neighbors[i] == null)
+                    doors.Add(new Door(node.Key, (Direction)i, this, count, node.Value.doors[i]));
             }
         }
 
