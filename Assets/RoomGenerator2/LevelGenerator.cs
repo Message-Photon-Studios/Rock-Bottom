@@ -305,7 +305,7 @@ public class LevelGenerator
         do
         {
             tries++;
-            if (tries > 20)
+            if (tries > 50)
             {
                 Debug.LogError("Failed to generate level");
                 return;
