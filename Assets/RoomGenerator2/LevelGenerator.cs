@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using BehaviourTree;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -299,24 +301,31 @@ public class LevelGenerator
 
     public bool instantiated = false;
 
-    public void generate(int size, string areaPath)
+    public void generate(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
     {
         var tries = 0;
+        bool res = false;
         do
-        {
+        {   
+            Dictionary<DoorColor, int> regionSizeCopy = new Dictionary<DoorColor, int>();
+            foreach (KeyValuePair<DoorColor, int> item in regionSize)
+            {
+                regionSizeCopy.Add(item.Key,item.Value);
+            }
             tries++;
             if (tries > 50)
             {
-                Debug.LogError("Failed to generate level");
+                throw new Exception("Failed Generation Exception on try " + tries);
+                Debug.LogError("Failed generation exception");
                 return;
             }
 
             initGeneration(areaPath);
-            var res = tryGenerate(size, areaPath);
-            if (!res) continue;
+            res = tryGenerate(size, areaPath, regionSizeCopy);
+            //if (!res) continue;
             endGeneration(areaPath);
 
-        } while (!graph.validate());
+        } while (!graph.validate() || !res);
     }
 
     private void recreateGameObjs()
@@ -497,7 +506,7 @@ public class LevelGenerator
         endRoomPos = topDoor.pos * 2 * LevelGenManager.ROOMSIZE;
     }
 
-    private (bool, bool) nextRoom(int size, string areaPath)
+    private (bool, bool) nextRoom(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
     {
         // If we are out of rooms but still have to continue, we refill the normal room list
         if (normalRooms.All(roomElem => roomElem.repeatable))
@@ -528,7 +537,7 @@ public class LevelGenerator
 
         var nextPos = weightedDoors[Random.Range(0, weightedDoors.Count)];
         remainingDoors.Remove(nextPos);
-        var (room, entrance) = getRoom(size - graph.size, nextPos);
+        var (room, entrance) = getRoom(size - graph.size, nextPos, regionSize);
         if (room == null)
             return (false, false);
         var exits = graph.placeRoom(nextPos.pos, entrance, nextPos.dir, room);
@@ -572,13 +581,17 @@ public class LevelGenerator
         remainingDoors = remainingDoors.Concat(newDoors).ToList();
     }
 
-    private bool tryGenerate(int size, string areaPath)
+    private bool tryGenerate(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
     {
         while (true)
         {
-            var (finished, success) = nextRoom(size, areaPath);
+            var (finished, success) = nextRoom(size, areaPath, regionSize);
             if (finished)
             {
+                foreach (KeyValuePair<DoorColor, int> item in regionSize)
+                {
+                    if(item.Value > 10) return false;
+                }
                 return graph.nodes.Count >= size;
             }
             if (!success) 
@@ -586,15 +599,17 @@ public class LevelGenerator
         }
     }
 
-    private (CustomRoom, Vector2) getRoom(int remainingSize, Door door)
+    private (CustomRoom, Vector2) getRoom(int remainingSize, Door door, Dictionary<DoorColor, int> regionSize)
     {
         (CustomRoom, Vector2) retRoom;
 
-        if (remainingSize > 0)
+        if (remainingSize > 0 && regionSize[door.doorColor] > 0)
         {
             retRoom = getNormalRoom(door, false);
             if (retRoom.Item1 == null)
                 retRoom = getClosingRoom(door);
+            else
+                regionSize[door.doorColor] -= retRoom.Item1.roomNodes.Count;
         }
         else
         {
