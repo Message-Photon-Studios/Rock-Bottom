@@ -57,6 +57,8 @@ public class CustomRoomEditor : Editor
                         pairNode.Value.doors[i] = DoorColor.Green;
                 }
             }
+
+            EditorUtility.SetDirty(room);
         }
 
         if(GUILayout.Button("Change all door colors"))

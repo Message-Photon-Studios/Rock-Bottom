@@ -315,7 +315,10 @@ public class LevelGenerator
             tries++;
             if (tries > 50)
             {
-                throw new Exception("Failed Generation Exception on try " + tries);
+                #if UNITY_EDITOR
+                    throw new Exception("Failed Generation Exception on try " + tries);
+                #endif
+                
                 Debug.LogError("Failed generation exception");
                 return;
             }
