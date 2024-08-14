@@ -22,6 +22,7 @@ public class ItemSpellManager : MonoBehaviour
         {
             obj.GetComponent<ItemPickup>().RandomSpawnDestroy();
             if(obj == null) continue;
+            if(obj.GetComponent<ItemPickup>().setByhand) continue;
             Item item = null;
             int rng = 0;
             while(!item)

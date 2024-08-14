@@ -10,6 +10,8 @@ public abstract class ItemEffect
 {  
     public abstract void ActivateEffect();
 
+    public abstract void DisableEffect();
+
     protected GameObject GetPlayer()
     {
         return GameObject.FindGameObjectWithTag("Player");

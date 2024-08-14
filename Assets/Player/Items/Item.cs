@@ -23,6 +23,14 @@ public class Item : ScriptableObject
         }
     }
 
+    public void DisableItem()
+    {
+        foreach(ItemEffect item in effects)
+        {
+            item.DisableEffect();
+        }
+    }
+
     /// <summary>
     /// Returns true if the item can be spawned.
     /// </summary>

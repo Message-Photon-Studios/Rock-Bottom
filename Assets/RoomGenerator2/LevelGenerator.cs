@@ -398,6 +398,11 @@ public class LevelGenerator
                 npc.transform.parent = itemHolder.transform;
             }
 
+            foreach (var itemLock in roomObj.transform.GetComponentsInChildren<ItemLock>())
+            {
+                itemLock.transform.parent = itemHolder.transform;
+            }
+
             // Finish setting up the room
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;

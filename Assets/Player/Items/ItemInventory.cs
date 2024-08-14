@@ -24,7 +24,7 @@ public class ItemInventory : MonoBehaviour
     /// <summary>
     /// Is called whenever the player picks up an item. Sends the item picked up
     /// </summary>
-    public UnityAction<Item> onItemPickedUp;
+    public UnityAction<Item> onItemPickedUpOrRemoved;
 
     /// <summary>
     /// Is called whenever an item gets in or gets out of range of being picked up.
@@ -74,7 +74,7 @@ public class ItemInventory : MonoBehaviour
     {
         items.Add(item);
         item.EnableItem();
-        onItemPickedUp?.Invoke(item);
+        onItemPickedUpOrRemoved?.Invoke(item);
     }
 
     /// <summary>
@@ -171,6 +171,32 @@ public class ItemInventory : MonoBehaviour
         if(cost > coins) return false;
         coins -= cost;
         onCoinsChanged?.Invoke(-cost);
+        return true;
+    }
+
+    /// <summary>
+    /// Returns true if the inventory contains at least one item with the specified name.
+    /// </summary>
+    /// <param name="itemName"></param>
+    /// <returns></returns>
+    public bool HasItemWithName(string itemName)
+    {
+        return items.Exists(item => {return item.name.Equals(itemName);});
+    }
+
+    /// <summary>
+    /// Removes one item with the specified name.
+    /// </summary>
+    /// <param name="itemName"></param>
+    /// <returns></returns>
+    public bool RemoveItemWithName(string itemName)
+    {
+        Item item = items.Find(remove => {return remove.name.Equals(itemName);});
+        if(item == null) return false;
+
+        item.DisableItem();
+        items.Remove(item);
+        onItemPickedUpOrRemoved?.Invoke(item);
         return true;
     }
 }

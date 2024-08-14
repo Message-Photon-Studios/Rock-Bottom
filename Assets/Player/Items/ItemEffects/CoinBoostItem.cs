@@ -10,4 +10,10 @@ public class CoinBoostItem : ItemEffect
         ItemInventory inv = GetPlayer().GetComponent<ItemInventory>();
         inv.AddCoinBoost(coinBoost);
     }
+
+    public override void DisableEffect()
+    {
+        ItemInventory inv = GetPlayer().GetComponent<ItemInventory>();
+        inv.AddCoinBoost(-coinBoost);
+    }
 }
