@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(LevelGenManager))]
@@ -19,5 +20,42 @@ public class LevelGenManagerEditor : Editor
         {
             genManager.reset();
         }
+
+        GUILayout.Space(20);
+
+        if(GUILayout.Button("Fast test"))
+        {
+            float failed = 0;
+            for (int i = 0; i < 100; i++)
+            {
+                try
+                {
+                    genManager.init(null, false);
+                } catch (Exception e)
+                {
+                    failed++;
+                }
+            }
+
+            Debug.Log("######## TEST COMPLETED ######## Success chance: " + (100f-failed) + "%, total tests made: 100");
+        }
+
+        if(GUILayout.Button("Big test (SLOW!)"))
+        {
+            float failed = 0;
+            for (int i = 0; i < 1000; i++)
+            {
+                try
+                {
+                    genManager.init(null, false);
+                } catch (Exception e)
+                {
+                    failed++;
+                }
+            }
+
+            Debug.Log("######## TEST COMPLETED ######## Success chance: " + (1000f-failed)/10f + "%, total tests made: 1000");
+        }
     }
+    
 }

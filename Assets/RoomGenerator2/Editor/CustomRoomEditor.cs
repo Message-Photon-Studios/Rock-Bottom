@@ -1,10 +1,13 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using Unity;
 
 [CustomEditor(typeof(CustomRoom))]
 public class CustomRoomEditor : Editor
 {
     public Direction newNodeDir, doorDir;
+    public DoorColor doorColor;
 #if UNITY_EDITOR
     public override void OnInspectorGUI()
     {
@@ -32,11 +35,36 @@ public class CustomRoomEditor : Editor
         
         EditorGUILayout.Space();
 
+        doorColor = (DoorColor)EditorGUILayout.EnumPopup("Door color", doorColor);
         // Add field to select the direction in which to create a door
         doorDir = (Direction)EditorGUILayout.EnumPopup("Door direction", doorDir);
         if (GUILayout.Button("Toggle door"))
         {
-            room.toggleDoor(doorDir);
+            room.toggleDoor(doorDir, doorColor);
+        }
+
+        if(GUILayout.Button("Reset all Doors"))
+        {
+            foreach (KeyValuePair<Vector2, RoomNode> pairNode in room.roomNodes)
+            {
+                pairNode.Value.doors = new DoorColor[]{ DoorColor.None, DoorColor.None, DoorColor.None, DoorColor.None };
+                
+                RoomNode[] neighbors = room.roomNodes.getNeighbors(pairNode.Key);
+
+                for (int i = 0; i < neighbors.Length; i++)
+                {
+                    if(neighbors[i] != null)
+                        pairNode.Value.doors[i] = DoorColor.Green;
+                }
+            }
+
+            EditorUtility.SetDirty(room);
+        }
+
+        if(GUILayout.Button("Change all door colors"))
+        {
+            if(doorColor == DoorColor.None) return;
+            room.changeAllDoors(doorColor);
         }
     }
 #endif
