@@ -65,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
     private float coyoteTimer = 0;
     private float coyoteTimerWall = 0;
 
+    private bool wasClimbing = false;
+
     [SerializeField] PlayerSounds playerSounds;
 
     private LayerMask ignoreLayers;
@@ -290,11 +292,19 @@ public class PlayerMovement : MonoBehaviour
                 playerAnimator.SetInteger("velocityY", -1);
                 wallParticles.Play();
             }
+
+            wasClimbing = true;
         } else
         {
             coyoteTimerWall -= Time.fixedDeltaTime;
             playerAnimator.SetBool("grapple", false);
             wallParticles.Stop();
+            
+            if(wasClimbing)
+            {
+                Flip();
+                wasClimbing = false;
+            }
         }
        
         if(!movementRoot.rooted)
