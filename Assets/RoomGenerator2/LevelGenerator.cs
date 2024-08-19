@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
+using BehaviourTree;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -16,12 +19,15 @@ public class Door
     public CustomRoom room;
     public int doorsInRoom;
 
-    public Door(Vector2 pos, Direction dir, CustomRoom room, int doorsInRoom)
+    public DoorColor doorColor;
+
+    public Door(Vector2 pos, Direction dir, CustomRoom room, int doorsInRoom, DoorColor doorColor)
     {
         this.pos = pos;
         this.dir = dir;
         this.room = room;
         this.doorsInRoom = room.repeatable ? 0 : doorsInRoom;
+        this.doorColor = doorColor;
     }
 }
 
@@ -41,7 +47,8 @@ public static class ListExtensions
 
 public class DungeonNode
 {
-    public bool[] doors = { false, false, false, false };
+    public bool isClosingRoom = false;
+    public DoorColor[] doors = { DoorColor.None, DoorColor.None, DoorColor.None, DoorColor.None };
 }
 
 public class DungeonGraph
@@ -68,7 +75,7 @@ public class DungeonGraph
             // Check if the graph contains a node adjacent to the door
             if (!nodes.ContainsKey(door + CustomRoom.dirVectors[i]))
                 continue;
-            if (!nodes[door + CustomRoom.dirVectors[i]].doors[CustomRoom.mirrorDir[i]]) 
+            if (nodes[door + CustomRoom.dirVectors[i]].doors[CustomRoom.mirrorDir[i]] == DoorColor.None) 
                 continue;
             return false;
         }
@@ -87,10 +94,10 @@ public class DungeonGraph
             if (!nodes.ContainsKey(neighborPos))
                 continue;
             // Either both are false or both are true, in any other case there is a blockage
-            if (!nodes[neighborPos].doors[CustomRoom.mirrorDir[dir]] && !room[door.pos].doors[dir])
+            if (nodes[neighborPos].doors[CustomRoom.mirrorDir[dir]] == room[door.pos].doors[dir])
                 continue;
-            if (nodes[neighborPos].doors[CustomRoom.mirrorDir[dir]] && room[door.pos].doors[dir])
-                continue;
+            //if (nodes[neighborPos].doors[CustomRoom.mirrorDir[dir]] && room[door.pos].doors[dir])
+            //    continue;
             return true;
         }
         
@@ -98,7 +105,7 @@ public class DungeonGraph
         foreach (var door in parent.remainingDoors)
         {
             var doorNeighborLocal = door.pos + CustomRoom.dirVectors[(int)door.dir] - shift;
-            if (room.ContainsKey(doorNeighborLocal) && !room[doorNeighborLocal].doors[CustomRoom.mirrorDir[(int)door.dir]])
+            if (room.ContainsKey(doorNeighborLocal) && room[doorNeighborLocal].doors[CustomRoom.mirrorDir[(int)door.dir]] == DoorColor.None)
                 return true;
         }
 
@@ -107,7 +114,7 @@ public class DungeonGraph
             var doorNeighborLocal = parent.topDoor.pos + Vector2.up - shift;
             if (room.ContainsKey(doorNeighborLocal))
             {
-                if (!room[doorNeighborLocal].doors[(int)Direction.Down])
+                if (room[doorNeighborLocal].doors[(int)Direction.Down] == DoorColor.None)
                     return true;
 
                 // Check that there is a new door to use as future potential door
@@ -186,7 +193,7 @@ public class DungeonGraph
             var pos = node.Key + shift;
             nodes[pos] = new DungeonNode()
             {
-                doors = node.Value.doors
+                doors = node.Value.doors, isClosingRoom = prefab.isClosingRoom
             };
         }
         rooms.Add((shift, prefab));
@@ -219,11 +226,11 @@ public class DungeonGraph
             for (var i = 0; i < 4; i++)
             {
                 var neighborPos = node.Key + CustomRoom.dirVectors[i];
-                if (node.Value.doors[i] 
+                if (node.Value.doors[i] != DoorColor.None
                     && nodes.ContainsKey(neighborPos)
-                    && !nodes[neighborPos].doors[CustomRoom.mirrorDir[i]])
+                    && nodes[neighborPos].doors[CustomRoom.mirrorDir[i]] != node.Value.doors[i])
                 {
-                    Gizmos.color = Color.red;
+                    Gizmos.color = Color.black;
                     var firstCorner = node.Key * 2*LevelGenManager.ROOMSIZE + (CustomRoom.dirVectors[i] + CustomRoom.sideToDirVectors[i]) * LevelGenManager.ROOMSIZE;
                     var secondCorner = node.Key * 2*LevelGenManager.ROOMSIZE + (CustomRoom.dirVectors[i] - CustomRoom.sideToDirVectors[i]) * LevelGenManager.ROOMSIZE;
                     Gizmos.DrawLine(firstCorner, secondCorner);
@@ -240,9 +247,10 @@ public class DungeonGraph
             for (var i = 0; i < 4; i++)
             {
                 var neighborPos = node.Key + CustomRoom.dirVectors[i];
-                if (node.Value.doors[i] 
+                if (node.Value.doors[i] != DoorColor.None
                     && nodes.ContainsKey(neighborPos)
-                    && !nodes[neighborPos].doors[CustomRoom.mirrorDir[i]])
+                    && nodes[neighborPos].doors[CustomRoom.mirrorDir[i]] != node.Value.doors[i] 
+                    && !node.Value.isClosingRoom && !nodes[neighborPos].isClosingRoom)
                 {
                     return false;
                 }
@@ -293,24 +301,34 @@ public class LevelGenerator
 
     public bool instantiated = false;
 
-    public void generate(int size, string areaPath)
+    public void generate(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
     {
         var tries = 0;
+        bool res = false;
         do
-        {
-            tries++;
-            if (tries > 20)
+        {   
+            Dictionary<DoorColor, int> regionSizeCopy = new Dictionary<DoorColor, int>();
+            foreach (KeyValuePair<DoorColor, int> item in regionSize)
             {
-                Debug.LogError("Failed to generate level");
+                regionSizeCopy.Add(item.Key,item.Value);
+            }
+            tries++;
+            if (tries > 50)
+            {
+                #if UNITY_EDITOR
+                    throw new Exception("Failed Generation Exception on try " + tries);
+                #endif
+                
+                Debug.LogError("Failed generation exception");
                 return;
             }
 
             initGeneration(areaPath);
-            var res = tryGenerate(size, areaPath);
-            if (!res) continue;
+            res = tryGenerate(size, areaPath, regionSizeCopy);
+            //if (!res) continue;
             endGeneration(areaPath);
 
-        } while (!graph.validate());
+        } while (!graph.validate() || !res);
     }
 
     private void recreateGameObjs()
@@ -398,6 +416,11 @@ public class LevelGenerator
                 npc.transform.parent = itemHolder.transform;
             }
 
+            foreach (var itemLock in roomObj.transform.GetComponentsInChildren<ItemLock>())
+            {
+                itemLock.transform.parent = itemHolder.transform;
+            }
+
             // Finish setting up the room
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
@@ -466,15 +489,16 @@ public class LevelGenerator
     {
         var initRooms = Resources.LoadAll<CustomRoom>(areaPath + "/InitRooms");
         var initRoom = initRooms[Random.Range(0, initRooms.Length - 1)];
-        remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0)};
+        remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green)};
         normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "/NormalRooms").ToList();
         foreach (var room in normalRooms) room.spawnCount = 0;
         closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "/ClosingRooms").ToList();
+        foreach(CustomRoom room in closingRooms) room.isClosingRoom = true;
         usedRooms = new List<CustomRoom>();
         prefabs = new List<(Vector2, CustomRoom)>();
         filledPrefabs = new List<(Vector2, GameObject)>();
         graph = new DungeonGraph(initRoom, this);
-        topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0);
+        topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green);
     }
 
     private void endGeneration(string areaPath)
@@ -485,7 +509,7 @@ public class LevelGenerator
         endRoomPos = topDoor.pos * 2 * LevelGenManager.ROOMSIZE;
     }
 
-    private (bool, bool) nextRoom(int size, string areaPath)
+    private (bool, bool) nextRoom(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
     {
         // If we are out of rooms but still have to continue, we refill the normal room list
         if (normalRooms.All(roomElem => roomElem.repeatable))
@@ -516,7 +540,7 @@ public class LevelGenerator
 
         var nextPos = weightedDoors[Random.Range(0, weightedDoors.Count)];
         remainingDoors.Remove(nextPos);
-        var (room, entrance) = getRoom(size - graph.size, nextPos);
+        var (room, entrance) = getRoom(size - graph.size, nextPos, regionSize);
         if (room == null)
             return (false, false);
         var exits = graph.placeRoom(nextPos.pos, entrance, nextPos.dir, room);
@@ -545,6 +569,7 @@ public class LevelGenerator
         // Get all doors that are looking upwards and get the one with the hightest y value
         var topDoors = newDoors
             .Where(door => door.dir == Direction.Up)
+            .Where(door => door.doorColor == DoorColor.Green)
             .Where(door => graph.isTopDoorSuitable(door.pos + CustomRoom.dirVectors[(int)Direction.Up]))
             .OrderBy(door => door.pos.y)
             .ToList();
@@ -559,13 +584,17 @@ public class LevelGenerator
         remainingDoors = remainingDoors.Concat(newDoors).ToList();
     }
 
-    private bool tryGenerate(int size, string areaPath)
+    private bool tryGenerate(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
     {
         while (true)
         {
-            var (finished, success) = nextRoom(size, areaPath);
+            var (finished, success) = nextRoom(size, areaPath, regionSize);
             if (finished)
             {
+                foreach (KeyValuePair<DoorColor, int> item in regionSize)
+                {
+                    if(item.Value > 10) return false;
+                }
                 return graph.nodes.Count >= size;
             }
             if (!success) 
@@ -573,15 +602,17 @@ public class LevelGenerator
         }
     }
 
-    private (CustomRoom, Vector2) getRoom(int remainingSize, Door door)
+    private (CustomRoom, Vector2) getRoom(int remainingSize, Door door, Dictionary<DoorColor, int> regionSize)
     {
         (CustomRoom, Vector2) retRoom;
 
-        if (remainingSize > 0)
+        if (remainingSize > 0 && regionSize[door.doorColor] > 0)
         {
             retRoom = getNormalRoom(door, false);
             if (retRoom.Item1 == null)
                 retRoom = getClosingRoom(door);
+            else
+                regionSize[door.doorColor] -= retRoom.Item1.roomNodes.Count;
         }
         else
         {
@@ -591,7 +622,7 @@ public class LevelGenerator
         return retRoom;
     }
 
-    private (CustomRoom, Vector2) getClosingRoom(Door door)
+    private (CustomRoom, Vector2) getClosingRoom(Door door) //TODO check so that this works
     {
         var rooms = closingRooms.ToList();
 
@@ -599,14 +630,14 @@ public class LevelGenerator
         var otherNodePos = door.pos + CustomRoom.dirVectors[(int)door.dir];
 
         // Get how many nodes adjacent to it have an open door looking at it
-        var doorsToOpen = new[] { false, false, false, false };
+        var doorsToOpen = new[] { DoorColor.None, DoorColor.None, DoorColor.None, DoorColor.None };
         for (var i = 0; i < CustomRoom.dirVectors.Length; i++)
         {
             // Get the node adjacent to the otherNode
             var neighborPos = otherNodePos + CustomRoom.dirVectors[i];
             // If the node exists and has an open door looking at the otherNode, we set the door to open as true
-            if (graph.nodes.ContainsKey(neighborPos) && graph.nodes[neighborPos].doors[CustomRoom.mirrorDir[i]])
-                doorsToOpen[i] = true;
+            if (graph.nodes.ContainsKey(neighborPos) && graph.nodes[neighborPos].doors[CustomRoom.mirrorDir[i]] != DoorColor.None)
+                doorsToOpen[i] = DoorColor.Green;
         }
 
         // Find closing rooms that have the same doors to open

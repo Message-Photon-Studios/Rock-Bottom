@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using AYellowpaper.SerializedCollections;
+using System.Collections.Generic;
 
 public enum LevelArea
 {
@@ -21,6 +23,8 @@ public class LevelGenManager : MonoBehaviour
     public LevelArea levelType;
     public int level;
     public int size;
+
+    public SerializedDictionary<DoorColor, int> regionSize;
 
     private readonly string[] paths = {"Rooms/CrystalCaves/Level_", "Rooms/PebbleArea/Level_"};
     private bool finished;
@@ -45,6 +49,17 @@ public class LevelGenManager : MonoBehaviour
 
     }
 
+    #if(UNITY_EDITOR)
+    void OnValidate()
+    {
+        size = 0;
+        foreach (KeyValuePair<DoorColor, int> item in regionSize)
+        {
+            size += item.Value;
+        }
+    }
+    #endif
+
     private void finishGen(UIController canvas)
     {
         GetComponent<ItemSpellManager>().SpawnItems();
@@ -61,7 +76,7 @@ public class LevelGenManager : MonoBehaviour
     public void init(UIController canvas, bool async)
     {
         levelGen = new LevelGenerator();
-        levelGen.generate(size, paths[(int)levelType]+level);
+        levelGen.generate(size, paths[(int)levelType]+level, regionSize);
         if (async)
             StartCoroutine(generateSceneAsync(canvas));
         else

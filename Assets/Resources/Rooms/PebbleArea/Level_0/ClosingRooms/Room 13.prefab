@@ -284,7 +284,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: -2, y: 1, z: 0}
     second:
       serializedVersion: 2
@@ -334,7 +334,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: 3, y: 1, z: 0}
     second:
       serializedVersion: 2
@@ -354,7 +354,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 1
   - first: {x: -3, y: 2, z: 0}
     second:
       serializedVersion: 2
@@ -424,7 +424,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 1
   - first: {x: -4, y: 3, z: 0}
     second:
       serializedVersion: 2
@@ -764,41 +764,29 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 2429020888469123989}
     m_ColliderPaths:
-    - - X: 27000000
-        Y: 10699999
-      - X: 27000000
+    - - X: -18000000
         Y: 18000000
-      - X: 27599998
+      - X: -17999998
         Y: 18000000
-      - X: 29699998
-        Y: 19800000
-      - X: 31899998
-        Y: 22600000
-      - X: 36000000
-        Y: 25700000
-      - X: 36000000
-        Y: 36000000
-      - X: -36000000
-        Y: 36000000
-      - X: -36000000
-        Y: 24700000
-      - X: -35700000
-        Y: 23699998
-      - X: -32599998
-        Y: 20800000
-      - X: -30300000
-        Y: 18200000
-      - X: -29599998
-        Y: 18000000
-      - X: -26999998
-        Y: 18000000
-      - X: -26999998
-        Y: 12199999
-      - X: -26599998
-        Y: 11899999
-      - X: -23399996
+      - X: -17999998
         Y: 8999999
-      - X: 26600000
+      - X: 27000000
+        Y: 8999999
+      - X: 27000000
+        Y: 26999998
+      - X: 36000000
+        Y: 26999998
+      - X: 36000000
+        Y: 36000000
+      - X: -36000000
+        Y: 36000000
+      - X: -36000000
+        Y: 26999998
+      - X: -26999998
+        Y: 26999998
+      - X: -26999998
+        Y: 8999999
+      - X: -18000000
         Y: 8999999
     - - X: 36000000
         Y: -26999998
@@ -810,24 +798,14 @@ CompositeCollider2D:
         Y: -36000000
   m_CompositePaths:
     m_Paths:
-    - - {x: 2.659978, y: 0.8999999}
-      - {x: 2.7, y: 1.0700028}
-      - {x: 2.7000294, y: 1.8000001}
-      - {x: 2.7600071, y: 1.8000063}
-      - {x: 2.9700012, y: 1.9800018}
-      - {x: 3.190002, y: 2.2600017}
-      - {x: 3.6000001, y: 2.5700133}
+    - - {x: 2.6999707, y: 0.8999999}
+      - {x: 2.7000294, y: 2.6999998}
+      - {x: 3.6000001, y: 2.7000291}
       - {x: 3.5999708, y: 3.6000001}
       - {x: -3.6000001, y: 3.5999708}
-      - {x: -3.599999, y: 2.4699967}
-      - {x: -3.5699952, y: 2.369995}
-      - {x: -3.2599976, y: 2.0799975}
-      - {x: -3.0299928, y: 1.819998}
-      - {x: -2.959996, y: 1.8000001}
-      - {x: -2.6999998, y: 1.7999706}
-      - {x: -2.6999893, y: 1.2199922}
-      - {x: -2.659998, y: 1.1899984}
-      - {x: -2.3399897, y: 0.8999999}
+      - {x: -3.5999708, y: 2.6999998}
+      - {x: -2.6999998, y: 2.6999705}
+      - {x: -2.6999705, y: 0.8999999}
     - - {x: 3.5999708, y: -3.6000001}
       - {x: 3.5999708, y: -2.6999998}
       - {x: -3.6000001, y: -2.7000291}
@@ -930,11 +908,12 @@ MonoBehaviour:
     m_keys:
     - {x: 0, y: 0}
     m_values:
-    - doors: 01000100
+    - doors: 01000000000000000100000000000000
   displayMode: 0
   maxSpawns: -1
   spawnCount: 0
   selectedNode: {x: 0, y: 0}
+  isClosingRoom: 0
 --- !u!1 &6085778421469433940
 GameObject:
   m_ObjectHideFlags: 0

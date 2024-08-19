@@ -16,4 +16,10 @@ public class ColorBuffItem : ItemEffect
         if(inv.colorBuffs.ContainsKey(color)) inv.colorBuffs[color] += power;
         else inv.colorBuffs.Add(color, power);
     }
+
+    public override void DisableEffect()
+    {
+        ColorInventory inv = GetPlayer().GetComponent<ColorInventory>();
+        if(inv.colorBuffs.ContainsKey(color)) inv.colorBuffs[color] -= power;
+    }
 }

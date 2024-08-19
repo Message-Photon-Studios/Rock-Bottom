@@ -7,7 +7,12 @@ public class BlockUseColor : ItemEffect
     [SerializeField] private int blockDrainColor = 10;
     public override void ActivateEffect()
     {
-        GetPlayer().GetComponent<ColorInventory>().blockDrainColor += 10;
+        GetPlayer().GetComponent<ColorInventory>().blockDrainColor += blockDrainColor;
+    }
+
+    public override void DisableEffect()
+    {
+        GetPlayer().GetComponent<ColorInventory>().blockDrainColor -= blockDrainColor;
     }
 
     public override bool CanBeSpawned()

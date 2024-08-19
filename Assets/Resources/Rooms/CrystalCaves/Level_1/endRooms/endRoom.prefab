@@ -402,16 +402,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1
-  - first: {x: 0, y: 0, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 22
-      m_TileSpriteIndex: 22
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1
   - first: {x: 1, y: 0, z: 0}
     second:
       serializedVersion: 2
@@ -698,8 +688,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: e02c8e148717c1f4baf2a23f38a647c3, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 1efdcec866863474e9f223a36985ccb3, type: 2}
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 500c1e9d50d44ed479c75fd2c3d41b3e, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 8372bb9723e207446bba93d88520c0fa, type: 2}
   - m_RefCount: 1
@@ -755,8 +745,8 @@ Tilemap:
     m_Data: {fileID: 802796462, guid: 8171c8b3baba4334c93c9ca4297de7c3, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -354835947, guid: 8171c8b3baba4334c93c9ca4297de7c3, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: 1017307281, guid: 8171c8b3baba4334c93c9ca4297de7c3, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: 484765597, guid: 8171c8b3baba4334c93c9ca4297de7c3, type: 3}
   - m_RefCount: 1
@@ -768,7 +758,7 @@ Tilemap:
   - m_RefCount: 51
     m_Data: {fileID: 2051323398, guid: ccf27544f82195b49bf65fe15a2cd1a7, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 61
+  - m_RefCount: 60
     m_Data:
       e00: 1
       e01: 0
@@ -787,7 +777,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 61
+  - m_RefCount: 60
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -1797,11 +1787,12 @@ MonoBehaviour:
     m_keys:
     - {x: 0, y: 0}
     m_values:
-    - doors: 00010000
+    - doors: 00000000010000000000000000000000
   displayMode: 0
   maxSpawns: -1
   spawnCount: 0
-  selectedNode: {x: -1, y: 0}
+  selectedNode: {x: 0, y: 0}
+  isClosingRoom: 0
 --- !u!1001 &7120514159825482467
 PrefabInstance:
   m_ObjectHideFlags: 0
