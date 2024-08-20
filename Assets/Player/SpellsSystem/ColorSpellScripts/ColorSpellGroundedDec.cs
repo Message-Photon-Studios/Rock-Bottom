@@ -23,8 +23,8 @@ public class ColorSpellGroundedDec : SpellImpact
 
     public override void Impact(Collider2D other)
     {
-        bool test = Physics2D.Raycast((Vector2) transform.position + Vector2.right*radius, Vector2.down, 1.5f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Item")) || 
-            Physics2D.Raycast((Vector2)transform.position - Vector2.right * radius, Vector2.down, 1.5f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Item"));
+        bool test = Physics2D.Raycast((Vector2) transform.position + Vector2.right*radius, Vector2.down, 1.5f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Item", "OnlyHitGround")) || 
+            Physics2D.Raycast((Vector2)transform.position - Vector2.right * radius, Vector2.down, 1.5f, ~LayerMask.GetMask("Enemy", "Player", "Spell", "Item", "OnlyHitGround"));
         if (test)
         {
             success.Impact(other);
