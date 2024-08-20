@@ -51,9 +51,11 @@ public class ColorSpell : MonoBehaviour
     [SerializeField] float lifeTime;
 
     /// <summary>
-    /// The animation event that this spell uses
+    /// The animation event that this spell uses on the ground
     /// </summary>
     [SerializeField] string animationTrigger;
+
+
 
     /// <summary>
     /// The things that will trigger on impact
