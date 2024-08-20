@@ -193,10 +193,22 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrappeling()
     {
-        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) ||
-                !Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers)) &&
-                ((Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .5f, ignoreLayers))  ||
-                (Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .5f, ignoreLayers)));
+        if(wasClimbing)
+        {
+            return  
+                (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) && 
+                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, .5f, ignoreLayers)) ||
+                (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) &&
+                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.left, .5f, ignoreLayers));
+        }
+        else
+        {
+            return
+                (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) && 
+                Physics2D.Raycast(transform.position, Vector2.right, .5f, ignoreLayers)) ||
+                (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) &&
+                Physics2D.Raycast(transform.position, Vector2.left, .5f, ignoreLayers));
+        }
     }
    
     #endregion
