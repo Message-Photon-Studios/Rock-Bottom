@@ -11,7 +11,7 @@ public class ItemPickup : MonoBehaviour
 {
     [SerializeField] float spawnChance = 1f;
     [SerializeField] bool needsPayment;
-    [SerializeField] bool setByhand;
+    [SerializeField] public bool setByhand;
     [SerializeField] Item item;
     [SerializeField] GameObject canvas;
     [SerializeField] TMP_Text cost;

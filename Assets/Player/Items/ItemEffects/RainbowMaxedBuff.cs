@@ -9,4 +9,9 @@ public class RainbowMaxedBuff : ItemEffect
     {
         GetPlayer().GetComponent<PlayerStats>().colorRainbowMaxedPower += power;
     }
+
+    public override void DisableEffect()
+    {
+        GetPlayer().GetComponent<PlayerStats>().colorRainbowMaxedPower -= power;
+    }
 }

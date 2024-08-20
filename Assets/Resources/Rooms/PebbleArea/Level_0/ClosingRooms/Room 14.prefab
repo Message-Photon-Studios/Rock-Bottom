@@ -1034,11 +1034,12 @@ MonoBehaviour:
     m_keys:
     - {x: 0, y: 0}
     m_values:
-    - doors: 00000100
+    - doors: 00000000000000000100000000000000
   displayMode: 0
   maxSpawns: -1
   spawnCount: 0
-  selectedNode: {x: 1, y: 0}
+  selectedNode: {x: 0, y: 0}
+  isClosingRoom: 0
 --- !u!1 &6863790465385628599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1243,7 +1244,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 1
   - first: {x: -4, y: -2, z: 0}
     second:
       serializedVersion: 2
@@ -1643,7 +1644,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 1
   - first: {x: -4, y: 3, z: 0}
     second:
       serializedVersion: 2
@@ -1944,21 +1945,9 @@ CompositeCollider2D:
   - m_Collider: {fileID: 2954820002740793375}
     m_ColliderPaths:
     - - X: 36000000
-        Y: -24899998
-      - X: 34899996
-        Y: -24099998
-      - X: 33800000
-        Y: -24299998
-      - X: 33000000
-        Y: -22199998
-      - X: 32199998
-        Y: -20599998
-      - X: 29999998
-        Y: -19299998
-      - X: 27700000
-        Y: -17999998
+        Y: -26999998
       - X: 27000000
-        Y: -17999998
+        Y: -26999998
       - X: 27000000
         Y: 26999998
       - X: 36000000
@@ -1974,14 +1963,8 @@ CompositeCollider2D:
   m_CompositePaths:
     m_Paths:
     - - {x: 3.5999708, y: -3.6000001}
-      - {x: 3.5999892, y: -2.4899921}
-      - {x: 3.4899888, y: -2.4100018}
-      - {x: 3.3799915, y: -2.4299781}
-      - {x: 3.2999997, y: -2.219999}
-      - {x: 3.2199934, y: -2.0599961}
-      - {x: 3.0000012, y: -1.9300008}
-      - {x: 2.7699933, y: -1.7999998}
-      - {x: 2.7, y: -1.7999704}
+      - {x: 3.5999708, y: -2.6999998}
+      - {x: 2.7, y: -2.6999705}
       - {x: 2.7000294, y: 2.6999998}
       - {x: 3.6000001, y: 2.7000291}
       - {x: 3.5999708, y: 3.6000001}

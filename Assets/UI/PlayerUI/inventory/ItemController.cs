@@ -58,7 +58,6 @@ public class ItemController : MonoBehaviour
         itemsContainer.GetComponent<NotifyInventory>().onInventoryOpened += InventoryOpened;
         colorInventory = colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
 
-        itemInventory.onItemPickedUp += AddItem;
         colorInventory.onColorSlotsChanged += BottleAmountChanged;
         colorInventory.onColorSpellChanged += BottleChanged;
         foreach(SelectedColor color in statColorList) {
@@ -78,7 +77,6 @@ public class ItemController : MonoBehaviour
     }
 
     private void OnDisable() {
-        itemInventory.onItemPickedUp -= AddItem;
         colorInventory.onColorSpellChanged -= BottleChanged;
         colorInventory.onColorSlotsChanged -= BottleAmountChanged;
         foreach(SelectedColor color in statColorList) {
@@ -91,6 +89,23 @@ public class ItemController : MonoBehaviour
     /// When inventory is opened, hide selected item container and deselect any item.
     /// </summary>
     private void InventoryOpened(){
+        items = new List<SelectedInventoryItem>();
+        List<GameObject> objs = new List<GameObject>();
+        for (int i = 0; i < itemsContainer.transform.childCount; i++)
+        {
+            objs.Add(itemsContainer.transform.GetChild(i).gameObject);
+        }
+        itemsContainer.transform.DetachChildren();
+        for (int i = 0; i < objs.Count; i++)
+        {
+            Destroy(objs[i]);
+        }
+        
+        foreach(Item item in itemInventory.getItems())
+        {
+            AddItem(item);
+        }
+
         selectedItemContainer.SetActive(false);
         eventSystem.SetSelectedGameObject(null);
         statColorList[0].GetComponent<Selectable>().Select();

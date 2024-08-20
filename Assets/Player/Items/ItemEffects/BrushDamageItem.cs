@@ -13,4 +13,9 @@ public class BrushDamageItem : ItemEffect
     {
         GetPlayer().GetComponent<PlayerCombatSystem>().defaultAttackDamage += brushDamage;
     }
+
+    public override void DisableEffect()
+    {
+        GetPlayer().GetComponent<PlayerCombatSystem>().defaultAttackDamage -= brushDamage;
+    }
 }

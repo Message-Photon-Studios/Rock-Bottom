@@ -10,6 +10,11 @@ public class AddSpellSlot : ItemEffect
         inv.AddColorSlot();
     }
 
+    public override void DisableEffect()
+    {
+        //You cant  remove this effect currently.
+    }
+
     public override bool CanBeSpawned()
     {
         ColorInventory inv = GetPlayer().GetComponent<ColorInventory>();

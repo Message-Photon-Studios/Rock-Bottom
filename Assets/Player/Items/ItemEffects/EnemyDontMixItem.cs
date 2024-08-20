@@ -10,6 +10,11 @@ public class EnemyDontMixItem : ItemEffect
         GetPlayer().GetComponent<PlayerStats>().chanceThatEnemyDontMix += addedChance;
     }
 
+    public override void DisableEffect()
+    {
+        GetPlayer().GetComponent<PlayerStats>().chanceThatEnemyDontMix -= addedChance;
+    }
+
     public override bool CanBeSpawned()
     {
         return GetPlayer().GetComponent<PlayerStats>().chanceThatEnemyDontMix < 100;

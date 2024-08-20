@@ -14,4 +14,9 @@ public class ChangeHealthIItem : ItemEffect
         GetPlayer().GetComponent<PlayerStats>().AddMaxHealth(addMaxHealth);
         GetPlayer().GetComponent<PlayerStats>().HealPlayer(healAmmount);
     }
+
+    public override void DisableEffect()
+    {
+        GetPlayer().GetComponent<PlayerStats>().AddMaxHealth(-addMaxHealth);
+    }
 }

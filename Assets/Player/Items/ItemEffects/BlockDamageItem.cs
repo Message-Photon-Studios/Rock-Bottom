@@ -10,6 +10,11 @@ public class BlockDamageItem : ItemEffect
         GetPlayer().GetComponent<PlayerStats>().chanceToBlock += addBlockChance;
     }
 
+    public override void DisableEffect()
+    {
+        GetPlayer().GetComponent<PlayerStats>().chanceToBlock -= addBlockChance;
+    }
+
     public override bool CanBeSpawned()
     {
         return GetPlayer().GetComponent<PlayerStats>().chanceToBlock < 50;
