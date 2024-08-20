@@ -39,6 +39,11 @@ public class ColorSpell : MonoBehaviour
     /// If true the spell will only trigger once.
     /// </summary>
     [SerializeField] protected bool triggerOnlyOnce;
+
+    /// <summary>
+    /// If true the spell checks if it has LOS to the player on spawn and destroys itself if not
+    /// </summary>
+    [SerializeField] protected bool requirePlayerLOSonSpawn;
     protected bool hasTriggered = false;
     /// <summary>
     /// The maximum lifetime of the projectile
@@ -114,6 +119,17 @@ public class ColorSpell : MonoBehaviour
         }
 
         objectsAlreadyHit = new HashSet<GameObject>();
+
+        if(requirePlayerLOSonSpawn)
+        {
+            RaycastHit2D playerLOS = Physics2D.Raycast(transform.position, player.transform.position-transform.position, Vector2.Distance(transform.position, player.transform.position), ~LayerMask.GetMask("Spell", "Player", "Ignore Raycast", "Item", "Enemy", "OnlyHitGround"));
+            if(playerLOS.collider != null) 
+            {
+                if(impactOnNonEnemies) Impact(playerLOS.collider);
+                Destroy(gameObject);
+                return;
+            }
+        }
     }
 
     void OnEnable()
