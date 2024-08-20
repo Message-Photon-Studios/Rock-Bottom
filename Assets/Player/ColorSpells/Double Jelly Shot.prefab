@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3321278458073070405}
   - component: {fileID: 3321278458073070400}
-  - component: {fileID: 3321278458073070462}
   - component: {fileID: 3321278458073070404}
   - component: {fileID: 3321278458073070407}
   - component: {fileID: 4874330200776334801}
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
   - component: {fileID: 2230045413262427663}
+  - component: {fileID: 955193730578387014}
   m_Layer: 8
   m_Name: Double Jelly Shot
   m_TagString: Spell
@@ -61,22 +61,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 6
---- !u!58 &3321278458073070462
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &3321278458073070404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,7 +179,7 @@ MonoBehaviour:
   powerScale: 0.7
   destroyOnImpact: 1
   destroyOnHit: 1
-  lifeTime: 0.6
+  lifeTime: 0.4
   animationTrigger: handSpell
   onImpact:
   - {fileID: 3321278458073070407}
@@ -226,6 +210,22 @@ MonoBehaviour:
   spawnAmount: 1
   spawnPrefabs:
   - {fileID: 3321278458073070463, guid: 6797f7dc7fb26f5419124c1778f5dc7b, type: 3}
+--- !u!70 &955193730578387014
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.46, y: 0}
+  m_Size: {x: 1, y: 1.3}
+  m_Direction: 0
 --- !u!1001 &3068050921329342166
 PrefabInstance:
   m_ObjectHideFlags: 0
