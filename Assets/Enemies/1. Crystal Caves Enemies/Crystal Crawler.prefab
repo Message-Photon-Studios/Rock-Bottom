@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1462253517624165465}
   - component: {fileID: 1459781731267820079}
   - component: {fileID: 7351179844019891637}
+  - component: {fileID: 5765136275518112308}
   m_Layer: 6
   m_Name: Crystal Crawler
   m_TagString: Enemy
@@ -96,6 +97,7 @@ MonoBehaviour:
     color: {r: 0.048508644, g: 1, b: 0, a: 1}
   runSpeed: 3
   jumpForce: 6000
+  checkJumpHight: 4
   forwardJumpForce: 800
   jumpIdleTime: 2
   patrollDistance: 6
@@ -243,6 +245,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   achievementObject: {fileID: 6493222949174414483, guid: 6a2ebc11bf110cd49b02bca59a2c2e3b, type: 3}
+--- !u!61 &5765136275518112308
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462253517624165464}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.55}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3, y: 2}
+    newSize: {x: 3, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.86, y: 0.54}
+  m_EdgeRadius: 0
 --- !u!1001 &1218651654821507082
 PrefabInstance:
   m_ObjectHideFlags: 0

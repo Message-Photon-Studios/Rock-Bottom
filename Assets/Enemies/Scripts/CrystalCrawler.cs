@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using BehaviourTree;
 using UnityEditor;
+using UnityEngine.UIElements;
+using Steamworks;
 
 public class CrystalCrawler : Enemy
 {
@@ -10,6 +12,7 @@ public class CrystalCrawler : Enemy
     [SerializeField] Trigger preventJump;
     [SerializeField] float runSpeed;
     [SerializeField] float jumpForce;
+    [SerializeField] float checkJumpHight;
     [SerializeField] float forwardJumpForce;
     [SerializeField] float jumpIdleTime;
     [SerializeField] float patrollDistance;
@@ -36,7 +39,6 @@ public class CrystalCrawler : Enemy
                         new Inverter(new CheckRoof(stats)),
                         new EnemyJump(stats, body, jumpForce, forwardJumpForce),
                         new SetParentVariable("enableJump", false, 4),
-                        new SetParentVariable("enableDamage", true, 4)
                     }),
 
 
@@ -47,10 +49,26 @@ public class CrystalCrawler : Enemy
                     }),
 
                     new Sequence(new List<Node>{
+                        new CheckWall(stats,Vector2.right, 1.5f,-.3f),
+                        
+                        new Selector(new List<Node>{
+                            new Sequence(new List<Node>{
+                                new CheckWall(stats,Vector2.right,1.5f, checkJumpHight),
+                                new LookAtPlayer(stats, player)
+                            }),
+
+                            new Sequence(new List<Node>{
+                                new CheckGrounded(stats,legPos),
+                                new EnemyJump(stats, body, jumpForce, forwardJumpForce),
+                                new SetParentVariable("enableJump", false, 4)
+                            })
+                        })
+                    }),
+
+                    new Sequence(new List<Node>{
                         
                         new CheckPlayerDistance(stats, player, 5, 20),
                         new CheckGrounded(stats, legPos),
-                        new SetParentVariable("enableDamage", false, 4),
                         new Inverter(new CheckPlayerArea(stats, player, preventJump)),
                         new AnimationBool(animator, "move", true),
                         new AnimationBool(animator, "run", true),
@@ -61,14 +79,6 @@ public class CrystalCrawler : Enemy
                     new Sequence(new List<Node>{
                         new CheckPlayerDistance(stats,player,20, 2000),
                         new SetParentVariable("prusuit", false, 4)
-                    }),
-
-                    new Sequence(new List<Node>{
-                        new CheckWall(stats,Vector2.right, 1f,-.3f),
-                        new CheckGrounded(stats,legPos),
-                        new EnemyJump(stats, body, jumpForce, forwardJumpForce),
-                        new SetParentVariable("enableJump", false, 4),
-                        new SetParentVariable("enableDamage", true, 4)
                     }),
 
                     new Sequence(new List<Node>{
@@ -111,6 +121,8 @@ public class CrystalCrawler : Enemy
         preventJump.DrawTrigger(stats.GetPosition());
         Handles.color = Color.yellow;
         Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
+        Handles.color = Color.green;
+        Handles.DrawDottedLine(stats.GetPosition()+Vector2.left+Vector2.up*checkJumpHight, stats.GetPosition()+Vector2.right+Vector2.up*checkJumpHight, 5);
     }
 #endif
 }
