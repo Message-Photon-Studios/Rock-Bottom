@@ -19,13 +19,27 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// The projectile will be destroyed on impact with any object
     /// </summary>
-    [SerializeField] protected bool destroyOnImpact;
+    [SerializeField] protected bool destroyOnAllImpact;
 
     /// <summary>
     /// The projectile will be destroyed on impact with the enemy
     /// </summary>
-    [SerializeField] protected bool destroyOnHit;
+    [SerializeField] protected bool destroyOnEnemyHit;
 
+    /// <summary>
+    /// If true this spell will detect enemies as a hit
+    /// </summary>
+    [SerializeField] protected bool impactOnEnemies = true;
+
+    /// <summary>
+    /// If true this spell will detect non-enemies as a hit
+    /// </summary>
+    [SerializeField] protected bool impactOnNonEnemies = true;
+    /// <summary>
+    /// If true the spell will only trigger once.
+    /// </summary>
+    [SerializeField] protected bool triggerOnlyOnce;
+    protected bool hasTriggered = false;
     /// <summary>
     /// The maximum lifetime of the projectile
     /// </summary>
@@ -51,7 +65,7 @@ public class ColorSpell : MonoBehaviour
 
     public int lookDir {get; protected set;}
 
-    private HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
+    private HashSet<GameObject> objectsAlreadyHit = new HashSet<GameObject>();
 
     /// <summary>
     /// Needs to be called after the spell is instantiated
@@ -99,7 +113,7 @@ public class ColorSpell : MonoBehaviour
             impact.Init(this);
         }
 
-        hitEnemies = new HashSet<GameObject>();
+        objectsAlreadyHit = new HashSet<GameObject>();
     }
 
     void OnEnable()
@@ -109,20 +123,24 @@ public class ColorSpell : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if(triggerOnlyOnce && hasTriggered) return;
         if(other.CompareTag("Item") || other.CompareTag("Player")) return;
-        if(destroyOnImpact && !other.CompareTag("Enemy") && !hitEnemies.Contains(other.gameObject)) 
+        if(!impactOnEnemies && other.CompareTag("Enemy")) return;
+        if(!impactOnNonEnemies && !other.CompareTag("Enemy")) return;
+        if(objectsAlreadyHit.Contains(other.gameObject)) return;
+        hasTriggered = true;
+        Impact(other);
+        objectsAlreadyHit.Add(other.gameObject);
+
+        if(destroyOnAllImpact)
         {
-            Impact(other);
             Destroy(gameObject);
-            hitEnemies.Add(other.gameObject);
             return;
         }
 
-        if(other.CompareTag("Enemy") && !hitEnemies.Contains(other.gameObject))
+        if(destroyOnEnemyHit && other.CompareTag("Enemy"))
         {
-            Impact(other);
-            hitEnemies.Add(other.gameObject);
-            if(destroyOnHit) Destroy(gameObject);
+            Destroy(gameObject);
             return;
         }
     }

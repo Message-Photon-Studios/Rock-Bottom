@@ -76,7 +76,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.7}
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.1
 --- !u!212 &4874330200776334801
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -165,12 +165,15 @@ MonoBehaviour:
     the cat to lurk for enemies. \nPower: 140%"
   spellCost: 50
   powerScale: 1.4
-  destroyOnImpact: 1
-  destroyOnHit: 0
+  destroyOnAllImpact: 1
+  destroyOnEnemyHit: 0
+  impactOnEnemies: 0
+  impactOnNonEnemies: 1
+  triggerOnlyOnce: 1
   lifeTime: 5
   animationTrigger: handSpell
   onImpact:
-  - {fileID: 1585154843906230144}
+  - {fileID: 1473584480591637448}
   spellSprite:
     bigSprite: {fileID: 21300000, guid: 4897bd49fdbe1ab449c161d71fc21487, type: 3}
     bigSpriteMask: {fileID: 21300000, guid: 3fc7d6ff5040b024392a747eaee76d5b, type: 3}
