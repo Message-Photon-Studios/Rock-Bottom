@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -12,9 +13,21 @@ public class ColorSpellImpact : SpellImpact
     {
         if(other.CompareTag("Enemy"))
         {
-            RaycastHit2D test = Physics2D.Raycast(transform.position, other.transform.position-transform.position,Vector2.Distance(other.transform.position, transform.position)-.1f, ~LayerMask.GetMask("Spell", "Player", "Ignore Raycast", "Item", "Enemy"));
-            if(test.collider != null) 
-                return;
+            float collisionCheckDeadZone = .75f;
+            if(Vector2.Distance(other.transform.position, transform.position) > collisionCheckDeadZone)
+            {
+                Vector2 spellPos = transform.position;
+                Vector2 enemyPos = other.transform.position;
+                Vector2 rayCastOrigin = spellPos + ((enemyPos-spellPos).normalized *collisionCheckDeadZone);
+                Vector2 rayCastDirection = enemyPos-rayCastOrigin;
+                float rayCastDistance = Vector2.Distance(enemyPos,rayCastOrigin);
+
+                RaycastHit2D test = Physics2D.Raycast(rayCastOrigin, rayCastDirection, rayCastDistance, ~LayerMask.GetMask("Spell", "Player", "Ignore Raycast", "Item", "Enemy"));
+                if(test.collider != null) 
+                {
+                    return;
+                }
+            }
 
             EnemyStats enemy = other.gameObject.GetComponent<EnemyStats>();
 

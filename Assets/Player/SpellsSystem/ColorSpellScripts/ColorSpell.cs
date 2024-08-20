@@ -107,7 +107,7 @@ public class ColorSpell : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Item") || other.CompareTag("Player")) return;
         if(destroyOnImpact && !other.CompareTag("Enemy") && !hitEnemies.Contains(other.gameObject)) 
