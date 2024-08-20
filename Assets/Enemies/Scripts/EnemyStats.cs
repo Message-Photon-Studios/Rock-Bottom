@@ -336,6 +336,8 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
+        GetComponent<Rigidbody2D>().drag = normalMovementDrag;
+        animator.speed = normalAnimationSpeed;
         enemyDead = true;
         enemySounds?.PlayDeath();
         //TODO
