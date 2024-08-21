@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4874330200776334801}
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
+  - component: {fileID: 9041372432633459029}
   m_Layer: 8
   m_Name: Double Jelly Shot Small
   m_TagString: Spell
@@ -192,12 +193,17 @@ MonoBehaviour:
     100%'
   spellCost: 50
   powerScale: -0.4
-  destroyOnImpact: 1
-  destroyOnHit: 1
-  lifeTime: 0.84
+  destroyOnAllImpact: 1
+  destroyOnEnemyHit: 1
+  impactOnEnemies: 1
+  impactOnNonEnemies: 1
+  triggerOnlyOnce: 0
+  requirePlayerLOSonSpawn: 1
+  lifeTime: 2
   animationTrigger: handSpell
   onImpact:
   - {fileID: 3321278458073070407}
+  - {fileID: 9041372432633459029}
   spellSprite:
     bigSprite: {fileID: 21300000, guid: a91eb75871ab80e47b9521f2c3bdc1fd, type: 3}
     bigSpriteMask: {fileID: 21300000, guid: e3c018f35de5c2546b1558e08df0b010, type: 3}
@@ -208,6 +214,21 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 0e4410dc1c8445849863eb9a57105ac2, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: c0da91dbb370a2a4eae7a5661573c13d, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 6e26f46f0d2fe6840a3e2d330dbce090, type: 3}
+--- !u!114 &9041372432633459029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6383d86d2f1e2ac45a1cf7bca168ed6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detonateTimer: 0.84
+  spawnPrefabs:
+  - {fileID: 3321278458073070463, guid: 418084161dfe7c1459d74f0fc96b4678, type: 3}
 --- !u!1001 &3068050921329342166
 PrefabInstance:
   m_ObjectHideFlags: 0
