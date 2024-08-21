@@ -192,8 +192,10 @@ public class PlayerMovement : MonoBehaviour
     #region Collision checks
     public bool IsGrounded()
     {  
-        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) ||
-                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3);
+        bool ret =  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) ||
+                    Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3);
+        playerAnimator.SetBool("grounded", ret);
+        return ret;
     }
 
     private bool HitCeling ()
