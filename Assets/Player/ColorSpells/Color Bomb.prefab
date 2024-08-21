@@ -176,8 +176,12 @@ MonoBehaviour:
   description: "Lob a blob of colors that explode on impact. \nPower: 100%"
   spellCost: 50
   powerScale: 1
-  destroyOnImpact: 1
-  destroyOnHit: 1
+  destroyOnAllImpact: 1
+  destroyOnEnemyHit: 0
+  impactOnEnemies: 1
+  impactOnNonEnemies: 1
+  triggerOnlyOnce: 0
+  requirePlayerLOSonSpawn: 1
   lifeTime: 2
   animationTrigger: raisedSpell
   onImpact:

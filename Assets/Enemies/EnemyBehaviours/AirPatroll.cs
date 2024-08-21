@@ -86,6 +86,7 @@ public class AirPatroll : Node
             patrollPoint = patrollStart;
 
         animator.SetBool(moveAnimation, true);
+        if((patrollPoint - stats.GetPosition().x)*stats.lookDir<0) stats.ChangeDirection();
         body.AddForce(new Vector2(((patrollPoint < stats.GetPosition().x)?-1:1)*stats.GetSpeed()*patrollSpeedFactor, 0)*Time.deltaTime);
         state = NodeState.RUNNING;
         return state;
