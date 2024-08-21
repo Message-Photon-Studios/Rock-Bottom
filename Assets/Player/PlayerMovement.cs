@@ -14,7 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float climbSpeed; //The speed that the player is climbing with
     [SerializeField] float jumpPower; //The initial boost power for the jump. Increasing this will increse the jumpheight and jump speed but decrease controll
     [SerializeField] float leapPower; //This detemines the extra forward speed of the double jump
-    [SerializeField] float wallJumpPower;
+    [SerializeField] float wallJumpPower; //The power of the jump when jumping of wall
+    [SerializeField] float wallStickPower; //The power that pushes the player towards the wall when climbing.
     [SerializeField] float jumpJetpack; //A small extra power over time for the jump that alows the player to controll the height of the jump
     [SerializeField] float jumpFalloff; //The falloff power of the jump jetpack
     [SerializeField] float coyoteTime; //A small second affter leaving a platform you can still jump as normal. 
@@ -66,6 +67,9 @@ public class PlayerMovement : MonoBehaviour
     private float coyoteTimerWall = 0;
 
     private bool wasClimbing = false;
+    float walkDir = 0f;
+
+    private int beforeClimbLookDir = 0;
 
     [SerializeField] PlayerSounds playerSounds;
 
@@ -108,13 +112,20 @@ public class PlayerMovement : MonoBehaviour
 
     #region Jump
 
+    void Jump(InputAction.CallbackContext ctx)
+    {
+        Jump();
+    }
+
     /// <summary>
     /// Make the character jump or double jump
     /// </summary>
-    void Jump(InputAction.CallbackContext ctx)
+    void Jump()
     {
+        
         if(movementRoot.rooted) return;
-
+        body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        wasClimbing = false;
         if (IsGrounded() || coyoteTimer > 0)
         {
             body.AddForce(new Vector2(movement, 0));
@@ -193,30 +204,34 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrappeling()
     {
+        if(walkDir != lookDir && walkDir != 0) return false;
         if(wasClimbing)
         {
             return  
                 (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) && 
-                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, .5f, ignoreLayers)) ||
+                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, 1f, ignoreLayers)) ||
                 (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) &&
-                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.left, .5f, ignoreLayers));
+                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.left, 1f, ignoreLayers));
         }
         else
         {
-            return
-                (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) && 
-                Physics2D.Raycast(transform.position, Vector2.right, .5f, ignoreLayers)) ||
-                (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) &&
-                Physics2D.Raycast(transform.position, Vector2.left, .5f, ignoreLayers));
+            return  
+                (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 2f, ignoreLayers) && 
+                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, .5f, ignoreLayers)) ||
+                (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 2f, ignoreLayers) &&
+                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.left, .5f, ignoreLayers));
+
         }
     }
    
     #endregion
 
+    #region Update Loop
+
     private void FixedUpdate() {
         movementRoot.UpdateTimers();
 
-        float walkDir = walkAction.action.ReadValue<float>();
+        walkDir = walkAction.action.ReadValue<float>();
 
         if(movementRoot.totalRoot) walkDir = 0;
 
@@ -280,10 +295,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if(IsGrappeling())
-        {
+        {   
+            if(!wasClimbing) beforeClimbLookDir = lookDir;
+
             coyoteTimerWall = coyoteTime;
             GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
-            bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
+            bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, .5f, 3);
             if(wallRight == spriteRenderer.flipX) Flip();
             playerAnimator.SetBool("grapple", true);
             fallTime = 0;
@@ -292,20 +309,39 @@ public class PlayerMovement : MonoBehaviour
             doubleJumpActive = false;
             wallParticles.transform.localPosition = wallRight ? new Vector3(0.692f, 0.592f, 0f) : new Vector3(-0.692f, 0.592f, 0f);
 
-            if(walkDir != 0)
+            
+            wasClimbing = true;
+            if(walkDir != lookDir && walkDir != 0)
+            {
+                wasClimbing = false;
+                playerAnimator.SetInteger("velocityY", -1);
+                body.velocity = new Vector2(body.velocity.x-5*lookDir, 0);
+                wallParticles.Stop();
+                body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+                if(wallRight != spriteRenderer.flipX) Flip();
+                beforeClimbLookDir = -lookDir;
+
+            }
+            else if(walkDir == lookDir)
             {
                 playerAnimator.SetInteger("velocityY", 1);
-                body.velocity = new Vector2(body.velocity.x, climbSpeed);
                 wallParticles.Stop();
+
+                if(HitCeling())
+                {
+                    body.constraints |= RigidbodyConstraints2D.FreezePositionY;   
+                } else 
+                    body.velocity = new Vector2(body.velocity.x+wallStickPower*lookDir, climbSpeed);
             }
             else if(body.velocity.y < 0)
             {
-                body.velocity = new Vector2(body.velocity.x, -2);
+                body.velocity = new Vector2(body.velocity.x + wallStickPower*lookDir, -2);
                 playerAnimator.SetInteger("velocityY", -1);
                 wallParticles.Play();
+            } else
+            {   
+                body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             }
-
-            wasClimbing = true;
         } else
         {
             coyoteTimerWall -= Time.fixedDeltaTime;
@@ -314,7 +350,7 @@ public class PlayerMovement : MonoBehaviour
             
             if(wasClimbing)
             {
-                Flip();
+                if(beforeClimbLookDir != lookDir) Flip();
                 wasClimbing = false;
             }
         }
@@ -322,6 +358,8 @@ public class PlayerMovement : MonoBehaviour
         if(!movementRoot.rooted)
             body.AddForce(new Vector2(0,jump));
     }
+
+    #endregion
 
     /// <summary>
     /// Flips the player correctly
