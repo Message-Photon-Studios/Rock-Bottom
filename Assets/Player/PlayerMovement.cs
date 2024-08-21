@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator playerAnimator;
     [SerializeField] Transform focusPoint; //The point tha the camera will try to focus on
+    [SerializeField] float aimFocusMaxX;
+    [SerializeField] float aimFocusAcceleration;
     [SerializeField] float checkPointY;
     [SerializeField] CapsuleCollider2D playerCollider;
     [SerializeField] ParticleSystem dustParticles;
@@ -71,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
 
     private int beforeClimbLookDir = 0;
 
+    Vector3 originalFocusPointPos;
+
     [SerializeField] PlayerSounds playerSounds;
 
     private LayerMask ignoreLayers;
@@ -79,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
     Action<InputAction.CallbackContext> checkCancle;
     #region Setup
     private void OnEnable() {
+        originalFocusPointPos = new Vector3(focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
         movementRoot.SetTotalRoot("loading", true);
         ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item", "BossEnemy");
         checkAction = (InputAction.CallbackContext ctx) => {
@@ -245,9 +250,16 @@ public class PlayerMovement : MonoBehaviour
             jump -= jumpFalloff * Time.fixedDeltaTime;
         else if(jump < 0)
             jump = 0;
-
+        if ((walkDir == 0 || IsGrappeling()) && focusPoint.localPosition.x != 0 )
+        {
+            focusPoint.localPosition += Vector3.Normalize(originalFocusPointPos-focusPoint.localPosition) * aimFocusAcceleration * Time.fixedDeltaTime;
+        }
         if(IsGrounded())
         {
+            if(walkDir != 0 && focusPoint.localPosition.x < aimFocusMaxX && focusPoint.localPosition.x > -aimFocusMaxX)
+            {
+                focusPoint.localPosition += new Vector3(aimFocusAcceleration*lookDir*Time.fixedDeltaTime, 0 , 0);
+            } 
             GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
             coyoteTimer = coyoteTime;
             playerAnimator.SetInteger("velocityY", 0);
@@ -370,7 +382,7 @@ public class PlayerMovement : MonoBehaviour
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
         lookDir = (!spriteRenderer.flipX)?1:-1 ;
-        focusPoint.localPosition = new Vector3(-focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
+        //focusPoint.localPosition = new Vector3(-focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
         playerAnimator.SetTrigger("turn");
         GetComponent<PlayerCombatSystem>().FlipDefaultAttack();
     }
