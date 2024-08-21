@@ -32,7 +32,7 @@ public class CrystalQuake : Enemy
 
             new Sequence(new List<Node>{
                 new CheckPlayerArea(stats, player, viewTrigger),
-                new PlatformChase(stats, player.transform, body, animator, 1f, legPos ,"attack", "walk")
+                new PlatformChase(stats, player, body, animator, 1f, legPos ,"attack", "walk")
             }),
 
             new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, legPos, "attack", "walk")

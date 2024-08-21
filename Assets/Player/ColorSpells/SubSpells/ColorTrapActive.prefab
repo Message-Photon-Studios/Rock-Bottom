@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -7692674297862362138}
   - component: {fileID: 816937159620727808}
   - component: {fileID: 1163189697346373350}
+  - component: {fileID: 209768982287035308}
   m_Layer: 8
   m_Name: ColorTrapActive
   m_TagString: Spell
@@ -162,8 +163,11 @@ MonoBehaviour:
   description: 
   spellCost: 0
   powerScale: 0
-  destroyOnImpact: 0
-  destroyOnHit: 0
+  destroyOnAllImpact: 0
+  destroyOnEnemyHit: 0
+  impactOnEnemies: 1
+  impactOnNonEnemies: 1
+  triggerOnlyOnce: 0
   lifeTime: 1.2
   animationTrigger: handSpell
   onImpact:
@@ -207,3 +211,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.67}
   serializedVersion: 2
   m_Radius: 0.2
+--- !u!58 &209768982287035308
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.82}
+  serializedVersion: 2
+  m_Radius: 0.05

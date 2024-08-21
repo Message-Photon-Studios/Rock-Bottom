@@ -336,6 +336,8 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
+        GetComponent<Rigidbody2D>().drag = normalMovementDrag;
+        animator.speed = normalAnimationSpeed;
         enemyDead = true;
         enemySounds?.PlayDeath();
         //TODO
@@ -541,7 +543,12 @@ public class EnemyStats : MonoBehaviour
         }
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if(player)
-            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
+        {
+            foreach (Collider2D collider in GetComponents<Collider2D>())
+            {
+                Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>());
+            }
+        }
         animator.SetBool("sleep", true);
     }
 
@@ -567,7 +574,12 @@ public class EnemyStats : MonoBehaviour
         sleepTimer = 0;
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if(player)
-            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), player.GetComponent<Collider2D>(), false);
+        {
+            foreach (Collider2D collider in GetComponents<Collider2D>())
+            {
+                Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>(), false);
+            }
+        }
     }
 
     /// <summary>

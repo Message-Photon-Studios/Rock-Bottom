@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 816937159620727808}
   - component: {fileID: 1163189697346373350}
   - component: {fileID: 4580992892010644555}
-  - component: {fileID: 3675873585140488923}
   m_Layer: 8
   m_Name: ColorTrap
   m_TagString: Spell
@@ -36,7 +35,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8921382428503018305}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -116,7 +116,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 3
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: -744073905, guid: cdb98049467e4da46a7a8262f9917092, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -164,8 +164,11 @@ MonoBehaviour:
   description: 
   spellCost: 0
   powerScale: 0
-  destroyOnImpact: 0
-  destroyOnHit: 1
+  destroyOnAllImpact: 0
+  destroyOnEnemyHit: 1
+  impactOnEnemies: 1
+  impactOnNonEnemies: 0
+  triggerOnlyOnce: 1
   lifeTime: 1000
   animationTrigger: handSpell
   onImpact:
@@ -224,19 +227,51 @@ MonoBehaviour:
   detonateTimer: 15
   spawnPrefabs:
   - {fileID: 3321278458073070463, guid: fe02eea5ce2d7014c81405a630ea6988, type: 3}
---- !u!70 &3675873585140488923
+--- !u!1 &5302223586745146273
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8921382428503018305}
+  - component: {fileID: 4148852291961276828}
+  m_Layer: 12
+  m_Name: GroundDetect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8921382428503018305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5302223586745146273}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3321278458073070405}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &4148852291961276828
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
+  m_GameObject: {fileID: 5302223586745146273}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.38}
-  m_Size: {x: 0.4, y: 1}
+  m_Offset: {x: 0, y: -0.48}
+  m_Size: {x: 0.4, y: 0.8}
   m_Direction: 0
