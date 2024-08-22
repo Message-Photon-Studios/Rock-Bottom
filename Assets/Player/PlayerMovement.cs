@@ -73,7 +73,9 @@ public class PlayerMovement : MonoBehaviour
 
     private int beforeClimbLookDir = 0;
 
-    public bool inAttackAnimation = false;
+    [HideInInspector] public bool inAttackAnimation = false;
+
+    private bool climbCeilingDetected = false;
 
     Vector3 originalFocusPointPos;
 
@@ -146,9 +148,10 @@ public class PlayerMovement : MonoBehaviour
             return;
         } else if(IsGrappeling() || coyoteTimerWall > 0)
         {
-            bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
-            body.AddForce(new Vector2((wallRight?-1:1)*wallJumpPower, 0));
             body.AddForce(Vector2.up * jumpPower);
+
+            bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, 1f, 3);
+            body.AddForce(new Vector2((wallRight?-1:1)*wallJumpPower, 0)); 
             jump = jumpJetpack;
             playerSounds.PlayJump();
             wallJumpParticles.transform.eulerAngles = wallRight ? new Vector3(0, 0, 0) : new Vector3(0, 180, 0);
@@ -217,12 +220,12 @@ public class PlayerMovement : MonoBehaviour
 
         return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 2.1f, ignoreLayers) && 
                 Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.right, .5f, ignoreLayers)) ||
-                (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 2.1f, ignoreLayers) &&
+                (!Physics2D.Raycast(transform.position+Vector3.left* playerCollider.size.x/2, Vector2.down, 2.1f, ignoreLayers) &&
                 Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.left, .5f, ignoreLayers)) ||
                 ((wasClimbing) && (
                     (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) && 
                     Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .7f, ignoreLayers)) ||
-                    (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) &&
+                    (!Physics2D.Raycast(transform.position+Vector3.left* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) &&
                     Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .7f, ignoreLayers))  
                 ));
     }
@@ -337,10 +340,17 @@ public class PlayerMovement : MonoBehaviour
 
                 if(HitCeling())
                 {
-                    body.constraints |= RigidbodyConstraints2D.FreezePositionY;   
-                    body.velocity = new Vector2(body.velocity.x+wallStickPower*lookDir, 0);
-                } else 
+                    if(!climbCeilingDetected)
+                    {
+                        body.constraints |= RigidbodyConstraints2D.FreezePositionY;   
+                        body.velocity = new Vector2(body.velocity.x+wallStickPower*lookDir, 0);
+                        climbCeilingDetected = true;
+                    }
+                } else
+                {
                     body.velocity = new Vector2(body.velocity.x+wallStickPower*lookDir, climbSpeed);
+                    climbCeilingDetected = false;
+                }
             }
             else if(body.velocity.y < 0)
             {
