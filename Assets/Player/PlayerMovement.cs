@@ -214,23 +214,17 @@ public class PlayerMovement : MonoBehaviour
     public bool IsGrappeling()
     {
         if(walkDir != lookDir && walkDir != 0) return false;
-        if(wasClimbing)
-        {
-            return  
-                (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) && 
-                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, 1f, ignoreLayers)) ||
-                (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) &&
-                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.left, 1f, ignoreLayers));
-        }
-        else
-        {
-            return  
-                (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 2f, ignoreLayers) && 
-                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, .5f, ignoreLayers)) ||
-                (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 2f, ignoreLayers) &&
-                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.left, .5f, ignoreLayers));
 
-        }
+        return  (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 2.1f, ignoreLayers) && 
+                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.right, .5f, ignoreLayers)) ||
+                (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 2.1f, ignoreLayers) &&
+                Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.left, .5f, ignoreLayers)) ||
+                ((wasClimbing) && (
+                    (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) && 
+                    Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .7f, ignoreLayers)) ||
+                    (!Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, ignoreLayers) &&
+                    Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .7f, ignoreLayers))  
+                ));
     }
    
     #endregion
@@ -320,7 +314,8 @@ public class PlayerMovement : MonoBehaviour
 
             coyoteTimerWall = coyoteTime;
             GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
-            wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, .5f, 3);
+            wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .5f, 3)||
+                        Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.right, .5f, 3);
             if(wallRight == spriteRenderer.flipX) Flip();
             playerAnimator.SetBool("grapple", true);
             fallTime = 0;
