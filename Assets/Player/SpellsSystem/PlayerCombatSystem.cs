@@ -34,18 +34,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private void OnEnable() {
 
         specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
-        defaultAttackHandler = (InputAction.CallbackContext ctx) => {
-            if(!playerMovement.IsGrounded() && defaultAirHit) return;
-            if(animator.GetBool("grapple")) return;
-            if(attacking) return;
-
-            if(!playerMovement.IsGrounded()) defaultAirHit = true;
-
-            attacking = true;
-            animator.SetTrigger("defaultAttack");
-            body.constraints |= RigidbodyConstraints2D.FreezePositionY;
-            playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
-        };
+        defaultAttackHandler = (InputAction.CallbackContext ctx) => DefaultAttackAnimation();
         
         body = GetComponent<Rigidbody2D>();
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
@@ -61,6 +50,31 @@ public class PlayerCombatSystem : MonoBehaviour
         defaultAttackHitbox.onDefaultHit -= EnemyHitDefault;
     }
     #endregion
+
+    #region Default Attack
+
+    /// <summary>
+    /// Makes checks for and plays animation for default attack.
+    /// </summary>
+    private void DefaultAttackAnimation ()
+    {
+        if(!playerMovement.IsGrounded() && defaultAirHit) return;
+        if(attacking) return;
+        
+        if(playerMovement.IsGrappeling())
+        {
+            playerMovement.WallAttackLock();
+        }
+
+        if(!playerMovement.IsGrounded()) defaultAirHit = true;
+
+        attacking = true;
+        playerMovement.inAttackAnimation = true;
+
+        animator.SetTrigger("defaultAttack");
+        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
+}
 
     /// <summary>
     /// Handles the players default attack
@@ -107,6 +121,9 @@ public class PlayerCombatSystem : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Special Attack
     private GameObject currentSpell = null;
     /// <summary>
     /// Plays the animation for the special attack
@@ -114,14 +131,19 @@ public class PlayerCombatSystem : MonoBehaviour
     private void SpecialAttackAnimation()
     {
         if(!playerMovement.IsGrounded() && spellAirHit) return;
-        if(animator.GetBool("grapple")) return;
         currentSpell= colorInventory.GetActiveColorSpell().gameObject;
         if(currentSpell == null) return;
         if(attacking) return;
         if(!colorInventory.CheckActveColor()) return;
+
+        if(playerMovement.IsGrappeling())
+        {
+            playerMovement.WallAttackLock();
+        }
         
         if(!playerMovement.IsGrounded()) spellAirHit = true;
         attacking = true;
+        playerMovement.inAttackAnimation = true;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
         playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
@@ -145,12 +167,15 @@ public class PlayerCombatSystem : MonoBehaviour
         transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
     }
 
+    #endregion
+
     /// <summary>
     /// Removes the attack root. Called by animation event
     /// </summary>
     public void RemoveAttackRoot()
     {
         attacking = false;
+        playerMovement.inAttackAnimation = false;
         playerMovement.movementRoot.SetTotalRoot("attackRoot", false);
     }
 

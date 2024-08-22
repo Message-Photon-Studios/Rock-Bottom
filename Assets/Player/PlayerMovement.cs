@@ -73,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
 
     private int beforeClimbLookDir = 0;
 
+    public bool inAttackAnimation = false;
+
     Vector3 originalFocusPointPos;
 
     [SerializeField] PlayerSounds playerSounds;
@@ -85,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable() {
         originalFocusPointPos = new Vector3(focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
         movementRoot.SetTotalRoot("loading", true);
-        ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item", "BossEnemy");
+        ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item", "BossEnemy", "OnlyHitGround");
         checkAction = (InputAction.CallbackContext ctx) => {
             if(lookAction.action.ReadValue<float>() < 0f)
                 CheckBelowStart();
@@ -209,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
                 Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, ignoreLayers);
     }
 
-    private bool IsGrappeling()
+    public bool IsGrappeling()
     {
         if(walkDir != lookDir && walkDir != 0) return false;
         if(wasClimbing)
@@ -234,9 +236,11 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Update Loop
-
+    bool wallRight = false;
     private void FixedUpdate() {
         movementRoot.UpdateTimers();
+
+        if(inAttackAnimation) return;
 
         walkDir = walkAction.action.ReadValue<float>();
 
@@ -316,7 +320,7 @@ public class PlayerMovement : MonoBehaviour
 
             coyoteTimerWall = coyoteTime;
             GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
-            bool wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, .5f, 3);
+            wallRight = Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/3, Vector2.right, .5f, 3);
             if(wallRight == spriteRenderer.flipX) Flip();
             playerAnimator.SetBool("grapple", true);
             fallTime = 0;
@@ -329,14 +333,7 @@ public class PlayerMovement : MonoBehaviour
             wasClimbing = true;
             if(walkDir != lookDir && walkDir != 0)
             {
-                wasClimbing = false;
-                playerAnimator.SetInteger("velocityY", -1);
-                body.velocity = new Vector2(body.velocity.x-5*lookDir, 0);
-                wallParticles.Stop();
-                body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-                if(wallRight != spriteRenderer.flipX) Flip();
-                beforeClimbLookDir = -lookDir;
-
+               ReleaseWall();
             }
             else if(walkDir == lookDir)
             {
@@ -375,6 +372,29 @@ public class PlayerMovement : MonoBehaviour
         if(!movementRoot.rooted)
             body.AddForce(new Vector2(0,jump));
     }
+
+    #region Climbing
+
+    public void ReleaseWall()
+    {
+        wasClimbing = false;
+        playerAnimator.SetInteger("velocityY", -1);
+        body.velocity = new Vector2(body.velocity.x-5*lookDir, 0);
+        wallParticles.Stop();
+        body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        if(wallRight != spriteRenderer.flipX) Flip();
+        beforeClimbLookDir = lookDir;
+    }
+
+    public void WallAttackLock()
+    {
+        body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        body.velocity = new Vector2(body.velocity.x-5*lookDir, 0);
+        if(wallRight != spriteRenderer.flipX) Flip();
+        beforeClimbLookDir = lookDir;
+    }
+
+    #endregion
 
     #endregion
 
