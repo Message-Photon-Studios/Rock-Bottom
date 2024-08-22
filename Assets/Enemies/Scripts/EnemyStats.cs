@@ -40,7 +40,8 @@ public class EnemyStats : MonoBehaviour
     private float colorComboTimer = 2f; //The timer before the enemy explode
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
-    private float sleepTimer = 0; 
+    private float sleepTimer = 0;
+    private float lastSleep = 0;
     private float sleepPowerBonus = 0f; //The extra damage dealt to a slept enemy
     GameObject sleepParticles;
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
@@ -53,7 +54,7 @@ public class EnemyStats : MonoBehaviour
 
     private List<(int damage, float timer)> poisonEffects = new List<(int damage, float time)>(); //Damage dealt over time
 
-    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, List<GameObject> particlesList) burning;
+    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, List<GameObject> particlesList, bool mustBurn) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -189,7 +190,7 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.timer > 0)
             {
-                DamageEnemy(burning.damage);
+                if (burning.mustBurn || !this.GetColor().name.Equals("Orange")) DamageEnemy(burning.damage);
                 //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
                 //else DamageEnemy(0);
                 float timer = burning.timer;
@@ -215,7 +216,7 @@ public class EnemyStats : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, obj.transform.position);
                     if(dist < burning.range)
                     {
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
                     }
                 }
 
@@ -224,7 +225,7 @@ public class EnemyStats : MonoBehaviour
                     foreach (GameObject obj in flame.GetComponent<FloorFlame>().ToBurn())
                     {
                         if (obj == null) continue;
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
                     }
                     flame.GetComponent<FloorFlame>().ClearBurnQueue();
                 }
@@ -249,10 +250,7 @@ public class EnemyStats : MonoBehaviour
     /// <param name="damage"></param>
     public void DamageEnemy(int damage)
     {
-        if(enemySleep)
-        {
-            WakeEnemyAnimation();
-        }
+        //if (enemySleep) WakeEnemyAnimation();
 
         health -= damage;
 
@@ -295,12 +293,12 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     /// <param name="range"></param>
     /// <param name="burnParticles"></param>
-    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles)
+    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles, bool mustBurn)
     {
         if(timer <= 0) return;
         if(burning.timer > 0) return;
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
-        burning = (damage, timer, range, burnParticles, objs, floorParticles, new List<GameObject>());
+        burning = (damage, timer, range, burnParticles, objs, floorParticles, new List<GameObject>(), mustBurn);
 
         GameObject instantiatedParticles = GameObject.Instantiate(burnParticles, transform.position, transform.rotation);
         var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
@@ -320,7 +318,7 @@ public class EnemyStats : MonoBehaviour
     {
         if (burning.particlesList == null)
         {
-            burning = (0, 0, 0, null, null, null, null);
+            burning = (0, 0, 0, null, null, null, null, false);
             return;
         }
         foreach (GameObject obj in burning.particlesList)
@@ -328,7 +326,7 @@ public class EnemyStats : MonoBehaviour
             obj.GetComponent<ParticleSystem>().Stop();
             Destroy(obj, 0.5f);
         }
-        burning = (0, 0, 0, null, null, null, null);
+        burning = (0, 0, 0, null, null, null, null, false);
     }
 
     /// <summary>
@@ -407,6 +405,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void RemoveColor()
     {
+        if (enemySleep) WakeEnemyAnimation();
         color = null;
         colorAmmount = 0;
         GetComponent<SpriteRenderer>().material = defaultColor;
@@ -426,7 +425,9 @@ public class EnemyStats : MonoBehaviour
     {
         this.color = color;
         onColorChanged?.Invoke(color);
-        if(color != null)
+        Debug.Log(color.name);
+        if (enemySleep && lastSleep != Time.time) WakeEnemyAnimation();
+        if (color != null)
         {
             GetComponent<SpriteRenderer>().material = color.colorMat;
             if(color.name.Equals("Rainbow"))
@@ -530,6 +531,7 @@ public class EnemyStats : MonoBehaviour
             sleepPowerBonus = sleepPower;
 
         sleepTimer = timer;
+        lastSleep = Time.time;
         enemySleep = true;
         if(particles){        
             GameObject instantiatedParticles = GameObject.Instantiate(particles, transform.position, transform.rotation);
