@@ -252,13 +252,15 @@ public class PlayerMovement : MonoBehaviour
             jump = 0;
         if ((walkDir == 0 || IsGrappeling()) && focusPoint.localPosition.x != 0 )
         {
-            focusPoint.localPosition += Vector3.Normalize(originalFocusPointPos-focusPoint.localPosition) * aimFocusAcceleration * Time.fixedDeltaTime;
+            focusPoint.localPosition = Vector3.Slerp(focusPoint.localPosition, originalFocusPointPos, aimFocusAcceleration*Time.fixedDeltaTime);
+            //focusPoint.localPosition += Vector3.Normalize(originalFocusPointPos-focusPoint.localPosition) * aimFocusAcceleration * Time.fixedDeltaTime;
         }
         if(IsGrounded())
         {
             if(walkDir != 0 && focusPoint.localPosition.x < aimFocusMaxX && focusPoint.localPosition.x > -aimFocusMaxX)
             {
-                focusPoint.localPosition += new Vector3(aimFocusAcceleration*lookDir*Time.fixedDeltaTime, 0 , 0);
+                focusPoint.localPosition = Vector3.Slerp(focusPoint.localPosition, new Vector3(aimFocusMaxX*lookDir, focusPoint.localPosition.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                //focusPoint.localPosition += new Vector3(aimFocusAcceleration*lookDir*Time.fixedDeltaTime, 0 , 0);
             } 
             GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
             coyoteTimer = coyoteTime;
