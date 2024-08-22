@@ -344,6 +344,7 @@ public class PlayerMovement : MonoBehaviour
                 if(HitCeling())
                 {
                     body.constraints |= RigidbodyConstraints2D.FreezePositionY;   
+                    body.velocity = new Vector2(body.velocity.x+wallStickPower*lookDir, 0);
                 } else 
                     body.velocity = new Vector2(body.velocity.x+wallStickPower*lookDir, climbSpeed);
             }
