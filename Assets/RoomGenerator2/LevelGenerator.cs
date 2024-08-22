@@ -606,7 +606,7 @@ public class LevelGenerator
     {
         (CustomRoom, Vector2) retRoom;
 
-        if (remainingSize > 0 && regionSize[door.doorColor] > 0)
+        if (remainingSize > 0 && regionSize[door.doorColor] > 0) //If this cast error then you have forgot to set region size in inspector
         {
             retRoom = getNormalRoom(door, false);
             if (retRoom.Item1 == null)
