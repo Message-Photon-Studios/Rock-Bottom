@@ -406,7 +406,8 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer.flipX = !spriteRenderer.flipX;
         lookDir = (!spriteRenderer.flipX)?1:-1 ;
         //focusPoint.localPosition = new Vector3(-focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
-        playerAnimator.SetTrigger("turn");
+        if(IsGrounded())
+            playerAnimator.SetTrigger("turn");
         GetComponent<PlayerCombatSystem>().FlipDefaultAttack();
     }
 
