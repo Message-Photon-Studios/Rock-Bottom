@@ -85,6 +85,8 @@ public class PlayerMovement : MonoBehaviour
 
     Action<InputAction.CallbackContext> checkAction;
     Action<InputAction.CallbackContext> checkCancle;
+
+    [HideInInspector] public bool isCheckingY = false; //Is true when player checks above or below
     #region Setup
     private void OnEnable() {
         originalFocusPointPos = new Vector3(focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
@@ -92,7 +94,9 @@ public class PlayerMovement : MonoBehaviour
         ignoreLayers = ~LayerMask.GetMask("Enemy", "Player", "Spell", "Ignore Raycast", "Item", "BossEnemy", "OnlyHitGround");
         checkAction = (InputAction.CallbackContext ctx) => {
             if(lookAction.action.ReadValue<float>() < 0f)
+            {
                 CheckBelowStart();
+            }
             else if(lookAction.action.ReadValue<float>() > 0f)
                 CheckAboveStart();
         };
@@ -183,18 +187,23 @@ public class PlayerMovement : MonoBehaviour
     void CheckBelowStart()
     {
         if(focusPoint == null && movementRoot.totalRoot) return;
+        if(IsGrappeling()) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, -checkPointY, focusPoint.localPosition.z);
+        isCheckingY = true;
     }
 
     void CheckAboveStart()
     {
         if(focusPoint == null && movementRoot.totalRoot) return;
+        if(IsGrappeling()) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkPointY, focusPoint.localPosition.z);
+        isCheckingY = true;
     }
 
     void CheckCancel()
     {
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, focusPointNormalY, focusPoint.localPosition.z);
+        isCheckingY = false;
     }
 
     #endregion
@@ -253,7 +262,7 @@ public class PlayerMovement : MonoBehaviour
             jump = 0;
         if ((walkDir == 0 || IsGrappeling()) && focusPoint.localPosition.x != 0 )
         {
-            focusPoint.localPosition = Vector3.Slerp(focusPoint.localPosition, originalFocusPointPos, aimFocusAcceleration*Time.fixedDeltaTime);
+            focusPoint.localPosition = Vector3.Slerp(focusPoint.localPosition, new Vector3(originalFocusPointPos.x, focusPoint.localPosition.y, originalFocusPointPos.z) , aimFocusAcceleration*Time.fixedDeltaTime);
             //focusPoint.localPosition += Vector3.Normalize(originalFocusPointPos-focusPoint.localPosition) * aimFocusAcceleration * Time.fixedDeltaTime;
         }
         if(IsGrounded())
