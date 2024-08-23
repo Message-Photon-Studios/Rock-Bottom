@@ -606,7 +606,7 @@ public class LevelGenerator
     {
         (CustomRoom, Vector2) retRoom;
 
-        if (remainingSize > 0 && regionSize[door.doorColor] > 0)
+        if (remainingSize > 0 && regionSize[door.doorColor] > 0) //If this cast error then you have forgot to set region size in inspector
         {
             retRoom = getNormalRoom(door, false);
             if (retRoom.Item1 == null)
@@ -622,7 +622,7 @@ public class LevelGenerator
         return retRoom;
     }
 
-    private (CustomRoom, Vector2) getClosingRoom(Door door) //TODO check so that this works
+    private (CustomRoom, Vector2) getClosingRoom(Door door) //TODO This can be optimized for efficiency
     {
         var rooms = closingRooms.ToList();
 
@@ -637,7 +637,7 @@ public class LevelGenerator
             var neighborPos = otherNodePos + CustomRoom.dirVectors[i];
             // If the node exists and has an open door looking at the otherNode, we set the door to open as true
             if (graph.nodes.ContainsKey(neighborPos) && graph.nodes[neighborPos].doors[CustomRoom.mirrorDir[i]] != DoorColor.None)
-                doorsToOpen[i] = DoorColor.Green;
+                doorsToOpen[i] = door.doorColor;
         }
 
         // Find closing rooms that have the same doors to open
@@ -645,12 +645,27 @@ public class LevelGenerator
             .Where(room => room.roomNodes[new Vector2(0, 0)].doors.SequenceEqual(doorsToOpen))
             .ToList();
         
+        if(rooms.Count > 0) return (rooms[Random.Range(0, rooms.Count)], new Vector2(0, 0));
+
+        rooms = closingRooms.ToList();
+
+        // If no closing door with the correct door color was found then try with green door color.
+        for (int i = 0; i < doorsToOpen.Length; i++)
+        {
+            if(doorsToOpen[i] != DoorColor.None) doorsToOpen[i] = DoorColor.Green;
+        }
+
+        rooms = rooms
+            .Where(room => room.roomNodes[new Vector2(0, 0)].doors.SequenceEqual(doorsToOpen))
+            .ToList();
+
         // Return random room from the options
         if (rooms.Count == 0)
         {
             Debug.LogError("Missing closing room layout!! Do we have all posible rooms?");
             return (null, new Vector2(0, 0));
         }
+
         return (rooms[Random.Range(0, rooms.Count)], new Vector2(0, 0));
     }
 

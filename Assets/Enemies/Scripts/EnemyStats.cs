@@ -325,6 +325,7 @@ public class EnemyStats : MonoBehaviour
         }
         foreach (GameObject obj in burning.particlesList)
         {
+            if(obj == null) continue;
             obj.GetComponent<ParticleSystem>().Stop();
             Destroy(obj, 0.5f);
         }
