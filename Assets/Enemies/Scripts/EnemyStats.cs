@@ -434,6 +434,7 @@ public class EnemyStats : MonoBehaviour
             if(color.name.Equals("Rainbow"))
             {
                 AchievementsManager.instance.ProgressAchievement("Painter");
+                if (enemySleep && lastSleep == Time.time) colorComboTimer++;
             }
         }
         else
