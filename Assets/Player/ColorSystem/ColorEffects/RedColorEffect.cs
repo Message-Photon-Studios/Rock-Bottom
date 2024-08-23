@@ -8,10 +8,9 @@ using UnityEngine;
 [CreateAssetMenu( menuName = "Gameplay Color/Color Effect/RedColorEffect")]
 public class RedColorEffect : ColorEffect
 {
-    //[SerializeField] int healing;
     [SerializeField] float force;
     [SerializeField] GameObject orb;
-    [SerializeField] int orbCount;
+    [SerializeField] float healingPercent;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
@@ -34,7 +33,7 @@ public class RedColorEffect : ColorEffect
             healing = Mathf.RoundToInt((damage * power)/2);
         } else
         {
-            healing = Mathf.RoundToInt(((damage * power) + enemyHP) / 2);
+            healing = Mathf.RoundToInt(((damage * power) + enemyHP) * healingPercent);
         }
         while(healing > 0)
         {
