@@ -49,10 +49,10 @@ public class GameManager : MonoBehaviour
         yield break;
     }
 
-    public void EndLevel()
+    public void EndLevel(string specialLevel)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-
+        if(!specialLevel.Equals("")) nextLevelName = specialLevel;
         if (!clearInventoryOnLevelEnd)
         {
             canvas.disablePausing = true;
