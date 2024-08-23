@@ -8,10 +8,9 @@ using UnityEngine;
 [CreateAssetMenu( menuName = "Gameplay Color/Color Effect/RedColorEffect")]
 public class RedColorEffect : ColorEffect
 {
-    [SerializeField] int healing;
     [SerializeField] float force;
     [SerializeField] GameObject orb;
-    [SerializeField] int orbCount;
+    [SerializeField] float healingPercent;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
@@ -25,15 +24,45 @@ public class RedColorEffect : ColorEffect
 
         if (!enemy.IsKnockbackImune())
             enemy?.GetComponent<Rigidbody2D>()?.AddForce((player.transform.position- enemy.transform.position).normalized * force);
+        float enemyHP = enemy.GetHealth() - Mathf.RoundToInt(damage * power);
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
         //player.HealPlayer(Mathf.RoundToInt(healing*power));
+        int healing = 0;
+        if (enemyHP >= 0)
+        {
+            healing = Mathf.RoundToInt((damage * power)/2);
+        } else
+        {
+            healing = Mathf.RoundToInt(((damage * power) + enemyHP) * healingPercent);
+        }
+        while(healing > 0)
+        {
+            if (healing >= 5)
+            {
+                GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Random.rotation);
+                orb1.GetComponent<HealingOrb>().SetTarget(playerObj, 5);
+                healing -= 5;
+            } else if (healing >= 2)
+            {
+                GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Random.rotation);
+                orb1.GetComponent<HealingOrb>().SetTarget(playerObj, 2);
+                healing -= 2;
+            } else
+            {
+                GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Random.rotation);
+                orb1.GetComponent<HealingOrb>().SetTarget(playerObj, 1);
+                healing--;
+            }
+        }
 
 
+
+        /*
         for (int i = 0; i < Mathf.RoundToInt(orbCount * power); i++)
         {
             GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Random.rotation);
             orb1.GetComponent<HealingOrb>().SetTarget(playerObj, healing);
         }
-        
+        */
     }
 }

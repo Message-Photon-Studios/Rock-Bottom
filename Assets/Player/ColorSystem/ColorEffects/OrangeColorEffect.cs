@@ -10,7 +10,7 @@ public class OrangeColorEffect : ColorEffect
     [SerializeField] GameObject floorFlames;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
-        enemyObj.GetComponent<EnemyStats>().BurnDamage(Mathf.RoundToInt(damageOverTime*power), time, effectRange, particles, floorFlames);
+        enemyObj.GetComponent<EnemyStats>().BurnDamage(Mathf.RoundToInt(damageOverTime*power), time, effectRange, particles, floorFlames, true);
         enemyObj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power));
     }
 }
