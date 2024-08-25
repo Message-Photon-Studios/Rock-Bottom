@@ -426,7 +426,6 @@ public class EnemyStats : MonoBehaviour
     {
         this.color = color;
         onColorChanged?.Invoke(color);
-        Debug.Log(color.name);
         if (enemySleep && lastSleep != Time.time) WakeEnemyAnimation();
         if (color != null)
         {
