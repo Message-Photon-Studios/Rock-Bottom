@@ -40,7 +40,7 @@ public class YellowColorEffect : ColorEffect
             {
                 if(obj == null) continue;
                 if(affected[i] == null) continue;
-                if(obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) continue; 
+                 
                 if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange*power-depth,2))
                 {
                     AffectObject(obj, depth, affected[i]);
@@ -66,6 +66,7 @@ public class YellowColorEffect : ColorEffect
             // Set enemy as parent of the particle system
             instantiatedParticles.transform.parent = enemyObj.transform;
             affected.Add(obj);
+            if (obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) return;
             Vector3 forceDir =  (enemyObj.transform.position - obj.transform.position);
             if(forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
             if (!obj.GetComponent<EnemyStats>().IsKnockbackImune())
