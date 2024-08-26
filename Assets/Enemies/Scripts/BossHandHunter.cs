@@ -8,6 +8,7 @@ public class BossHandHunter : Enemy
     [SerializeField] Trigger attackTrigger;
     [SerializeField] int swordDamage;
     [SerializeField] float swordForce;
+    [SerializeField] float timeBetweenAttack;
     [SerializeField] Quaternion startRotation;
     protected override Node SetupTree()
     {
@@ -22,6 +23,7 @@ public class BossHandHunter : Enemy
             new Selector(new List<Node>{
                 new Sequence(new List<Node>{
                     new CheckBool("attack", false),
+                    new CheckBool("idle", false),
                     new CheckPlayerArea(stats, player, attackTrigger),
                     new AnimationTrigger(animator, "attack"),
                     new SetParentVariable("idle", true, 3)
@@ -35,7 +37,7 @@ public class BossHandHunter : Enemy
                 })
             }),
             new Sequence(new List<Node>{
-                new Wait(1),
+                new Wait(timeBetweenAttack),
                 new SetParentVariable("idle", false, 2)
             }),
             });
