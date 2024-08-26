@@ -10,7 +10,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] float hunterTime;
     [SerializeField] GameObject hunterPrefab;
     [SerializeField] float hunterSpawnDist;
+    [SerializeField] int maxHunters;
     float hunterTimer = 0f;
+    int hunters = 0;
     float maxClockTime;
     public MaskLibrary maskLibrary;
     private PlayerStats player;
@@ -39,11 +41,16 @@ public class GameManager : MonoBehaviour
     private void OnPlayerDied()
     {
         clockTime = maxClockTime;
+        hunterTimer = 0;
+        hunters = 0;
     }
 
     public void SetLevelManager (LevelManager levelManager, float addClockTime, bool restartTimer) 
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         currentLevelManager = levelManager;
+        hunterTimer = 0f;
+        hunters = 0;
         if(!restartTimer)
             clockTime = addClockTime + ((clockTime < 0)?0:clockTime);
         else
@@ -59,7 +66,7 @@ public class GameManager : MonoBehaviour
             if (clockTime <= 0)
             {
                 hunterTimer -= Time.deltaTime;
-                if (hunterTimer <= 0)
+                if (hunterTimer <= 0 && hunters < maxHunters)
                 {
                     SpawnHunter();
                     hunterTimer = hunterTime;
@@ -72,6 +79,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject hunter = GameObject.Instantiate(hunterPrefab, player.transform.position + (new Vector3(Random.Range(-1f,1f), Random.Range(-1f,1f),0).normalized*hunterSpawnDist), hunterPrefab.transform.rotation,GameObject.Find("EnemyHolder").transform);
         Debug.Log("Hunter spawned");
+        hunters++;
     }
 
     /// <summary>
@@ -94,7 +102,6 @@ public class GameManager : MonoBehaviour
         }
         else 
         {
-            int hunters = (-(int)clockTime)/(int)hunterTime +1;
             retString = hunters + ((hunters > 1)?"x Hunters":"x Hunter");
             retColor = Color.red;
             retSize = (hunters > 1)?355:310;
