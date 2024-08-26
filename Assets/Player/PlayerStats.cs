@@ -9,7 +9,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] int health = 100;
     [SerializeField] float hitInvincibilityTime;
-    [SerializeField] GameManager gameManager;
+    [SerializeField] LevelManager levelManager;
     [SerializeField] Animator animator;
     [SerializeField] PlayerMovement movement;
     [SerializeField] GameObject blockAura;
@@ -25,8 +25,6 @@ public class PlayerStats : MonoBehaviour
 
     [SerializeField] PlayerSounds playerSounds;
 
-    [SerializeField] public float clockTime;
-    [SerializeField] int clockDamage;
     float secTimer = 1;
 
     /// <summary>
@@ -45,9 +43,9 @@ public class PlayerStats : MonoBehaviour
     public UnityAction onPlayerDied;
 
     private bool isDeathExecuted;
-    public void Setup(GameManager gameManager)
+    public void Setup(LevelManager levelManager)
     {
-        this.gameManager = gameManager;
+        this.levelManager = levelManager;
     }
 
     void OnEnable()
@@ -76,20 +74,6 @@ public class PlayerStats : MonoBehaviour
             GetComponent<SpriteRenderer>().color = tmp;
         }
 
-        if (gameManager && gameManager.allowsClockTimer)
-        {
-            clockTime -= Time.deltaTime;
-
-            if (clockTime <= 0)
-            {
-                secTimer -= Time.deltaTime;
-                if (secTimer <= 0)
-                {
-                    TickDamagePlayer(clockDamage);
-                    secTimer = 1f;
-                }
-            }
-        }
     }
 
     /// <summary>
@@ -197,8 +181,8 @@ public class PlayerStats : MonoBehaviour
             return;
         isDeathExecuted = true;
         //TODO
-        Debug.Log("Player died. Player deaths not implemented");
-        gameManager?.PlayerDied();
+        //Debug.Log("Player died. Player deaths not implemented");
+        levelManager?.PlayerDied();
         onPlayerDied?.Invoke();
     }
 
@@ -209,16 +193,5 @@ public class PlayerStats : MonoBehaviour
     public bool IsInvincible()
     {
         return invincibilityTimer > 0;
-    }
-
-    /// <summary>
-    /// Returns the clock time as a formated string in the format "min:sec"
-    /// </summary>
-    /// <returns></returns>
-    public string GetClockTimeString()
-    {
-        int min = (int)clockTime/ 60;
-        int sec = (int)clockTime % 60;
-        return ((min < 0) ? "00" : (min < 10) ? "0" + min : min) + ":" + ((sec<0)?"00":(sec<10)?"0"+sec:sec);
     }
 }

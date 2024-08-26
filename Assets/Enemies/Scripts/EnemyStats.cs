@@ -73,20 +73,21 @@ public class EnemyStats : MonoBehaviour
     #region Setup and Timers
     void Awake()
     {
-        if(!setColorByHand)
-            color = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
         normalMovementDrag = GetComponent<Rigidbody2D>().drag;
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         normalAnimationSpeed = animator.speed;
-        if(color != null)
-            GetComponent<SpriteRenderer>().material = color.colorMat;
-        else
-            GetComponent<SpriteRenderer>().material = defaultColor;
     }
 
     void Start()
     {
+        if(!setColorByHand) //Moved form awake
+            color = LevelManager.instance.GetComponent<EnemyManager>().GetRandomEnemyColor();
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
+
         onDamageTaken += DmgNumber.create;
         onEnemyDeath += () => dropCoins(coinsDropped.GetReward());
         enemySounds = GetComponent<EnemySounds>();
@@ -190,7 +191,7 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.timer > 0)
             {
-                if (burning.mustBurn || !this.GetColor().name.Equals("Orange")) DamageEnemy(burning.damage);
+                if (burning.mustBurn || GetColor() == null || !GetColor().name.Equals("Orange")) DamageEnemy(burning.damage);
                 //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
                 //else DamageEnemy(0);
                 float timer = burning.timer;
