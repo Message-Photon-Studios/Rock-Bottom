@@ -9,7 +9,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] int health = 100;
     [SerializeField] float hitInvincibilityTime;
-    [SerializeField] GameManager gameManager;
+    [SerializeField] LevelManager gameManager;
     [SerializeField] Animator animator;
     [SerializeField] PlayerMovement movement;
     [SerializeField] GameObject blockAura;
@@ -45,7 +45,7 @@ public class PlayerStats : MonoBehaviour
     public UnityAction onPlayerDied;
 
     private bool isDeathExecuted;
-    public void Setup(GameManager gameManager)
+    public void Setup(LevelManager gameManager)
     {
         this.gameManager = gameManager;
     }

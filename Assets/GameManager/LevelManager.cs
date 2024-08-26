@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.Video;
+using Unity.VisualScripting;
 
-public class GameManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
     [SerializeField] LevelGenManager levelGenerator;
     [SerializeField] string onDeathLevel;
@@ -15,6 +16,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] VideoPlayer videoOnPlayerDeath;
     [SerializeField] GameObject videoObjecCanvas;
     [SerializeField] GameObject backgroundMusic;
+
+    public static LevelManager instance = null;
+
+    void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        } else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     private void Start()
     {

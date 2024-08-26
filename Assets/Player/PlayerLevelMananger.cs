@@ -13,7 +13,7 @@ public class PlayerLevelMananger : MonoBehaviour
     Vector3 startPosition;
     private static GameObject me;
     PlayerMovement movement; //Handles the players movement
-    GameManager gameManager; //The game manager handles the specific scene
+    LevelManager gameManager; //The game manager handles the specific scene
     Animator animator;
     PlayerStats stats; //A class that handles the players health and statistics
 
@@ -71,7 +71,7 @@ public class PlayerLevelMananger : MonoBehaviour
     /// Is called when a new level is loaded and generated
     /// </summary>
     /// <param name="gameManager"></param>
-    public void SetStartLevel(GameManager gameManager)
+    public void SetStartLevel(LevelManager gameManager)
     {
         this.gameManager = gameManager;
         
