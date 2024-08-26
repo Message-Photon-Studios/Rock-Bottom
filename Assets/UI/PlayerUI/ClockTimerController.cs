@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class ClockTimerController : MonoBehaviour
 {
     [SerializeField] TMP_Text timeText;
     [SerializeField] GameObject timer;
     [SerializeField] UIController UIController;
+    [SerializeField] RectTransform rectTransform;
     private PlayerStats player;
 
     /* Here are the useful methods to get the current clock time.
@@ -29,7 +31,11 @@ public class ClockTimerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeText.text = player.GetClockTimeString();
+        (String text, float size, Color color) clockVars;
+        clockVars = GameManager.instance.GetClockTimeString();
+        timeText.text = clockVars.text;
+        timeText.color = clockVars.color;
+        rectTransform.sizeDelta = new Vector2(clockVars.size, rectTransform.sizeDelta.y);
     }
 
     //Sets clocks active state acording to if it's active or not.

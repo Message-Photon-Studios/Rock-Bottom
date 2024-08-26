@@ -191,7 +191,7 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.timer > 0)
             {
-                if (burning.mustBurn || !this.GetColor().name.Equals("Orange")) DamageEnemy(burning.damage);
+                if (burning.mustBurn || GetColor() == null || !GetColor().name.Equals("Orange")) DamageEnemy(burning.damage);
                 //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
                 //else DamageEnemy(0);
                 float timer = burning.timer;

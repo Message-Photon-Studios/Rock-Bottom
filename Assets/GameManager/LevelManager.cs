@@ -12,6 +12,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] string nextLevelName;
     [SerializeField] UIController canvas;
     public bool allowsClockTimer = true;
+    [SerializeField] float addLevelClockTime;
+    [SerializeField] bool restartClockTimer;
     [SerializeField] bool clearInventoryOnLevelEnd = false;
     [SerializeField] VideoPlayer videoOnPlayerDeath;
     [SerializeField] GameObject videoObjecCanvas;
@@ -47,7 +49,6 @@ public class LevelManager : MonoBehaviour
     
     public void FinishedGeneration()
     {
-        Debug.Log("Test");
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
         foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
         {
@@ -55,6 +56,8 @@ public class LevelManager : MonoBehaviour
         }
         StartCoroutine(canvas.FadeOutCoroutine(true));
         canvas.disablePausing = false;
+
+        GameManager.instance.SetLevelManager(this, addLevelClockTime, restartClockTimer);
     }
 
     public IEnumerator EndLevelAsync()
