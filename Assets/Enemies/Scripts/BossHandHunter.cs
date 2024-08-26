@@ -9,6 +9,7 @@ public class BossHandHunter : Enemy
     [SerializeField] int swordDamage;
     [SerializeField] float swordForce;
     [SerializeField] Quaternion startRotation;
+    [SerializeField] Collider2D myCollider;
     protected override Node SetupTree()
     {
         Node root = new Selector(new List<Node>{

@@ -34,6 +34,6 @@ public class ClockTimerController : MonoBehaviour
 
     //Sets clocks active state acording to if it's active or not.
     private void LoadClock() {
-        timer.SetActive(GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().allowsClockTimer);
+        timer.SetActive(GameObject.FindGameObjectWithTag("LevelManager").GetComponent<GameManager>().allowsClockTimer);
     }
 }

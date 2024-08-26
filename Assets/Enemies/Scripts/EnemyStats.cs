@@ -74,7 +74,7 @@ public class EnemyStats : MonoBehaviour
     void Awake()
     {
         if(!setColorByHand)
-            color = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
+            color = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
         normalMovementDrag = GetComponent<Rigidbody2D>().drag;
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
