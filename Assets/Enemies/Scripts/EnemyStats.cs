@@ -73,20 +73,21 @@ public class EnemyStats : MonoBehaviour
     #region Setup and Timers
     void Awake()
     {
-        if(!setColorByHand)
-            color = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<EnemyManager>().GetRandomEnemyColor();
         normalMovementDrag = GetComponent<Rigidbody2D>().drag;
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         normalAnimationSpeed = animator.speed;
-        if(color != null)
-            GetComponent<SpriteRenderer>().material = color.colorMat;
-        else
-            GetComponent<SpriteRenderer>().material = defaultColor;
     }
 
     void Start()
     {
+        if(!setColorByHand) //Moved form awake
+            color = LevelManager.instance.GetComponent<EnemyManager>().GetRandomEnemyColor();
+        if(color != null)
+            GetComponent<SpriteRenderer>().material = color.colorMat;
+        else
+            GetComponent<SpriteRenderer>().material = defaultColor;
+
         onDamageTaken += DmgNumber.create;
         onEnemyDeath += () => dropCoins(coinsDropped.GetReward());
         enemySounds = GetComponent<EnemySounds>();

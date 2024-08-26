@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public MaskLibrary maskLibrary;
+
     void Awake()
     {
         if(instance == null)
@@ -16,5 +18,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+    
+    [System.Serializable]
+    public struct MaskLibrary {
+        public LayerMask onlyGround;
+        public LayerMask onlyEnemy;
+        public LayerMask onlyPlayer;
     }
 }
