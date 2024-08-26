@@ -85,7 +85,6 @@ public class CrystalCrawler : Enemy
                         new RunForward(stats, runSpeed),
                         new AnimationBool(animator, "move", true),
                         new AnimationBool(animator, "run", true)
-                        
                     })
                 })
             }),
@@ -112,6 +111,10 @@ public class CrystalCrawler : Enemy
         return root;
     }
 
+    protected override void DamageTaken(float damage, Vector2 atPostion)
+    {
+        root.SetData("prusuit", true);
+    }
     protected override void Update()
     {
         base.Update();

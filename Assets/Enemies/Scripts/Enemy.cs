@@ -36,6 +36,12 @@ public abstract class Enemy : BehaviourTree.Tree
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
+        stats.onDamageTaken += DamageTaken;
+    }
+
+    private void OnDisable()
+    {
+        stats.onDamageTaken -= DamageTaken;
     }
     void OnValidate()
     {
@@ -43,6 +49,8 @@ public abstract class Enemy : BehaviourTree.Tree
         myCollider = GetComponent<Collider2D>();
     }
 
+    protected virtual void DamageTaken(float damage, Vector2 atPostion)
+    {}
     protected virtual void Update()
     {
         /*if(body != null)
