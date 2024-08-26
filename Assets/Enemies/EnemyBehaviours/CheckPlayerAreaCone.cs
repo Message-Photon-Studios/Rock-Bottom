@@ -24,7 +24,7 @@ public class CheckPlayerAreaCone : Node
 
     public override NodeState Evaluate()
     {
-        var hit = Physics2D.Raycast(stats.GetPosition() + trigger.offset, (Vector2)player.transform.position -  trigger.offset - stats.GetPosition(), trigger.radius, ~LayerMask.GetMask("Enemy","Spell", "Ignore Raycast", "Item"));
+        var hit = Physics2D.Raycast(stats.GetPosition() + trigger.offset, (Vector2)player.transform.position -  trigger.offset - stats.GetPosition(), trigger.radius, GameManager.instance.maskLibrary.onlyGround | GameManager.instance.maskLibrary.onlyPlayer);
         state = (!stats.IsAsleep() && hit.collider != null && hit.collider.CompareTag("Player") && inside())? NodeState.SUCCESS : NodeState.FAILURE;
         return state;
     }

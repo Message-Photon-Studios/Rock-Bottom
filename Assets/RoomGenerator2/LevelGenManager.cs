@@ -70,7 +70,7 @@ public class LevelGenManager : MonoBehaviour
             canvas.loaded = true;
         finished = true;
         
-        GetComponent<GameManager>().FinishedGeneration();
+        GetComponent<LevelManager>().FinishedGeneration();
     }
 
     public void init(UIController canvas, bool async)
