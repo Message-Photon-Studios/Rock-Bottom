@@ -47,7 +47,7 @@ public class TutorialEndpoint : MonoBehaviour
 
     void ExitLevel(VideoPlayer vp)
     {
-        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().EndLevel();
+        LevelManager.instance.EndLevel("");
     }
 
 

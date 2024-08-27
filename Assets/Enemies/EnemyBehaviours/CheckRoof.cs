@@ -18,7 +18,7 @@ public class CheckRoof : Node
     /// <returns></returns>
     public override NodeState Evaluate()
     {
-        bool test = Physics2D.Raycast(stats.GetPosition(), Vector2.up, 2f, ~LayerMask.GetMask("Enemy", "Player", "Spell"));
+        bool test = Physics2D.Raycast(stats.GetPosition(), Vector2.up, 2f, GameManager.instance.maskLibrary.onlyGround);
         state = test?NodeState.SUCCESS:NodeState.FAILURE;
         return state;
     }

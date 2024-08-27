@@ -17,7 +17,6 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] float verticalSpeedUp; //The vertical speed of the camera going up
     [SerializeField] float verticalSpeedDown; //The vertical speed of the camera going dow
     [SerializeField] Transform focusPoint; //The point that the camera will try and follow
-    [SerializeField] Vector2 deadZone;
 
     [SerializeField] PlayerStats player; // Sylvia, Needed to change the vingette effect when health is low
 
@@ -72,10 +71,9 @@ public class CameraMovement : MonoBehaviour
 
         Vector3 movePos = transform.position;
         Vector3 moveVerticalPos = transform.position;
-        if(focusPoint.position.x > deadZone.x+transform.position.x || focusPoint.position.x < -deadZone.y+transform.position.x)
-            movePos = Vector3.Slerp(transform.position, focusPoint.position, speed*Time.fixedDeltaTime);
-        if(focusPoint.position.y > deadZone.y+transform.position.y || focusPoint.position.y < -deadZone.y+transform.position.y)
-            moveVerticalPos = Vector3.Slerp(transform.position, focusPoint.position, ((focusPoint.position.y > transform.position.y)? verticalSpeedUp:verticalSpeedDown)*Time.fixedDeltaTime);
+        moveVerticalPos = Vector3.Slerp(transform.position, focusPoint.position, ((focusPoint.position.y > transform.position.y)? verticalSpeedUp:verticalSpeedDown)*Time.fixedDeltaTime);
+        movePos = Vector3.Slerp(transform.position, focusPoint.position, speed*Time.fixedDeltaTime);
+            
 
         transform.position = new Vector3(movePos.x, moveVerticalPos.y, transform.position.z);
 

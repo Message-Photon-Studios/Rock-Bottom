@@ -1,110 +1,119 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
-using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] LevelGenManager levelGenerator;
-    [SerializeField] string onDeathLevel;
-    [SerializeField] string nextLevelName;
-    [SerializeField] UIController canvas;
-    public bool allowsClockTimer = true;
-    [SerializeField] bool clearInventoryOnLevelEnd = false;
-    [SerializeField] VideoPlayer videoOnPlayerDeath;
-    [SerializeField] GameObject videoObjecCanvas;
-    [SerializeField] GameObject backgroundMusic;
+    public static GameManager instance;
+    
+    [SerializeField] public float clockTime;
+    [SerializeField] float hunterTime;
+    [SerializeField] GameObject hunterPrefab;
+    [SerializeField] float hunterSpawnDist;
+    [SerializeField] int maxHunters;
+    float hunterTimer = 0f;
+    int hunters = 0;
+    float maxClockTime;
+    public MaskLibrary maskLibrary;
+    private PlayerStats player;
 
-    private void Start()
+    private LevelManager currentLevelManager;
+
+    void Awake()
     {
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
-        if (levelGenerator)
+        if(instance == null)
         {
-            levelGenerator.init(canvas, true);
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        } else
+        {
+            Destroy(this.gameObject);
         }
+    }
+
+    void Start()
+    {
+        maxClockTime = clockTime;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        player.onPlayerDied += OnPlayerDied;
+    }
+
+    private void OnPlayerDied()
+    {
+        clockTime = maxClockTime;
+        hunterTimer = 0;
+        hunters = 0;
+    }
+
+    public void SetLevelManager (LevelManager levelManager, float addClockTime, bool restartTimer) 
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        currentLevelManager = levelManager;
+        hunterTimer = 0f;
+        hunters = 0;
+        if(!restartTimer)
+            clockTime = addClockTime + ((clockTime < 0)?0:clockTime);
         else
+            clockTime = maxClockTime;
+    }
+
+    void Update()
+    {
+        if (currentLevelManager && currentLevelManager.allowsClockTimer)
         {
-            canvas.loaded = true;
-            FinishedGeneration();
-            GetComponent<ItemSpellManager>()?.SpawnItems();
+            clockTime -= Time.deltaTime;
+
+            if (clockTime <= 0)
+            {
+                hunterTimer -= Time.deltaTime;
+                if (hunterTimer <= 0 && hunters < maxHunters)
+                {
+                    SpawnHunter();
+                    hunterTimer = hunterTime;
+                }
+            }
         }
+    }
+
+    void SpawnHunter()
+    {
+        GameObject hunter = GameObject.Instantiate(hunterPrefab, player.transform.position + (new Vector3(Random.Range(-1f,1f), Random.Range(-1f,1f),0).normalized*hunterSpawnDist), hunterPrefab.transform.rotation,GameObject.Find("EnemyHolder").transform);
+        Debug.Log("Hunter spawned");
+        hunters++;
+    }
+
+    /// <summary>
+    /// Returns the clock time as a formated string in the format "min:sec"
+    /// </summary>
+    /// <returns></returns>
+    public (string, float, Color)  GetClockTimeString()
+    {
+        string retString;
+        float retSize;
+        Color retColor;
+
+        if(clockTime > 0)
+        {
+            int min = (int)clockTime/ 60;
+            int sec = (int)clockTime % 60;
+            retString =  ((min < 0) ? "00" : (min < 10) ? "0" + min : min) + ":" + ((sec<0)?"00":(sec<10)?"0"+sec:sec);
+            retColor = Color.white;
+            retSize = 180;
+        }
+        else 
+        {
+            retString = hunters + ((hunters > 1)?"x Hunters":"x Hunter");
+            retColor = Color.red;
+            retSize = (hunters > 1)?355:310;
+        } 
+
+        return (retString, retSize, retColor);
     }
     
-    public void FinishedGeneration()
-    {
-        Debug.Log("Test");
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
-        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            obj.GetComponent<PlayerLevelMananger>().SetStartLevel(this);
-        }
-        StartCoroutine(canvas.FadeOutCoroutine(true));
-        canvas.disablePausing = false;
-    }
-
-    public IEnumerator EndLevelAsync()
-    {
-        SceneManager.LoadSceneAsync(nextLevelName);
-        yield break;
-    }
-
-    public void EndLevel()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        if (!clearInventoryOnLevelEnd)
-        {
-            canvas.disablePausing = true;
-            if (player) player.GetComponent<Rigidbody2D>().simulated = false;
-            if(player) player.GetComponent<Rigidbody2D>().velocity= Vector3.zero;
-            player?.GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("endLevel", true);
-        } else
-        {
-            player?.GetComponent<PlayerStats>()?.onPlayerDied?.Invoke();
-        }
-
-        StartCoroutine(canvas.FadeOutCoroutine(false, EndLevelAsync));
-    }
-
-    public IEnumerator PlayerDiedAsync()
-    {
-        SceneManager.LoadSceneAsync(onDeathLevel);
-        yield break;
-    }
-
-    public void PlayerDied()
-    {
-        if(videoOnPlayerDeath)
-        {
-            Time.timeScale = 0f;
-            StartDeathVideo();
-            
-        } else
-        {
-            StartCoroutine(canvas.FadeOutCoroutine(false, PlayerDiedAsync));
-        }
-    }
-
-    void DeathPlayerStopped(VideoPlayer vp)
-    {   
-        Time.timeScale = 1f;
-        StartCoroutine(canvas.FadeOutCoroutine(false, PlayerDiedAsync));
-    }
-
-    void StartDeathVideo ()
-    {
-        GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>().disablePausing = true;
-        backgroundMusic.SetActive(false);
-        videoObjecCanvas.SetActive(true);
-        videoOnPlayerDeath.Play();
-        videoOnPlayerDeath.loopPointReached += DeathPlayerStopped;
-    }
-
-
-
-    public void ShowGame()
-    {
-
+    [System.Serializable]
+    public struct MaskLibrary {
+        public LayerMask onlyGround;
+        public LayerMask onlyEnemy;
+        public LayerMask onlyPlayer;
     }
 }

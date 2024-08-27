@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class LevelEndpoint : MonoBehaviour
 {
+    [SerializeField] string goToLevel;
     [SerializeField] InputActionReference interactAction;
     [SerializeField] GameObject canvas;
 
@@ -29,7 +30,7 @@ public class LevelEndpoint : MonoBehaviour
     void ExitLevel (InputAction.CallbackContext ctx)
     {
         if(!enableExit) return;
-        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().EndLevel();
+        LevelManager.instance.EndLevel(goToLevel);
     }
 
     void OnTriggerEnter2D(Collider2D other)

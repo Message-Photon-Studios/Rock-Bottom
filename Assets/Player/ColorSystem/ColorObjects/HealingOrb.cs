@@ -9,14 +9,18 @@ public class HealingOrb : MonoBehaviour
     [SerializeField] float acceleration;
     private GameObject player;
     private Rigidbody2D body;
+    private ParticleSystem particle;
     private int healing;
     
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        particle = GetComponent<ParticleSystem>();
         Vector2 direction = ((transform.position - player.transform.position) *Vector2.one).normalized;
         body.AddForce((new Vector2(Random.Range(-1f,1f), Random.Range(-1f, 1f)) + direction).normalized * launchSpeed);
+        if (healing == 5) particle.startSize = 0.2f;
+        if (healing == 2) particle.startSize= 0.1f;
     }
 
     // Update is called once per frame

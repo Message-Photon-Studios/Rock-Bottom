@@ -22,7 +22,7 @@ public class ColorSpellImpact : SpellImpact
                 Vector2 rayCastDirection = enemyPos-rayCastOrigin;
                 float rayCastDistance = Vector2.Distance(enemyPos,rayCastOrigin);
 
-                RaycastHit2D test = Physics2D.Raycast(rayCastOrigin, rayCastDirection, rayCastDistance, ~LayerMask.GetMask("Spell", "Player", "Ignore Raycast", "Item", "Enemy", "OnlyHitGround"));
+                RaycastHit2D test = Physics2D.Raycast(rayCastOrigin, rayCastDirection, rayCastDistance, GameManager.instance.maskLibrary.onlyGround);
                 if(test.collider != null) 
                 {
                     return;
