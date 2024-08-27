@@ -45,7 +45,7 @@ public class QuakeProjectile : Enemy
         
         if(Random.Range(0,10) == 0) animator.SetTrigger("crystopher");
 
-        body.AddTorque(Random.Range(-20f,20f));
+        body?.AddTorque(Random.Range(-20f,20f));
 
         return root;
     }
