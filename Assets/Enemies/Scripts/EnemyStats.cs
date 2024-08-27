@@ -27,6 +27,10 @@ public class EnemyStats : MonoBehaviour
 
     [SerializeField] private bool setColorByHand;
 
+    [SerializeField] private float deathTimer = 0;
+
+    private bool hasDeathTimer = false;
+
     /// <summary>
     /// The direction that the enemy is looking
     /// </summary>
@@ -92,6 +96,7 @@ public class EnemyStats : MonoBehaviour
         onEnemyDeath += () => dropCoins(coinsDropped.GetReward());
         enemySounds = GetComponent<EnemySounds>();
         onColorChanged?.Invoke(color);
+        if (deathTimer > 0) hasDeathTimer = true;
     }
 
     void OnValidate()
@@ -230,6 +235,12 @@ public class EnemyStats : MonoBehaviour
                     }
                     flame.GetComponent<FloorFlame>().ClearBurnQueue();
                 }
+            }
+
+            if(hasDeathTimer)
+            {
+                deathTimer--;
+                if(deathTimer <= 0) KillEnemy();
             }
             secTimer = 0f;
 
