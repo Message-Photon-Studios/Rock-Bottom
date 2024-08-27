@@ -13,9 +13,18 @@ public class SpellPickup : MonoBehaviour
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
+    [SerializeField] Collider2D collider;
+    Rigidbody2D body;
     SpriteRenderer spriteRenderer;
     ColorInventory inventory;
     bool pickedup = false;
+
+
+    private void Start()
+    {
+        Physics2D.IgnoreCollision(collider, GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>());
+        body = GetComponent<Rigidbody2D>();
+    }
 
     /// <summary>
     /// Sets the color spell for this spawnpoint
@@ -75,6 +84,12 @@ public class SpellPickup : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (Physics2D.Raycast((Vector2)transform.position, Vector2.down, 0.36f, GameManager.instance.maskLibrary.onlyGround)) body.gravityScale = 0;
+        
+    }
+
     /// <summary>
     /// Is called when this color spell is picked up
     /// </summary>
@@ -85,6 +100,11 @@ public class SpellPickup : MonoBehaviour
         inventory.ChangeActiveSlotColorSpell(colorSpell);
         needsPayment = false;
         SetSpell(tmp);
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        transform.position = player.transform.position;
+        body.velocity = new Vector2(0,0);
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(player.GetComponent<PlayerMovement>().lookDir * 200, 500));
+        body.gravityScale = 2;
     }
 
     /// <summary>
