@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(canvas.FadeOutCoroutine(true));
         canvas.disablePausing = false;
 
-        GameManager.instance.SetLevelManager(this, addLevelClockTime, restartClockTimer);
+        GameManager.instance?.SetLevelManager(this, addLevelClockTime, restartClockTimer);
     }
 
     public IEnumerator EndLevelAsync()

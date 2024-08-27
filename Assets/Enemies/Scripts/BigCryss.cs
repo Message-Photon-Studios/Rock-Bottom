@@ -29,7 +29,7 @@ public class BigCryss : Enemy
                 }),
 
             new Sequence(new List<Node>{
-                new PlatformChase(stats, player, body, animator, 1f, viewRange, .5f ,"attack", "walk")
+                new PlatformChase(stats, player, body, animator, 1f, viewRange, 0f, .5f ,"attack", "walk")
             }),
 
             new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .5f, "attack", "walk")

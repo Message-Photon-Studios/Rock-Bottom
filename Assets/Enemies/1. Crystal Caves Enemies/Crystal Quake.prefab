@@ -64,6 +64,7 @@ MonoBehaviour:
   knockbackImune: 1
   sleepForcedown: 0
   setColorByHand: 0
+  deathTimer: 0
   lookDir: -1
   currentCombo: 0
   enemySounds: {fileID: 2042908631029740834, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
@@ -81,7 +82,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCollisionDamage: 25
   playerCollisionForce: {x: 2000, y: 0.5}
-  viewRange: 10
+  viewRange: 15
+  eyePosY: -0.7
   attackTrigger:
     radius: 1
     direction: 0
@@ -90,6 +92,19 @@ MonoBehaviour:
     color: {r: 1, g: 0, b: 0, a: 1}
   swordDamage: 40
   swordForce: 5000
+  quakeTrigger:
+    radius: 15
+    direction: 0
+    width: 360
+    offset: {x: -1.19, y: 0.9}
+    color: {r: 1, g: 0.6136441, b: 0, a: 1}
+  quakeProjectile: {fileID: 8094419970937011932, guid: 10d75ef13b3d519478ca44c8090d5b05, type: 3}
+  quakeTimer: 3
+  projectileSpawn1: {x: -3, y: -1.4}
+  projectileSpawn2: {x: -1, y: -1.4}
+  projectileSpawn3: {x: 1, y: -1.4}
+  projectileSpawnUpForce: 3000
+  projectileForceRandomness: 0.5
   patrollDistance: 3
   patrollIdleTime: 3
 --- !u!50 &264917189925170266
