@@ -615,14 +615,12 @@ public class EnemyStats : MonoBehaviour
         
         for (int i = 0; i < coin5Amount; i++)
         {
-            GameObject coin = Instantiate(coin5, transform.position, Quaternion.identity);
-            coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1, 1), 0) * 200);
+            Instantiate(coin5, transform.position, Quaternion.identity);
         }
         
         for (int i = 0; i < coin1Amount; i++)
         {
-            GameObject coin = Instantiate(coin1, transform.position, Quaternion.identity);
-            coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1, 1), 0) * 300);
+            Instantiate(coin1, transform.position, Quaternion.identity);
         }
     }
 
