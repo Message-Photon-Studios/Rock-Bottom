@@ -14,8 +14,8 @@ public class CoinItem : MonoBehaviour
         Material[] materials = Resources.LoadAll<Material>("BreathingBloom");
         sprite.material = materials[Random.Range(0, materials.Length)];
         sparkles.material = sprite.material;
-        // Apply a force in a random upwards direction
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-100, 100), 300));
+        // Apply a force in a random upwards directio
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * 200);
 
         float scale = transform.localScale.x;
         transform.localScale = new Vector3(0, 0, 1);
