@@ -30,7 +30,7 @@ public class BossHand : Enemy
 
             new Sequence(new List<Node>{
                 new CheckBool("castSpell", true),
-                new EnemyObjectSpawner(stats, bossSpellTemplate, spawnOffset, spawnForce),
+                new EnemyObjectSpawner(stats, bossSpellTemplate, spawnOffset, spawnForce, true),
                 new SetParentVariable("castSpell", false, 2)
             }),
 

@@ -10,6 +10,7 @@ public class EnemyObjectSpawner : Node
     Vector2 offset;
     Vector2 force;
     float forceRandomVariation;
+    bool setColor;
     /// <summary>
     /// Spawns an istance of the spawnTemp object at the enemys position + the offset.
     /// The offset flips with the enemy look direction. 
@@ -18,22 +19,24 @@ public class EnemyObjectSpawner : Node
     /// <param name="stats"></param>
     /// <param name="spawnTemp"></param>
     /// <param name="offset"></param>
-    public EnemyObjectSpawner(EnemyStats stats, GameObject spawnTemp, Vector2 offset, Vector2 force, float forceRandomVariation)
+    public EnemyObjectSpawner(EnemyStats stats, GameObject spawnTemp, Vector2 offset, Vector2 force, bool setColor, float forceRandomVariation)
     {
         this.spawnTemp = spawnTemp;
         this.stats = stats;
         this.offset = offset;
         this.force = force;
         this.forceRandomVariation = forceRandomVariation;
+        this.setColor = setColor;
     }
 
-    public EnemyObjectSpawner(EnemyStats stats, GameObject spawnTemp, Vector2 offset, Vector2 force)
+    public EnemyObjectSpawner(EnemyStats stats, GameObject spawnTemp, Vector2 offset, Vector2 force, bool setColor)
     {
         this.spawnTemp = spawnTemp;
         this.stats = stats;
         this.offset = offset;
         this.force = force;
         this.forceRandomVariation = 0f;
+        this.setColor = setColor;
     }
 
     public override NodeState Evaluate()
@@ -43,7 +46,8 @@ public class EnemyObjectSpawner : Node
         {
             GameObject spwn = GameObject.Instantiate(spawnTemp, stats.GetPosition()+useOffset, stats.gameObject.transform.rotation) as GameObject;
             spwn.GetComponent<Rigidbody2D>()?.AddForce(force*(Vector2.right*stats.lookDir+Vector2.up)*(Random.Range(0f,forceRandomVariation)+1f));
-            spwn.GetComponent<EnemyStats>()?.SetColor(stats.GetColor());
+            if(setColor) spwn.GetComponent<EnemyStats>()?.SetColor(stats.GetColor());
+            else if(setColor) spwn.GetComponent<EnemyStats>()?.SetColor(null);
         }   
         state = NodeState.SUCCESS;
         return state;

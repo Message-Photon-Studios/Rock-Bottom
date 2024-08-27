@@ -38,26 +38,23 @@ public class CrystalQuake : Enemy
             new Sequence(new List<Node>{
                 new CheckBool("attack", true),
                 new CheckBool("stoneThrowAttack", true),
-                new CheckBool("hornAttack", true),
-                new EnemyObjectSpawner(stats, quakeProjectile, projectileSpawn1, Vector2.up*projectileSpawnUpForce, projectileForceRandomness),
-                new EnemyObjectSpawner(stats, quakeProjectile, projectileSpawn2, Vector2.up*projectileSpawnUpForce, projectileForceRandomness),
-                new EnemyObjectSpawner(stats, quakeProjectile, projectileSpawn3, Vector2.up*projectileSpawnUpForce, projectileForceRandomness),
+                new EnemyObjectSpawner(stats, quakeProjectile, projectileSpawn1, Vector2.up*projectileSpawnUpForce, false, projectileForceRandomness),
+                new EnemyObjectSpawner(stats, quakeProjectile, projectileSpawn2, Vector2.up*projectileSpawnUpForce, false, projectileForceRandomness),
+                new EnemyObjectSpawner(stats, quakeProjectile, projectileSpawn3, Vector2.up*projectileSpawnUpForce, false, projectileForceRandomness),
                 new SetParentVariable("stoneThrowAttack", false, 2),
             }),
 
             new Sequence(new List<Node>{
                 new CheckBool("attack", false),
                 new CheckPlayerArea(stats, player, attackTrigger),
-                new SetParentVariable("stoneThrowAttack", false, 2),
                 new AnimationTrigger(animator, "attack")
             }),
             
             new Sequence(new List<Node>{
                 new CheckBool("attack", false),
                 new Wait(quakeTimer),
-                new SetParentVariable("stoneThrowAttack", true, 2),
                 new CheckPlayerArea(stats, player, quakeTrigger),
-                new AnimationTrigger(animator, "attack")
+                new AnimationTrigger(animator, "quakeSlam")
             }),
 
             new Sequence(new List<Node>{

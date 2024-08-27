@@ -11,6 +11,7 @@ public class QuakeProjectile : Enemy
     [SerializeField] float acceleration;
     [SerializeField] float turnSpeed;
     [SerializeField] Quaternion startRotation;
+    [SerializeField] ParticleSystem aim;
 
     protected override Node SetupTree()
     {
@@ -18,7 +19,7 @@ public class QuakeProjectile : Enemy
         new Selector(new List<Node>{
             new Sequence(new List<Node>{
                 new EnemyCollide(GetComponent<ColliderCheck>(), "Player"),
-                new ChangeCollisionDetection(GetComponent<Collider2D>(), player.GetComponent<Collider2D>(), false)
+                new AnimationBool(animator, "dead", true),
             }),
 
             new Sequence(new List<Node> {
@@ -30,11 +31,19 @@ public class QuakeProjectile : Enemy
 
             new Sequence(new List<Node>{
                 new CheckBool("startIdle", false),
-                new ChangeSpeed(stats, maxSpeed, acceleration)
+                new ChangeSpeed(stats, maxSpeed, acceleration),
+                new Selector(new List<Node>{
+                    new CheckSpeed(stats, 3000f, 3000f),
+                    new ParticlesPlay(aim, false)
+                }),
             })
         });
 
         root.SetData("startIdle",  true);
+        
+        if(Random.Range(0,10) == 0) animator.SetTrigger("crystopher");
+
+        body.AddTorque(Random.Range(-20f,20f));
 
         return root;
     }
