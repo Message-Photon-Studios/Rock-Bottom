@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class BigBettan : Enemy
 {
-    [SerializeField] Trigger viewTrigger;
+    [SerializeField] float viewRange;
     [SerializeField] Trigger attackFrontTrigger;
     [SerializeField] Trigger attackBackTrigger;
     [SerializeField] int swordDamage;
@@ -34,8 +34,7 @@ public class BigBettan : Enemy
                 }),
 
             new Sequence(new List<Node>{
-                new CheckPlayerArea(stats, player, viewTrigger),
-                new PlatformChase(stats, player, body, animator, 1f, .5f ,"attack", "walk")
+                new PlatformChase(stats, player, body, animator, 1f, viewRange, 1f, .5f ,"attack", "walk")
             }),
 
             new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .5f, "attack", "walk")
@@ -48,7 +47,6 @@ public class BigBettan : Enemy
         root.SetData("swordBackAttack", false);
         triggersToFlip.Add(attackFrontTrigger);
         triggersToFlip.Add(attackBackTrigger);
-        triggersToFlip.Add(viewTrigger);
         return root;
     }
 
@@ -56,7 +54,8 @@ public class BigBettan : Enemy
     private void OnDrawGizmosSelected() {
         attackFrontTrigger.DrawTrigger(stats.GetPosition());
         attackBackTrigger.DrawTrigger(stats.GetPosition());
-        viewTrigger.DrawTrigger(stats.GetPosition());
+        Handles.color = Color.blue;
+        Handles.DrawLine(stats.GetPosition()+Vector2.left*viewRange, stats.GetPosition()+Vector2.right*viewRange);
         Handles.color = Color.yellow;
         Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
     }

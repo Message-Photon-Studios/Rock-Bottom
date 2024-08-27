@@ -64,6 +64,7 @@ MonoBehaviour:
   knockbackImune: 0
   sleepForcedown: 0
   setColorByHand: 0
+  deathTimer: 0
   lookDir: -1
   currentCombo: 0
   enemySounds: {fileID: 4295802943548042768}
@@ -81,12 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCollisionDamage: 10
   playerCollisionForce: {x: 2000, y: 0.5}
-  viewTrigger:
-    radius: 12
-    direction: 0
-    width: 360
-    offset: {x: 0, y: 0}
-    color: {r: 0, g: 0.5959964, b: 1, a: 1}
+  viewRange: 12
   attackTrigger:
     radius: 1.4
     direction: 0

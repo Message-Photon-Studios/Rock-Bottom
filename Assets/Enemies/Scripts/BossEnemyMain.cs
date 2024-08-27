@@ -24,7 +24,7 @@ public class BossEnemyMain : Enemy
 
                 new Sequence(new List<Node>{
                     new Wait(wispTimer),
-                    new EnemyObjectSpawner(stats, wispTmp, spawnOffset, spawnForce)
+                    new EnemyObjectSpawner(stats, wispTmp, spawnOffset, spawnForce, true)
                 }),
 
                 new AirPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .7f, "attack", "move")

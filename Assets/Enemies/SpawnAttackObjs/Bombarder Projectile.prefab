@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 5
-  color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
+  color: {fileID: 0}
   colorAmmount: 1
   movementSpeed: 4000
   coinsDropped:
@@ -62,7 +62,8 @@ MonoBehaviour:
   comboParticles: {fileID: 6205137580783060889, guid: 08a80dfa497e1524d8b1d91a3ef76662, type: 3}
   knockbackImune: 0
   sleepForcedown: 0
-  setColorByHand: 0
+  setColorByHand: 1
+  deathTimer: 0
   lookDir: -1
   currentCombo: 0
   enemySounds: {fileID: 0}
@@ -117,7 +118,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
+  - {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -135,8 +136,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 908811297
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1454816939, guid: 48b54bef2bc391b4abef9c6600510288, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

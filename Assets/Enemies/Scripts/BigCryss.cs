@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class BigCryss : Enemy
 {
-    [SerializeField] Trigger viewTrigger;
+    [SerializeField] float viewRange;
     [SerializeField] Trigger attackTrigger;
     [SerializeField] int swordDamage;
     [SerializeField] float swordForce;
@@ -29,8 +29,7 @@ public class BigCryss : Enemy
                 }),
 
             new Sequence(new List<Node>{
-                new CheckPlayerArea(stats, player, viewTrigger),
-                new PlatformChase(stats, player, body, animator, 1f, .5f ,"attack", "walk")
+                new PlatformChase(stats, player, body, animator, 1f, viewRange, 0f, .5f ,"attack", "walk")
             }),
 
             new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .5f, "attack", "walk")
@@ -41,14 +40,14 @@ public class BigCryss : Enemy
         root.SetData("attackDone", false);
         root.SetData("swordAttack", false);
         triggersToFlip.Add(attackTrigger);
-        triggersToFlip.Add(viewTrigger);
         return root;
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         attackTrigger.DrawTrigger(stats.GetPosition());
-        viewTrigger.DrawTrigger(stats.GetPosition());
+        Handles.color = Color.blue;
+        Handles.DrawLine(stats.GetPosition()+Vector2.left*viewRange, stats.GetPosition()+Vector2.right*viewRange);
         Handles.color = Color.yellow;
         Handles.DrawLine(stats.GetPosition() + Vector2.left* patrollDistance, stats.GetPosition() + Vector2.right* patrollDistance);
     }
