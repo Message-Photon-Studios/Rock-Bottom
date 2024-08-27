@@ -12,6 +12,7 @@ public class QuakeProjectile : Enemy
     [SerializeField] float turnSpeed;
     [SerializeField] Quaternion startRotation;
     [SerializeField] ParticleSystem aim;
+    [SerializeField] ParticleSystem rocksFalling;
 
     protected override Node SetupTree()
     {
@@ -26,7 +27,8 @@ public class QuakeProjectile : Enemy
                 new HomTowardsPlayer(stats, startRotation, player, 1f, turnSpeed, 2f),
                 new CheckBool("startIdle", true),
                 new Wait(startIdleTime+Random.Range(0f, 1f)),
-                new SetParentVariable("startIdle", false, 2)
+                new SetParentVariable("startIdle", false, 2),
+                new ParticlesPlay(rocksFalling, false)
             }),
 
             new Sequence(new List<Node>{
