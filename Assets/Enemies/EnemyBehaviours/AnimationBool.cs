@@ -24,7 +24,7 @@ public class AnimationBool : Node
 
     public override NodeState Evaluate()
     {
-        animator.SetBool(triggerName, setTo);
+        animator?.SetBool(triggerName, setTo);
         state = NodeState.SUCCESS;
         return state;
     }

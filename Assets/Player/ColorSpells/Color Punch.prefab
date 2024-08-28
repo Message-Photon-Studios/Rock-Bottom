@@ -194,8 +194,12 @@ MonoBehaviour:
     Power: 160%'
   spellCost: 50
   powerScale: 1.6
-  destroyOnImpact: 0
-  destroyOnHit: 0
+  destroyOnAllImpact: 0
+  destroyOnEnemyHit: 0
+  impactOnEnemies: 1
+  impactOnNonEnemies: 0
+  triggerOnlyOnce: 0
+  requirePlayerLOSonSpawn: 0
   lifeTime: 0.7
   animationTrigger: handSpell
   onImpact:

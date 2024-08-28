@@ -44,9 +44,9 @@ public class CrystalBombarderBomb : Enemy
                     new LookAtPlayer(stats, player),
                     new Selector(new List<Node>{
                         new Inverter(new CheckSpeed(stats, 1000f, 1000f)),
-                         new ParticlesPlay(aim, false)
+                        new ParticlesPlay(aim, false)
                     }),
-                    new HomTowardsPlayer(stats, startRotation, player, 1f, turnSpeed),
+                    new HomTowardsPlayer(stats, startRotation, player, 1f, turnSpeed, 0f),
                     new ChangeSpeed(stats, 0f, 750f)
                 })
             });

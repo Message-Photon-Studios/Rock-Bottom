@@ -23,6 +23,7 @@ public class TargetingMarker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(player == null || parent == null) return;
         Vector3 direction = player.transform.position - parent.transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.position = player.transform.position;

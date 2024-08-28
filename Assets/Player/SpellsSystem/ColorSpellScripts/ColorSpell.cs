@@ -124,7 +124,7 @@ public class ColorSpell : MonoBehaviour
 
         if(requirePlayerLOSonSpawn)
         {
-            RaycastHit2D playerLOS = Physics2D.Raycast(transform.position, player.transform.position-transform.position, Vector2.Distance(transform.position, player.transform.position), ~LayerMask.GetMask("Spell", "Player", "Ignore Raycast", "Item", "Enemy", "OnlyHitGround"));
+            RaycastHit2D playerLOS = Physics2D.Raycast(transform.position, player.transform.position-transform.position, Vector2.Distance(transform.position, player.transform.position), GameManager.instance.maskLibrary.onlyGround);
             if(playerLOS.collider != null) 
             {
                 if(impactOnNonEnemies) Impact(playerLOS.collider);
