@@ -367,7 +367,7 @@ public class PlayerMovement : MonoBehaviour
                 body.velocity = new Vector2(body.velocity.x + wallStickPower*lookDir, -2);
                 playerAnimator.SetInteger("velocityY", -1);
                 wallParticles.Play();
-            } else
+            } else if(!inAttackAnimation)
             {   
                 body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             }
@@ -377,7 +377,7 @@ public class PlayerMovement : MonoBehaviour
             playerAnimator.SetBool("grapple", false);
             wallParticles.Stop();
             
-            if(wasClimbing)
+            if(wasClimbing && !inAttackAnimation)
             {
                 body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
                 if(beforeClimbLookDir != lookDir) Flip();
