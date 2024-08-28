@@ -218,8 +218,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool HitCeling ()
     {
-        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, GameManager.instance.maskLibrary.onlyGround) ||
-                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, GameManager.instance.maskLibrary.onlyGround);
+        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlyGround) ||
+                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlyGround);
     }
 
     public bool IsGrappeling()
@@ -379,6 +379,7 @@ public class PlayerMovement : MonoBehaviour
             
             if(wasClimbing)
             {
+                body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
                 if(beforeClimbLookDir != lookDir) Flip();
                 wasClimbing = false;
             }
