@@ -232,9 +232,9 @@ public class PlayerMovement : MonoBehaviour
                 Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.left, .5f, GameManager.instance.maskLibrary.onlyGround)) ||
                 ((wasClimbing) && (
                     (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyGround) && 
-                    Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .7f, GameManager.instance.maskLibrary.onlyGround)) ||
+                    Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2+playerCollider.offset, Vector2.right, .7f, GameManager.instance.maskLibrary.onlyGround)) ||
                     (!Physics2D.Raycast(transform.position+Vector3.left* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyGround) &&
-                    Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .7f, GameManager.instance.maskLibrary.onlyGround))  
+                    Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2+playerCollider.offset, Vector2.left, .7f, GameManager.instance.maskLibrary.onlyGround))  
                 ));
     }
    
