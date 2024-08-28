@@ -38,6 +38,7 @@ public class Spikey : Enemy
                 new Sequence(new List<Node>{
                     new CheckBool("alert", true),
                     new CheckBool("attack", false),
+                    new CheckBool("attackReady", true),
                     new CheckPlayerDirection(stats, player, Vector2.right, -sideDistTrigger, sideDistTrigger),
                     new CheckPlayerDirection(stats, player, Vector2.down, heightDistTrigger, droppHeight),
                     new SetParentVariable("attack", true, 2)
@@ -54,7 +55,8 @@ public class Spikey : Enemy
                 new Sequence(new List<Node>{
                     new CheckBool("attack", true),
                     new CheckGrounded(stats, .2f),
-                    new AnimationBool(animator, "stuck", true)
+                    new AnimationBool(animator, "stuck", true),
+                    new SetParentVariable("attackReady", false, 2)
                 }),
 
                 new Sequence(new List<Node>{
@@ -88,6 +90,7 @@ public class Spikey : Enemy
         root.SetData("alert", false);
         root.SetData("attack", false);
         root.SetData("spawnAttack", false);
+        root.SetData("attackReady", false);
         triggersToFlip.Add(attackTrigger);
         triggersToFlip.Add(damageTrigger);
         return root;
