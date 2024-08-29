@@ -27,7 +27,7 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] InputActionReference changeRightActions;
     [SerializeField] InputActionReference pickUpAction;
     [SerializeField] public Material defaultColor;
-
+    [SerializeField] InputActionReference removeColorAction;
     public Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
     SpellPickup pickUpSpell = null;
 
@@ -61,6 +61,8 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     public UnityAction<bool> onSpellPickupInRange;
     
+    private System.Action<InputAction.CallbackContext> divideColorHandler;
+
     #endregion
 
     #region Setup
@@ -79,6 +81,8 @@ public class ColorInventory : MonoBehaviour
         onColorUpdated += updateBrushColor;
         onSlotChanged += slotChangedBrush;
         pickUpAction.action.performed += PickUp;
+        divideColorHandler = (InputAction.CallbackContext ctx) => DivideColor();
+        removeColorAction.action.performed += divideColorHandler;
     }
 
     void OnDisable()
@@ -88,6 +92,7 @@ public class ColorInventory : MonoBehaviour
         onSlotChanged -= slotChangedBrush;
         
         pickUpAction.action.performed -= PickUp;
+        removeColorAction.action.performed -= divideColorHandler;
     }
 
     #endregion
@@ -198,6 +203,18 @@ public class ColorInventory : MonoBehaviour
     {
         return GetColorBuff(ActiveSlot().gameColor);
     }
+    #endregion
+
+    #region Divide color action
+    
+    private void DivideColor()
+    {
+        GameColor gameColor = ActiveSlot().gameColor;
+        int amount = ActiveSlot().charge;
+        if(gameColor == null || amount <= 0) return;
+        
+    }
+
     #endregion
 
     #region Add and remove colors
