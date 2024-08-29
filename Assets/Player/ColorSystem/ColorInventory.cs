@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using Steamworks;
 
 /// <summary>
 /// Keeps track of the colors that the player has gathered. 
@@ -212,7 +213,27 @@ public class ColorInventory : MonoBehaviour
         GameColor gameColor = ActiveSlot().gameColor;
         int amount = ActiveSlot().charge;
         if(gameColor == null || amount <= 0) return;
+
+        ActiveSlot().RemoveColor();
         
+        amount = amount/gameColor.rootColors.Length;
+        if (amount < 1) amount = 1;
+
+        foreach(GameColor rootColor in gameColor.rootColors)
+        {
+            for (int i = 1; i < colorSlots.Count; i++)
+            {
+                int check = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0) continue;
+                if(colorSlots[check].gameColor.ContainsRootColor(rootColor))
+                {
+                    colorSlots[check].AddCharge(amount);
+                    break;
+                }
+            }
+        }
+
+        onColorUpdated?.Invoke();
     }
 
     #endregion
@@ -429,6 +450,13 @@ public class ColorSlot
     public void SetCharge(int set)
     {
         charge = set;
+        if(charge > maxCapacity)
+        charge = maxCapacity;
+    }
+
+    public void AddCharge(int addCharge)
+    {
+        SetCharge(charge + addCharge);
     }
     public void SetGameColor(GameColor set) 
     {

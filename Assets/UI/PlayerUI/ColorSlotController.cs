@@ -190,7 +190,11 @@ public class ColorSlotController : MonoBehaviour
     }
 
     private void ColorUpdate() {
-        ColorUpdate(colorInventory.activeSlot);
+
+        for (int i = 0; i < colorInventory.colorSlots.Count; i++)
+        {
+            ColorUpdate(i);
+        }
     }
 
     private IEnumerator  fillSlotGradually(Graphic frame, ColorSlot color)

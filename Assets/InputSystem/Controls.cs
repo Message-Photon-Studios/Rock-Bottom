@@ -125,6 +125,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DivideColor"",
+                    ""type"": ""Button"",
+                    ""id"": ""96a22342-4dc2-446a-a5bb-3d8484bec3fc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -677,6 +686,50 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""VerticalLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""22d1d61e-2395-4bf6-9270-81d13193755e"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""DivideColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3bcbe760-e80e-41a6-bb7b-d8ce33178d88"",
+                    ""path"": ""<XInputController>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController"",
+                    ""action"": ""DivideColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76712484-ddae-4462-94cd-c418c91e7563"",
+                    ""path"": ""<DualShockGamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation"",
+                    ""action"": ""DivideColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d3c56e3-f25e-4b8d-9f4e-28116275c3ba"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""DivideColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -746,6 +799,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_DefaultAttack = m_Player.FindAction("DefaultAttack", throwIfNotFound: true);
         m_Player_SpecialAttack = m_Player.FindAction("SpecialAttack", throwIfNotFound: true);
         m_Player_VerticalLook = m_Player.FindAction("VerticalLook", throwIfNotFound: true);
+        m_Player_DivideColor = m_Player.FindAction("DivideColor", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -816,6 +870,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DefaultAttack;
     private readonly InputAction m_Player_SpecialAttack;
     private readonly InputAction m_Player_VerticalLook;
+    private readonly InputAction m_Player_DivideColor;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -831,6 +886,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @DefaultAttack => m_Wrapper.m_Player_DefaultAttack;
         public InputAction @SpecialAttack => m_Wrapper.m_Player_SpecialAttack;
         public InputAction @VerticalLook => m_Wrapper.m_Player_VerticalLook;
+        public InputAction @DivideColor => m_Wrapper.m_Player_DivideColor;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -873,6 +929,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @VerticalLook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalLook;
                 @VerticalLook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalLook;
                 @VerticalLook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalLook;
+                @DivideColor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor;
+                @DivideColor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor;
+                @DivideColor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -910,6 +969,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @VerticalLook.started += instance.OnVerticalLook;
                 @VerticalLook.performed += instance.OnVerticalLook;
                 @VerticalLook.canceled += instance.OnVerticalLook;
+                @DivideColor.started += instance.OnDivideColor;
+                @DivideColor.performed += instance.OnDivideColor;
+                @DivideColor.canceled += instance.OnDivideColor;
             }
         }
     }
@@ -963,5 +1025,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnDefaultAttack(InputAction.CallbackContext context);
         void OnSpecialAttack(InputAction.CallbackContext context);
         void OnVerticalLook(InputAction.CallbackContext context);
+        void OnDivideColor(InputAction.CallbackContext context);
     }
 }
