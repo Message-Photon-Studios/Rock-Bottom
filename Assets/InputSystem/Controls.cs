@@ -689,17 +689,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""22d1d61e-2395-4bf6-9270-81d13193755e"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DivideColor"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""3bcbe760-e80e-41a6-bb7b-d8ce33178d88"",
                     ""path"": ""<XInputController>/buttonNorth"",
                     ""interactions"": """",
@@ -724,9 +713,20 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""3d3c56e3-f25e-4b8d-9f4e-28116275c3ba"",
                     ""path"": ""<Keyboard>/l"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""DivideColor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""506ec695-0748-4cd1-af5a-b1452c85aeda"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
                     ""action"": ""DivideColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
