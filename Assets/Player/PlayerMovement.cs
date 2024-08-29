@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using System.Diagnostics.Tracing;
 
 /// <summary>
 /// This class controls the players movement and keeps track of player states such as it being rooted, falling or in the air. 
@@ -217,8 +218,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool HitCeling ()
     {
-        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, GameManager.instance.maskLibrary.onlyGround) ||
-                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, 1f, GameManager.instance.maskLibrary.onlyGround);
+        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlyGround) ||
+                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlyGround);
     }
 
     public bool IsGrappeling()
@@ -231,9 +232,9 @@ public class PlayerMovement : MonoBehaviour
                 Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.left, .5f, GameManager.instance.maskLibrary.onlyGround)) ||
                 ((wasClimbing) && (
                     (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyGround) && 
-                    Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.right, .7f, GameManager.instance.maskLibrary.onlyGround)) ||
+                    Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2+playerCollider.offset, Vector2.right, .7f, GameManager.instance.maskLibrary.onlyGround)) ||
                     (!Physics2D.Raycast(transform.position+Vector3.left* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyGround) &&
-                    Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/2, Vector2.left, .7f, GameManager.instance.maskLibrary.onlyGround))  
+                    Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2+playerCollider.offset, Vector2.left, .7f, GameManager.instance.maskLibrary.onlyGround))  
                 ));
     }
    
@@ -260,14 +261,16 @@ public class PlayerMovement : MonoBehaviour
             jump = 0;
         if ((walkDir == 0 || IsGrappeling()) && focusPoint.localPosition.x != 0 )
         {
-            focusPoint.localPosition = Vector3.Slerp(focusPoint.localPosition, new Vector3(originalFocusPointPos.x, focusPoint.localPosition.y, originalFocusPointPos.z) , aimFocusAcceleration*Time.fixedDeltaTime);
+            Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(originalFocusPointPos.x, focusPoint.localPosition.y, focusPoint.localPosition.z) , aimFocusAcceleration*Time.fixedDeltaTime);
+            focusPoint.localPosition = new Vector3(aimPosTo.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
             //focusPoint.localPosition += Vector3.Normalize(originalFocusPointPos-focusPoint.localPosition) * aimFocusAcceleration * Time.fixedDeltaTime;
         }
         if(IsGrounded())
         {
             if(walkDir != 0 && focusPoint.localPosition.x < aimFocusMaxX && focusPoint.localPosition.x > -aimFocusMaxX)
             {
-                focusPoint.localPosition = Vector3.Slerp(focusPoint.localPosition, new Vector3(aimFocusMaxX*lookDir, focusPoint.localPosition.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(aimFocusMaxX*lookDir, focusPoint.localPosition.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                focusPoint.localPosition = new Vector3(aimPosTo.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
                 //focusPoint.localPosition += new Vector3(aimFocusAcceleration*lookDir*Time.fixedDeltaTime, 0 , 0);
             } 
             GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
@@ -364,7 +367,7 @@ public class PlayerMovement : MonoBehaviour
                 body.velocity = new Vector2(body.velocity.x + wallStickPower*lookDir, -2);
                 playerAnimator.SetInteger("velocityY", -1);
                 wallParticles.Play();
-            } else
+            } else if(!inAttackAnimation)
             {   
                 body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             }
@@ -374,8 +377,9 @@ public class PlayerMovement : MonoBehaviour
             playerAnimator.SetBool("grapple", false);
             wallParticles.Stop();
             
-            if(wasClimbing)
+            if(wasClimbing && !inAttackAnimation)
             {
+                body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
                 if(beforeClimbLookDir != lookDir) Flip();
                 wasClimbing = false;
             }
