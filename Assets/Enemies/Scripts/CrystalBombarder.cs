@@ -23,7 +23,7 @@ public class CrystalBombarder : Enemy
             new Selector(new List<Node>{
                 new Sequence(new List<Node>{
                     new CheckBool("spawnAttack", true),
-                    new EnemyObjectSpawner(stats, attackSpawn, spawnOffset, spawnBombForce),
+                    new EnemyObjectSpawner(stats, attackSpawn, spawnOffset, spawnBombForce, true),
                     new SetParentVariable("spawnAttack", false, 3)
                 }),
 

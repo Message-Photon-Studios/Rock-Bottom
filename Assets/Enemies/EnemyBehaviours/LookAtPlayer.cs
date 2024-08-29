@@ -15,6 +15,11 @@ public class LookAtPlayer : Node
     }
     public override NodeState Evaluate()
     {
+        if(stats.IsAsleep())
+        {
+            state = NodeState.FAILURE;
+            return state;
+        }
         if(children[0].Evaluate() == NodeState.SUCCESS)
         {
             stats.ChangeDirection();

@@ -47,7 +47,8 @@ public class Spikey : Enemy
                     new CheckBool("attack", true),
                     new Wait(dropIdleTime),
                     new SetParentVariable("attack", false, 2),
-                    new AnimationBool(animator, "stuck", false)
+                    new AnimationBool(animator, "stuck", false),
+                    new ChangeCollisionDetection(GetComponent<Collider2D>(), player.GetComponent<Collider2D>(), true)
                 }),
 
                 new Sequence(new List<Node>{
@@ -60,6 +61,7 @@ public class Spikey : Enemy
                     new CheckBool("attack", true),
                     new CheckPlayerArea(stats, player, damageTrigger),
                     new DamagePlayer(player, dropDamage),
+                    new ChangeCollisionDetection(GetComponent<Collider2D>(), player.GetComponent<Collider2D>(), false),
                     new AddForcePlayer(stats, player, dropPlayerForce)
                 }),
 
