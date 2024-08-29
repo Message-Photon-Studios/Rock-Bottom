@@ -724,7 +724,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""3d3c56e3-f25e-4b8d-9f4e-28116275c3ba"",
                     ""path"": ""<Keyboard>/l"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""DivideColor"",
