@@ -12,6 +12,7 @@ public class CrystalBombarder : Enemy
     [SerializeField] Vector2 spawnBombForce;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;
+    [SerializeField] float attackDelay;
 
     protected override Node SetupTree()
     {
@@ -28,11 +29,19 @@ public class CrystalBombarder : Enemy
                 }),
 
                 new Sequence(new List<Node>{
+                    new CheckBool("canAttack", true),
                     new CheckBool("attack", false),
                     new CheckPlayerArea(stats, player, attackTrigger),
                     new LookAtPlayer(stats, player),
-                    new AnimationTrigger(animator, "attack")
+                    new AnimationTrigger(animator, "attack"),
+                    new SetParentVariable("canAttack", false, 3)
                     }),
+
+                new Sequence(new List<Node>{
+                    new CheckBool("canAttack", false),
+                    new Wait(attackDelay),
+                    new SetParentVariable("canAttack", true, 3)
+                }),
 
                 new Sequence(new List<Node>{
                     new CheckBool("attack", false),
@@ -43,6 +52,7 @@ public class CrystalBombarder : Enemy
         
         root.SetData("attack", false);
         root.SetData("spawnAttack", false);
+        root.SetData("canAttack", true);
         triggersToFlip.Add(attackTrigger);
         return root;
     }
