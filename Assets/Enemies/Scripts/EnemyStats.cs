@@ -28,6 +28,7 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private bool setColorByHand;
 
     [SerializeField] private float deathTimer = 0;
+    
 
     private bool hasDeathTimer = false;
 
@@ -35,6 +36,8 @@ public class EnemyStats : MonoBehaviour
     /// The direction that the enemy is looking
     /// </summary>
     public float lookDir = -1;
+
+    [SerializeField] GameObject colorOrbPrefab;
 
     private float normalMovementDrag; //The normal movement drag of the enemy
     private float movementSpeedTimer;
@@ -73,6 +76,8 @@ public class EnemyStats : MonoBehaviour
 
     private bool enemyDead = false;
     [CanBeNull] private Coroutine currentCoroutine;
+
+    public bool isColoredThisFrame {get; private set;} = false;
 
     #region Setup and Timers
     void Awake()
@@ -129,6 +134,7 @@ public class EnemyStats : MonoBehaviour
 
     void Update()
     {
+        if(isColoredThisFrame) isColoredThisFrame = false;
         if(secTimer > 1f)
         {
             if(color != null && color.name == "Rainbow")
@@ -359,6 +365,12 @@ public class EnemyStats : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
+        int drainAmount = 3;
+        if(colorOrbPrefab != null && colorAmmount-drainAmount > 0 && color != null)
+        {
+            GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;
+            orb.GetComponent<ColorOrb>().SetTarget(GameObject.FindGameObjectWithTag("Player"), colorAmmount - drainAmount, color);
+        }
         onEnemyDeath?.Invoke();
     }
 
@@ -451,6 +463,7 @@ public class EnemyStats : MonoBehaviour
         else
             GetComponent<SpriteRenderer>().material = defaultColor;
         
+        isColoredThisFrame = true;
     }
 
     public void SetColor(GameColor color, int ammount)

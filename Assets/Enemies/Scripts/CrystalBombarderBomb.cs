@@ -54,6 +54,7 @@ public class CrystalBombarderBomb : Enemy
         root.SetData("attack", false);
         root.SetData("exploding", false);
         triggersToFlip.Add(attackTrigger);
+        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), player.GetComponent<Collider2D>());
         return root;
     }
 

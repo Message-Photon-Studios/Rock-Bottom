@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using Steamworks;
 
 /// <summary>
 /// Keeps track of the colors that the player has gathered. 
@@ -27,7 +28,7 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] InputActionReference changeRightActions;
     [SerializeField] InputActionReference pickUpAction;
     [SerializeField] public Material defaultColor;
-
+    [SerializeField] InputActionReference removeColorAction;
     public Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
     SpellPickup pickUpSpell = null;
 
@@ -61,6 +62,8 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     public UnityAction<bool> onSpellPickupInRange;
     
+    private System.Action<InputAction.CallbackContext> divideColorHandler;
+
     #endregion
 
     #region Setup
@@ -79,6 +82,8 @@ public class ColorInventory : MonoBehaviour
         onColorUpdated += updateBrushColor;
         onSlotChanged += slotChangedBrush;
         pickUpAction.action.performed += PickUp;
+        divideColorHandler = (InputAction.CallbackContext ctx) => DivideColor();
+        removeColorAction.action.performed += divideColorHandler;
     }
 
     void OnDisable()
@@ -88,6 +93,7 @@ public class ColorInventory : MonoBehaviour
         onSlotChanged -= slotChangedBrush;
         
         pickUpAction.action.performed -= PickUp;
+        removeColorAction.action.performed -= divideColorHandler;
     }
 
     #endregion
@@ -200,7 +206,115 @@ public class ColorInventory : MonoBehaviour
     }
     #endregion
 
+    #region Divide color action
+    
+    private void DivideColor()
+    {
+        GameColor gameColor = ActiveSlot().gameColor;
+        int amount = ActiveSlot().charge;
+        if(gameColor == null || amount <= 0) return;
+
+        ActiveSlot().RemoveColor();
+        
+        int rootAmount = amount/gameColor.rootColors.Length;
+        int existingRootAmount = 0;
+        foreach(GameColor rootColor in gameColor.rootColors)
+        {
+            for(int i = 1; i < colorSlots.Count; i++)
+            {
+                int check = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[check].gameColor != null && colorSlots[check].charge > 0 && colorSlots[check].gameColor.ContainsRootColor(rootColor) && !colorSlots[check].IsFilledMax())
+                {
+                    existingRootAmount++;
+                    break;
+                }
+            }
+        }
+
+        if(existingRootAmount <= 0)
+        {
+            onColorUpdated?.Invoke();
+            return;
+        }
+
+        amount -= (rootAmount * (gameColor.rootColors.Length - existingRootAmount));
+
+        HashSet<ColorSlot> fillableSlots = new HashSet<ColorSlot>();
+        foreach(GameColor rootColor in gameColor.rootColors)
+        {
+            for (int i = 1; i < colorSlots.Count; i++)
+            {
+                int check = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0) continue;
+                if(colorSlots[check].gameColor.ContainsRootColor(rootColor) && colorSlots[check].gameColor)
+                {
+                    if(!fillableSlots.Contains(colorSlots[check]) && !colorSlots[check].IsFilledMax()) fillableSlots.Add(colorSlots[check]);
+                }
+            }
+        }
+
+        amount = amount/fillableSlots.Count;
+        if(amount < 1) amount = 1;
+        foreach (ColorSlot slot in fillableSlots)
+        {
+            slot.AddCharge(amount);
+        }
+
+        onColorUpdated?.Invoke();
+    }
+
+    #endregion
+
     #region Add and remove colors
+
+    public void AddColorOrbColor(GameColor gameColor, int amount)
+    {
+        int rootAmount = amount/gameColor.rootColors.Length;
+        int existingRootAmount = 0;
+        foreach(GameColor rootColor in gameColor.rootColors)
+        {
+            for(int i = 0; i < colorSlots.Count; i++)
+            {
+                int check = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[check].gameColor != null && colorSlots[check].charge > 0 && colorSlots[check].gameColor.ContainsRootColor(rootColor) && !colorSlots[check].IsFilledMax())
+                {
+                    existingRootAmount++;
+                    break;
+                }
+            }
+        }
+
+        if(existingRootAmount <= 0)
+        {
+            onColorUpdated?.Invoke();
+            return;
+        }
+
+        amount -= (rootAmount * (gameColor.rootColors.Length - existingRootAmount));
+
+        HashSet<ColorSlot> fillableSlots = new HashSet<ColorSlot>();
+        foreach(GameColor rootColor in gameColor.rootColors)
+        {
+            for (int i = 0; i < colorSlots.Count; i++)
+            {
+                int check = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0) continue;
+                if(colorSlots[check].gameColor.ContainsRootColor(rootColor) && colorSlots[check].gameColor)
+                {
+                    if(!fillableSlots.Contains(colorSlots[check]) && !colorSlots[check].IsFilledMax()) fillableSlots.Add(colorSlots[check]);
+                }
+            }
+        }
+
+        amount = amount/fillableSlots.Count;
+        if(amount < 1) amount = 1;
+        foreach (ColorSlot slot in fillableSlots)
+        {
+            slot.AddCharge(amount);
+        }
+
+        onColorUpdated?.Invoke();
+    }
 
     /// <summary>
     /// Adds color to the active color slott. Mixes the colors if color already exist there
@@ -209,17 +323,56 @@ public class ColorInventory : MonoBehaviour
     /// <param name="amount"></param>
     public void AddColor(GameColor color, int amount)
     {
+        if(color == null) return;
+        ColorSlot fillSlot = null;
+        if(ActiveSlot().IsEmpty() || ActiveSlot().gameColor == color)
+            fillSlot = ActiveSlot();
+        else if(!ActiveSlot().IsEmpty())
+        {
+            bool hasRoots = true;
+            foreach(GameColor rootColor in color.rootColors)
+            {
+                if(!ActiveSlot().gameColor.ContainsRootColor(rootColor))
+                {
+                    hasRoots = false;
+                    break;
+                }
+            }
+
+            if(hasRoots) fillSlot = ActiveSlot();
+        }
+
+        if(fillSlot == null || fillSlot.IsFilledMax())
+        {
+            for (int i = 1; i < colorSlots.Count; i++)
+            {
+                int pick = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[pick].gameColor == color)
+                {
+                    if(fillSlot == null || fillSlot.IsFilledMax())
+                    {
+                        fillSlot = colorSlots[pick];
+                    }
+                }
+            }
+
+            if(fillSlot == null) fillSlot = ActiveSlot();
+        }
+
+        // Slot to Fill is now chosen
+
         GameColor setColor;
         //if(ActiveSlot().gameColor?.name == "Rainbow" && ActiveSlot().charge > 0) return;
-        if(ActiveSlot().charge > 0)
-            setColor = ActiveSlot().gameColor.MixColor(color);
+        
+        if(fillSlot.charge > 0)
+            setColor = fillSlot.gameColor.MixColor(color);
         else
             setColor = color;
-        int setAmount = ActiveSlot().charge + amount;
-        setAmount = (setAmount > ActiveSlot().maxCapacity)?  ActiveSlot().maxCapacity : setAmount;
+        int setAmount = fillSlot.charge + amount;
+        setAmount = (setAmount > fillSlot.maxCapacity)?  fillSlot.maxCapacity : setAmount;
 
-        colorSlots[activeSlot].SetCharge(setAmount);
-        colorSlots[activeSlot].SetGameColor(setColor);
+        fillSlot.SetCharge(setAmount);
+        fillSlot.SetGameColor(setColor);
 
         onColorUpdated?.Invoke();
     }
@@ -358,6 +511,7 @@ public class ColorInventory : MonoBehaviour
             RotateActive(1);
         }
         colorSlots.Add(new ColorSlot());
+        colorSlots[colorSlots.Count-1].maxCapacity = colorSlots[0].maxCapacity;
         onColorSlotsChanged?.Invoke();
     }
 
@@ -412,6 +566,13 @@ public class ColorSlot
     public void SetCharge(int set)
     {
         charge = set;
+        if(charge > maxCapacity)
+        charge = maxCapacity;
+    }
+
+    public void AddCharge(int addCharge)
+    {
+        SetCharge(charge + addCharge);
     }
     public void SetGameColor(GameColor set) 
     {
@@ -421,6 +582,16 @@ public class ColorSlot
     public void RemoveColor()
     {
         SetCharge(0);
+    }
+
+    public bool IsFilledMax()
+    {
+        return charge >= maxCapacity;
+    }
+
+    public bool IsEmpty()
+    {
+        return (charge <= 0 || gameColor == null);
     }
 }
 

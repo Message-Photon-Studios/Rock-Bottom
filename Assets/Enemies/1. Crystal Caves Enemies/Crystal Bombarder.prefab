@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 70
   color: {fileID: 11400000, guid: fb4a5352fdc867147b0b07d399cd221d, type: 2}
-  colorAmmount: 4
+  colorAmmount: 6
   movementSpeed: 3000
   coinsDropped:
     min: 10
@@ -66,6 +66,7 @@ MonoBehaviour:
   setColorByHand: 0
   deathTimer: 0
   lookDir: -1
+  colorOrbPrefab: {fileID: 3555706799306581111, guid: e632eca802dd6974981edd7786f7e079, type: 3}
   currentCombo: 0
   enemySounds: {fileID: 8043044965120297129}
 --- !u!114 &1115180573550613685
@@ -93,6 +94,7 @@ MonoBehaviour:
   spawnBombForce: {x: 2500, y: 3000}
   patrollDistance: 5
   patrollIdleTime: 3
+  attackDelay: 5
 --- !u!50 &1115180573550613684
 Rigidbody2D:
   serializedVersion: 4

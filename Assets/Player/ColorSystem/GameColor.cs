@@ -25,6 +25,7 @@ public class GameColor : ScriptableObject
     /// </summary>
     [SerializeField] ColorEffect colorEffect;
     [SerializeField] List<ColorMix> mixes;
+    [SerializeField] public GameColor[] rootColors;
 
     //Icon representing the color.
     [SerializeField] public Sprite colorIcon;
@@ -44,6 +45,20 @@ public class GameColor : ScriptableObject
         else return this;
     }
 
+    /// <summary>
+    /// Returns true if this color contains the root color
+    /// </summary>
+    /// <param name="rootColor"></param>
+    /// <returns></returns>
+    public bool ContainsRootColor(GameColor rootColor)
+    {
+        for (int i = 0; i < rootColors.Length; i++)
+        {
+            if(rootColors[i] == rootColor) return true;
+        }
+        
+        return false;
+    }
     public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
@@ -56,7 +71,15 @@ public class GameColor : ScriptableObject
 
         PlayerStats playerStats = playerObj.GetComponent<PlayerStats>();
 
+        int powerDivide = 1;
+        if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) powerDivide = 2;
+
+        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
+        enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
+
+
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
+        power = power / powerDivide;
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
@@ -73,8 +96,7 @@ public class GameColor : ScriptableObject
             }
         }
 
-        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
-        enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
+
     }
 
     /// <summary>
