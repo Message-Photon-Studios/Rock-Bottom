@@ -30,6 +30,11 @@ public class EnemyObjectSpawnerAim : Node
 
     public override NodeState Evaluate()
     {
+        if (stats == null)
+        {
+            state = NodeState.FAILURE;
+            return state;
+        }
         float dX = player.transform.position.x - (stats.GetPosition().x + offset.x);
         float dY = player.transform.position.y - (stats.GetPosition().y + offset.y);
         float deg = Mathf.Rad2Deg*Mathf.Atan2(dY, dX);
