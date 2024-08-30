@@ -274,17 +274,56 @@ public class ColorInventory : MonoBehaviour
     /// <param name="amount"></param>
     public void AddColor(GameColor color, int amount)
     {
+        if(color == null) return;
+        ColorSlot fillSlot = null;
+        if(ActiveSlot().IsEmpty() || ActiveSlot().gameColor == color)
+            fillSlot = ActiveSlot();
+        else if(!ActiveSlot().IsEmpty())
+        {
+            bool hasRoots = true;
+            foreach(GameColor rootColor in color.rootColors)
+            {
+                if(!ActiveSlot().gameColor.ContainsRootColor(rootColor))
+                {
+                    hasRoots = false;
+                    break;
+                }
+            }
+
+            if(hasRoots) fillSlot = ActiveSlot();
+        }
+
+        if(fillSlot == null)
+        {
+            for (int i = 1; i < colorSlots.Count; i++)
+            {
+                int pick = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[pick].gameColor == color)
+                {
+                    if(fillSlot == null || fillSlot.IsFilledMax())
+                    {
+                        fillSlot = colorSlots[pick];
+                    }
+                }
+            }
+
+            if(fillSlot == null) fillSlot = ActiveSlot();
+        }
+
+        // Slot to Fill is now chosen
+
         GameColor setColor;
         //if(ActiveSlot().gameColor?.name == "Rainbow" && ActiveSlot().charge > 0) return;
-        if(ActiveSlot().charge > 0)
-            setColor = ActiveSlot().gameColor.MixColor(color);
+        
+        if(fillSlot.charge > 0)
+            setColor = fillSlot.gameColor.MixColor(color);
         else
             setColor = color;
-        int setAmount = ActiveSlot().charge + amount;
-        setAmount = (setAmount > ActiveSlot().maxCapacity)?  ActiveSlot().maxCapacity : setAmount;
+        int setAmount = fillSlot.charge + amount;
+        setAmount = (setAmount > fillSlot.maxCapacity)?  fillSlot.maxCapacity : setAmount;
 
-        colorSlots[activeSlot].SetCharge(setAmount);
-        colorSlots[activeSlot].SetGameColor(setColor);
+        fillSlot.SetCharge(setAmount);
+        fillSlot.SetGameColor(setColor);
 
         onColorUpdated?.Invoke();
     }
@@ -499,6 +538,11 @@ public class ColorSlot
     public bool IsFilledMax()
     {
         return charge >= maxCapacity;
+    }
+
+    public bool IsEmpty()
+    {
+        return (charge <= 0 || gameColor == null);
     }
 }
 
