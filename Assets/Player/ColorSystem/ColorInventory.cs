@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using Steamworks;
 
 /// <summary>
 /// Keeps track of the colors that the player has gathered. 
@@ -27,7 +28,7 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] InputActionReference changeRightActions;
     [SerializeField] InputActionReference pickUpAction;
     [SerializeField] public Material defaultColor;
-
+    [SerializeField] InputActionReference removeColorAction;
     public Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
     SpellPickup pickUpSpell = null;
 
@@ -61,6 +62,8 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     public UnityAction<bool> onSpellPickupInRange;
     
+    private System.Action<InputAction.CallbackContext> divideColorHandler;
+
     #endregion
 
     #region Setup
@@ -79,6 +82,8 @@ public class ColorInventory : MonoBehaviour
         onColorUpdated += updateBrushColor;
         onSlotChanged += slotChangedBrush;
         pickUpAction.action.performed += PickUp;
+        divideColorHandler = (InputAction.CallbackContext ctx) => DivideColor();
+        removeColorAction.action.performed += divideColorHandler;
     }
 
     void OnDisable()
@@ -88,6 +93,7 @@ public class ColorInventory : MonoBehaviour
         onSlotChanged -= slotChangedBrush;
         
         pickUpAction.action.performed -= PickUp;
+        removeColorAction.action.performed -= divideColorHandler;
     }
 
     #endregion
@@ -198,6 +204,38 @@ public class ColorInventory : MonoBehaviour
     {
         return GetColorBuff(ActiveSlot().gameColor);
     }
+    #endregion
+
+    #region Divide color action
+    
+    private void DivideColor()
+    {
+        GameColor gameColor = ActiveSlot().gameColor;
+        int amount = ActiveSlot().charge;
+        if(gameColor == null || amount <= 0) return;
+
+        ActiveSlot().RemoveColor();
+        
+        amount = amount/gameColor.rootColors.Length;
+        if (amount < 1) amount = 1;
+
+        foreach(GameColor rootColor in gameColor.rootColors)
+        {
+            for (int i = 1; i < colorSlots.Count; i++)
+            {
+                int check = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0) continue;
+                if(colorSlots[check].gameColor.ContainsRootColor(rootColor))
+                {
+                    colorSlots[check].AddCharge(amount);
+                    break;
+                }
+            }
+        }
+
+        onColorUpdated?.Invoke();
+    }
+
     #endregion
 
     #region Add and remove colors
@@ -412,6 +450,13 @@ public class ColorSlot
     public void SetCharge(int set)
     {
         charge = set;
+        if(charge > maxCapacity)
+        charge = maxCapacity;
+    }
+
+    public void AddCharge(int addCharge)
+    {
+        SetCharge(charge + addCharge);
     }
     public void SetGameColor(GameColor set) 
     {
