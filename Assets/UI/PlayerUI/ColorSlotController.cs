@@ -304,7 +304,7 @@ public class ColorSlotController : MonoBehaviour
             {
                 if (!bottleFull[i])
                 {
-                    ColorSlot slot = colorInventory.colorSlots[colorInventory.activeSlot];
+                    ColorSlot slot = colorInventory.colorSlots[i];
                     Image capEffect = slotList[i].GetChild(0).GetChild(2).GetComponent<Image>();
                     StartCoroutine(initCapFull(capEffect, slot));
                     bottleFull[i] = true;
