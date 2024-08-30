@@ -267,6 +267,55 @@ public class ColorInventory : MonoBehaviour
 
     #region Add and remove colors
 
+    public void AddColorOrbColor(GameColor gameColor, int amount)
+    {
+        int rootAmount = amount/gameColor.rootColors.Length;
+        int existingRootAmount = 0;
+        foreach(GameColor rootColor in gameColor.rootColors)
+        {
+            for(int i = 0; i < colorSlots.Count; i++)
+            {
+                int check = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[check].gameColor != null && colorSlots[check].charge > 0 && colorSlots[check].gameColor.ContainsRootColor(rootColor) && !colorSlots[check].IsFilledMax())
+                {
+                    existingRootAmount++;
+                    break;
+                }
+            }
+        }
+
+        if(existingRootAmount <= 0)
+        {
+            onColorUpdated?.Invoke();
+            return;
+        }
+
+        amount -= (rootAmount * (gameColor.rootColors.Length - existingRootAmount));
+
+        HashSet<ColorSlot> fillableSlots = new HashSet<ColorSlot>();
+        foreach(GameColor rootColor in gameColor.rootColors)
+        {
+            for (int i = 0; i < colorSlots.Count; i++)
+            {
+                int check = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0) continue;
+                if(colorSlots[check].gameColor.ContainsRootColor(rootColor) && colorSlots[check].gameColor)
+                {
+                    if(!fillableSlots.Contains(colorSlots[check]) && !colorSlots[check].IsFilledMax()) fillableSlots.Add(colorSlots[check]);
+                }
+            }
+        }
+
+        amount = amount/fillableSlots.Count;
+        if(amount < 1) amount = 1;
+        foreach (ColorSlot slot in fillableSlots)
+        {
+            slot.AddCharge(amount);
+        }
+
+        onColorUpdated?.Invoke();
+    }
+
     /// <summary>
     /// Adds color to the active color slott. Mixes the colors if color already exist there
     /// </summary>

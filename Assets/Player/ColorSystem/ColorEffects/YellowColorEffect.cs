@@ -66,7 +66,7 @@ public class YellowColorEffect : ColorEffect
             // Set enemy as parent of the particle system
             instantiatedParticles.transform.parent = enemyObj.transform;
             affected.Add(obj);
-            if (obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this) return;
+            if (obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this && !obj.GetComponent<EnemyStats>().isColoredThisFrame) return;
             Vector3 forceDir =  (enemyObj.transform.position - obj.transform.position);
             if(forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
             if (!obj.GetComponent<EnemyStats>().IsKnockbackImune())
