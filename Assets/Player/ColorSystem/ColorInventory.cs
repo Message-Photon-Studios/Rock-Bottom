@@ -228,12 +228,6 @@ public class ColorInventory : MonoBehaviour
                     existingRootAmount++;
                     break;
                 }
-
-                if(colorSlots[check].gameColor == null && i == colorSlots.Count-1)
-                {
-                    onColorUpdated?.Invoke();
-                    return;
-                }
             }
         }
 
