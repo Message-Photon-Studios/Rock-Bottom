@@ -177,9 +177,13 @@ MonoBehaviour:
     Power: 120%'
   spellCost: 50
   powerScale: 1.2
-  destroyOnImpact: 0
-  destroyOnHit: 0
-  lifeTime: 1.2
+  destroyOnAllImpact: 0
+  destroyOnEnemyHit: 0
+  impactOnEnemies: 1
+  impactOnNonEnemies: 1
+  triggerOnlyOnce: 0
+  requirePlayerLOSonSpawn: 0
+  lifeTime: 1
   animationTrigger: raisedSpell
   onImpact:
   - {fileID: 3321278458073070407}
