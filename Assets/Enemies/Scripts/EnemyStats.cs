@@ -365,11 +365,11 @@ public class EnemyStats : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
-
-        if(colorOrbPrefab != null && colorAmmount > 0 && color != null)
+        int drainAmount = 3;
+        if(colorOrbPrefab != null && colorAmmount-drainAmount > 0 && color != null)
         {
             GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;
-            orb.GetComponent<ColorOrb>().SetTarget(GameObject.FindGameObjectWithTag("Player"), colorAmmount, color);
+            orb.GetComponent<ColorOrb>().SetTarget(GameObject.FindGameObjectWithTag("Player"), colorAmmount - drainAmount, color);
         }
         onEnemyDeath?.Invoke();
     }
