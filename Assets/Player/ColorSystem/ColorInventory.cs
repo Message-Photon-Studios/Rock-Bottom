@@ -423,6 +423,7 @@ public class ColorInventory : MonoBehaviour
             RotateActive(1);
         }
         colorSlots.Add(new ColorSlot());
+        colorSlots[colorSlots.Count-1].maxCapacity = colorSlots[0].maxCapacity;
         onColorSlotsChanged?.Invoke();
     }
 
