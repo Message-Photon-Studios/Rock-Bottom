@@ -216,21 +216,54 @@ public class ColorInventory : MonoBehaviour
 
         ActiveSlot().RemoveColor();
         
-        amount = amount/gameColor.rootColors.Length;
-        if (amount < 1) amount = 1;
+        int rootAmount = amount/gameColor.rootColors.Length;
+        int existingRootAmount = 0;
+        foreach(GameColor rootColor in gameColor.rootColors)
+        {
+            for(int i = 1; i < colorSlots.Count; i++)
+            {
+                int check = (activeSlot+i)%colorSlots.Count;
+                if(colorSlots[check].gameColor != null && colorSlots[check].charge > 0 && colorSlots[check].gameColor.ContainsRootColor(rootColor) && !colorSlots[check].IsFilledMax())
+                {
+                    existingRootAmount++;
+                    break;
+                }
 
+                if(colorSlots[check].gameColor == null && i == colorSlots.Count-1)
+                {
+                    onColorUpdated?.Invoke();
+                    return;
+                }
+            }
+        }
+
+        if(existingRootAmount <= 0)
+        {
+            onColorUpdated?.Invoke();
+            return;
+        }
+
+        amount -= (rootAmount * (gameColor.rootColors.Length - existingRootAmount));
+
+        HashSet<ColorSlot> fillableSlots = new HashSet<ColorSlot>();
         foreach(GameColor rootColor in gameColor.rootColors)
         {
             for (int i = 1; i < colorSlots.Count; i++)
             {
                 int check = (activeSlot+i)%colorSlots.Count;
                 if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0) continue;
-                if(colorSlots[check].gameColor.ContainsRootColor(rootColor))
+                if(colorSlots[check].gameColor.ContainsRootColor(rootColor) && colorSlots[check].gameColor)
                 {
-                    colorSlots[check].AddCharge(amount);
-                    break;
+                    if(!fillableSlots.Contains(colorSlots[check]) && !colorSlots[check].IsFilledMax()) fillableSlots.Add(colorSlots[check]);
                 }
             }
+        }
+
+        amount = amount/fillableSlots.Count;
+        if(amount < 1) amount = 1;
+        foreach (ColorSlot slot in fillableSlots)
+        {
+            slot.AddCharge(amount);
         }
 
         onColorUpdated?.Invoke();
@@ -466,6 +499,11 @@ public class ColorSlot
     public void RemoveColor()
     {
         SetCharge(0);
+    }
+
+    public bool IsFilledMax()
+    {
+        return charge >= maxCapacity;
     }
 }
 
