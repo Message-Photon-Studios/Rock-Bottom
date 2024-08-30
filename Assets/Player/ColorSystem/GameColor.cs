@@ -71,7 +71,15 @@ public class GameColor : ScriptableObject
 
         PlayerStats playerStats = playerObj.GetComponent<PlayerStats>();
 
+        int powerDivide = 1;
+        if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) powerDivide = 2;
+
+        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
+        enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
+
+
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
+        power = power / powerDivide;
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
@@ -88,8 +96,7 @@ public class GameColor : ScriptableObject
             }
         }
 
-        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
-        enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
+
     }
 
     /// <summary>
