@@ -69,6 +69,8 @@ public class EnemyStats : MonoBehaviour
     public UnityAction<float, Vector2> onDamageTaken;
     public UnityAction<GameColor> onColorChanged;
 
+    public UnityAction onEnemySlept;
+
     /// <summary>
     /// The enemy died
     /// </summary>
@@ -578,6 +580,7 @@ public class EnemyStats : MonoBehaviour
             }
         }
         animator.SetBool("sleep", true);
+        onEnemySlept?.Invoke();
     }
 
     /// <summary>
