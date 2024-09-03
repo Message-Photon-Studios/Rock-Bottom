@@ -59,6 +59,7 @@ public class CustomRoom : MonoBehaviour
 
     public bool repeatable;
     public DoorColor roomRegionColor = DoorColor.Green;
+    public bool allowGreenClosingRooms = true;
     public RoomNodeHolder roomNodes;
 
     public DisplayMode displayMode;
@@ -289,7 +290,7 @@ public class CustomRoom : MonoBehaviour
             for (var i = 0; i < 4; i++)
             {
                 if (node.Value.doors[i] != DoorColor.None && neighbors[i] == null)
-                    doors.Add(new Door(node.Key, (Direction)i, this, count, node.Value.doors[i]));
+                    doors.Add(new Door(node.Key, (Direction)i, this, count, node.Value.doors[i], allowGreenClosingRooms));
             }
         }
 

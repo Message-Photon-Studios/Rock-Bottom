@@ -18,16 +18,18 @@ public class Door
     public Direction dir;
     public CustomRoom room;
     public int doorsInRoom;
+    public bool allowsGreenClosingRooms = true;
 
     public DoorColor doorColor;
 
-    public Door(Vector2 pos, Direction dir, CustomRoom room, int doorsInRoom, DoorColor doorColor)
+    public Door(Vector2 pos, Direction dir, CustomRoom room, int doorsInRoom, DoorColor doorColor, bool allowGreenClosingRooms)
     {
         this.pos = pos;
         this.dir = dir;
         this.room = room;
         this.doorsInRoom = room.repeatable ? 0 : doorsInRoom;
         this.doorColor = doorColor;
+        this.allowsGreenClosingRooms = allowGreenClosingRooms;
     }
 }
 
@@ -489,7 +491,7 @@ public class LevelGenerator
     {
         var initRooms = Resources.LoadAll<CustomRoom>(areaPath + "/InitRooms");
         var initRoom = initRooms[Random.Range(0, initRooms.Length - 1)];
-        remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green)};
+        remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green, true)};
         normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "/NormalRooms").ToList();
         foreach (var room in normalRooms) room.spawnCount = 0;
         closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "/ClosingRooms").ToList();
@@ -498,7 +500,7 @@ public class LevelGenerator
         prefabs = new List<(Vector2, CustomRoom)>();
         filledPrefabs = new List<(Vector2, GameObject)>();
         graph = new DungeonGraph(initRoom, this);
-        topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green);
+        topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green, true);
     }
 
     private void endGeneration(string areaPath)
@@ -645,6 +647,8 @@ public class LevelGenerator
             .ToList();
         
         if(rooms.Count > 0) return (rooms[Random.Range(0, rooms.Count)], new Vector2(0, 0));
+
+        if(!door.allowsGreenClosingRooms) return new (null, Vector2.zero);
 
         rooms = closingRooms.ToList();
 
