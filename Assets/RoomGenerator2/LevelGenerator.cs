@@ -301,7 +301,7 @@ public class LevelGenerator
 
     public bool instantiated = false;
 
-    public void generate(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
+    public void generate(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin)
     {
         var tries = 0;
         bool res = false;
@@ -324,7 +324,7 @@ public class LevelGenerator
             }
 
             initGeneration(areaPath);
-            res = tryGenerate(size, areaPath, regionSizeCopy);
+            res = tryGenerate(size, areaPath, regionSizeCopy, regionSizeMargin);
             //if (!res) continue;
             endGeneration(areaPath);
 
@@ -584,7 +584,7 @@ public class LevelGenerator
         remainingDoors = remainingDoors.Concat(newDoors).ToList();
     }
 
-    private bool tryGenerate(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
+    private bool tryGenerate(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin)
     {
         while (true)
         {
@@ -593,7 +593,7 @@ public class LevelGenerator
             {
                 foreach (KeyValuePair<DoorColor, int> item in regionSize)
                 {
-                    if(item.Value > 10) return false;
+                    if(item.Value > regionSizeMargin) return false;
                 }
                 return graph.nodes.Count >= size;
             }
@@ -604,15 +604,14 @@ public class LevelGenerator
 
     private (CustomRoom, Vector2) getRoom(int remainingSize, Door door, Dictionary<DoorColor, int> regionSize)
     {
-        (CustomRoom, Vector2) retRoom;
-
-        if (remainingSize > 0 && regionSize[door.doorColor] > 0) //If this cast error then you have forgot to set region size in inspector
+        (CustomRoom room, Vector2) retRoom;
+        retRoom = getNormalRoom(door, false);
+        if (remainingSize > 0 && retRoom.room != null && regionSize[retRoom.room.roomRegionColor] > 0) //If this cast error then you have forgot to set region size in inspector
         {
-            retRoom = getNormalRoom(door, false);
             if (retRoom.Item1 == null)
                 retRoom = getClosingRoom(door);
             else
-                regionSize[door.doorColor] -= retRoom.Item1.roomNodes.Count;
+                regionSize[retRoom.room.roomRegionColor] -= retRoom.Item1.roomNodes.Count;
         }
         else
         {

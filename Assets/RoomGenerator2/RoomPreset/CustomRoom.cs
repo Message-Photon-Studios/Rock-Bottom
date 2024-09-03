@@ -58,6 +58,7 @@ public class CustomRoom : MonoBehaviour
     public static readonly int[] mirrorDir = { 2, 3, 0, 1 };
 
     public bool repeatable;
+    public DoorColor roomRegionColor = DoorColor.Green;
     public RoomNodeHolder roomNodes;
 
     public DisplayMode displayMode;
