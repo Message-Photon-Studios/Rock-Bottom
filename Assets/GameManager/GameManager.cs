@@ -112,8 +112,17 @@ public class GameManager : MonoBehaviour
     
     [System.Serializable]
     public struct MaskLibrary {
+        public int playerLayer;
+        public int platformLayer;
+        public int groundLayer;
         public LayerMask onlyGround;
+        public LayerMask onlyPlatforms;
         public LayerMask onlyEnemy;
         public LayerMask onlyPlayer;
+
+        public LayerMask onlySolidGround()
+        {
+            return onlyGround & ~onlyPlatforms;
+        }
     }
 }
