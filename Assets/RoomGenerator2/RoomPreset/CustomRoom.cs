@@ -25,7 +25,9 @@ public enum DoorColor
     Green = 1,
     Red = 2,
     Blue = 3,
-    Yellow = 4
+    Yellow = 4,
+    Pink = 5,
+    Cyan = 6
 }
 
 [System.Serializable]
@@ -123,6 +125,12 @@ public class CustomRoom : MonoBehaviour
                                         break;
                                     case DoorColor.Yellow:
                                         Gizmos.color = Color.yellow;
+                                        break;
+                                    case DoorColor.Pink:
+                                        Gizmos.color = Color.magenta;
+                                        break;
+                                    case DoorColor.Cyan:
+                                        Gizmos.color = Color.cyan;
                                         break;
                                     default:
                                         Gizmos.color = Color.black;
