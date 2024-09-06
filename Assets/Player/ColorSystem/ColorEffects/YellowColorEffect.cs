@@ -16,7 +16,6 @@ public class YellowColorEffect : ColorEffect
         foreach (GameObject obj in objs)
         {
             if(obj == null) continue;
-            if(obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this && !obj.GetComponent<EnemyStats>().isColoredThisFrame) continue; 
             if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange*power,2))
             {
                 AffectObject(obj, 0, enemyObj);
