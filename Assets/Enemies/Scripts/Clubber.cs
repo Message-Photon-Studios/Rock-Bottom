@@ -16,6 +16,7 @@ public class Clubber : Enemy
     [SerializeField] float clubForce;
     [SerializeField] float patrollDistance;
     [SerializeField] float patrollIdleTime;
+    private float legPos = 1.2f;
 
     protected override Node SetupTree()
     {
@@ -40,7 +41,7 @@ public class Clubber : Enemy
             new Sequence(new List<Node>{
                 new CheckBool("attack", false),
                 new CheckBool("chase", true),
-                new CheckPlatformEdgePartly(stats, 1.2f),
+                new CheckPlatformEdgePartly(stats, legPos),
                 new AnimationBool(animator, "run", false),
                 new AnimationTrigger(animator, "attack"),
             }),
@@ -58,9 +59,10 @@ public class Clubber : Enemy
                 new CheckBool("chaseCooldown", false),
                 new CheckBool("chase", false),
                 new Inverter(new IsSleeping(stats)),
+                new SeePlayerHorizontal(stats, player, 0f, viewRange),
                 new AnimationBool(animator, "run", true),
                 new SetParentVariable("chase", true, 2),
-                new PlatformChase(stats, player, body, animator, runSpeedFactor, viewRange, 0f, .5f ,"attack", "run")
+                new PlatformChase(stats, player, body, animator, runSpeedFactor, viewRange, 0f, legPos ,"attack", "run")
             }),
 
             new Sequence(new List<Node>{
@@ -73,13 +75,13 @@ public class Clubber : Enemy
                 new CheckBool("attack", false),
                 new CheckBool("chase", false),
                 new AnimationBool(animator, "run", false),
-                new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, .5f, "attack", "walk")
+                new RandomPatroll(stats, body, animator, patrollDistance, 1, patrollIdleTime, legPos, "attack", "walk")
             }),
             
 
             });
         
-        root.SetData("chaseCooldown", false);
+        root.SetData("chaseCooldown", true);
         root.SetData("chase", false);
         root.SetData("attack", false);
         root.SetData("attackDone", false);

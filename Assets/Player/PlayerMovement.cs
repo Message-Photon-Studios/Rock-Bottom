@@ -222,7 +222,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsOnPlatform() 
     {
-        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyPlatforms) ||
+        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyPlatforms) &&
         Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyPlatforms);
     }
 
