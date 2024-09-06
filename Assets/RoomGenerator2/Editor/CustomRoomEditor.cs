@@ -13,6 +13,7 @@ public class CustomRoomEditor : Editor
     {
         var room = (CustomRoom)target;
         base.OnInspectorGUI();
+
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Room Editor", EditorStyles.boldLabel);
         room.selectedNode = EditorGUILayout.Vector2Field("Selected Node", room.selectedNode);

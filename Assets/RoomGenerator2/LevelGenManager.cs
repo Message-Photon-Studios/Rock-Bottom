@@ -25,6 +25,7 @@ public class LevelGenManager : MonoBehaviour
     public int size;
 
     public SerializedDictionary<DoorColor, int> regionSize;
+    public int regionSizeMargin = 10;
 
     private readonly string[] paths = {"Rooms/CrystalCaves/Level_", "Rooms/PebbleArea/Level_"};
     private bool finished;
@@ -76,7 +77,7 @@ public class LevelGenManager : MonoBehaviour
     public void init(UIController canvas, bool async)
     {
         levelGen = new LevelGenerator();
-        levelGen.generate(size, paths[(int)levelType]+level, regionSize);
+        levelGen.generate(size, paths[(int)levelType]+level, regionSize, regionSizeMargin);
         if (async)
             StartCoroutine(generateSceneAsync(canvas));
         else

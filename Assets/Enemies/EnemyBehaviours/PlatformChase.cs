@@ -32,7 +32,7 @@ public class PlatformChase : Node
     /// <param name="walkAnimationBool">The name of the walk animation bool</param>
     /// <returns></returns>
     public PlatformChase(EnemyStats stats, PlayerStats player, Rigidbody2D body, Animator animator, float chaseSpeedFactor, float viewRange, float eyePosY,  float legPos, string stopBool, string walkAnimationBool) :
-        base(new List<Node>{new CheckPlatformEdgePartly(stats, legPos), new CheckPlatformEdgePartly(stats, -legPos), new LookAtPlayer(stats, player)})
+        base(new List<Node>{new CheckPlatformEdgePartly(stats, legPos), new LookAtPlayer(stats, player)})
     {
         this.stats = stats;
         this.player = player;
@@ -74,8 +74,7 @@ public class PlatformChase : Node
 
 
         bool atEdgeRight = (children[0].Evaluate() == NodeState.SUCCESS);
-        bool atEdgeLeft = (children[1].Evaluate() == NodeState.SUCCESS);
-        if((atEdgeRight && player.transform.position.x > stats.GetPosition().x) || (atEdgeLeft && player.transform.position.x < stats.GetPosition().x))
+        if(atEdgeRight)
         {
             animator.SetBool(walkAnimation, false);
         } else
@@ -83,7 +82,7 @@ public class PlatformChase : Node
             animator.SetBool(walkAnimation, true);
             chasePos = player.transform.position.x;
             
-            children[2].Evaluate();
+            children[1].Evaluate();
             body.AddForce(new Vector2(((chasePos < stats.GetPosition().x)?-1:1)*stats.GetSpeed()*chaseSpeedFactor, 0)*Time.fixedDeltaTime);
         }
         
