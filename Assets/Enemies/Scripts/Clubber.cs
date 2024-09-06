@@ -59,7 +59,7 @@ public class Clubber : Enemy
                 new CheckBool("chaseCooldown", false),
                 new CheckBool("chase", false),
                 new Inverter(new IsSleeping(stats)),
-                new SeePlayerHorizontal(stats, player, 0f, viewRange),
+                new SeePlayerHorizontal(stats, player, 0f, viewRange), 
                 new AnimationBool(animator, "run", true),
                 new SetParentVariable("chase", true, 2),
                 new PlatformChase(stats, player, body, animator, runSpeedFactor, viewRange, 0f, legPos ,"attack", "run")
