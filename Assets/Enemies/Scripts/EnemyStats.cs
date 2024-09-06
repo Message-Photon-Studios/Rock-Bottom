@@ -69,6 +69,8 @@ public class EnemyStats : MonoBehaviour
     public UnityAction<float, Vector2> onDamageTaken;
     public UnityAction<GameColor> onColorChanged;
 
+    public UnityAction onEnemySlept;
+
     /// <summary>
     /// The enemy died
     /// </summary>
@@ -365,7 +367,7 @@ public class EnemyStats : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
-        int drainAmount = 3;
+        int drainAmount = 4;
         if(colorOrbPrefab != null && colorAmmount-drainAmount > 0 && color != null)
         {
             GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;
@@ -578,6 +580,7 @@ public class EnemyStats : MonoBehaviour
             }
         }
         animator.SetBool("sleep", true);
+        onEnemySlept?.Invoke();
     }
 
     /// <summary>

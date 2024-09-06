@@ -18,16 +18,18 @@ public class Door
     public Direction dir;
     public CustomRoom room;
     public int doorsInRoom;
+    public bool allowsGreenClosingRooms = true;
 
     public DoorColor doorColor;
 
-    public Door(Vector2 pos, Direction dir, CustomRoom room, int doorsInRoom, DoorColor doorColor)
+    public Door(Vector2 pos, Direction dir, CustomRoom room, int doorsInRoom, DoorColor doorColor, bool allowGreenClosingRooms)
     {
         this.pos = pos;
         this.dir = dir;
         this.room = room;
         this.doorsInRoom = room.repeatable ? 0 : doorsInRoom;
         this.doorColor = doorColor;
+        this.allowsGreenClosingRooms = allowGreenClosingRooms;
     }
 }
 
@@ -301,7 +303,7 @@ public class LevelGenerator
 
     public bool instantiated = false;
 
-    public void generate(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
+    public void generate(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin)
     {
         var tries = 0;
         bool res = false;
@@ -312,8 +314,8 @@ public class LevelGenerator
             {
                 regionSizeCopy.Add(item.Key,item.Value);
             }
-            tries++;
-            if (tries > 50)
+            
+            if (tries > 50) 
             {
                 #if UNITY_EDITOR
                     throw new Exception("Failed Generation Exception on try " + tries);
@@ -324,9 +326,10 @@ public class LevelGenerator
             }
 
             initGeneration(areaPath);
-            res = tryGenerate(size, areaPath, regionSizeCopy);
+            res = tryGenerate(size, areaPath, regionSizeCopy, regionSizeMargin);
             //if (!res) continue;
             endGeneration(areaPath);
+            tries++;
 
         } while (!graph.validate() || !res);
     }
@@ -489,7 +492,7 @@ public class LevelGenerator
     {
         var initRooms = Resources.LoadAll<CustomRoom>(areaPath + "/InitRooms");
         var initRoom = initRooms[Random.Range(0, initRooms.Length - 1)];
-        remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green)};
+        remainingDoors = new List<Door>{new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green, true)};
         normalRooms = Resources.LoadAll<CustomRoom>(areaPath + "/NormalRooms").ToList();
         foreach (var room in normalRooms) room.spawnCount = 0;
         closingRooms = Resources.LoadAll<CustomRoom>(areaPath + "/ClosingRooms").ToList();
@@ -498,7 +501,7 @@ public class LevelGenerator
         prefabs = new List<(Vector2, CustomRoom)>();
         filledPrefabs = new List<(Vector2, GameObject)>();
         graph = new DungeonGraph(initRoom, this);
-        topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green);
+        topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green, true);
     }
 
     private void endGeneration(string areaPath)
@@ -542,7 +545,9 @@ public class LevelGenerator
         remainingDoors.Remove(nextPos);
         var (room, entrance) = getRoom(size - graph.size, nextPos, regionSize);
         if (room == null)
+        {
             return (false, false);
+        }
         var exits = graph.placeRoom(nextPos.pos, entrance, nextPos.dir, room);
 
         processNewDoors(exits);
@@ -584,7 +589,7 @@ public class LevelGenerator
         remainingDoors = remainingDoors.Concat(newDoors).ToList();
     }
 
-    private bool tryGenerate(int size, string areaPath, Dictionary<DoorColor, int> regionSize)
+    private bool tryGenerate(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin)
     {
         while (true)
         {
@@ -593,7 +598,7 @@ public class LevelGenerator
             {
                 foreach (KeyValuePair<DoorColor, int> item in regionSize)
                 {
-                    if(item.Value > 10) return false;
+                    if(item.Value > regionSizeMargin) return false;
                 }
                 return graph.nodes.Count >= size;
             }
@@ -604,15 +609,14 @@ public class LevelGenerator
 
     private (CustomRoom, Vector2) getRoom(int remainingSize, Door door, Dictionary<DoorColor, int> regionSize)
     {
-        (CustomRoom, Vector2) retRoom;
-
-        if (remainingSize > 0 && regionSize[door.doorColor] > 0) //If this cast error then you have forgot to set region size in inspector
+        (CustomRoom room, Vector2) retRoom;
+        retRoom = getNormalRoom(door, false);
+        if (remainingSize > 0 && retRoom.room != null && regionSize[retRoom.room.roomRegionColor] > 0) //If this cast error then you have forgot to set region size in inspector
         {
-            retRoom = getNormalRoom(door, false);
             if (retRoom.Item1 == null)
                 retRoom = getClosingRoom(door);
             else
-                regionSize[door.doorColor] -= retRoom.Item1.roomNodes.Count;
+                regionSize[retRoom.room.roomRegionColor] -= retRoom.Item1.roomNodes.Count;
         }
         else
         {
@@ -637,7 +641,7 @@ public class LevelGenerator
             var neighborPos = otherNodePos + CustomRoom.dirVectors[i];
             // If the node exists and has an open door looking at the otherNode, we set the door to open as true
             if (graph.nodes.ContainsKey(neighborPos) && graph.nodes[neighborPos].doors[CustomRoom.mirrorDir[i]] != DoorColor.None)
-                doorsToOpen[i] = door.doorColor;
+                doorsToOpen[i] = graph.nodes[neighborPos].doors[CustomRoom.mirrorDir[i]] ;
         }
 
         // Find closing rooms that have the same doors to open
@@ -646,6 +650,17 @@ public class LevelGenerator
             .ToList();
         
         if(rooms.Count > 0) return (rooms[Random.Range(0, rooms.Count)], new Vector2(0, 0));
+
+        if(!door.allowsGreenClosingRooms) 
+        {
+            string debugMsg = "Missing specialized closing room of color " + door.doorColor + " in room " + door.room.name + " with arrangement: ";
+            for (int i = 0; i < doorsToOpen.Length; i++)
+            {
+                debugMsg += doorsToOpen[i] + ", ";
+            }
+            Debug.Log(debugMsg);
+            return new (null, Vector2.zero);
+        }
 
         rooms = closingRooms.ToList();
 

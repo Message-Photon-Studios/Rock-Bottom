@@ -137,6 +137,7 @@ public class PlayerMovement : MonoBehaviour
         
         if(movementRoot.rooted) return;
         body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerLayer, GameManager.instance.maskLibrary.platformLayer, true);
         wasClimbing = false;
         if (IsGrounded() || coyoteTimer > 0)
         {
@@ -183,10 +184,13 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Camera Check
+    float checkDownTimer = 0;
     void CheckBelowStart()
     {
+        checkDownTimer = .2f;
+        Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerLayer, GameManager.instance.maskLibrary.platformLayer, true);
         if(focusPoint == null && movementRoot.totalRoot) return;
-        if(IsGrappeling()) return;
+        if(IsGrappeling() || !IsGrounded() || IsOnPlatform()) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, -checkPointY, focusPoint.localPosition.z);
         isCheckingY = true;
     }
@@ -194,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
     void CheckAboveStart()
     {
         if(focusPoint == null && movementRoot.totalRoot) return;
-        if(IsGrappeling()) return;
+        if(IsGrappeling() || !IsGrounded()) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkPointY, focusPoint.localPosition.z);
         isCheckingY = true;
     }
@@ -211,15 +215,21 @@ public class PlayerMovement : MonoBehaviour
     public bool IsGrounded()
     {  
         bool ret =  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyGround) ||
-                    Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, 3);
+                    Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyGround);
         playerAnimator.SetBool("grounded", ret);
         return ret;
     }
 
+    public bool IsOnPlatform() 
+    {
+        return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyPlatforms) &&
+        Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyPlatforms);
+    }
+
     private bool HitCeling ()
     {
-        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlyGround) ||
-                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlyGround);
+        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround()) ||
+                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround());
     }
 
     public bool IsGrappeling()
@@ -231,9 +241,9 @@ public class PlayerMovement : MonoBehaviour
                 (!Physics2D.Raycast(transform.position+Vector3.left* playerCollider.size.x/2, Vector2.down, 2.1f, GameManager.instance.maskLibrary.onlyGround) &&
                 Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.left, .5f, GameManager.instance.maskLibrary.onlyGround)) ||
                 ((wasClimbing) && (
-                    (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyGround) && 
+                    (!Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlySolidGround()) && 
                     Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2+playerCollider.offset, Vector2.right, .7f, GameManager.instance.maskLibrary.onlyGround)) ||
-                    (!Physics2D.Raycast(transform.position+Vector3.left* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyGround) &&
+                    (!Physics2D.Raycast(transform.position+Vector3.left* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlySolidGround()) &&
                     Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2+playerCollider.offset, Vector2.left, .7f, GameManager.instance.maskLibrary.onlyGround))  
                 ));
     }
@@ -243,6 +253,11 @@ public class PlayerMovement : MonoBehaviour
     #region Update Loop
     bool wallRight = false;
     private void FixedUpdate() {
+        
+        if(jump > 0 || IsGrappeling()) Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerLayer, GameManager.instance.maskLibrary.platformLayer, true);
+        else if(checkDownTimer <= 0) Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerLayer, GameManager.instance.maskLibrary.platformLayer, false);
+
+        if(checkDownTimer > 0) checkDownTimer -= Time.deltaTime;
         movementRoot.UpdateTimers();
 
         if(inAttackAnimation) return;
