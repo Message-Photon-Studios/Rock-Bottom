@@ -39,6 +39,17 @@ public class ColorSpell : MonoBehaviour
     /// If true the spell will only trigger once.
     /// </summary>
     [SerializeField] protected bool triggerOnlyOnce;
+    
+    /// <summary>
+    /// If true then the enemy already triggered list will be reset with timer.
+    /// </summary>
+    [SerializeField] protected bool canResetEnemyTriggeredList = false;
+
+    /// <summary>
+    /// How often enemy already triggered will be reset
+    /// </summary>
+    [SerializeField] protected float resetEnemyTriggeredTimer = -1;
+    protected float resetEnemyTime;
 
     /// <summary>
     /// If true the spell checks if it has LOS to the player on spawn and destroys itself if not
@@ -87,6 +98,7 @@ public class ColorSpell : MonoBehaviour
         this.power = power+powerScale;
         this.player = player;
         this.lookDir = lookDir;
+        resetEnemyTime = resetEnemyTriggeredTimer;
 
         foreach(Collider2D col in GetComponents<Collider2D>())
         {
@@ -139,7 +151,7 @@ public class ColorSpell : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if(triggerOnlyOnce && hasTriggered) return;
         if(other.CompareTag("Item") || other.CompareTag("Player")) return;
@@ -160,6 +172,18 @@ public class ColorSpell : MonoBehaviour
         {
             Destroy(gameObject);
             return;
+        }
+    }
+
+    private void Update() {
+        if(canResetEnemyTriggeredList && objectsAlreadyHit.Count > 0)
+        {
+            if(resetEnemyTriggeredTimer > 0) resetEnemyTriggeredTimer -= Time.deltaTime;
+            else
+            {
+                objectsAlreadyHit.Clear();
+                resetEnemyTriggeredTimer = resetEnemyTime;
+            }
         }
     }
 
