@@ -98,6 +98,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
         unlockedSpells.AddRange(data.unlockedColorSpells);
 
         petrifiedPigment = data.petrifiedPigment;
+
+        pickedUpPetrifiedPigment.AddRange(data.petrifiedPigmentPickedUp);
     }
 
     void IDataPersistence.SaveData(GameData data)
@@ -105,6 +107,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         data.startScene = gameStartScene;
         data.unlockedColorSpells = unlockedSpells.ToArray();
         data.petrifiedPigment = petrifiedPigment;
+        data.petrifiedPigmentPickedUp = pickedUpPetrifiedPigment.ToArray();
     }
 
     public string GetStartScene()
@@ -204,11 +207,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
     #region Petrified Pigment
 
     public UnityAction<int> onPetrifiedPigmentChanged;
-    public void AddPetrifiedPigment (int addPigment)
-    {
-        petrifiedPigment += addPigment;
-        onPetrifiedPigmentChanged?.Invoke(petrifiedPigment);
-    }
 
     public bool TryRemovePetrifiedPigment(int removePigment)
     {
@@ -227,6 +225,21 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public int GetPetrifiedPigmentAmount()
     {
         return petrifiedPigment;
+    }
+
+    HashSet<string> pickedUpPetrifiedPigment = new HashSet<string>();
+
+    public bool IsPetrifiedPigmentPickedUp(string name)
+    {
+        return pickedUpPetrifiedPigment.Contains(name);
+    }
+
+    public void PickedUpPetrifiedPigment(string name)
+    {
+        petrifiedPigment ++;
+        pickedUpPetrifiedPigment.Add(name);
+        onPetrifiedPigmentChanged?.Invoke(1);
+        DataPersistenceManager.instance.SaveGame();
     }
 
     #endregion

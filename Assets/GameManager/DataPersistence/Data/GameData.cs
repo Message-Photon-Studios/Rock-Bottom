@@ -9,6 +9,8 @@ public class GameData
     public int petrifiedPigment;
     public string[] unlockedColorSpells;
 
+    public string[] petrifiedPigmentPickedUp;
+
     /// <summary>
     /// On new game this constructor will set default values.
     /// </summary>
@@ -17,5 +19,6 @@ public class GameData
         startScene = "Tutorial";
         unlockedColorSpells = new string[0];
         petrifiedPigment = 0;
+        petrifiedPigmentPickedUp = new string[0];
     }
 }
