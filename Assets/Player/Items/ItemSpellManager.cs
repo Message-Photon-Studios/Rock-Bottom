@@ -29,9 +29,11 @@ public class ItemSpellManager : MonoBehaviour
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Item"))
         {
-            obj.GetComponent<ItemPickup>().RandomSpawnDestroy();
+            ItemPickup pickup = obj.GetComponent<ItemPickup>();
+            if(pickup == null) continue;
+            pickup.RandomSpawnDestroy();
             if(obj == null) continue;
-            if(obj.GetComponent<ItemPickup>().setByhand) continue;
+            if(pickup.setByhand) continue;
             Item item = null;
             int rng = 0;
             while(!item)
@@ -52,7 +54,7 @@ public class ItemSpellManager : MonoBehaviour
 
 
             spawnSet.RemoveAt(rng);
-            obj.GetComponent<ItemPickup>().SetItem(item, Mathf.RoundToInt(item.itemCost * stageCostMultiplier));
+            pickup.SetItem(item, Mathf.RoundToInt(item.itemCost * stageCostMultiplier));
             if(spawnSet.Count <= 0) spawnSet.AddRange(spawnableItems);
         }
 
