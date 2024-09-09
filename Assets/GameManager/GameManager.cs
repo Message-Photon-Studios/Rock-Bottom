@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IDataPersistence
 {
     public static GameManager instance;
     
@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject hunterPrefab;
     [SerializeField] float hunterSpawnDist;
     [SerializeField] int maxHunters;
+
+    string gameStartScene = "Tutorial";
     float hunterTimer = 0f;
     int hunters = 0;
     float maxClockTime;
@@ -34,8 +36,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         maxClockTime = clockTime;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-        player.onPlayerDied += OnPlayerDied;
+        player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerStats>();
+        if(player != null)
+            player.onPlayerDied += OnPlayerDied;
     }
 
     private void OnPlayerDied()
@@ -55,7 +58,36 @@ public class GameManager : MonoBehaviour
             clockTime = addClockTime + ((clockTime < 0)?0:clockTime);
         else
             clockTime = maxClockTime;
+
+
+
+        if(levelManager.saveProgressionOnStart)
+        {
+            gameStartScene = levelManager.onDeathLevel;
+            DataPersistenceManager.instance.SaveGame();
+        }
     }
+
+    #region Save Load
+
+    void IDataPersistence.LoadData(GameData data)
+    {
+        gameStartScene = data.startScene;
+    }
+
+    void IDataPersistence.SaveData(GameData data)
+    {
+        data.startScene = gameStartScene;
+    }
+
+    public string GetStartScene()
+    {
+        return gameStartScene;
+    }
+
+    #endregion
+
+    #region Game clock
 
     void Update()
     {
@@ -109,7 +141,10 @@ public class GameManager : MonoBehaviour
 
         return (retString, retSize, retColor);
     }
+
+    #endregion
     
+    #region Mask Library
     [System.Serializable]
     public struct MaskLibrary {
         public int playerLayer;
@@ -125,4 +160,6 @@ public class GameManager : MonoBehaviour
             return onlyGround & ~onlyPlatforms;
         }
     }
+
+    #endregion
 }

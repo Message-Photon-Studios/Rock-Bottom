@@ -34,7 +34,7 @@ public class TutorialEndpoint : MonoBehaviour
     void StartTrailer (InputAction.CallbackContext ctx)
     {
         if(!enableExit) return;
-        DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
+        TutorialMusic bgMusic = GameObject.FindObjectOfType<TutorialMusic>();
         UIController controller = FindObjectOfType<UIController>();
         if (controller) controller.disablePausing = true;
         bgMusic?.disableChildren();

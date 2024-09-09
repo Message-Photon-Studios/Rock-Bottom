@@ -21,6 +21,7 @@ public class DataPersistenceManager : MonoBehaviour
             return;
         }
         instance = this;
+        DontDestroyOnLoad(this);
     }
 
     private void Start() 
@@ -32,6 +33,10 @@ public class DataPersistenceManager : MonoBehaviour
     public void NewGame()
     {
         this.gameData = new GameData();
+        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        {
+            dataPersistenceObj.SaveData(gameData);
+        }
     }
 
     public void LoadGame()

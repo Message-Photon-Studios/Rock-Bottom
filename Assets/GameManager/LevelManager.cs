@@ -8,7 +8,8 @@ using Unity.VisualScripting;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] LevelGenManager levelGenerator;
-    [SerializeField] string onDeathLevel;
+    [SerializeField] public string onDeathLevel;
+    public bool saveProgressionOnStart = false;
     [SerializeField] string nextLevelName;
     [SerializeField] UIController canvas;
     public bool allowsClockTimer = true;
@@ -82,6 +83,8 @@ public class LevelManager : MonoBehaviour
         }
 
         StartCoroutine(canvas.FadeOutCoroutine(false, EndLevelAsync));
+
+
     }
 
     public IEnumerator PlayerDiedAsync()
