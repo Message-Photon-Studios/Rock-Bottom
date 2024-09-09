@@ -21,6 +21,8 @@ public class ItemInventory : MonoBehaviour
 
     private List<ItemPickup> buyItems = new List<ItemPickup>();
 
+    private Inspired inspired;
+
     /// <summary>
     /// Is called whenever the player picks up an item. Sends the item picked up
     /// </summary>
@@ -55,6 +57,12 @@ public class ItemInventory : MonoBehaviour
                 {
                     buyItems[0].PickedUp();
                 } else buyItems.RemoveAt(0);
+            }
+
+            if(inspired) 
+            {
+                if(GameManager.instance.TryRemovePetrifiedPigment(inspired.petrifiedPigmentCost))
+                    inspired.TriggerUnlock();
             }
         };
 
@@ -117,6 +125,16 @@ public class ItemInventory : MonoBehaviour
         if(!buyItems.Contains(item)) return;
         buyItems.Remove(item);
         onItemInRange?.Invoke(false);
+    }
+
+    public void EnableInspired(Inspired inspired)
+    {
+        this.inspired = inspired;
+    }
+
+    public void DisableInspired()
+    {
+        this.inspired = null;
     }
 
 

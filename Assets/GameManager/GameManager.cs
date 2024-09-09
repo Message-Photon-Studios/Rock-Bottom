@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         if(removePigment > petrifiedPigment) return false;
 
         petrifiedPigment-=removePigment;
-        onPetrifiedPigmentChanged?.Invoke(petrifiedPigment);
+        onPetrifiedPigmentChanged?.Invoke(-removePigment);
         return true;
     }
 
