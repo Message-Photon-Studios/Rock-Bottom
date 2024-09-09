@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameData
 {
     public string startScene;
-
+    public string[] unlockedColorSpells;
 
     /// <summary>
     /// On new game this constructor will set default values.
@@ -14,5 +14,6 @@ public class GameData
     public GameData ()
     {
         startScene = "Tutorial";
+        unlockedColorSpells = new string[0];
     }
 }

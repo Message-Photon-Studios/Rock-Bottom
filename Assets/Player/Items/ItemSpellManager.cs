@@ -9,13 +9,22 @@ public class ItemSpellManager : MonoBehaviour
 {
     [SerializeField] float stageCostMultiplier = 1;
     [SerializeField] Item[] spawnableItems;
-    [SerializeField] ColorSpell[] spawnableSpells;
+    [SerializeField] ColorSpell[] levelSpells;
 
     public void SpawnItems()
     {
         List<Item> spawnSet = new List<Item>();
         List<ColorSpell> spawnSetSpell = new List<ColorSpell>();
         spawnSet.AddRange(spawnableItems);
+
+        List<ColorSpell> spawnableSpells = new List<ColorSpell>();
+
+        foreach (ColorSpell spell in levelSpells)
+        {
+            if(GameManager.instance.IsSpellSpawnable(spell))
+                spawnableSpells.Add(spell);
+        }
+
         spawnSetSpell.AddRange(spawnableSpells);
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Item"))

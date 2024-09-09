@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class Inspired : MonoBehaviour
 {
-
+    [SerializeField] ColorSpell unlockSpell;
     [SerializeField] Sprite spell;
     [SerializeField] String text;
 
@@ -23,9 +23,15 @@ public class Inspired : MonoBehaviour
     }
     
     public void OnTriggerEnter2D(Collider2D other) {
-        if(other.CompareTag("Player") && !triggered) {
-            triggered = true;
-            UI.inspired(spell, text);
+        if(other.CompareTag("Player") && !triggered && !GameManager.instance.IsSpellSpawnable(unlockSpell)) {
+            TriggerUnlock();
         }
+    }
+
+    private void TriggerUnlock()
+    {
+        triggered = true;
+        UI.inspired(spell, text);
+        GameManager.instance.UnlockedSpell(unlockSpell);
     }
 }
