@@ -44,7 +44,6 @@ public class SpellPickup : MonoBehaviour
         canvas.SetActive(false);
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
     }
-
     /// <summary>
     /// Randomly destroys the spawn point depending on the initial conditions
     /// </summary>

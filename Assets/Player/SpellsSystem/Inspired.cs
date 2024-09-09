@@ -28,7 +28,11 @@ public class Inspired : MonoBehaviour
     public void OnEnable() {
         if(GameManager.instance.IsSpellSpawnable(unlockSpell))
         {
-            if(spellToEnable) spellToEnable.SetActive(true);
+            if(spellToEnable)
+            {
+                spellToEnable.SetActive(true);
+                spellToEnable.GetComponent<SpellPickup>().SetSpell(unlockSpell);
+            }
             gameObject.SetActive(false);
         }
 
@@ -64,7 +68,12 @@ public class Inspired : MonoBehaviour
         triggered = true;
         UI.inspired(spell, text);
         GameManager.instance.UnlockedSpell(unlockSpell);
-        if(spellToEnable) spellToEnable.SetActive(true);
+        if(spellToEnable) 
+        {
+            spellToEnable.SetActive(true);
+            spellToEnable.GetComponent<SpellPickup>().SetSpell(unlockSpell);
+        }
         gameObject.SetActive(false);
+        
     }
 }
