@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour, IDataPersistence
 {
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     private List<string> unlockedSpells;
     private HashSet<string> spawnableSpells;
 
+    private int petrifiedPigment = 0;
     string gameStartScene = "Tutorial";
     float hunterTimer = 0f;
     int hunters = 0;
@@ -94,12 +96,15 @@ public class GameManager : MonoBehaviour, IDataPersistence
         }
         spawnableSpells.AddRange(data.unlockedColorSpells);
         unlockedSpells.AddRange(data.unlockedColorSpells);
+
+        petrifiedPigment = data.petrifiedPigment;
     }
 
     void IDataPersistence.SaveData(GameData data)
     {
         data.startScene = gameStartScene;
         data.unlockedColorSpells = unlockedSpells.ToArray();
+        data.petrifiedPigment = petrifiedPigment;
     }
 
     public string GetStartScene()
@@ -192,6 +197,36 @@ public class GameManager : MonoBehaviour, IDataPersistence
         spawnableSpells.Add(spell.name);
 
         DataPersistenceManager.instance.SaveGame();
+    }
+
+    #endregion
+
+    #region Petrified Pigment
+
+    public UnityAction<int> onPetrifiedPigmentChanged;
+    public void AddPetrifiedPigment (int addPigment)
+    {
+        petrifiedPigment += addPigment;
+        onPetrifiedPigmentChanged?.Invoke(petrifiedPigment);
+    }
+
+    public bool TryRemovePetrifiedPigment(int removePigment)
+    {
+        if(removePigment > petrifiedPigment) return false;
+
+        petrifiedPigment-=removePigment;
+        onPetrifiedPigmentChanged?.Invoke(petrifiedPigment);
+        return true;
+    }
+
+    public bool HasPetrifiedPigment(int hasAmount)
+    {
+        return petrifiedPigment >= hasAmount;
+    }
+
+    public int GetPetrifiedPigmentAmount()
+    {
+        return petrifiedPigment;
     }
 
     #endregion

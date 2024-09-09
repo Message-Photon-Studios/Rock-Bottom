@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameData
 {
     public string startScene;
+    public int petrifiedPigment;
     public string[] unlockedColorSpells;
 
     /// <summary>
@@ -15,5 +16,6 @@ public class GameData
     {
         startScene = "Tutorial";
         unlockedColorSpells = new string[0];
+        petrifiedPigment = 0;
     }
 }
