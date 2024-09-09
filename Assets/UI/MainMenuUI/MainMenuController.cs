@@ -10,6 +10,7 @@ using UnityEngine.Video;
 public class MainMenuController : MonoBehaviour
 {
     //Button to start the navigation at when starting the game.
+    [SerializeField] Button continueButton;
     [SerializeField] Button startButton;
     [SerializeField] Button settingsButton;
     [SerializeField] Button creditsButton;
@@ -21,6 +22,7 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] AnimationCurve titleCurve;
 
+    [SerializeField] IndicatorController continueController;
     [SerializeField] IndicatorController startController;
     [SerializeField] IndicatorController settingstController;
     [SerializeField] IndicatorController creditsController;
@@ -48,9 +50,9 @@ public class MainMenuController : MonoBehaviour
         sylviaLoading.gameObject.SetActive(false);
         StartCoroutine(FadeOutCoroutine(true));
         //StartCoroutine(tiltCamera()); //Disabled this with the new camera
-        startButton.GetComponent<IndicatorController>().ShowIndicator(true);
+        continueButton.GetComponent<IndicatorController>().ShowIndicator(true);
 
-        DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
+        TutorialMusic bgMusic = GameObject.FindObjectOfType<TutorialMusic>();
         bgMusic.enableChildren();
         timeSinceLastInput = Time.time;
         trailer.SetActive(false);
@@ -58,9 +60,26 @@ public class MainMenuController : MonoBehaviour
         playing = false;
     }
 
+    public void StartNewGame()
+    {
+        DataPersistenceManager.instance.NewGame();
+        LoadScene();
+    }
+
+    public void ContinueGame()
+    {
+        DataPersistenceManager.instance.LoadGame();
+        LoadScene();
+    }
+
     //Load scene "Gem" when pressed.
     public void LoadScene()
     {
+        if(!GameManager.instance.GetStartScene().Equals("Tutorial"))
+        {
+            TutorialMusic bgMusic = GameObject.FindObjectOfType<TutorialMusic>();
+            bgMusic?.disableChildren();
+        }
         StartCoroutine(FadeOutCoroutine(false));
     }
 
@@ -85,6 +104,8 @@ public class MainMenuController : MonoBehaviour
         {
             StartCoroutine(initTitle());
             yield return new WaitForSeconds(0.1f);
+            StartCoroutine(continueController.appear(indicatorCurve));
+            yield return new WaitForSeconds(0.1f);
             StartCoroutine(startController.appear(indicatorCurve));
             yield return new WaitForSeconds(0.1f);
             StartCoroutine(settingstController.appear(indicatorCurve));
@@ -95,7 +116,7 @@ public class MainMenuController : MonoBehaviour
             yield break;
         }
 
-        SceneManager.LoadSceneAsync("Tutorial");
+        SceneManager.LoadSceneAsync(GameManager.instance.GetStartScene());
 
         if (!load) yield break;
 
@@ -138,6 +159,7 @@ public class MainMenuController : MonoBehaviour
 
     public void showCredits()
     {
+        continueButton.interactable = false;
         startButton.interactable = false;
         settingsButton.interactable = false;
         creditsButton.interactable = false;
@@ -150,6 +172,7 @@ public class MainMenuController : MonoBehaviour
 
     public void hideCredits()
     {
+        continueButton.interactable = true;
         startButton.interactable = true;
         settingsButton.interactable = true;
         creditsButton.interactable = true;
@@ -164,6 +187,7 @@ public class MainMenuController : MonoBehaviour
 
     public void showSettings()
     {
+        continueButton.interactable = false;
         startButton.interactable = false;
         settingsButton.interactable = false;
         creditsButton.interactable = false;
@@ -175,6 +199,7 @@ public class MainMenuController : MonoBehaviour
 
     public void hideSettings()
     {
+        continueButton.interactable = true;
         startButton.interactable = true;
         settingsButton.interactable = true;
         creditsButton.interactable = true;
