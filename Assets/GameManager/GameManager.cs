@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     private List<string> unlockedSpells;
     private HashSet<string> spawnableSpells;
 
+    [SerializeField] AudioSource petrifiedPickupSound;
+
     private int petrifiedPigment = 0;
     string gameStartScene = "Tutorial";
     float hunterTimer = 0f;
@@ -239,6 +241,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         petrifiedPigment ++;
         pickedUpPetrifiedPigment.Add(name);
         onPetrifiedPigmentChanged?.Invoke(1);
+        petrifiedPickupSound.Play();
         DataPersistenceManager.instance.SaveGame();
     }
 
