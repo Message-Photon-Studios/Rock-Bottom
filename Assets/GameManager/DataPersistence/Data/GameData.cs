@@ -8,7 +8,6 @@ public class GameData
     public string startScene;
     public int petrifiedPigment;
     public string[] unlockedColorSpells;
-
     public string[] petrifiedPigmentPickedUp;
 
     /// <summary>

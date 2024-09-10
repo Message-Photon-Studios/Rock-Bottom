@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         unlockedSpells.AddRange(data.unlockedColorSpells);
 
         petrifiedPigment = data.petrifiedPigment;
-
+        pickedUpPetrifiedPigment = new HashSet<string>();
         pickedUpPetrifiedPigment.AddRange(data.petrifiedPigmentPickedUp);
     }
 

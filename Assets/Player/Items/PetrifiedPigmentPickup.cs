@@ -6,6 +6,7 @@ public class PetrifiedPigmentPickup : MonoBehaviour
 {
     [SerializeField] string id;
     [SerializeField] Transform image;
+    [SerializeField] float spawnChance = .5f;
     private Coroutine hoverCoroutine;
     void OnValidate()
     {
@@ -20,7 +21,7 @@ public class PetrifiedPigmentPickup : MonoBehaviour
 
     private void OnEnable() {
 
-        if(GameManager.instance.IsPetrifiedPigmentPickedUp(id))
+        if(GameManager.instance.IsPetrifiedPigmentPickedUp(id) || Random.Range(0f,1f)<.5f)
         {
             Destroy(gameObject);
         }
