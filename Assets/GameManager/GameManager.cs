@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [SerializeField] ColorSpell[] startSpells;
     private List<string> unlockedSpells;
     private HashSet<string> spawnableSpells;
+    [SerializeField] AudioSource spellUnlockSound;
 
     [SerializeField] AudioSource petrifiedPickupSound;
 
@@ -200,7 +201,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         unlockedSpells.Add(spell.name);
         spawnableSpells.Add(spell.name);
-
+        spellUnlockSound.Play();
         DataPersistenceManager.instance.SaveGame();
     }
 
