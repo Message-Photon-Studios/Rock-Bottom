@@ -13,6 +13,6 @@ public class PurpleColorEffect : ColorEffect
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
-        if(enemy != null) enemy.SleepEnemy(sleepTime * power, sleepDamageBonus * power, particles);
+        if(enemy != null) enemy.SleepEnemy(sleepTime * EffectFunction(power), sleepDamageBonus * power, particles);
     }
 }

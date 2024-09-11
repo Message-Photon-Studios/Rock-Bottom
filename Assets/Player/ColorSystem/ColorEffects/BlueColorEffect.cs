@@ -17,14 +17,18 @@ public class BlueColorEffect : ColorEffect
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         GameObject instantiatedParticles = GameObject.Instantiate(particles, enemyObj.transform.position, enemyObj.transform.rotation);
         var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
-        main.duration = duration;
-        Destroy(instantiatedParticles, duration*1.2f);
+
+        float effect = EffectFunction(power);
+        float scaledDuration = duration * effect;
+        float scaledSlow = slow*effect;
+        main.duration = scaledDuration;
+        Destroy(instantiatedParticles, scaledDuration*1.2f);
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
         if(!enemy.IsKnockbackImune())
             enemy.GetComponent<Rigidbody2D>()?.AddForce((enemy.transform.position-playerObj.transform.position).normalized * force);
-        enemy.ChangeDrag((slow*power)+1, duration*power);
+        enemy.ChangeDrag(scaledSlow+1, scaledDuration*power);
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
     }
 }
