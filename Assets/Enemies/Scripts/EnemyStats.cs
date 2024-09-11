@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using JetBrains.Annotations;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.ParticleSystem;
@@ -60,7 +62,12 @@ public class EnemyStats : MonoBehaviour
 
     [HideInInspector] public EnemySounds enemySounds;
 
-    private List<(int damage, float timer)> poisonEffects = new List<(int damage, float time)>(); //Damage dealt over time
+    int poisonDamageToTake;
+    private float poisonDamageReduction = 0;
+    private float poisonTimer = 0;
+    GameObject poisonOrbPrefab;
+
+    [HideInInspector] public float spawnPower = 1f;
 
     private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, List<GameObject> particlesList, bool mustBurn, GameObject enemyParticles) burning;
     /// <summary>
@@ -129,7 +136,9 @@ public class EnemyStats : MonoBehaviour
         animator.SetBool("sleep", false);
         WakeEnemy();
         GetComponent<Rigidbody2D>().drag = normalMovementDrag;
-        poisonEffects = new List<(int damage, float timer)>();
+        poisonDamageToTake = 0;
+        poisonDamageReduction = 0;
+        poisonTimer = 0;
         StopBurning();
         Material mat = GetComponent<SpriteRenderer>().material;
         mat.SetFloat("_takingDmg", 0);
@@ -181,25 +190,14 @@ public class EnemyStats : MonoBehaviour
                 }
             }
 
-            if(poisonEffects.Count > 0)
-            {
-                for (int i = 0; i < poisonEffects.Count; i++)
+            if(poisonTimer > 0)
+            {   
+                DamageEnemy(poisonDamageToTake);
+                poisonTimer --;
+                if(poisonTimer <= 0)
                 {
-                    int damage = poisonEffects[i].damage;
-                    if (damage >= health)
-                    {
-                        if(damage > 1)
-                            damage = health -1;
-                        else damage = 0;
-                    }
-                    
-                    DamageEnemy(damage);
-                    poisonEffects[i] = (damage, poisonEffects[i].timer -1);
-                    if(poisonEffects[i].timer <= 0)
-                    {
-                        poisonEffects.RemoveAt(i);
-                        i--;
-                    }
+                    poisonDamageToTake = 0;
+                    poisonDamageReduction = 0;
                 }
             }
 
@@ -278,6 +276,11 @@ public class EnemyStats : MonoBehaviour
         //if (enemySleep) WakeEnemyAnimation();
 
         health -= damage;
+        if(isPoisoned() && health < 0)
+        {
+            GameObject orb = GameObject.Instantiate(poisonOrbPrefab,transform.position, Quaternion.identity) as GameObject;
+            orb.GetComponent<PoisonOrb>().SetupOrb(poisonDamageToTake, poisonDamageReduction, poisonTimer, poisonOrbPrefab);
+        }
 
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
@@ -300,15 +303,28 @@ public class EnemyStats : MonoBehaviour
     /// Adds a damage over time effect to the enemy
     /// </summary>
     /// <param name="damage"></param>
+    /// <param name="damageReduction"></param>
     /// <param name="timer"></param>
-    public void PoisonDamage(int damage, float timer)
+    public void PoisonDamage(int damage, float damageReduction, float timer, GameObject poisonOrbPrefab)
     {
-        poisonEffects.Add((damage, timer));
+        if(poisonTimer > 0)
+        {
+            if(damage > poisonDamageToTake) poisonDamageToTake = damage;
+            if(damageReduction > poisonDamageReduction) poisonDamageReduction = damageReduction;
+            poisonTimer += timer;
+            this.poisonOrbPrefab = poisonOrbPrefab;
+        } else
+        {
+            poisonTimer = timer;
+            poisonDamageToTake = damage;
+            poisonDamageReduction = damageReduction;
+            this.poisonOrbPrefab = poisonOrbPrefab;
+        }
     }
 
     public bool isPoisoned()
     {
-        return poisonEffects.Count > 0;
+        return poisonTimer > 0;
     }
 
     /// <summary>
@@ -493,7 +509,7 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
-    #region Movement Speed
+    #region Speed & Damage
 
     /// <summary>
     /// Change the enemys movement drag for a certain amount of time
@@ -524,6 +540,23 @@ public class EnemyStats : MonoBehaviour
     public void SetSpeed(float newSpeed)
     {
         movementSpeed = newSpeed;
+    }
+
+    public float GetDamageFactor()
+    {
+        if(isPoisoned())
+            return (1f-poisonDamageReduction)*spawnPower;
+        else return 1f*spawnPower;
+    }
+
+    /// <summary>
+    /// Gets the damage but scaled with the enemies various damage factors
+    /// </summary>
+    /// <param name="baseDamage"></param>
+    /// <returns></returns>
+    public int GetScaledDamage(int baseDamage)
+    {
+        return Mathf.RoundToInt(baseDamage*GetDamageFactor());
     }
     
     /// <summary>
