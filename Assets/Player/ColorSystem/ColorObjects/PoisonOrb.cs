@@ -73,7 +73,7 @@ public class PoisonOrb : MonoBehaviour
     {
         poisonDamage = Mathf.RoundToInt(damage*1.5f);
         poisonDamageReduction = damageReduction;
-        poisonTimer = timer/2f-1;
+        poisonTimer = timer-1;
         if(timer < 0)
         {
             Destroy(gameObject);

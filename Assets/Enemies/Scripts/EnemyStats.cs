@@ -276,11 +276,6 @@ public class EnemyStats : MonoBehaviour
         //if (enemySleep) WakeEnemyAnimation();
 
         health -= damage;
-        if(isPoisoned() && health < 0)
-        {
-            GameObject orb = GameObject.Instantiate(poisonOrbPrefab,transform.position, Quaternion.identity) as GameObject;
-            orb.GetComponent<PoisonOrb>().SetupOrb(poisonDamageToTake, poisonDamageReduction, poisonTimer, poisonOrbPrefab);
-        }
 
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
@@ -383,6 +378,14 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
+        if(isPoisoned())
+        {
+            GameObject orb = GameObject.Instantiate(poisonOrbPrefab,transform.position, Quaternion.identity) as GameObject;
+            orb.GetComponent<PoisonOrb>().SetupOrb(poisonDamageToTake, poisonDamageReduction, poisonTimer, poisonOrbPrefab);
+            poisonTimer = 0;
+            poisonDamageToTake = 0;
+            poisonDamageReduction = 0;
+        }
         GetComponent<Rigidbody2D>().drag = normalMovementDrag;
         animator.speed = normalAnimationSpeed;
         enemyDead = true;
