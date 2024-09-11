@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
@@ -61,7 +62,7 @@ public class EnemyStats : MonoBehaviour
 
     private List<(int damage, float timer)> poisonEffects = new List<(int damage, float time)>(); //Damage dealt over time
 
-    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, List<GameObject> particlesList, bool mustBurn) burning;
+    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, List<GameObject> particlesList, bool mustBurn, GameObject enemyParticles) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -202,7 +203,7 @@ public class EnemyStats : MonoBehaviour
                 }
             }
 
-            if(burning.timer > 0)
+            if(burning.damage > 0 && burning.timer > 0)
             {
                 if (burning.mustBurn || GetColor() == null || !GetColor().name.Equals("Orange")) DamageEnemy(burning.damage);
                 //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
@@ -211,9 +212,13 @@ public class EnemyStats : MonoBehaviour
                 timer --;
                 burning.timer = timer;
 
+                int damage = burning.damage;
+                damage-=3;
+                burning.damage = damage;
+
                 //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
 
-                if(timer <= 0)
+                if(burning.damage <= 0 || burning.timer <= 0)
                 {
                     StopBurning();
                     return;
@@ -230,7 +235,7 @@ public class EnemyStats : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, obj.transform.position);
                     if(dist < burning.range)
                     {
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
                     }
                 }
 
@@ -239,7 +244,7 @@ public class EnemyStats : MonoBehaviour
                     foreach (GameObject obj in flame.GetComponent<FloorFlame>().ToBurn())
                     {
                         if (obj == null) continue;
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
                     }
                     flame.GetComponent<FloorFlame>().ClearBurnQueue();
                 }
@@ -316,15 +321,20 @@ public class EnemyStats : MonoBehaviour
     public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles, bool mustBurn)
     {
         if(timer <= 0) return;
-        if(burning.timer > 0) return;
+        if(damage <= 0) return;
+        if(burning.timer > 0) 
+        {
+            return;
+        }
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
-        burning = (damage, timer, range, burnParticles, objs, floorParticles, new List<GameObject>(), mustBurn);
+        
 
         GameObject instantiatedParticles = GameObject.Instantiate(burnParticles, transform.position, transform.rotation);
         var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
         main.duration = timer;
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
-        Destroy(instantiatedParticles, timer);
+
+        burning = (damage, timer, range, burnParticles, objs, floorParticles, new List<GameObject>(), mustBurn, instantiatedParticles);
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = gameObject.transform;
     }
@@ -336,9 +346,11 @@ public class EnemyStats : MonoBehaviour
 
     public void StopBurning()
     {
+        if(burning.enemyParticles != null)
+            burning.enemyParticles.GetComponent<ParticleSystem>().Stop();
         if (burning.particlesList == null)
         {
-            burning = (0, 0, 0, null, null, null, null, false);
+            burning = (0, 0, 0, null, null, null, null, false, null);
             return;
         }
         foreach (GameObject obj in burning.particlesList)
@@ -347,7 +359,7 @@ public class EnemyStats : MonoBehaviour
             obj.GetComponent<ParticleSystem>().Stop();
             Destroy(obj, 0.5f);
         }
-        burning = (0, 0, 0, null, null, null, null, false);
+        burning = (0, 0, 0, null, null, null, null, false, null);
     }
 
     /// <summary>
@@ -368,7 +380,7 @@ public class EnemyStats : MonoBehaviour
         Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
         int drainAmount = 3;
-        if(color.name.Equals("Rainbow") && colorOrbPrefab != null && colorAmmount-drainAmount > 0 && color != null)
+        if(color != null && color.name.Equals("Rainbow") && colorOrbPrefab != null && colorAmmount-drainAmount > 0)
         {
             GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;
             orb.GetComponent<ColorOrb>().SetTarget(GameObject.FindGameObjectWithTag("Player"), colorAmmount - drainAmount, color);
