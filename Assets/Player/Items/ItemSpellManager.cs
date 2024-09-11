@@ -9,20 +9,31 @@ public class ItemSpellManager : MonoBehaviour
 {
     [SerializeField] float stageCostMultiplier = 1;
     [SerializeField] Item[] spawnableItems;
-    [SerializeField] ColorSpell[] spawnableSpells;
+    [SerializeField] ColorSpell[] levelSpells;
 
     public void SpawnItems()
     {
         List<Item> spawnSet = new List<Item>();
         List<ColorSpell> spawnSetSpell = new List<ColorSpell>();
         spawnSet.AddRange(spawnableItems);
+
+        List<ColorSpell> spawnableSpells = new List<ColorSpell>();
+
+        foreach (ColorSpell spell in levelSpells)
+        {
+            if(GameManager.instance.IsSpellSpawnable(spell))
+                spawnableSpells.Add(spell);
+        }
+
         spawnSetSpell.AddRange(spawnableSpells);
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Item"))
         {
-            obj.GetComponent<ItemPickup>().RandomSpawnDestroy();
+            ItemPickup pickup = obj.GetComponent<ItemPickup>();
+            if(pickup == null) continue;
+            pickup.RandomSpawnDestroy();
             if(obj == null) continue;
-            if(obj.GetComponent<ItemPickup>().setByhand) continue;
+            if(pickup.setByhand) continue;
             Item item = null;
             int rng = 0;
             while(!item)
@@ -43,7 +54,7 @@ public class ItemSpellManager : MonoBehaviour
 
 
             spawnSet.RemoveAt(rng);
-            obj.GetComponent<ItemPickup>().SetItem(item, Mathf.RoundToInt(item.itemCost * stageCostMultiplier));
+            pickup.SetItem(item, Mathf.RoundToInt(item.itemCost * stageCostMultiplier));
             if(spawnSet.Count <= 0) spawnSet.AddRange(spawnableItems);
         }
 

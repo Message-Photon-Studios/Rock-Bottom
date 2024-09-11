@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class InspiredPopup : MonoBehaviour
 {
+
+    [SerializeField] float fadeSpeed = 1.5f;
     [SerializeField] GameObject container;
     [SerializeField] Image image;
     [SerializeField] TMP_Text inspiredText;
@@ -58,7 +60,7 @@ public class InspiredPopup : MonoBehaviour
 
         while ((startColor.a > 0 && !fadeIn) || (startColor.a < 1 && fadeIn))
         {
-            startColor = new Color(255, 255, 255, startColor.a + Time.deltaTime * direction);
+            startColor = new Color(255, 255, 255, startColor.a + fadeSpeed * Time.deltaTime * direction);
             image.color = startColor;
             inspiredText.color = startColor;
             unlockedText.color = startColor;
@@ -66,11 +68,5 @@ public class InspiredPopup : MonoBehaviour
         }
         if(!fadeIn) {lightBox.SetActive(false); container.SetActive(false);}
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

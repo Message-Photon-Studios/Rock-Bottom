@@ -16,18 +16,21 @@ public class DataPersistenceManager : MonoBehaviour
     {
         if(instance != null)
         {
-            Debug.LogError("Found several DataPersistenceManager");
+            Debug.LogWarning("Found several DataPersistenceManager");
             Destroy(gameObject);
             return;
         }
         instance = this;
         DontDestroyOnLoad(this);
+
     }
 
     private void Start() 
     {
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        
+        LoadGame();
     }
 
     public void NewGame()
@@ -35,7 +38,7 @@ public class DataPersistenceManager : MonoBehaviour
         this.gameData = new GameData();
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
-            dataPersistenceObj.SaveData(gameData);
+            dataPersistenceObj.LoadData(gameData);
         }
     }
 

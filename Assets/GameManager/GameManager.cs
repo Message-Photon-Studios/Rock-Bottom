@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour, IDataPersistence
 {
@@ -11,7 +14,15 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [SerializeField] GameObject hunterPrefab;
     [SerializeField] float hunterSpawnDist;
     [SerializeField] int maxHunters;
+    
+    [SerializeField] ColorSpell[] startSpells;
+    private List<string> unlockedSpells;
+    private HashSet<string> spawnableSpells;
+    [SerializeField] AudioSource spellUnlockSound;
 
+    [SerializeField] AudioSource petrifiedPickupSound;
+
+    private int petrifiedPigment = 0;
     string gameStartScene = "Tutorial";
     float hunterTimer = 0f;
     int hunters = 0;
@@ -35,6 +46,13 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     void Start()
     {
+        unlockedSpells = new List<string>();
+        spawnableSpells = new HashSet<string>();
+        foreach (ColorSpell spell in startSpells)
+        {
+            spawnableSpells.Add(spell.name);
+        }
+
         maxClockTime = clockTime;
         player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerStats>();
         if(player != null)
@@ -73,11 +91,26 @@ public class GameManager : MonoBehaviour, IDataPersistence
     void IDataPersistence.LoadData(GameData data)
     {
         gameStartScene = data.startScene;
+        spawnableSpells = new HashSet<string>();
+        unlockedSpells = new List<string>();
+        foreach (ColorSpell spell in startSpells)
+        {
+            spawnableSpells.Add(spell.name);
+        }
+        spawnableSpells.AddRange(data.unlockedColorSpells);
+        unlockedSpells.AddRange(data.unlockedColorSpells);
+
+        petrifiedPigment = data.petrifiedPigment;
+        pickedUpPetrifiedPigment = new HashSet<string>();
+        pickedUpPetrifiedPigment.AddRange(data.petrifiedPigmentPickedUp);
     }
 
     void IDataPersistence.SaveData(GameData data)
     {
         data.startScene = gameStartScene;
+        data.unlockedColorSpells = unlockedSpells.ToArray();
+        data.petrifiedPigment = petrifiedPigment;
+        data.petrifiedPigmentPickedUp = pickedUpPetrifiedPigment.ToArray();
     }
 
     public string GetStartScene()
@@ -140,6 +173,77 @@ public class GameManager : MonoBehaviour, IDataPersistence
         } 
 
         return (retString, retSize, retColor);
+    }
+
+    #endregion
+
+    #region Spell Unlock
+
+    /// <summary>
+    /// Checks if this spell is spawnable
+    /// </summary>
+    /// <param name="spell"></param>
+    /// <returns></returns>
+    public bool IsSpellSpawnable(ColorSpell spell)
+    {
+        bool ret = spawnableSpells.Contains(spell.name);
+        Debug.Log(spell.name + " is spawnable: " + ret);
+
+        return ret;
+    }
+
+
+    /// <summary>
+    /// Permanently unlocks this spell.
+    /// </summary>
+    /// <param name="spell"></param>
+    public void UnlockedSpell(ColorSpell spell)
+    {
+        unlockedSpells.Add(spell.name);
+        spawnableSpells.Add(spell.name);
+        spellUnlockSound.Play();
+        DataPersistenceManager.instance.SaveGame();
+    }
+
+    #endregion
+
+    #region Petrified Pigment
+
+    public UnityAction<int> onPetrifiedPigmentChanged;
+
+    public bool TryRemovePetrifiedPigment(int removePigment)
+    {
+        if(removePigment > petrifiedPigment) return false;
+
+        petrifiedPigment-=removePigment;
+        onPetrifiedPigmentChanged?.Invoke(-removePigment);
+        return true;
+    }
+
+    public bool HasPetrifiedPigment(int hasAmount)
+    {
+        return petrifiedPigment >= hasAmount;
+    }
+
+    public int GetPetrifiedPigmentAmount()
+    {
+        return petrifiedPigment;
+    }
+
+    HashSet<string> pickedUpPetrifiedPigment = new HashSet<string>();
+
+    public bool IsPetrifiedPigmentPickedUp(string name)
+    {
+        return pickedUpPetrifiedPigment.Contains(name);
+    }
+
+    public void PickedUpPetrifiedPigment(string name)
+    {
+        petrifiedPigment ++;
+        pickedUpPetrifiedPigment.Add(name);
+        onPetrifiedPigmentChanged?.Invoke(1);
+        petrifiedPickupSound.Play();
+        DataPersistenceManager.instance.SaveGame();
     }
 
     #endregion
