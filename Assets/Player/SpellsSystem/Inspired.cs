@@ -26,6 +26,7 @@ public class Inspired : MonoBehaviour
     private UIController UI;
 
     public void OnEnable() {
+        if(spellToEnable) spellToEnable.SetActive(false);
         if(GameManager.instance.IsSpellSpawnable(unlockSpell))
         {
             if(spellToEnable)
@@ -35,8 +36,7 @@ public class Inspired : MonoBehaviour
             }
             gameObject.SetActive(false);
         }
-
-        if(spellToEnable) spellToEnable.SetActive(false);
+        
         triggered = false;
         UI = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
