@@ -233,7 +233,7 @@ public class EnemyStats : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, obj.transform.position);
                     if(dist < burning.range)
                     {
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer+2, burning.range, burning.particles, burning.floorParticles, false);
                     }
                 }
 
@@ -242,7 +242,7 @@ public class EnemyStats : MonoBehaviour
                     foreach (GameObject obj in flame.GetComponent<FloorFlame>().ToBurn())
                     {
                         if (obj == null) continue;
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer+2, burning.range, burning.particles, burning.floorParticles, false);
                     }
                     flame.GetComponent<FloorFlame>().ClearBurnQueue();
                 }
