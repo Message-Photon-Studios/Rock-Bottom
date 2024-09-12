@@ -349,7 +349,7 @@ public class ColorInventory : MonoBehaviour
             for (int i = 1; i < colorSlots.Count; i++)
             {
                 int pick = (activeSlot+i)%colorSlots.Count;
-                if(colorSlots[pick].gameColor == color)
+                if(colorSlots[pick].gameColor == color && colorSlots[pick].charge > 0)
                 {
                     if(fillSlot == null || fillSlot.IsFilledMax())
                     {
