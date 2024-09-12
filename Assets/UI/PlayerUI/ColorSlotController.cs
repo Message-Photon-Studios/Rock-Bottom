@@ -16,11 +16,14 @@ public class ColorSlotController : MonoBehaviour
     ColorInventory colorInventory;
     [SerializeField] UIController uiController;
 
+    [SerializeField] Color backBottleTint;
+
     //Color slots the player currently has.
     List<ColorSlot> colorSlots;
 
     //All created UI elements for slots.
     [SerializeField] List<RectTransform> slotList;
+    
 
     //Positions of all UI Containers for slots.
     List<Vector2> slotPositions = new List<Vector2>();
@@ -30,6 +33,7 @@ public class ColorSlotController : MonoBehaviour
 
     //List of booleans to signal if each bottle is full
     List<bool> bottleFull = new List<bool>();
+    
 
     // Spline to animate the filling effect of the color slots
     public AnimationCurve fillCurve;
@@ -149,7 +153,9 @@ public class ColorSlotController : MonoBehaviour
                 // We want the change of resolution to happen in the middle of the movement, so it's not noticeable
                 // But it must only happen once
                 if (middleOfAnim && !bottleChangedDone)
+                {
                     BottleChanged(i, trueIndex);
+                }
             }
             bottleChangedDone = middleOfAnim;
             yield return new WaitForEndOfFrame();
@@ -161,6 +167,7 @@ public class ColorSlotController : MonoBehaviour
             RectTransform rect = slotList[i];
             rect.anchoredPosition = slotPositions[trueIndex];
             rect.transform.localScale = slotScales[trueIndex];
+
             if (!bottleChangedDone)
                 BottleChanged(i, trueIndex);
         }
@@ -270,6 +277,17 @@ public class ColorSlotController : MonoBehaviour
             bottle.sprite = bottleSprite.smallSprite;
             bottleMask.sprite = bottleSprite.smallSpriteMask;
             capMask.sprite = bottleSprite.smallSpriteCapMask;
+        }
+
+        foreach (Image image in slotList[index].GetComponentsInChildren<Image>())
+        {
+            if(pos == 0)
+            {
+                image.color = Color.white;
+            } else
+            {
+                image.color = backBottleTint;
+            }
         }
     }
 
