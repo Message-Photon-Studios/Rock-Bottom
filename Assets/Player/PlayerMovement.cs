@@ -421,7 +421,14 @@ public class PlayerMovement : MonoBehaviour
     {
         body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         body.velocity = new Vector2(body.velocity.x-5*lookDir, 0);
-        if(wallRight != spriteRenderer.flipX) Flip();
+        if((wallRight == (walkDir == -1) || walkDir == 0) && wallRight != spriteRenderer.flipX)
+        {
+            Flip();
+        } else
+        {
+            if(!HitCeling())
+                transform.position = new Vector2(transform.position.x, transform.position.y + .7f);
+        }
         beforeClimbLookDir = lookDir;
     }
 
