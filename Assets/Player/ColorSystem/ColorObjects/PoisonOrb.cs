@@ -17,6 +17,7 @@ public class PoisonOrb : MonoBehaviour
     Transform target;
     float deathTime = 1f;
 
+    bool dead = false;
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other != null && other.CompareTag("Enemy"))
@@ -44,6 +45,7 @@ public class PoisonOrb : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if(dead) return;
         if(target == null)
         {   
             deathTime-= Time.fixedDeltaTime;
@@ -65,7 +67,10 @@ public class PoisonOrb : MonoBehaviour
             Destroy(instantiatedParticles, poisonTimer+.5f);
             // Set enemy as parent of the particle system
             instantiatedParticles.transform.parent = target.transform;
-            Destroy(gameObject);
+            GetComponent<ParticleSystem>().Stop();
+            Destroy(transform.GetChild(0).gameObject);
+            dead = true;
+            Destroy(gameObject,0.5f);
         }
     }
 
