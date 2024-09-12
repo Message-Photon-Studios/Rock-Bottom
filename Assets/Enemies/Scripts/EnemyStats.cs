@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using JetBrains.Annotations;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.ParticleSystem;
@@ -44,7 +47,7 @@ public class EnemyStats : MonoBehaviour
     private float normalAnimationSpeed;
 
     private int colorComboDamage = 40; // The damage that the enemy will take when becoming rainbow color
-    private float colorComboTimer = 2f; //The timer before the enemy explode
+    private float colorComboTimer = 4.5f; //The timer before the enemy explode
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0;
@@ -59,9 +62,14 @@ public class EnemyStats : MonoBehaviour
 
     [HideInInspector] public EnemySounds enemySounds;
 
-    private List<(int damage, float timer)> poisonEffects = new List<(int damage, float time)>(); //Damage dealt over time
+    int poisonDamageToTake;
+    private float poisonDamageReduction = 0;
+    private float poisonTimer = 0;
+    GameObject poisonOrbPrefab;
 
-    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, List<GameObject> particlesList, bool mustBurn) burning;
+    [HideInInspector] public float spawnPower = 1f;
+
+    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, List<GameObject> particlesList, bool mustBurn, GameObject enemyParticles) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -80,8 +88,8 @@ public class EnemyStats : MonoBehaviour
     [CanBeNull] private Coroutine currentCoroutine;
 
     public bool isColoredThisFrame {get; private set;} = false;
-
-    #region Setup and Timers
+    GameObject player;
+    #region Setup
     void Awake()
     {
         normalMovementDrag = GetComponent<Rigidbody2D>().drag;
@@ -104,6 +112,7 @@ public class EnemyStats : MonoBehaviour
         enemySounds = GetComponent<EnemySounds>();
         onColorChanged?.Invoke(color);
         if (deathTimer > 0) hasDeathTimer = true;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void OnValidate()
@@ -128,12 +137,17 @@ public class EnemyStats : MonoBehaviour
         animator.SetBool("sleep", false);
         WakeEnemy();
         GetComponent<Rigidbody2D>().drag = normalMovementDrag;
-        poisonEffects = new List<(int damage, float timer)>();
+        poisonDamageToTake = 0;
+        poisonDamageReduction = 0;
+        poisonTimer = 0;
         StopBurning();
         Material mat = GetComponent<SpriteRenderer>().material;
         mat.SetFloat("_takingDmg", 0);
     }
 
+    #endregion
+
+    #region Update
     void Update()
     {
         if(isColoredThisFrame) isColoredThisFrame = false;
@@ -141,21 +155,18 @@ public class EnemyStats : MonoBehaviour
         {
             if(color != null && color.name == "Rainbow")
             {
+                int rainbowDamage = (int)(colorComboDamage*player.GetComponent<PlayerStats>().colorRainbowMaxedPower);
+
+                if(rainbowDamage > health)
+                {
+                    DealRainbowDamage(rainbowDamage);
+                }
+
                 colorComboTimer--;
 
                 if (colorComboTimer <= 0)
                 {
-                    GameObject player = GameObject.FindGameObjectWithTag("Player");
-                    if(player)
-                        DamageEnemy((int)(colorComboDamage*player.GetComponent<PlayerStats>().colorRainbowMaxedPower));
-                    AbsorbColor();
-                    colorComboTimer = 2f;
-
-                    GameObject instantiatedParticles = GameObject.Instantiate(comboParticles, transform.position, transform.rotation);
-                    instantiatedParticles.GetComponent<ParticleSystem>().Play();
-                    Destroy(instantiatedParticles, 1f);
-                    // Set enemy as parent of the particle system
-                    instantiatedParticles.transform.parent = transform;
+                    DealRainbowDamage(rainbowDamage);
                 }
             }
 
@@ -180,29 +191,18 @@ public class EnemyStats : MonoBehaviour
                 }
             }
 
-            if(poisonEffects.Count > 0)
-            {
-                for (int i = 0; i < poisonEffects.Count; i++)
+            if(poisonTimer > 0)
+            {   
+                DamageEnemy(poisonDamageToTake);
+                poisonTimer --;
+                if(poisonTimer <= 0)
                 {
-                    int damage = poisonEffects[i].damage;
-                    if (damage >= health)
-                    {
-                        if(damage > 1)
-                            damage = health -1;
-                        else damage = 0;
-                    }
-                    
-                    DamageEnemy(damage);
-                    poisonEffects[i] = (damage, poisonEffects[i].timer -1);
-                    if(poisonEffects[i].timer <= 0)
-                    {
-                        poisonEffects.RemoveAt(i);
-                        i--;
-                    }
+                    poisonDamageToTake = 0;
+                    poisonDamageReduction = 0;
                 }
             }
 
-            if(burning.timer > 0)
+            if(burning.damage > 0 && burning.timer > 0)
             {
                 if (burning.mustBurn || GetColor() == null || !GetColor().name.Equals("Orange")) DamageEnemy(burning.damage);
                 //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
@@ -211,9 +211,13 @@ public class EnemyStats : MonoBehaviour
                 timer --;
                 burning.timer = timer;
 
+                int damage = burning.damage;
+                damage-=3;
+                burning.damage = damage;
+
                 //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
 
-                if(timer <= 0)
+                if(burning.damage <= 0 || burning.timer <= 0)
                 {
                     StopBurning();
                     return;
@@ -230,7 +234,7 @@ public class EnemyStats : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, obj.transform.position);
                     if(dist < burning.range)
                     {
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer+2, burning.range, burning.particles, burning.floorParticles, false);
                     }
                 }
 
@@ -239,7 +243,7 @@ public class EnemyStats : MonoBehaviour
                     foreach (GameObject obj in flame.GetComponent<FloorFlame>().ToBurn())
                     {
                         if (obj == null) continue;
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles, false);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer+2, burning.range, burning.particles, burning.floorParticles, false);
                     }
                     flame.GetComponent<FloorFlame>().ClearBurnQueue();
                 }
@@ -263,7 +267,7 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
-    #region Damage and Kill
+    #region Damaged and Kill
     /// <summary>
     /// Damage the enemy with the specified damage
     /// </summary>
@@ -290,71 +294,20 @@ public class EnemyStats : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         mat.SetFloat("_takingDmg", 0);
     }
-
-    /// <summary>
-    /// Adds a damage over time effect to the enemy
-    /// </summary>
-    /// <param name="damage"></param>
-    /// <param name="timer"></param>
-    public void PoisonDamage(int damage, float timer)
-    {
-        poisonEffects.Add((damage, timer));
-    }
-
-    public bool isPoisoned()
-    {
-        return poisonEffects.Count > 0;
-    }
-
-    /// <summary>
-    /// Adds a burning effect to the enemy
-    /// </summary>
-    /// <param name="damage"></param>
-    /// <param name="timer"></param>
-    /// <param name="range"></param>
-    /// <param name="burnParticles"></param>
-    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles, bool mustBurn)
-    {
-        if(timer <= 0) return;
-        if(burning.timer > 0) return;
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
-        burning = (damage, timer, range, burnParticles, objs, floorParticles, new List<GameObject>(), mustBurn);
-
-        GameObject instantiatedParticles = GameObject.Instantiate(burnParticles, transform.position, transform.rotation);
-        var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
-        main.duration = timer;
-        instantiatedParticles.GetComponent<ParticleSystem>().Play();
-        Destroy(instantiatedParticles, timer);
-        // Set enemy as parent of the particle system
-        instantiatedParticles.transform.parent = gameObject.transform;
-    }
-
-    public bool isBurning()
-    {
-        return burning.timer > 0;
-    }
-
-    public void StopBurning()
-    {
-        if (burning.particlesList == null)
-        {
-            burning = (0, 0, 0, null, null, null, null, false);
-            return;
-        }
-        foreach (GameObject obj in burning.particlesList)
-        {
-            if(obj == null) continue;
-            obj.GetComponent<ParticleSystem>().Stop();
-            Destroy(obj, 0.5f);
-        }
-        burning = (0, 0, 0, null, null, null, null, false);
-    }
-
+    
     /// <summary>
     /// Kill then enemy
     /// </summary>
     public void KillEnemy()
     {
+        if(isPoisoned())
+        {
+            GameObject orb = GameObject.Instantiate(poisonOrbPrefab,transform.position, Quaternion.identity) as GameObject;
+            orb.GetComponent<PoisonOrb>().SetupOrb(poisonDamageToTake, poisonDamageReduction, poisonTimer, poisonOrbPrefab);
+            poisonTimer = 0;
+            poisonDamageToTake = 0;
+            poisonDamageReduction = 0;
+        }
         GetComponent<Rigidbody2D>().drag = normalMovementDrag;
         animator.speed = normalAnimationSpeed;
         enemyDead = true;
@@ -368,7 +321,7 @@ public class EnemyStats : MonoBehaviour
         Destroy(gameObject, 5);
         SleepEnemy(10, 1, null);
         int drainAmount = 3;
-        if(color.name.Equals("Rainbow") && colorOrbPrefab != null && colorAmmount-drainAmount > 0 && color != null)
+        if(color != null && color.name.Equals("Rainbow") && colorOrbPrefab != null && colorAmmount-drainAmount > 0)
         {
             GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;
             orb.GetComponent<ColorOrb>().SetTarget(GameObject.FindGameObjectWithTag("Player"), colorAmmount - drainAmount, color);
@@ -406,6 +359,109 @@ public class EnemyStats : MonoBehaviour
     public bool isFrozen()
     {
         return movementSpeedTimer > 0;
+    }
+
+    #endregion
+
+    #region Rainbow damage
+
+    private void DealRainbowDamage(int rainbowDamage)
+    {
+        DamageEnemy(rainbowDamage);
+        AbsorbColor();
+        colorComboTimer = 2f;
+
+        GameObject instantiatedParticles = GameObject.Instantiate(comboParticles, transform.position, transform.rotation);
+        instantiatedParticles.GetComponent<ParticleSystem>().Play();
+        Destroy(instantiatedParticles, 1f);
+        // Set enemy as parent of the particle system
+        instantiatedParticles.transform.parent = transform;
+    }
+
+    #endregion
+    
+    #region Poison damage
+    /// <summary>
+    /// Adds a damage over time effect to the enemy
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="damageReduction"></param>
+    /// <param name="timer"></param>
+    public void PoisonDamage(int damage, float damageReduction, float timer, GameObject poisonOrbPrefab)
+    {
+        if(poisonTimer > 0)
+        {
+            if(damage > poisonDamageToTake) poisonDamageToTake = damage;
+            if(damageReduction > poisonDamageReduction) poisonDamageReduction = damageReduction;
+            poisonTimer += timer;
+            this.poisonOrbPrefab = poisonOrbPrefab;
+        } else
+        {
+            poisonTimer = timer;
+            poisonDamageToTake = damage;
+            poisonDamageReduction = damageReduction;
+            this.poisonOrbPrefab = poisonOrbPrefab;
+        }
+    }
+
+    public bool isPoisoned()
+    {
+        return poisonTimer > 0;
+    }
+
+    #endregion
+
+    #region Burn damage
+
+    /// <summary>
+    /// Adds a burning effect to the enemy
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="timer"></param>
+    /// <param name="range"></param>
+    /// <param name="burnParticles"></param>
+    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles, bool mustBurn)
+    {
+        if(timer <= 0) return;
+        if(damage <= 0) return;
+        if(burning.timer > 0) 
+        {
+            return;
+        }
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
+        
+
+        GameObject instantiatedParticles = GameObject.Instantiate(burnParticles, transform.position, transform.rotation);
+        var main = instantiatedParticles.GetComponent<ParticleSystem>().main;
+        main.duration = timer;
+        instantiatedParticles.GetComponent<ParticleSystem>().Play();
+
+        burning = (damage, timer, range, burnParticles, objs, floorParticles, new List<GameObject>(), mustBurn, instantiatedParticles);
+        // Set enemy as parent of the particle system
+        instantiatedParticles.transform.parent = gameObject.transform;
+    }
+
+    public bool isBurning()
+    {
+        return burning.timer > 0;
+    }
+
+    public void StopBurning()
+    {
+        if(burning.enemyParticles != null)
+            burning.enemyParticles.GetComponent<ParticleSystem>().Stop();
+        if (burning.particlesList == null)
+        {
+            burning = (0, 0, 0, null, null, null, null, false, null);
+            return;
+        }
+        foreach (GameObject obj in burning.particlesList)
+        {
+            if(obj == null) continue;
+            obj.GetComponent<ParticleSystem>().Stop();
+            Destroy(obj, 0.5f);
+        }
+        burning = (0, 0, 0, null, null, null, null, false, null);
     }
 
     #endregion
@@ -481,7 +537,7 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
-    #region Movement Speed
+    #region Speed & Damage
 
     /// <summary>
     /// Change the enemys movement drag for a certain amount of time
@@ -512,6 +568,23 @@ public class EnemyStats : MonoBehaviour
     public void SetSpeed(float newSpeed)
     {
         movementSpeed = newSpeed;
+    }
+
+    public float GetDamageFactor()
+    {
+        if(isPoisoned())
+            return (1f-poisonDamageReduction)*spawnPower;
+        else return 1f*spawnPower;
+    }
+
+    /// <summary>
+    /// Gets the damage but scaled with the enemies various damage factors
+    /// </summary>
+    /// <param name="baseDamage"></param>
+    /// <returns></returns>
+    public int GetScaledDamage(int baseDamage)
+    {
+        return Mathf.RoundToInt(baseDamage*GetDamageFactor());
     }
     
     /// <summary>
