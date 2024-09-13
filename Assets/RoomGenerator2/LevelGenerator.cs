@@ -766,7 +766,7 @@ public class LevelGenerator
                 enemy.position.y - enemy.localScale.y / 2, 
                 enemy.localScale.x, 
                 enemy.localScale.y);
-
+            
             enemy.gameObject.SetActive(cullSquare.Overlaps(enemySquare));
         }
     }

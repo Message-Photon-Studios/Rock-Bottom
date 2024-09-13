@@ -62,7 +62,7 @@ public class Spikey : Enemy
                 new Sequence(new List<Node>{
                     new CheckBool("attack", true),
                     new CheckPlayerArea(stats, player, damageTrigger),
-                    new DamagePlayer(player, dropDamage),
+                    new DamagePlayer(stats, player, dropDamage),
                     new ChangeCollisionDetection(GetComponent<Collider2D>(), player.GetComponent<Collider2D>(), false),
                     new AddForcePlayer(stats, player, dropPlayerForce)
                 }),

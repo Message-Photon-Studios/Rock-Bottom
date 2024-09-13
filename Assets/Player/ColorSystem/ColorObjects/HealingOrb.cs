@@ -45,6 +45,7 @@ public class HealingOrb : MonoBehaviour
             GetComponent<ParticleSystem>().Stop();
             player.GetComponent<PlayerStats>().HealPlayer(healing);
             healing = 0;
+            Destroy(transform.GetChild(0).gameObject);
             Destroy(gameObject,0.5f);
         }
     }

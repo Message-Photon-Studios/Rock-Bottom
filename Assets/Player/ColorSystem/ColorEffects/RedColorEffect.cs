@@ -39,17 +39,17 @@ public class RedColorEffect : ColorEffect
         {
             if (healing >= 5)
             {
-                GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Random.rotation);
+                GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Quaternion.identity);
                 orb1.GetComponent<HealingOrb>().SetTarget(playerObj, 5);
                 healing -= 5;
             } else if (healing >= 2)
             {
-                GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Random.rotation);
+                GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Quaternion.identity);
                 orb1.GetComponent<HealingOrb>().SetTarget(playerObj, 2);
                 healing -= 2;
             } else
             {
-                GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Random.rotation);
+                GameObject orb1 = GameObject.Instantiate(orb, enemyObj.transform.position, Quaternion.identity);
                 orb1.GetComponent<HealingOrb>().SetTarget(playerObj, 1);
                 healing--;
             }
