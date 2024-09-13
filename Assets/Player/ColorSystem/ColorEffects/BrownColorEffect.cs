@@ -11,7 +11,7 @@ public class BrownColorEffect : ColorEffect
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
-        if(enemy.GetColor() == null)
+        if(enemy.GetColor() == null || enemy.GetColorAmmount() == 0)
         {
             enemy.DamageEnemy(Mathf.RoundToInt(uncoloredDamage*power));
             return;
@@ -23,6 +23,5 @@ public class BrownColorEffect : ColorEffect
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
-        enemy.RemoveColor();
     }
 }

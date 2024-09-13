@@ -134,9 +134,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelGenerator: {fileID: 6781334976677708192}
   onDeathLevel: CaveTown
+  saveProgressionOnStart: 0
   nextLevelName: 
   canvas: {fileID: 0}
   allowsClockTimer: 1
+  addLevelClockTime: 0
+  restartClockTimer: 0
   clearInventoryOnLevelEnd: 0
   videoOnPlayerDeath: {fileID: 0}
   videoObjecCanvas: {fileID: 0}
@@ -160,6 +163,7 @@ MonoBehaviour:
   size: 0
   regionSize:
     _serializedList: []
+  regionSizeMargin: 10
 --- !u!114 &6781334976677708207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,10 +214,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1074224bb687ebe449ceb43c9abb1d1a, type: 2}
   - {fileID: 11400000, guid: 9533fd7e20424fa4bb2a5b2c415367c5, type: 2}
   - {fileID: 11400000, guid: 03e62550d0443e24f88230b63a8f71f4, type: 2}
-  spawnableSpells:
+  levelSpells:
+  - {fileID: -7692674297862362138, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
   - {fileID: -7692674297862362138, guid: ce7465a19865c2a44a0fbdce826d783e, type: 3}
+  - {fileID: -7692674297862362138, guid: e115a84ea227d044590791de70291cf4, type: 3}
   - {fileID: -7692674297862362138, guid: 3de06464deaee1d4b938974b88ead071, type: 3}
   - {fileID: -7692674297862362138, guid: dc39c17fa0b7cdd41be7ca6e26dd7c9f, type: 3}
-  - {fileID: -7692674297862362138, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
-  - {fileID: -7692674297862362138, guid: ecda5f5278ae77a4ba9dc72760ae1362, type: 3}
   - {fileID: -7692674297862362138, guid: 4d714332baa57cb46b2d801f8c1364ed, type: 3}
+  - {fileID: -7692674297862362138, guid: ecda5f5278ae77a4ba9dc72760ae1362, type: 3}

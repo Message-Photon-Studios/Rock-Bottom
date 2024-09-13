@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DontDestroy : MonoBehaviour
+public class TutorialMusic : MonoBehaviour
 {
-    private static DontDestroy instance;
+    private static TutorialMusic instance;
 
     // Start is called before the first frame update
     void Awake()

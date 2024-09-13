@@ -4575,6 +4575,7 @@ Transform:
   - {fileID: 227891431142413296}
   - {fileID: 3520966926486278065}
   - {fileID: 2376151631276429261}
+  - {fileID: 4026417953853101197}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8435,6 +8436,72 @@ CompositeCollider2D:
       - {x: -10.79997, y: -3.6000001}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
+--- !u!1001 &15883392814163511
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1110097504496171644}
+    m_Modifications:
+    - target: {fileID: 1569904497173203150, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: spellToEnable
+      value: 
+      objectReference: {fileID: 2991488678425031551}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4085804624318830516, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+      propertyPath: m_Name
+      value: SpellInspire
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+--- !u!4 &4026417953853101197 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4024203861461791418, guid: 5a667c860d54a894683494fdca85fc90, type: 3}
+  m_PrefabInstance: {fileID: 15883392814163511}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &891312904727960093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8510,20 +8577,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2728463698928101730, guid: 9d0cc49d1b89c0a49817f3844b358676, type: 3}
   m_PrefabInstance: {fileID: 891312904727960093}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1999538845322017299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2991488678425031551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9bfe32af0e05cf4abb4d39d76ef5bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spell: {fileID: 21300000, guid: f655e624572f6d443ae3a01439e7e8fe, type: 3}
-  text: You have unlocked the Bloom Spell.
 --- !u!1001 &2990912997335976038
 PrefabInstance:
   m_ObjectHideFlags: 0

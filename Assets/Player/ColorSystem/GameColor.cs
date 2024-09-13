@@ -70,9 +70,17 @@ public class GameColor : ScriptableObject
         }
 
         PlayerStats playerStats = playerObj.GetComponent<PlayerStats>();
-
+        
+        bool setPowerZero = false;
         int powerDivide = 1;
-        if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) powerDivide = 2;
+        if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) 
+        {
+            powerDivide = 2;
+            if(name.Equals("Rainbow"))
+            {
+                setPowerZero = true;
+            }
+        }
 
         GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
         enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
@@ -80,6 +88,7 @@ public class GameColor : ScriptableObject
 
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         power = power / powerDivide;
+        if(setPowerZero) power = 0;
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))

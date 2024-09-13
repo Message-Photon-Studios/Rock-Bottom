@@ -29,6 +29,7 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] InputActionReference pickUpAction;
     [SerializeField] public Material defaultColor;
     [SerializeField] InputActionReference removeColorAction;
+    [SerializeField] int rainbowExtraDrain;
     public Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
     SpellPickup pickUpSpell = null;
 
@@ -123,8 +124,9 @@ public class ColorInventory : MonoBehaviour
             if (Random.Range(0, 100) > blockDrainColor)
             {
                 int charge = ActiveSlot().charge - 1;
-                if (charge > 0 && ActiveSlot().gameColor.name == "Rainbow")
-                    charge--;
+                if (ActiveSlot().gameColor.name == "Rainbow")
+                    charge -= rainbowExtraDrain;
+                if(charge < 0) charge = 0;
                 ActiveSlot().SetCharge(charge);
 
                 onColorUpdated?.Invoke();
