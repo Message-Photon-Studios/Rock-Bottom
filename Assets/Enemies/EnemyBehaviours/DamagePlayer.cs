@@ -5,6 +5,7 @@ using BehaviourTree;
 
 public class DamagePlayer : Node
 {
+    EnemyStats stats;
     PlayerStats player;
     int damage;
     
@@ -13,14 +14,15 @@ public class DamagePlayer : Node
     /// </summary>
     /// <param name="player"></param>
     /// <param name="damage"></param>
-    public DamagePlayer (PlayerStats player, int damage)
+    public DamagePlayer (EnemyStats stats, PlayerStats player, int damage)
     {
         this.player = player;
         this.damage = damage;
+        this.stats = stats;
     }
     public override NodeState Evaluate()
     {
-        player.DamagePlayer(damage);
+        player.DamagePlayer(stats.GetScaledDamage(damage));
         state = NodeState.SUCCESS;
         return state;
     }

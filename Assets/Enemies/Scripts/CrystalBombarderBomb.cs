@@ -23,7 +23,7 @@ public class CrystalBombarderBomb : Enemy
                 new Sequence(new List<Node>{
                     new CheckBool("attack", true),
                     new CheckPlayerArea(stats, player, attackTrigger),
-                    new DamagePlayer(player, damage),
+                    new DamagePlayer(stats, player, damage),
                     new AddForcePlayer(stats, player, force),
                     new SetParentVariable("attack", false, 2)
                 }),
