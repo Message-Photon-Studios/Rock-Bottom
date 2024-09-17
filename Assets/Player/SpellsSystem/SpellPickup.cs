@@ -22,7 +22,12 @@ public class SpellPickup : MonoBehaviour
 
     private void Start()
     {
-        Physics2D.IgnoreCollision(collider, GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>());
+        foreach (Collider2D coll in GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Collider2D>())
+        {
+            Physics2D.IgnoreCollision(collider, coll);
+        }
+        //Physics2D.IgnoreCollision(collider, GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>());
+
         body = GetComponent<Rigidbody2D>();
     }
 
