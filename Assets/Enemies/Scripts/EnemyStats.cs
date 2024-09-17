@@ -212,7 +212,7 @@ public class EnemyStats : MonoBehaviour
                 burning.timer = timer;
 
                 int damage = burning.damage;
-                damage-=3;
+                damage-=4;
                 burning.damage = damage;
 
                 //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
