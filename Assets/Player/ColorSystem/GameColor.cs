@@ -76,10 +76,10 @@ public class GameColor : ScriptableObject
         if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) 
         {
             powerDivide = 2;
-            if(name.Equals("Rainbow"))
+            /*if(name.Equals("Rainbow"))
             {
                 setPowerZero = true;
-            }
+            }*/
         }
 
         GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
