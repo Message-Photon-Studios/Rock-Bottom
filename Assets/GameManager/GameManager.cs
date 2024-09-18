@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     private LevelManager currentLevelManager;
 
+    public TipsManager tipsManager {get; private set;}
+
     void Awake()
     {
         if(instance == null)
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         unlockedSpells = new List<string>();
         spawnableSpells = new HashSet<string>();
+        tipsManager = GetComponent<TipsManager>();
         foreach (ColorSpell spell in startSpells)
         {
             spawnableSpells.Add(spell.name);
@@ -57,6 +60,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
         player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerStats>();
         if(player != null)
             player.onPlayerDied += OnPlayerDied;
+        
+        tipsManager.SetUi();
     }
 
     private void OnPlayerDied()
@@ -64,11 +69,19 @@ public class GameManager : MonoBehaviour, IDataPersistence
         clockTime = maxClockTime;
         hunterTimer = 0;
         hunters = 0;
+        DataPersistenceManager.instance.SaveGame();
     }
 
     public void SetLevelManager (LevelManager levelManager, float addClockTime, bool restartTimer) 
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        PlayerStats newPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+
+        if(newPlayer != player) 
+        {
+            player = newPlayer;
+            tipsManager.SetUi();
+        }
+
         currentLevelManager = levelManager;
         hunterTimer = 0f;
         hunters = 0;
@@ -84,6 +97,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
             gameStartScene = levelManager.onDeathLevel;
             DataPersistenceManager.instance.SaveGame();
         }
+
+        
     }
 
     #region Save Load
@@ -248,6 +263,31 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     #endregion
     
+    #region Pause Game
+    [HideInInspector] public bool disablePausing = false;
+
+    /// <summary>
+    /// Pauses the game by setting timescale to 0.
+    /// </summary>
+    public void Pause()
+    {
+        if(disablePausing) return;
+        Time.timeScale = 0f;
+        Debug.Log("Game is paused...");
+
+    }
+
+    /// <summary>
+    /// Resumes the game by setting timescale to 1.
+    /// </summary>
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        Debug.Log("Game is resumed...");
+
+    }
+    #endregion
+
     #region Mask Library
     [System.Serializable]
     public struct MaskLibrary {

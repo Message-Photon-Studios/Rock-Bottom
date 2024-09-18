@@ -75,6 +75,7 @@ public class GameColor : ScriptableObject
         int powerDivide = 1;
         if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) 
         {
+            GameManager.instance.tipsManager.DisplayTips("uncoloredDefense");
             powerDivide = 2;
             /*if(name.Equals("Rainbow"))
             {
