@@ -48,6 +48,7 @@ public class TipsManager : MonoBehaviour, IDataPersistence
 
     public void DisplayTips(string tips)
     {
+        if(!GameManager.instance.allowsTips) return;
         if(currentTipsDictionary.ContainsKey(tips)) 
         {
             Tips tipsObj = currentTipsDictionary[tips];

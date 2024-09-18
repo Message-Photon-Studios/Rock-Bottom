@@ -19,6 +19,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] VideoPlayer videoOnPlayerDeath;
     [SerializeField] GameObject videoObjecCanvas;
     [SerializeField] GameObject backgroundMusic;
+    [SerializeField] public bool allowTips = true;
 
     public static LevelManager instance = null;
 

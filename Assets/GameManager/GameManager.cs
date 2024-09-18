@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     private int petrifiedPigment = 0;
     string gameStartScene = "Tutorial";
+    public bool allowsTips {get; private set;} = true;
     float hunterTimer = 0f;
     int hunters = 0;
     float maxClockTime;
@@ -97,8 +98,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
             gameStartScene = levelManager.onDeathLevel;
             DataPersistenceManager.instance.SaveGame();
         }
-
         
+        allowsTips = levelManager.allowTips;
     }
 
     #region Save Load
