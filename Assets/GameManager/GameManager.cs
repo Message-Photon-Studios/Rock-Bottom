@@ -82,6 +82,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
 
+        
+
         currentLevelManager = levelManager;
         hunterTimer = 0f;
         hunters = 0;
