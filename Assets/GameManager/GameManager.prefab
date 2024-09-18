@@ -334,6 +334,8 @@ MonoBehaviour:
     onlyPlayer:
       serializedVersion: 2
       m_Bits: 8
+  tipsManager: {fileID: 7474946213633799611}
+  disablePausing: 0
 --- !u!114 &7474946213633799611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,7 +353,21 @@ MonoBehaviour:
     - Key: uncoloredDefense
       Value:
         hasBeenDisplayed: 0
+        callsNeeded: 10
+        text: An enemy with no color has significantly increased defenses towards
+          all spells.
+    - Key: colorImmunity
+      Value:
+        hasBeenDisplayed: 0
         callsNeeded: 5
-        text: 'Enemies that  does not have a color significantly reduces the effect
-          of the spell when hit. '
+        text: "\rEnemies are immune towards the color that they themself have.\r\n\r\nRemoving
+          or changing the color removes this immunity.\r\n"
+    - Key: rainbowCombo
+      Value:
+        hasBeenDisplayed: 0
+        callsNeeded: 5
+        text: "Enemies colored to the rainbow color are unstable and will collapse
+          after a few seconds. This deals damage to the enemy and removes their color.
+          \n\nIf an rainbow colored enemy dies then some of their color will be automatically
+          collected."
   removeTooltipButton: {fileID: -4679931084075046408, guid: fd04459890e791843a48243064f9151b, type: 3}

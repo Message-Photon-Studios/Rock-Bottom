@@ -66,6 +66,7 @@ public class GameColor : ScriptableObject
         if(enemy.GetColor() == this)
         {
             enemy.DamageEnemy(0);
+            GameManager.instance.tipsManager.DisplayTips("colorImmunity");
             return;
         }
 

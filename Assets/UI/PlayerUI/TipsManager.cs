@@ -16,38 +16,29 @@ public class TipsManager : MonoBehaviour, IDataPersistence
 
     private GameObject gameTipsObj;
     private TMP_Text gameTipsText;
-    private UIController uIController;
+    private UIController uiController;
     Action<InputAction.CallbackContext> removeTooltip;
 
-    private void OnEnable() 
+    public void SetUi(UIController uiController)
     {
         removeTooltip = (InputAction.CallbackContext ctx) => {CloseTips();};
-        ResetTipsDictionary();
-        removeTooltipButton.action.performed += removeTooltip;
-    }
-
-    void OnDisable()
-    {
-        removeTooltipButton.action.performed -= removeTooltip;
-    }
-
-    public void SetUi()
-    {
-        uIController = FindObjectOfType<UIController>();
-        gameTipsObj = uIController.tipsPanel;
-        if(!gameTipsObj) Debug.LogError("Did not find tips panel");
+        this.uiController = uiController;
+        gameTipsObj = uiController.tipsPanel;
         gameTipsText = gameTipsObj.GetComponentInChildren<TMP_Text>();
     }
 
     public void CloseTips()
     {
+        if(!gameTipsObj) return;
+        if(!gameTipsObj || !gameTipsObj.activeSelf) return;
         gameTipsObj?.SetActive(false);
-        uIController.lightbox.SetActive(false);
+        uiController.lightbox.SetActive(false);
         GameManager.instance.Resume();
     }
 
     public void DisplayTips(string tips)
     {
+        if(!gameTipsObj) return;
         if(!GameManager.instance.allowsTips) return;
         if(currentTipsDictionary.ContainsKey(tips)) 
         {
@@ -60,7 +51,7 @@ public class TipsManager : MonoBehaviour, IDataPersistence
                 gameTipsText.text = tipsObj.text;
                 tipsObj.hasBeenDisplayed = true;
                 gameTipsObj.SetActive(true);
-                uIController.lightbox.SetActive(true);
+                uiController.lightbox.SetActive(true);
                 GameManager.instance.Pause();
             }
         }
@@ -68,7 +59,7 @@ public class TipsManager : MonoBehaviour, IDataPersistence
         {
             gameTipsText.text = tips;
             currentTipsDictionary.Add(tips, new Tips(true, tips, 0));
-            uIController.lightbox.SetActive(true);
+            uiController.lightbox.SetActive(true);
             gameTipsObj.SetActive(true);
             GameManager.instance.Pause();
         }
@@ -124,5 +115,5 @@ public class Tips
     }
     [HideInInspector] public bool hasBeenDisplayed;
     [SerializeField] public int callsNeeded;
-    [SerializeField, TextArea(5,20)] public string text;
+    [SerializeField, TextArea(10,20)] public string text;
 }

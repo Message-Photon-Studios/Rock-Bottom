@@ -44,6 +44,7 @@ public class UIController : MonoBehaviour
     [SerializeField] InputActionReference openPauseMenu;
     [SerializeField] InputActionReference openMap;
     [SerializeField] InputActionReference openInventory;
+    [SerializeField] InputActionReference closeTips;
 
     public UnityAction<Sprite, String> inspired;
 
@@ -60,10 +61,13 @@ public class UIController : MonoBehaviour
         openPauseMenu.action.performed += OpenPauseMenu;
         openMap.action.performed += OpenMap;
         openInventory.action.performed += OpenInventory;
+        closeTips.action.performed += CloseTips;
         lightbox.SetActive(false);
         pauseMenuContainer.SetActive(false);
         mapContainer.SetActive(false);
         inventoryContainer.SetActive(false);
+
+        GameManager.instance.SetUiController(this);
     }
 
     private void OnDisable() {
@@ -71,6 +75,7 @@ public class UIController : MonoBehaviour
         openPauseMenu.action.performed -= OpenPauseMenu;
         openMap.action.performed -= OpenMap;
         openInventory.action.performed -= OpenInventory;
+        closeTips.action.performed -= CloseTips;
     }
 
 
@@ -104,6 +109,12 @@ public class UIController : MonoBehaviour
         mapContainer.SetActive(mapOpen);
         inventoryOpen = false;
         inventoryContainer.SetActive(inventoryOpen);
+    }
+
+    private void CloseTips(InputAction.CallbackContext ctx){CloseTips();}
+    private void CloseTips()
+    {
+        GameManager.instance.tipsManager.CloseTips();
     }
 
     /// <summary>

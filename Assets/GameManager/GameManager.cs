@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour, IDataPersistence
 {
@@ -30,10 +31,10 @@ public class GameManager : MonoBehaviour, IDataPersistence
     float maxClockTime;
     public MaskLibrary maskLibrary;
     private PlayerStats player;
-
+    private UIController uiController;
     private LevelManager currentLevelManager;
 
-    public TipsManager tipsManager {get; private set;}
+    public TipsManager tipsManager;
 
     void Awake()
     {
@@ -51,7 +52,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         unlockedSpells = new List<string>();
         spawnableSpells = new HashSet<string>();
-        tipsManager = GetComponent<TipsManager>();
         foreach (ColorSpell spell in startSpells)
         {
             spawnableSpells.Add(spell.name);
@@ -62,7 +62,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
         if(player != null)
             player.onPlayerDied += OnPlayerDied;
         
-        tipsManager.SetUi();
     }
 
     private void OnPlayerDied()
@@ -73,15 +72,15 @@ public class GameManager : MonoBehaviour, IDataPersistence
         DataPersistenceManager.instance.SaveGame();
     }
 
+    public void SetUiController(UIController uiController)
+    {
+        this.uiController = uiController;
+        tipsManager.SetUi(uiController);
+    }
+
     public void SetLevelManager (LevelManager levelManager, float addClockTime, bool restartTimer) 
     {
-        PlayerStats newPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-
-        if(newPlayer != player) 
-        {
-            player = newPlayer;
-            tipsManager.SetUi();
-        }
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
 
         currentLevelManager = levelManager;
         hunterTimer = 0f;
@@ -101,6 +100,29 @@ public class GameManager : MonoBehaviour, IDataPersistence
         
         allowsTips = levelManager.allowTips;
     }
+
+    #region MainMenu and Quit
+    public void GoToMainMenu()
+    {
+        StartCoroutine(uiController.FadeOutCoroutine(false, GoToMainMenuAsync));
+        Resume();
+        DataPersistenceManager.instance.SaveGame();
+        Debug.Log("Loading to main menu...");
+    }
+    public IEnumerator GoToMainMenuAsync()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
+        yield break;
+    }
+
+    public void QuitGame()
+    {
+        DataPersistenceManager.instance.SaveGame();
+        Application.Quit();
+        Debug.Log("Quitting game...");
+    }
+
+    #endregion
 
     #region Save Load
 
