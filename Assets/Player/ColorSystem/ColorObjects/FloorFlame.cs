@@ -6,17 +6,18 @@ public class FloorFlame : MonoBehaviour
 {
     [SerializeField] float maxForce;
     [SerializeField] float minForce;
-    private List<GameObject> burnQueue = new List<GameObject>();
+    private HashSet<GameObject> burnQueue = new HashSet<GameObject>();
+
+    private (int damage, float timer, float range, GameObject particles, GameObject floorParticles, int flames) burning;
+    
+    
+    [HideInInspector] public int dir = 1;
+
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1f, 1f), Random.Range(0f, 0.6f)).normalized * Random.Range(maxForce, minForce));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(0.15f, 0.75f)*dir, 0.5f).normalized * Random.Range(maxForce, minForce));
+        Destroy(gameObject, GetComponent<ParticleSystem>().main.duration + .5f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -24,17 +25,30 @@ public class FloorFlame : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy") && !burnQueue.Contains(collision.gameObject))
         {
             burnQueue.Add(collision.gameObject);
-            Debug.Log("collide");
+            collision.gameObject.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles, false, burning.flames);
         }
     }
 
-    public List<GameObject> ToBurn()
+    public void SetBurning(int damage, float timer, float range, GameObject particles, GameObject floorParticles, int flames)
     {
-        return burnQueue;
+        burning.damage = damage;
+        burning.timer = timer;
+        burning.range = range;
+        burning.particles = particles;
+        burning.floorParticles = floorParticles;
+        burning.flames = flames;
     }
 
     public void ClearBurnQueue()
     {
-        burnQueue = new List<GameObject>();
+        burnQueue = new HashSet<GameObject>();
+    }
+
+    public void ApplyFire(GameObject enemy)
+    {
+        if (!burnQueue.Contains(enemy))
+        {
+            burnQueue.Add(enemy);
+        }
     }
 }
