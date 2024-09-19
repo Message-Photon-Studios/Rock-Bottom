@@ -45,8 +45,6 @@ public class EnemyStats : MonoBehaviour
     private float normalMovementDrag; //The normal movement drag of the enemy
     private float movementSpeedTimer;
     private float normalAnimationSpeed;
-
-    private int colorComboDamage = 40; // The damage that the enemy will take when becoming rainbow color
     private float colorComboTimer = 4.5f; //The timer before the enemy explode
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
@@ -89,6 +87,8 @@ public class EnemyStats : MonoBehaviour
 
     public bool isColoredThisFrame {get; private set;} = false;
     GameObject player;
+    PlayerStats playerStats;
+    PlayerCombatSystem playerCombat;
     #region Setup
     void Awake()
     {
@@ -113,6 +113,8 @@ public class EnemyStats : MonoBehaviour
         onColorChanged?.Invoke(color);
         if (deathTimer > 0) hasDeathTimer = true;
         player = GameObject.FindGameObjectWithTag("Player");
+        playerStats = player.GetComponent<PlayerStats>();
+        playerCombat = player.GetComponent<PlayerCombatSystem>();
     }
 
     void OnValidate()
@@ -155,7 +157,7 @@ public class EnemyStats : MonoBehaviour
         {
             if(color != null && color.name == "Rainbow")
             {
-                int rainbowDamage = (int)(colorComboDamage*player.GetComponent<PlayerStats>().colorRainbowMaxedPower);
+                int rainbowDamage = (int)(playerCombat.rainbowComboDamage*playerStats.colorRainbowMaxedPower);
 
                 if(rainbowDamage >= health)
                 {
@@ -286,6 +288,7 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
+        GameManager.instance.tipsManager.DisplayTips("power");
         if(isPoisoned())
         {
             GameObject orb = GameObject.Instantiate(poisonOrbPrefab,transform.position, Quaternion.identity) as GameObject;
@@ -353,6 +356,7 @@ public class EnemyStats : MonoBehaviour
 
     private void DealRainbowDamage(int rainbowDamage)
     {
+        GameManager.instance.tipsManager.DisplayTips("rainbowCombo");
         DamageEnemy(rainbowDamage);
         AbsorbColor();
         colorComboTimer = 2f;
