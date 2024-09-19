@@ -288,7 +288,6 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
-        GameManager.instance.tipsManager.DisplayTips("power");
         if(isPoisoned())
         {
             GameObject orb = GameObject.Instantiate(poisonOrbPrefab,transform.position, Quaternion.identity) as GameObject;
