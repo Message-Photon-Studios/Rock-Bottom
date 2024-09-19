@@ -12,6 +12,8 @@ public class TipsManager : MonoBehaviour, IDataPersistence
     [SerializeField] SerializedDictionary<string, Tips> tipsDictionary;
     private SerializedDictionary<string, Tips> currentTipsDictionary;
 
+    [SerializeField, TextArea(2,4)] string[] loadingTips;
+
     [SerializeField] InputActionReference removeTooltipButton;
 
     private GameObject gameTipsObj;
@@ -71,6 +73,11 @@ public class TipsManager : MonoBehaviour, IDataPersistence
         {
             currentTipsDictionary.Add(item.Key, item.Value.CopyData());
         }
+    }
+
+    public string GetLoadingTips()
+    {
+        return loadingTips[UnityEngine.Random.Range(0, loadingTips.Length)];
     }
     
 

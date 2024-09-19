@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using TMPro;
 
 public class UIController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class UIController : MonoBehaviour
     [SerializeField] Image sylviaLoading;
 
     [SerializeField] Sprite[] LoadingSprites;
+    [SerializeField] TMP_Text loadingText;
 
     public GameObject tipsPanel;
 
@@ -66,6 +68,7 @@ public class UIController : MonoBehaviour
         pauseMenuContainer.SetActive(false);
         mapContainer.SetActive(false);
         inventoryContainer.SetActive(false);
+        loadingText.gameObject.SetActive(false);
 
         GameManager.instance.SetUiController(this);
     }
@@ -169,6 +172,8 @@ public class UIController : MonoBehaviour
     {
         int count = 0;
         sylviaLoading.gameObject.SetActive(true);
+        loadingText.text = GameManager.instance.tipsManager.GetLoadingTips();
+        loadingText.gameObject.SetActive(true);
         while (!loaded)
         {
             sylviaLoading.sprite = LoadingSprites[count];
@@ -176,6 +181,7 @@ public class UIController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         sylviaLoading.gameObject.SetActive(false);
+        loadingText.gameObject.SetActive(false);
         loadScreenFinished = true;
         UILoaded?.Invoke();
     }
