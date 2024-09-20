@@ -45,7 +45,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 6040ff11f896792428dc6f9b890e1d1b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
-  m_Pitch: 1
+  m_Pitch: 1.5
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -557,7 +557,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 3b683354ca4608a4090350bffa76bae3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
-  m_Pitch: 1
+  m_Pitch: 1.2
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -979,7 +979,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 7e416521aca25bb448924614c12d06dc, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
-  m_Pitch: 1
+  m_Pitch: 1.5
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -1241,19 +1241,33 @@ MonoBehaviour:
   soundLibrary:
     _serializedList:
     - Key: Yellow
-      Value: {fileID: 4895308357192290584}
+      Value:
+        audioSource: {fileID: 4895308357192290584}
+        maxVolume: 0.4
     - Key: Red
-      Value: {fileID: 7581188904585604392}
+      Value:
+        audioSource: {fileID: 7581188904585604392}
+        maxVolume: 0.5
     - Key: Rainbow
-      Value: {fileID: 6587479581049576109}
+      Value:
+        audioSource: {fileID: 6587479581049576109}
+        maxVolume: 0.5
     - Key: Blue
-      Value: {fileID: 3442175502387246392}
+      Value:
+        audioSource: {fileID: 3442175502387246392}
+        maxVolume: 0.5
     - Key: Green
-      Value: {fileID: 6832867010746159442}
+      Value:
+        audioSource: {fileID: 6832867010746159442}
+        maxVolume: 0.3
     - Key: Orange
-      Value: {fileID: 5787750353671216461}
+      Value:
+        audioSource: {fileID: 5787750353671216461}
+        maxVolume: 0.4
     - Key: Purple
-      Value: {fileID: 167709162901887020}
+      Value:
+        audioSource: {fileID: 167709162901887020}
+        maxVolume: 0.5
 --- !u!1 &7562256178773632822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1299,7 +1313,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 83199be04434e9b4098c1b415b19a9fb, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
-  m_Pitch: 1
+  m_Pitch: 1.5
   Loop: 0
   Mute: 0
   Spatialize: 0
