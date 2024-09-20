@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using TMPro;
 
 public class UIController : MonoBehaviour
 {
@@ -17,11 +18,14 @@ public class UIController : MonoBehaviour
     [SerializeField] Image sylviaLoading;
 
     [SerializeField] Sprite[] LoadingSprites;
+    [SerializeField] TMP_Text loadingText;
+
+    public GameObject tipsPanel;
 
     public bool loaded = false;
     private bool loadScreenFinished;
 
-    [SerializeField] GameObject lightbox;
+    [SerializeField] public GameObject lightbox;
 
     //Containers for the various menus.
     [SerializeField] GameObject pauseMenuContainer;
@@ -34,8 +38,6 @@ public class UIController : MonoBehaviour
     private bool mapOpen = false;
     private bool inventoryOpen = false;
 
-    public bool disablePausing = false;
-
     //When UIController is loaded, sends out action.
     public UnityAction UILoaded;
     public UnityAction ColorSlotAmountChanged; 
@@ -44,6 +46,7 @@ public class UIController : MonoBehaviour
     [SerializeField] InputActionReference openPauseMenu;
     [SerializeField] InputActionReference openMap;
     [SerializeField] InputActionReference openInventory;
+    [SerializeField] InputActionReference closeTips;
 
     public UnityAction<Sprite, String> inspired;
 
@@ -60,10 +63,14 @@ public class UIController : MonoBehaviour
         openPauseMenu.action.performed += OpenPauseMenu;
         openMap.action.performed += OpenMap;
         openInventory.action.performed += OpenInventory;
+        closeTips.action.performed += CloseTips;
         lightbox.SetActive(false);
         pauseMenuContainer.SetActive(false);
         mapContainer.SetActive(false);
         inventoryContainer.SetActive(false);
+        loadingText.gameObject.SetActive(false);
+
+        GameManager.instance.SetUiController(this);
     }
 
     private void OnDisable() {
@@ -71,6 +78,7 @@ public class UIController : MonoBehaviour
         openPauseMenu.action.performed -= OpenPauseMenu;
         openMap.action.performed -= OpenMap;
         openInventory.action.performed -= OpenInventory;
+        closeTips.action.performed -= CloseTips;
     }
 
 
@@ -89,11 +97,12 @@ public class UIController : MonoBehaviour
     /// Opens the pause menu and closes all other menus.
     /// </summary>
     public void OpenPauseMenu() {
+        GameManager.instance.tipsManager.CloseTips();
         pauseMenuOpen = !pauseMenuOpen;
         if(pauseMenuOpen) {
-            Pause();
+            GameManager.instance.Pause();
         } else {
-            Resume();
+            GameManager.instance.Resume();
         }
         anyMenuOpen = pauseMenuOpen;
         pauseMenuContainer.SetActive(pauseMenuOpen);
@@ -105,16 +114,23 @@ public class UIController : MonoBehaviour
         inventoryContainer.SetActive(inventoryOpen);
     }
 
+    private void CloseTips(InputAction.CallbackContext ctx){CloseTips();}
+    private void CloseTips()
+    {
+        GameManager.instance.tipsManager.CloseTips();
+    }
+
     /// <summary>
     /// Opens the map menu and closes all other menus.
     /// </summary>
     private void OpenMap(InputAction.CallbackContext ctx) {OpenMap();}
     public void OpenMap() {
+        GameManager.instance.tipsManager.CloseTips();
         mapOpen = !mapOpen;
         if(mapOpen) {
-            Pause();
+            GameManager.instance.Pause();
         } else {
-            Resume();
+            GameManager.instance.Resume();
         }
         anyMenuOpen = mapOpen;
         mapContainer.SetActive(mapOpen);
@@ -131,11 +147,12 @@ public class UIController : MonoBehaviour
     /// Opens the inventory menu and closes all other menus.
     /// </summary>
     public void OpenInventory() {
+        GameManager.instance.tipsManager.CloseTips();
         inventoryOpen = !inventoryOpen;
         if(inventoryOpen) {
-            Pause();
+            GameManager.instance.Pause();
         } else {
-            Resume();
+            GameManager.instance.Resume();
         }
         anyMenuOpen = inventoryOpen;
         inventoryContainer.SetActive(inventoryOpen);
@@ -151,31 +168,12 @@ public class UIController : MonoBehaviour
         inspired?.Invoke(spell, text);
     }
 
-    /// <summary>
-    /// Pauses the game by setting timescale to 0.
-    /// </summary>
-     private void Pause()
-    {
-        if(disablePausing) return;
-        Time.timeScale = 0f;
-        Debug.Log("Game is paused...");
-
-    }
-
-    /// <summary>
-    /// Resumes the game by setting timescale to 1.
-    /// </summary>
-    public void Resume()
-    {
-        Time.timeScale = 1f;
-        Debug.Log("Game is resumed...");
-
-    }
-
     private IEnumerator Loading()
     {
         int count = 0;
         sylviaLoading.gameObject.SetActive(true);
+        loadingText.text = GameManager.instance.tipsManager.GetLoadingTips();
+        loadingText.gameObject.SetActive(true);
         while (!loaded)
         {
             sylviaLoading.sprite = LoadingSprites[count];
@@ -183,6 +181,7 @@ public class UIController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         sylviaLoading.gameObject.SetActive(false);
+        loadingText.gameObject.SetActive(false);
         loadScreenFinished = true;
         UILoaded?.Invoke();
     }

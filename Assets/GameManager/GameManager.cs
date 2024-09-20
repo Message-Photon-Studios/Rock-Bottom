@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour, IDataPersistence
 {
@@ -21,16 +22,20 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [SerializeField] AudioSource spellUnlockSound;
 
     [SerializeField] AudioSource petrifiedPickupSound;
+    public SoundEffectManager soundEffectManager;
 
     private int petrifiedPigment = 0;
     string gameStartScene = "Tutorial";
+    public bool allowsTips {get; private set;} = true;
     float hunterTimer = 0f;
     int hunters = 0;
     float maxClockTime;
     public MaskLibrary maskLibrary;
     private PlayerStats player;
-
+    private UIController uiController;
     private LevelManager currentLevelManager;
+
+    public TipsManager tipsManager;
 
     void Awake()
     {
@@ -57,6 +62,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerStats>();
         if(player != null)
             player.onPlayerDied += OnPlayerDied;
+        
     }
 
     private void OnPlayerDied()
@@ -64,11 +70,21 @@ public class GameManager : MonoBehaviour, IDataPersistence
         clockTime = maxClockTime;
         hunterTimer = 0;
         hunters = 0;
+        DataPersistenceManager.instance.SaveGame();
+    }
+
+    public void SetUiController(UIController uiController)
+    {
+        this.uiController = uiController;
+        tipsManager.SetUi(uiController);
     }
 
     public void SetLevelManager (LevelManager levelManager, float addClockTime, bool restartTimer) 
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+
+        
+
         currentLevelManager = levelManager;
         hunterTimer = 0f;
         hunters = 0;
@@ -84,7 +100,32 @@ public class GameManager : MonoBehaviour, IDataPersistence
             gameStartScene = levelManager.onDeathLevel;
             DataPersistenceManager.instance.SaveGame();
         }
+        
+        allowsTips = levelManager.allowTips;
     }
+
+    #region MainMenu and Quit
+    public void GoToMainMenu()
+    {
+        StartCoroutine(uiController.FadeOutCoroutine(false, GoToMainMenuAsync));
+        Resume();
+        DataPersistenceManager.instance.SaveGame();
+        Debug.Log("Loading to main menu...");
+    }
+    public IEnumerator GoToMainMenuAsync()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
+        yield break;
+    }
+
+    public void QuitGame()
+    {
+        DataPersistenceManager.instance.SaveGame();
+        Application.Quit();
+        Debug.Log("Quitting game...");
+    }
+
+    #endregion
 
     #region Save Load
 
@@ -248,6 +289,31 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     #endregion
     
+    #region Pause Game
+    [HideInInspector] public bool disablePausing = false;
+
+    /// <summary>
+    /// Pauses the game by setting timescale to 0.
+    /// </summary>
+    public void Pause()
+    {
+        if(disablePausing) return;
+        Time.timeScale = 0f;
+        Debug.Log("Game is paused...");
+
+    }
+
+    /// <summary>
+    /// Resumes the game by setting timescale to 1.
+    /// </summary>
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        Debug.Log("Game is resumed...");
+
+    }
+    #endregion
+
     #region Mask Library
     [System.Serializable]
     public struct MaskLibrary {

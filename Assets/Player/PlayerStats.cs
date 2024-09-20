@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -43,6 +45,8 @@ public class PlayerStats : MonoBehaviour
     public UnityAction onPlayerDied;
 
     private bool isDeathExecuted;
+
+    private Dictionary<GameColor, float> colorArmour;
     public void Setup(LevelManager levelManager)
     {
         this.levelManager = levelManager;
@@ -54,6 +58,7 @@ public class PlayerStats : MonoBehaviour
         maxHealth = health;
         onMaxHealthChanged?.Invoke(maxHealth);
         onHealthChanged?.Invoke(health);
+        colorArmour = new Dictionary<GameColor, float>();
     }
 
     void Update()
@@ -193,5 +198,28 @@ public class PlayerStats : MonoBehaviour
     public bool IsInvincible()
     {
         return invincibilityTimer > 0;
+    }
+
+    public float GetColorArmour (GameColor color)
+    {
+        if(colorArmour.ContainsKey(color))
+        {
+            float armour = colorArmour[color];
+            if(armour > .9f)
+                return .9f;
+            else
+                return
+                    armour;
+        }
+        else
+            return 0f;
+    }
+
+    public void AddColorArmour(GameColor color, float addArmour)
+    {
+        if(colorArmour.ContainsKey(color))
+            colorArmour[color] += addArmour;
+        else
+            colorArmour.Add(color, addArmour);
     }
 }

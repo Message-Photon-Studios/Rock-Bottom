@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper.SerializedCollections;
 
 [System.Serializable]
 public class GameData
@@ -9,6 +10,9 @@ public class GameData
     public int petrifiedPigment;
     public string[] unlockedColorSpells;
     public string[] petrifiedPigmentPickedUp;
+
+    public SerializedDictionary<string, Tips> tipsDictionary;
+
 
     /// <summary>
     /// On new game this constructor will set default values.
@@ -19,5 +23,6 @@ public class GameData
         unlockedColorSpells = new string[0];
         petrifiedPigment = 0;
         petrifiedPigmentPickedUp = new string[0];
+        tipsDictionary = new SerializedDictionary<string, Tips>();
     }
 }
