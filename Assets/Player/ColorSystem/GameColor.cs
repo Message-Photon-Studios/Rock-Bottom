@@ -93,6 +93,8 @@ public class GameColor : ScriptableObject
         if(setPowerZero) power = 0;
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
 
+        GameManager.instance.soundEffectManager.PlaySound(name);
+
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
         {
             if(Random.Range(0, 100) < playerStats.chanceToColorNearby)

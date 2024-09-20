@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [SerializeField] AudioSource spellUnlockSound;
 
     [SerializeField] AudioSource petrifiedPickupSound;
+    public SoundEffectManager soundEffectManager;
 
     private int petrifiedPigment = 0;
     string gameStartScene = "Tutorial";

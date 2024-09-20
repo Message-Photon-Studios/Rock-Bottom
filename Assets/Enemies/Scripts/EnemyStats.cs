@@ -390,6 +390,7 @@ public class EnemyStats : MonoBehaviour
             poisonDamageToTake = damage;
             poisonDamageReduction = damageReduction;
             this.poisonOrbPrefab = poisonOrbPrefab;
+            GameManager.instance.soundEffectManager.PlaySound("Green");
         }
     }
 
@@ -418,6 +419,8 @@ public class EnemyStats : MonoBehaviour
             return;
         }
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
+
+        GameManager.instance.soundEffectManager.PlaySound("Orange");
         
 
         GameObject instantiatedParticles = GameObject.Instantiate(burnParticles, transform.position, transform.rotation);
