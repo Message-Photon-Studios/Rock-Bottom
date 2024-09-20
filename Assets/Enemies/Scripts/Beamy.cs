@@ -67,7 +67,7 @@ public class Beamy : Enemy
 
     public void DamagePlayer()
     {
-        player.DamagePlayer(damage);
+        player.DamagePlayer((int)(damage*stats.GetDamageFactor()));
     }
 
     public void ChooseBeamTarget()

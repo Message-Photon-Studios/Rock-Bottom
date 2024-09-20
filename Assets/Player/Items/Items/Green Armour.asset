@@ -10,20 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
-  m_Name: Red Leaches
+  m_Name: Green Armour
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 37b30c8d2e7330f4b802f38aa3adf946, type: 3}
-  description: 'Why did I have these at home?
-
-    Buffs red color with +20%.'
+  sprite: {fileID: 21300000, guid: e3f133e5c41455146b7784f0c866f30a, type: 3}
+  description: This item blocks 25% of the damage taken from green colored enemies.
   itemCost: 50
   effects:
-  - rid: 1595614060766298114
+  - rid: 1655388888735678468
   references:
     version: 2
     RefIds:
-    - rid: 1595614060766298114
-      type: {class: ColorBuffItem, ns: , asm: Assembly-CSharp}
+    - rid: 1655388888735678468
+      type: {class: ColorArmour, ns: , asm: Assembly-CSharp}
       data:
-        color: {fileID: 11400000, guid: a43a3607f70897249a36fdff7162cc2a, type: 2}
-        power: 0.2
+        color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
+        armour: 0.25

@@ -105,6 +105,11 @@ public class ItemInspector : Editor
         {
             item.effects.Add(new BrushDamageItem());
         }
+
+        if(GUILayout.Button("Add color armour"))
+        {
+            item.effects.Add(new ColorArmour());
+        }
     }
 }
 
