@@ -82,7 +82,9 @@ public class GameColor : ScriptableObject
             {
                 setPowerZero = true;
             }*/
-        }
+            GameManager.instance.soundEffectManager.PlaySound(name, .25f);
+        } else
+            GameManager.instance.soundEffectManager.PlaySound(name);
 
         GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
         enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
@@ -92,6 +94,8 @@ public class GameColor : ScriptableObject
         power = power / powerDivide;
         if(setPowerZero) power = 0;
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
+
+        
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
         {

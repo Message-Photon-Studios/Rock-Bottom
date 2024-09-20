@@ -390,6 +390,7 @@ public class EnemyStats : MonoBehaviour
             poisonDamageToTake = damage;
             poisonDamageReduction = damageReduction;
             this.poisonOrbPrefab = poisonOrbPrefab;
+            GameManager.instance.soundEffectManager.PlaySound("Green");
         }
     }
 
@@ -418,6 +419,8 @@ public class EnemyStats : MonoBehaviour
             return;
         }
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
+
+        GameManager.instance.soundEffectManager.PlaySound("Orange");
         
 
         GameObject instantiatedParticles = GameObject.Instantiate(burnParticles, transform.position, transform.rotation);
@@ -720,6 +723,9 @@ public struct CoinRange
 
     public int GetReward()
     {
-        return (int)(UnityEngine.Random.Range(min, max+1)*GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>().coinBoost);
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if(player != null)
+            return (int)(UnityEngine.Random.Range(min, max+1)*player.GetComponent<ItemInventory>().coinBoost);
+        else return UnityEngine.Random.Range(min, max+1);
     }
 }
