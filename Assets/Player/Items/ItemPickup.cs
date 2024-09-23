@@ -25,6 +25,7 @@ public class ItemPickup : MonoBehaviour
     private Coroutine hoverCoroutine;
 
     int itemCost;
+    
 
     void OnEnable()
     {
