@@ -18,6 +18,8 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] SpriteRenderer spriteRenderer;
+
+    [SerializeField] EnemyStats spawnFromEnemy;
     ItemInventory inventory;
 
     private Coroutine hoverCoroutine;
@@ -26,10 +28,30 @@ public class ItemPickup : MonoBehaviour
 
     void OnEnable()
     {
-        if(setByhand)
+        if(spawnFromEnemy != null)
+        {
+            spawnFromEnemy.onEnemyDeath += SpawnFromEnemy;
+        } 
+        else if(setByhand)
         {
             SetItem(item, item.itemCost);
         }
+    }
+
+    private void SpawnFromEnemy()
+    {
+        transform.position = spawnFromEnemy.transform.position;
+        RaycastHit2D hit;
+        hit = Physics2D.Raycast(transform.position, Vector2.down,100f, GameManager.instance.maskLibrary.onlyGround | GameManager.instance.maskLibrary.onlyPlatforms);
+        transform.position = hit.point + Vector2.up*.6f;
+        SetItem(item, item.itemCost);
+        gameObject.SetActive(true);
+        spawnFromEnemy.onEnemyDeath -= SpawnFromEnemy;
+    }
+
+    void OnDisable()
+    {
+        if(spawnFromEnemy != null) spawnFromEnemy.onEnemyDeath -= SpawnFromEnemy;
     }
 
     /// <summary>
