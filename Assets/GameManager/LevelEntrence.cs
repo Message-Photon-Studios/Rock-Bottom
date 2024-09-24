@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelEntrence : MonoBehaviour
 {
     [SerializeField] Animator animator;
+    [SerializeField] AudioSource audioSource;
     bool collapsed = false;
 
     void OnEnable()
@@ -18,6 +19,7 @@ public class LevelEntrence : MonoBehaviour
     {
         yield return new WaitForSeconds(4f);
         animator.SetBool("Collapsed", true);
+        audioSource.Play();
         collapsed = true;
         yield return null;
     }
