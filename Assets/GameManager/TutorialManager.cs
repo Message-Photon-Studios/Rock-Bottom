@@ -27,6 +27,7 @@ public class TutorialManager : MonoBehaviour
         for (int i = 0; i < dummys.Length; i++)
         {
             int index = i;
+            if(dummys[i] ==  null) continue;
             Vector3 position = dummys[i].transform.position;
             dummys[i].GetComponent<EnemyStats>().onEnemyDeath -= () => { StartRespawn(position, index);};
         }
