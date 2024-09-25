@@ -222,10 +222,10 @@ public class PlayerMovement : MonoBehaviour
         return ret;
     }
 
-    public float GroundIncomming()
+    public float GroundIncomming(float distance)
     {
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, aimFocusMaxY+originalFocusPointPos.y, GameManager.instance.maskLibrary.onlyGround);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, distance+originalFocusPointPos.y, GameManager.instance.maskLibrary.onlyGround);
         if(hit == true) 
             return transform.position.y - hit.point.y;
         else
@@ -327,26 +327,32 @@ public class PlayerMovement : MonoBehaviour
         {
             if(body.velocity.y != 0 && !isCheckingY)
             {
-                if(GroundIncomming() == 0)
+                float focusX = originalFocusPointPos.x;
+                if(walkDir != 0 && focusPoint.localPosition.x < aimFocusMaxX && focusPoint.localPosition.x > -aimFocusMaxX && !IsGrappeling())
+                {
+                    focusX = aimFocusMaxX*lookDir;
+                }
+
+                if(GroundIncomming(aimFocusMaxY) == 0)
                 {
                     if(body.velocity.y < -0.2f && focusPoint.localPosition.y > -aimFocusMaxY)
                     {
-
-                        Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusPoint.localPosition.x, -aimFocusMaxY+originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
-                        focusPoint.localPosition = new Vector3(originalFocusPointPos.x, aimPosTo.y, focusPoint.localPosition.z);
+                        Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusX, -aimFocusMaxY+originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                        focusPoint.localPosition = new Vector3(aimPosTo.x, aimPosTo.y, focusPoint.localPosition.z);
                     } else if(body.velocity.y > 0.2f && focusPoint.localPosition.y < aimFocusMaxY)
                     {
-                        Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusPoint.localPosition.x, 2*aimFocusMaxY+originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
-                        focusPoint.localPosition = new Vector3(originalFocusPointPos.x, aimPosTo.y, focusPoint.localPosition.z);
+                        Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusX, 2*aimFocusMaxY+originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                        focusPoint.localPosition = new Vector3(aimPosTo.x, aimPosTo.y, focusPoint.localPosition.z);
                     }
                 }
-                else if(!IsGrappeling()&&false)
+                else if(!IsGrappeling())
                 {
-                    focusPoint.localPosition = new Vector3(originalFocusPointPos.x, -GroundIncomming() + originalFocusPointPos.y - playerCollider.offset.y + playerCollider.size.y/2, focusPoint.localPosition.z);
-                } else
+                    Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusX, focusPoint.localPosition.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                    focusPoint.localPosition = new Vector3(aimPosTo.x, -GroundIncomming(aimFocusMaxY) + originalFocusPointPos.y - playerCollider.offset.y + playerCollider.size.y/2, focusPoint.localPosition.z);
+                } else if(GroundIncomming(aimFocusMaxY/2) != 0)
                 {
-                    Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusPoint.localPosition.x, originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
-                    focusPoint.localPosition = new Vector3(originalFocusPointPos.x, aimPosTo.y, focusPoint.localPosition.z);
+                    Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusX, focusPoint.localPosition.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                    focusPoint.localPosition = new Vector3(aimPosTo.x, -GroundIncomming(aimFocusMaxY) + originalFocusPointPos.y - playerCollider.offset.y + playerCollider.size.y/2, focusPoint.localPosition.z);
                 }
             }
 

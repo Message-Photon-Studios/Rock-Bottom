@@ -27,7 +27,7 @@ public class CameraFocus : MonoBehaviour
         OnEnable();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if(aim.position.x > deadZone.x+transform.position.x || aim.position.x < -deadZone.x+transform.position.x)
         {
@@ -35,7 +35,10 @@ public class CameraFocus : MonoBehaviour
             {
                 x += (aim.position.x-x < 0)? -maxXspeed:maxXspeed;
             } else
-                x = aim.position.x;
+            {
+                float ofst = (aim.position.x-x < 0)?deadZone.x:-deadZone.x;
+                x = aim.position.x+ofst;
+            }
         }
 
         if(playerMovement.airTime <= 0.01f)
@@ -47,15 +50,25 @@ public class CameraFocus : MonoBehaviour
                 {
                     y += (aim.position.y-y < 0)? -maxYspeed:maxYspeed;
                 } else
-                    y = aim.position.y;
+                {
+                    float ofst = (aim.position.y-y < 0)?-deadZone.y:deadZone.y;
+                    y = aim.position.y + ofst;
+                }
             }
         } else if(transform.position.y-aim.position.y > maxYpos || aim.position.y - transform.position.y < minYpos || fallCamera)
         {
-            if(Mathf.Abs(aim.position.y-y) > maxYspeed)
+            if(aim.position.y > deadZone.y+transform.position.y || aim.position.y < -deadZone.y+transform.position.y)
             {
-                y += (aim.position.y-y < 0)? -maxYspeed:maxYspeed;
-            } else
-                y = aim.position.y;
+                if(Mathf.Abs(aim.position.y-y) > maxYspeed)
+                {
+                    y += (aim.position.y-y < 0)? -maxYspeed:maxYspeed;
+                } else
+                {
+                    float ofst = (aim.position.y-y < 0)?-deadZone.y:deadZone.y;
+                    y = aim.position.y + ofst;
+                }
+            }
+
             fallCamera = true;
         }
         
