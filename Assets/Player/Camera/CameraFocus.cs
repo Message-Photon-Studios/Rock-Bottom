@@ -51,7 +51,7 @@ public class CameraFocus : MonoBehaviour
                     y += (aim.position.y-y < 0)? -maxYspeed:maxYspeed;
                 } else
                 {
-                    float ofst = (aim.position.y-y < 0)?-deadZone.y:deadZone.y;
+                    float ofst = (aim.position.y-y < 0)?deadZone.y:-deadZone.y;
                     y = aim.position.y + ofst;
                 }
             }
@@ -64,7 +64,7 @@ public class CameraFocus : MonoBehaviour
                     y += (aim.position.y-y < 0)? -maxYspeed:maxYspeed;
                 } else
                 {
-                    float ofst = (aim.position.y-y < 0)?-deadZone.y:deadZone.y;
+                    float ofst = (aim.position.y-y < 0)?deadZone.y:-deadZone.y;
                     y = aim.position.y + ofst;
                 }
             }

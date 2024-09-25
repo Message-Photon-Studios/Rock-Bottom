@@ -224,10 +224,16 @@ public class PlayerMovement : MonoBehaviour
 
     public float GroundIncomming(float distance)
     {
+        RaycastHit2D hit1 = Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, distance+originalFocusPointPos.y, GameManager.instance.maskLibrary.onlyGround);
+        RaycastHit2D hit2 = Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, distance+originalFocusPointPos.y, GameManager.instance.maskLibrary.onlyGround);
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, distance+originalFocusPointPos.y, GameManager.instance.maskLibrary.onlyGround);
-        if(hit == true) 
-            return transform.position.y - hit.point.y;
+        if(hit1 == true && hit2 == true) 
+        {
+            float dist1 = transform.position.y - hit1.point.y;
+            float dist2 = transform.position.y - hit2.point.y;
+
+            return (dist1<dist2)?dist1:dist2;
+        }
         else
             return 0;
     }
