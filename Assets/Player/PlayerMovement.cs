@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using System.Diagnostics.Tracing;
+using Unity.VisualScripting;
 
 /// <summary>
 /// This class controls the players movement and keeps track of player states such as it being rooted, falling or in the air. 
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Animator playerAnimator;
     [SerializeField] Transform focusPoint; //The point tha the camera will try to focus on
     [SerializeField] float aimFocusMaxX;
+    [SerializeField] float aimFocusMaxY;
     [SerializeField] float aimFocusAcceleration;
     [SerializeField] float checkPointY;
     [SerializeField] CapsuleCollider2D playerCollider;
@@ -220,6 +222,16 @@ public class PlayerMovement : MonoBehaviour
         return ret;
     }
 
+    public float GroundIncomming()
+    {
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, aimFocusMaxY+originalFocusPointPos.y, GameManager.instance.maskLibrary.onlyGround);
+        if(hit == true) 
+            return transform.position.y - hit.point.y;
+        else
+            return 0;
+    }
+
     public bool IsOnPlatform() 
     {
         return Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 1f, GameManager.instance.maskLibrary.onlyPlatforms) &&
@@ -274,20 +286,22 @@ public class PlayerMovement : MonoBehaviour
             jump -= jumpFalloff * Time.fixedDeltaTime;
         else if(jump < 0)
             jump = 0;
-        if ((walkDir == 0 || IsGrappeling()) && focusPoint.localPosition.x != 0 )
-        {
-            Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(originalFocusPointPos.x, focusPoint.localPosition.y, focusPoint.localPosition.z) , aimFocusAcceleration*Time.fixedDeltaTime);
-            focusPoint.localPosition = new Vector3(aimPosTo.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
-            //focusPoint.localPosition += Vector3.Normalize(originalFocusPointPos-focusPoint.localPosition) * aimFocusAcceleration * Time.fixedDeltaTime;
-        }
+
         if(IsGrounded())
         {
-            if(walkDir != 0 && focusPoint.localPosition.x < aimFocusMaxX && focusPoint.localPosition.x > -aimFocusMaxX)
+            if(!isCheckingY)
             {
-                Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(aimFocusMaxX*lookDir, focusPoint.localPosition.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
-                focusPoint.localPosition = new Vector3(aimPosTo.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
-                //focusPoint.localPosition += new Vector3(aimFocusAcceleration*lookDir*Time.fixedDeltaTime, 0 , 0);
-            } 
+                if(walkDir != 0 && focusPoint.localPosition.x < aimFocusMaxX && focusPoint.localPosition.x > -aimFocusMaxX)
+                {
+                    Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(aimFocusMaxX*lookDir, focusPoint.localPosition.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                    focusPoint.localPosition = new Vector3(aimPosTo.x, originalFocusPointPos.y, focusPoint.localPosition.z);
+                    //focusPoint.localPosition += new Vector3(aimFocusAcceleration*lookDir*Time.fixedDeltaTime, 0 , 0);
+                } else if (walkDir == 0 && (focusPoint.localPosition.x != 0 || focusPoint.localPosition.y != 0))
+                {
+                    Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(originalFocusPointPos.x, originalFocusPointPos.y, focusPoint.localPosition.z) , aimFocusAcceleration*Time.fixedDeltaTime);
+                    focusPoint.localPosition = new Vector3(aimPosTo.x, originalFocusPointPos.y, focusPoint.localPosition.z);
+                }
+            }
             GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
             coyoteTimer = coyoteTime;
             playerAnimator.SetInteger("velocityY", 0);
@@ -311,6 +325,31 @@ public class PlayerMovement : MonoBehaviour
     
         } else
         {
+            if(body.velocity.y != 0 && !isCheckingY)
+            {
+                if(GroundIncomming() == 0)
+                {
+                    if(body.velocity.y < -0.2f && focusPoint.localPosition.y > -aimFocusMaxY)
+                    {
+
+                        Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusPoint.localPosition.x, -aimFocusMaxY+originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                        focusPoint.localPosition = new Vector3(originalFocusPointPos.x, aimPosTo.y, focusPoint.localPosition.z);
+                    } else if(body.velocity.y > 0.2f && focusPoint.localPosition.y < aimFocusMaxY)
+                    {
+                        Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusPoint.localPosition.x, 2*aimFocusMaxY+originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                        focusPoint.localPosition = new Vector3(originalFocusPointPos.x, aimPosTo.y, focusPoint.localPosition.z);
+                    }
+                }
+                else if(!IsGrappeling()&&false)
+                {
+                    focusPoint.localPosition = new Vector3(originalFocusPointPos.x, -GroundIncomming() + originalFocusPointPos.y - playerCollider.offset.y + playerCollider.size.y/2, focusPoint.localPosition.z);
+                } else
+                {
+                    Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusPoint.localPosition.x, originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
+                    focusPoint.localPosition = new Vector3(originalFocusPointPos.x, aimPosTo.y, focusPoint.localPosition.z);
+                }
+            }
+
             coyoteTimer -= Time.fixedDeltaTime;
             if(playerAnimator.GetBool("walking"))
             {
@@ -338,7 +377,11 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrappeling())
         {   
-            if(!wasClimbing) beforeClimbLookDir = lookDir;
+            if(!wasClimbing) 
+            {
+                beforeClimbLookDir = lookDir;
+                CheckCancel();
+            }
 
             coyoteTimerWall = coyoteTime;
             GetComponent<PlayerCombatSystem>().SetPlayerGrounded();
@@ -348,12 +391,11 @@ public class PlayerMovement : MonoBehaviour
             playerAnimator.SetBool("grapple", true);
             fallTime = 0;
             airTime = 0;
-            CheckCancel();
             doubleJumpActive = false;
             wallParticles.transform.localPosition = wallRight ? new Vector3(0.692f, 0.592f, 0f) : new Vector3(-0.692f, 0.592f, 0f);
-
             
             wasClimbing = true;
+
             if(walkDir != lookDir && walkDir != 0)
             {
                ReleaseWall();
@@ -382,12 +424,15 @@ public class PlayerMovement : MonoBehaviour
                 body.velocity = new Vector2(body.velocity.x + wallStickPower*lookDir, -2);
                 playerAnimator.SetInteger("velocityY", -1);
                 wallParticles.Play();
+
+                
             } else if(!inAttackAnimation)
             {   
                 body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             }
         } else
         {
+
             coyoteTimerWall -= Time.fixedDeltaTime;
             playerAnimator.SetBool("grapple", false);
             wallParticles.Stop();
