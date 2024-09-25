@@ -50,6 +50,11 @@ public class PlayerMovement : MonoBehaviour
     public float airTime {get; private set;}
 
     /// <summary>
+    /// The time that the player has spent climbing. Is 0 if the player not climbing.
+    /// </summary>
+    public float climbTime {get; private set;}
+
+    /// <summary>
     /// The time that the player has spent falling. Is 0 if the player are not falling.
     /// </summary>
     public float fallTime {get; private set;}
@@ -226,7 +231,7 @@ public class PlayerMovement : MonoBehaviour
     {
         RaycastHit2D hit1 = Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, distance+originalFocusPointPos.y, GameManager.instance.maskLibrary.onlyGround);
         RaycastHit2D hit2 = Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.down, distance+originalFocusPointPos.y, GameManager.instance.maskLibrary.onlyGround);
-
+        
         if(hit1 == true && hit2 == true) 
         {
             float dist1 = transform.position.y - hit1.point.y;
@@ -331,7 +336,7 @@ public class PlayerMovement : MonoBehaviour
     
         } else
         {
-            if(body.velocity.y != 0 && !isCheckingY)
+            if((body.velocity.y > 0.2f || body.velocity.y < -0.2f) && !isCheckingY)
             {
                 float focusX = originalFocusPointPos.x;
                 if(walkDir != 0 && focusPoint.localPosition.x < aimFocusMaxX && focusPoint.localPosition.x > -aimFocusMaxX && !IsGrappeling())
@@ -339,7 +344,7 @@ public class PlayerMovement : MonoBehaviour
                     focusX = aimFocusMaxX*lookDir;
                 }
 
-                if(GroundIncomming(aimFocusMaxY) == 0)
+                if(GroundIncomming(aimFocusMaxY) == 0 || (airTime < 1f && climbTime < 1f))
                 {
                     if(body.velocity.y < -0.2f && focusPoint.localPosition.y > -aimFocusMaxY)
                     {
@@ -351,11 +356,7 @@ public class PlayerMovement : MonoBehaviour
                         focusPoint.localPosition = new Vector3(aimPosTo.x, aimPosTo.y, focusPoint.localPosition.z);
                     }
                 }
-                else if(!IsGrappeling())
-                {
-                    Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusX, focusPoint.localPosition.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
-                    focusPoint.localPosition = new Vector3(aimPosTo.x, -GroundIncomming(aimFocusMaxY) + originalFocusPointPos.y - playerCollider.offset.y + playerCollider.size.y/2, focusPoint.localPosition.z);
-                } else if(GroundIncomming(aimFocusMaxY/2) != 0)
+                else
                 {
                     Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusX, focusPoint.localPosition.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
                     focusPoint.localPosition = new Vector3(aimPosTo.x, -GroundIncomming(aimFocusMaxY) + originalFocusPointPos.y - playerCollider.offset.y + playerCollider.size.y/2, focusPoint.localPosition.z);
@@ -389,6 +390,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrappeling())
         {   
+            climbTime += Time.fixedDeltaTime;
             if(!wasClimbing) 
             {
                 beforeClimbLookDir = lookDir;
@@ -445,6 +447,7 @@ public class PlayerMovement : MonoBehaviour
         } else
         {
 
+            climbTime = 0;
             coyoteTimerWall -= Time.fixedDeltaTime;
             playerAnimator.SetBool("grapple", false);
             wallParticles.Stop();
