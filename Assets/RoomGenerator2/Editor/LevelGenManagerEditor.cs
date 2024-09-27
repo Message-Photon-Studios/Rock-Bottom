@@ -33,6 +33,7 @@ public class LevelGenManagerEditor : Editor
                     genManager.init(null, false);
                 } catch (Exception e)
                 {
+                    Debug.Log(e);
                     failed++;
                 }
             }

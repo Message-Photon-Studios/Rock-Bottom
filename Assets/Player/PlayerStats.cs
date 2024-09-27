@@ -46,7 +46,7 @@ public class PlayerStats : MonoBehaviour
 
     private bool isDeathExecuted;
 
-    private Dictionary<GameColor, float> colorArmour;
+    private Dictionary<GameColor, float> colorArmour = new Dictionary<GameColor, float>();
     public void Setup(LevelManager levelManager)
     {
         this.levelManager = levelManager;
@@ -202,6 +202,7 @@ public class PlayerStats : MonoBehaviour
 
     public float GetColorArmour (GameColor color)
     {
+        if(colorArmour == null) return 0f;
         if(colorArmour.ContainsKey(color))
         {
             float armour = colorArmour[color];
