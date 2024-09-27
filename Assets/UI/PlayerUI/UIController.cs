@@ -172,7 +172,8 @@ public class UIController : MonoBehaviour
     {
         int count = 0;
         sylviaLoading.gameObject.SetActive(true);
-        loadingText.text = GameManager.instance.tipsManager.GetLoadingTips();
+        if(GameManager.instance != null)
+            loadingText.text = GameManager.instance.tipsManager.GetLoadingTips();
         loadingText.gameObject.SetActive(true);
         while (!loaded)
         {

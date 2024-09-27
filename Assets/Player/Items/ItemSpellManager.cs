@@ -21,8 +21,12 @@ public class ItemSpellManager : MonoBehaviour
 
         foreach (ColorSpell spell in levelSpells)
         {
-            if(GameManager.instance.IsSpellSpawnable(spell))
+            if(GameManager.instance != null && GameManager.instance.IsSpellSpawnable(spell))
                 spawnableSpells.Add(spell);
+            else if(GameManager.instance == null)
+            {
+                spawnableSpells.Add(spell);
+            }
         }
 
         spawnSetSpell.AddRange(spawnableSpells);
