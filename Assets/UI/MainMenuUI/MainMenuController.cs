@@ -56,7 +56,7 @@ public class MainMenuController : MonoBehaviour
         bgMusic.enableChildren();
         timeSinceLastInput = Time.time;
         trailer.SetActive(false);
-        //cancel.action.performed += CancelTrailer;
+        cancel.action.performed += CancelTrailer;
         playing = false;
     }
 
@@ -211,7 +211,7 @@ public class MainMenuController : MonoBehaviour
         timeSinceLastInput = Time.time;
     }
 
-    /*
+    
     IEnumerator StartTrailer()
     {
         fadeToBlackImg.color = new Color(0, 0, 0, 0);
@@ -221,7 +221,7 @@ public class MainMenuController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         
-        DontDestroy bgMusic = GameObject.FindObjectOfType<DontDestroy>();
+        TutorialMusic bgMusic = GameObject.FindObjectOfType<TutorialMusic>();
         bgMusic.disableChildren();
         player.Play();
         trailer.SetActive(true);
@@ -230,12 +230,12 @@ public class MainMenuController : MonoBehaviour
 
         fadeToBlackImg.color = new Color(0, 0, 0, 0);
     }
-    */
+    
 
     private void FixedUpdate()
     {
         var timeElapsed = Time.time - timeSinceLastInput;
-        /*if (timeElapsed > 60 && !playing)
+        if (timeElapsed > 60 && !playing)
         {
             playing = true;
             startButton.interactable = false;
@@ -244,18 +244,18 @@ public class MainMenuController : MonoBehaviour
             exitButton.interactable = false;
 
             StartCoroutine(StartTrailer());
-        }*/
+        }
 
         if (areCreditsOpen)
             timeSinceLastInput = Time.time;
     }
 
-    /*
+    
     private void CancelTrailer(InputAction.CallbackContext obj)
     {
         if (!playing) return;
 
         playing = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }*/
+    }
 }
