@@ -390,6 +390,9 @@ public class PlayerMovement : MonoBehaviour
 
         if(IsGrappeling())
         {   
+            float lookWalk = lookAction.action.ReadValue<float>();
+            if(lookWalk > lookDir*walkDir) walkDir = lookWalk*lookDir;
+
             climbTime += Time.fixedDeltaTime;
             if(!wasClimbing) 
             {
