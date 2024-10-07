@@ -57,7 +57,8 @@ public class LevelManager : MonoBehaviour
             obj.GetComponent<PlayerLevelMananger>().SetStartLevel(this);
         }
         StartCoroutine(canvas.FadeOutCoroutine(true));
-        GameManager.instance.disablePausing = false;
+        if(GameManager.instance != null)
+            GameManager.instance.disablePausing = false;
 
         GameManager.instance?.SetLevelManager(this, addLevelClockTime, restartClockTimer);
     }

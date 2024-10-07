@@ -9,6 +9,7 @@ public class CameraFocus : MonoBehaviour
     [SerializeField] float maxYpos; //The maximum position the player can be above the camera before the camera snaps to the player
     [SerializeField] float minYpos; //The minimum position the player can be belove the camera before the players 
     [SerializeField] float maxXspeed; //The max horizontal speed the camera can have. Usefull for controlling the speed of the horizontal flip
+    [SerializeField] float maxYspeed;
     [SerializeField] Vector2 deadZone;
     [SerializeField] Transform aim; //The point the camera focus is following.
     [SerializeField] PlayerMovement playerMovement;
@@ -26,7 +27,7 @@ public class CameraFocus : MonoBehaviour
         OnEnable();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if(aim.position.x > deadZone.x+transform.position.x || aim.position.x < -deadZone.x+transform.position.x)
         {
@@ -34,17 +35,40 @@ public class CameraFocus : MonoBehaviour
             {
                 x += (aim.position.x-x < 0)? -maxXspeed:maxXspeed;
             } else
-                x = aim.position.x;
+            {
+                float ofst = (aim.position.x-x < 0)?deadZone.x:-deadZone.x;
+                x = aim.position.x+ofst;
+            }
         }
 
         if(playerMovement.airTime <= 0.01f)
         {
             fallCamera = false;
             if(aim.position.y > deadZone.y+transform.position.y || aim.position.y < -deadZone.y+transform.position.y)
-                y = aim.position.y;
+            {
+                if(Mathf.Abs(aim.position.y-y) > maxYspeed)
+                {
+                    y += (aim.position.y-y < 0)? -maxYspeed:maxYspeed;
+                } else
+                {
+                    float ofst = (aim.position.y-y < 0)?deadZone.y:-deadZone.y;
+                    y = aim.position.y + ofst;
+                }
+            }
         } else if(transform.position.y-aim.position.y > maxYpos || aim.position.y - transform.position.y < minYpos || fallCamera)
         {
-            y = aim.position.y;
+            if(aim.position.y > deadZone.y+transform.position.y || aim.position.y < -deadZone.y+transform.position.y)
+            {
+                if(Mathf.Abs(aim.position.y-y) > maxYspeed)
+                {
+                    y += (aim.position.y-y < 0)? -maxYspeed:maxYspeed;
+                } else
+                {
+                    float ofst = (aim.position.y-y < 0)?deadZone.y:-deadZone.y;
+                    y = aim.position.y + ofst;
+                }
+            }
+
             fallCamera = true;
         }
         
