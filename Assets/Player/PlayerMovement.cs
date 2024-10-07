@@ -216,6 +216,11 @@ public class PlayerMovement : MonoBehaviour
         isCheckingY = false;
     }
 
+    public void ResetDoubleJump()
+    {
+        doubleJumpActive = false;
+    }
+
     #endregion
 
     #region Collision checks

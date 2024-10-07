@@ -27,6 +27,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     private bool defaultAirHit = false;
     private bool spellAirHit = false;
+    private bool attackDoubleJumped = false;
     Action<InputAction.CallbackContext> specialAttackHandler;
     Action<InputAction.CallbackContext> defaultAttackHandler;
 
@@ -68,7 +69,13 @@ public class PlayerCombatSystem : MonoBehaviour
         }
 
         if(!playerMovement.IsGrounded()) defaultAirHit = true;
-
+        {
+            if(!attackDoubleJumped)
+            {
+                attackDoubleJumped = true;
+                playerMovement.ResetDoubleJump();
+            }
+        }
         attacking = true;
         playerMovement.inAttackAnimation = true;
 
@@ -142,7 +149,15 @@ public class PlayerCombatSystem : MonoBehaviour
             playerMovement.WallAttackLock();
         }
         
-        if(!playerMovement.IsGrounded()) spellAirHit = true;
+        if(!playerMovement.IsGrounded()) 
+        {
+            spellAirHit = true;
+            if(!attackDoubleJumped) 
+            {
+                playerMovement.ResetDoubleJump();
+                attackDoubleJumped = true;
+            }
+        }
         attacking = true;
         playerMovement.inAttackAnimation = true;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
@@ -196,5 +211,6 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         defaultAirHit = false;
         spellAirHit = false;
+        attackDoubleJumped = false;
     }
 }
