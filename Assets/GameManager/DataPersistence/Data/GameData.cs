@@ -19,7 +19,7 @@ public class GameData
     /// </summary>
     public GameData ()
     {
-        startScene = "Tutorial";
+        startScene = "Tutorial_0";
         unlockedColorSpells = new string[0];
         petrifiedPigment = 0;
         petrifiedPigmentPickedUp = new string[0];
