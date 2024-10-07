@@ -296,6 +296,12 @@ public class PlayerMovement : MonoBehaviour
 
         if(walkDir < 0 && lookDir > 0 ) Flip();
         else if(walkDir > 0 && lookDir < 0) Flip();
+
+        if(wasClimbing)
+        {
+            float lookWalk = lookAction.action.ReadValue<float>();
+            if(lookWalk > lookDir*walkDir) walkDir = lookWalk*lookDir;
+        }
         movement = movementSpeed * walkDir;
 
         if(jump > 0)
@@ -326,7 +332,11 @@ public class PlayerMovement : MonoBehaviour
 
             airTime = 0;
             fallTime = 0;
-            if(!movementRoot.rooted) body.velocity = new Vector2(movement, body.velocity.y);
+            if(!movementRoot.rooted) 
+            {
+                if(wasClimbing) movement *= 2;
+                body.velocity = new Vector2(movement, body.velocity.y);
+            }
             if(doubleJumpActive) doubleJumpActive = false;
             if(!playerAnimator.GetBool("walking") && body.velocity.x != 0)
             {
