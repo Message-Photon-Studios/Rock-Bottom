@@ -18,6 +18,7 @@ public class SpellPickup : MonoBehaviour
     Rigidbody2D body;
     SpriteRenderer spriteRenderer;
     ColorInventory inventory;
+    ItemInventory itemInventory;
     bool pickedup = false;
 
 
@@ -49,6 +50,7 @@ public class SpellPickup : MonoBehaviour
 
         canvas.SetActive(false);
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
+        itemInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
     }
     /// <summary>
     /// Randomly destroys the spawn point depending on the initial conditions
@@ -75,6 +77,15 @@ public class SpellPickup : MonoBehaviour
                 cost.gameObject.SetActive(true);
                 swapText.SetActive(false);
                 buyText.SetActive(true);
+
+                if(itemInventory.GetCoins() < colorSpell.spellCost)
+                {
+                    cost.color = Color.red;
+                } else
+                {
+                    cost.color = Color.white;
+                }
+                
             } else
             {
                 swapText.SetActive(true);

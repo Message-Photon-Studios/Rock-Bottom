@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Handles the item spawn points
@@ -103,6 +104,14 @@ public class ItemPickup : MonoBehaviour
                 buyObj.SetActive(false);
             } else
             {
+                if(inventory.GetCoins() < itemCost)
+                {
+                    cost.color = Color.red;
+                } else
+                {
+                    cost.color = Color.white;
+                }
+
                 inventory.EnableBuyItem(this);
                 cost.gameObject.SetActive(true);
                 buyObj.SetActive(true);
