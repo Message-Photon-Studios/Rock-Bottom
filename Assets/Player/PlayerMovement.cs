@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using System;
 using System.Diagnostics.Tracing;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 /// <summary>
 /// This class controls the players movement and keeps track of player states such as it being rooted, falling or in the air. 
@@ -29,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     * jumpFalloff will decrease the time and the power of the jetpack. This does also work in reverse for decreasing variables.
     */
 
-    [SerializeField] InputActionReference walkAction, jumpAction, lookAction; //Input actiuons for controlling the movement and camera checks
+    [SerializeField] InputActionReference walkAction, jumpAction, lookAction, dropDownAction; //Input actiuons for controlling the movement and camera checks
     [SerializeField] Rigidbody2D body;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator playerAnimator;
@@ -93,6 +94,8 @@ public class PlayerMovement : MonoBehaviour
     Action<InputAction.CallbackContext> checkAction;
     Action<InputAction.CallbackContext> checkCancle;
 
+    Action<InputAction.CallbackContext> dropDown;
+
     [HideInInspector] public bool isCheckingY = false; //Is true when player checks above or below
     #region Setup
     private void OnEnable() {
@@ -108,11 +111,14 @@ public class PlayerMovement : MonoBehaviour
         };
 
         checkCancle = (InputAction.CallbackContext ctx) => {CheckCancel();};
+
+        dropDown = (InputAction.CallbackContext ctx) => {DropDown();};
         
         jumpAction.action.started += Jump;
         jumpAction.action.canceled += JumpCancel;
         lookAction.action.performed += checkAction;
         lookAction.action.canceled += checkCancle;
+        dropDownAction.action.performed += dropDown;
     }
 
     private void OnDisable() {
@@ -120,6 +126,7 @@ public class PlayerMovement : MonoBehaviour
         jumpAction.action.canceled -= JumpCancel;
         lookAction.action.performed -= checkAction;
         lookAction.action.canceled -= checkCancle;
+        dropDownAction.action.performed -= dropDown;
     }
 
     void Start()
@@ -195,7 +202,8 @@ public class PlayerMovement : MonoBehaviour
     void CheckBelowStart()
     {
         checkDownTimer = .2f;
-        Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerLayer, GameManager.instance.maskLibrary.platformLayer, true);
+        DropDown();
+        //Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerLayer, GameManager.instance.maskLibrary.platformLayer, true);
         if(focusPoint == null && movementRoot.totalRoot) return;
         if(IsGrappeling() || !IsGrounded() || IsOnPlatform()) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, -checkPointY, focusPoint.localPosition.z);
@@ -482,6 +490,8 @@ public class PlayerMovement : MonoBehaviour
             body.AddForce(new Vector2(0,jump));
     }
 
+    #endregion
+
     #region Climbing
 
     public void ReleaseWall()
@@ -512,6 +522,14 @@ public class PlayerMovement : MonoBehaviour
 
     #endregion
 
+    #region Platform
+
+    void DropDown()
+    {
+        if(Mathf.Abs(body.velocity.x) < 1f)
+            Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerLayer, GameManager.instance.maskLibrary.platformLayer, true);
+    }
+
     #endregion
 
     /// <summary>
@@ -528,6 +546,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 }
+
 
 #region Movement Root
 
