@@ -18,6 +18,7 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] GameObject collectObj, buyObj;
 
     [SerializeField] EnemyStats spawnFromEnemy;
     ItemInventory inventory;
@@ -98,10 +99,14 @@ public class ItemPickup : MonoBehaviour
             {
                 inventory.EnablePickUp(this);
                 cost.gameObject.SetActive(false);
+                collectObj.SetActive(true);
+                buyObj.SetActive(false);
             } else
             {
                 inventory.EnableBuyItem(this);
                 cost.gameObject.SetActive(true);
+                buyObj.SetActive(true);
+                collectObj.SetActive(false);
             }
 
             canvas.SetActive(true);

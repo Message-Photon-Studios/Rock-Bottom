@@ -13,6 +13,7 @@ public class SpellPickup : MonoBehaviour
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
+    [SerializeField] GameObject swapText, buyText;
     [SerializeField] Collider2D collider;
     Rigidbody2D body;
     SpriteRenderer spriteRenderer;
@@ -72,6 +73,12 @@ public class SpellPickup : MonoBehaviour
             if(needsPayment)
             {
                 cost.gameObject.SetActive(true);
+                swapText.SetActive(false);
+                buyText.SetActive(true);
+            } else
+            {
+                swapText.SetActive(true);
+                buyText.SetActive(false); 
             }
 
             canvas.SetActive(true);
