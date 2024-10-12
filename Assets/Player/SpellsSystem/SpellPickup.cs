@@ -13,10 +13,12 @@ public class SpellPickup : MonoBehaviour
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
+    [SerializeField] GameObject swapText, buyText;
     [SerializeField] Collider2D collider;
     Rigidbody2D body;
     SpriteRenderer spriteRenderer;
     ColorInventory inventory;
+    ItemInventory itemInventory;
     bool pickedup = false;
 
 
@@ -48,6 +50,7 @@ public class SpellPickup : MonoBehaviour
 
         canvas.SetActive(false);
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
+        itemInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
     }
     /// <summary>
     /// Randomly destroys the spawn point depending on the initial conditions
@@ -72,6 +75,21 @@ public class SpellPickup : MonoBehaviour
             if(needsPayment)
             {
                 cost.gameObject.SetActive(true);
+                swapText.SetActive(false);
+                buyText.SetActive(true);
+
+                if(itemInventory.GetCoins() < colorSpell.spellCost)
+                {
+                    cost.color = Color.red;
+                } else
+                {
+                    cost.color = Color.white;
+                }
+                
+            } else
+            {
+                swapText.SetActive(true);
+                buyText.SetActive(false); 
             }
 
             canvas.SetActive(true);

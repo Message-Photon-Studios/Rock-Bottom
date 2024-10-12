@@ -49,6 +49,22 @@ public class RandomPatroll : Node
         idleTimer = 0.5f;
     }
 
+    public RandomPatroll(EnemyStats stats, Rigidbody2D body, Animator animator, float patrollDistance, float patrollSpeedFactor, float maxIdleTime, float legPos, string stopBool, string walkAnimationBool, float patrollOffset) :
+    base(new List<Node>{new CheckPlatformEdge(stats, legPos)})
+    {
+        this.stats = stats;
+        this.patrollDistance = patrollDistance;
+        this.body = body;
+        this.patrollSpeedFactor = patrollSpeedFactor;
+        this.animator = animator;
+        this.maxIdleTime = maxIdleTime;
+        this.stopBool = stopBool;
+        this.walkAnimation = walkAnimationBool;
+        patrollStart = stats.GetPosition().x+patrollOffset;
+        patrollPoint = stats.GetPosition().x+patrollOffset;
+        idleTimer = 0.5f;
+    }
+
     public override NodeState Evaluate()
     {
         var stopped = GetData(stopBool);
@@ -71,7 +87,7 @@ public class RandomPatroll : Node
             return state;
         }
 
-        bool atEdge = (children[0].Evaluate() == NodeState.SUCCESS);
+        bool atEdge = children[0].Evaluate() == NodeState.SUCCESS;
         if(Mathf.Pow(stats.GetPosition().x-patrollPoint, 2) < 1f && !atEdge)
         {
             patrollPoint = GetRandomPoint();

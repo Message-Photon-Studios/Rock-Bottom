@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class TutorialEndpoint : MonoBehaviour
@@ -13,12 +14,11 @@ public class TutorialEndpoint : MonoBehaviour
 
     [SerializeField] Sprite[] LoadingSprites;
 
-    private UIController uiController;
+    bool trailerStarted = false;
     bool enableExit = false;
 
-    void OnEnable()
+    void Start()
     {
-        uiController = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
         if(interactAction)
             interactAction.action.performed += StartTrailer;
         player.loopPointReached += ExitLevel;
@@ -34,6 +34,8 @@ public class TutorialEndpoint : MonoBehaviour
     void StartTrailer (InputAction.CallbackContext ctx)
     {
         if(!enableExit) return;
+        if(trailerStarted) return;
+        trailerStarted = true;
         TutorialMusic bgMusic = GameObject.FindObjectOfType<TutorialMusic>();
         GameManager.instance.disablePausing = true;
         bgMusic?.disableChildren();
