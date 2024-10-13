@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public SoundEffectManager soundEffectManager;
 
     private int petrifiedPigment = 0;
-    string gameStartScene = "Tutorial";
+    string gameStartScene = "Tutorial_0";
     public bool allowsTips {get; private set;} = true;
     float hunterTimer = 0f;
     int hunters = 0;

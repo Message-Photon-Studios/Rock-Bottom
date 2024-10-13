@@ -75,7 +75,7 @@ public class MainMenuController : MonoBehaviour
     //Load scene "Gem" when pressed.
     public void LoadScene()
     {
-        if(!GameManager.instance.GetStartScene().Equals("Tutorial"))
+        if(!GameManager.instance.GetStartScene().Equals("Tutorial_0"))
         {
             TutorialMusic bgMusic = GameObject.FindObjectOfType<TutorialMusic>();
             bgMusic?.disableChildren();

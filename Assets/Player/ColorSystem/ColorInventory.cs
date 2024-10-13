@@ -327,6 +327,10 @@ public class ColorInventory : MonoBehaviour
     {
         if(color == null) return;
         ColorSlot fillSlot = null;
+        
+        fillSlot = ActiveSlot();
+
+        /*
         if(ActiveSlot().IsEmpty() || ActiveSlot().gameColor == color)
             fillSlot = ActiveSlot();
         else if(!ActiveSlot().IsEmpty())
@@ -359,7 +363,7 @@ public class ColorInventory : MonoBehaviour
             }
 
             if(fillSlot == null) fillSlot = ActiveSlot();
-        }
+        } */
 
         // Slot to Fill is now chosen
 
