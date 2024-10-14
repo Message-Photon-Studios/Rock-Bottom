@@ -17,10 +17,10 @@ public class SpellPlatformBehaviourScript : MonoBehaviour
     {
         if (body.velocity.y < 0)
         {
-            gameObject.layer = 8;
+            gameObject.layer = GameManager.instance.maskLibrary.spellHitPlatfromLayer;
         } else
         {
-            gameObject.layer = 16;
+            gameObject.layer = GameManager.instance.maskLibrary.spellLayer;
         }
     }
 }
