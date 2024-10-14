@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
   - component: {fileID: 816937159620727808}
-  m_Layer: 8
+  m_Layer: 16
   m_Name: ColorBombExplosion
   m_TagString: Spell
   m_Icon: {fileID: 0}
@@ -162,8 +162,12 @@ MonoBehaviour:
   description: 
   spellCost: 0
   powerScale: 0
-  destroyOnImpact: 0
-  destroyOnHit: 0
+  destroyOnAllImpact: 0
+  destroyOnEnemyHit: 0
+  impactOnEnemies: 1
+  impactOnNonEnemies: 1
+  triggerOnlyOnce: 0
+  requirePlayerLOSonSpawn: 0
   lifeTime: 0.5
   animationTrigger: handSpell
   onImpact:
@@ -260,11 +264,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6003583976257369965, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7823452886484329023, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}

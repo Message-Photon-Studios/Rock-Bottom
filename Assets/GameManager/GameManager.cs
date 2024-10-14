@@ -321,6 +321,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         public int platformLayer;
         public int groundLayer;
         public LayerMask onlyGround;
+        public LayerMask onlyOnlyGround;
         public LayerMask onlyPlatforms;
         public LayerMask onlyEnemy;
         public LayerMask onlyPlayer;
