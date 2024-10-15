@@ -68,6 +68,7 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onColorUpdated += ColorUpdate;
         colorInventory.onSlotChanged += ActiveColorChanged;
         colorInventory.onColorSpellChanged += BottleChanged;
+        colorInventory.onCoolDownSet += StartCoolDownSlider;
         uiController.UILoaded += UpdateAllSprites;
         uiController.ColorSlotAmountChanged += UpdateAllSprites;
 
@@ -279,6 +280,8 @@ public class ColorSlotController : MonoBehaviour
             capMask.sprite = bottleSprite.smallSpriteCapMask;
         }
 
+        slotList[index].GetComponentInChildren<Slider>().GetComponentInChildren<Image>().sprite = bottle.sprite;
+
         foreach (Image image in slotList[index].GetComponentsInChildren<Image>())
         {
             if(pos == 0)
@@ -303,6 +306,17 @@ public class ColorSlotController : MonoBehaviour
             ColorUpdate(i);
             BottleChanged(i);
         }
+    }
+
+    private List<Slider> spellsOnCoolDown = new List<Slider>();
+
+    private void StartCoolDownSlider(float time)
+    {
+        Slider slide = slotList[colorInventory.activeSlot].GetComponentInChildren<Slider>();
+        if (spellsOnCoolDown.Contains(slide)) return;
+        slide.maxValue = time;
+        slide.value = time;
+        spellsOnCoolDown.Add(slide);
     }
 
     private void Update()
@@ -330,6 +344,23 @@ public class ColorSlotController : MonoBehaviour
                 cap.material.SetFloat("_BloomPower", sinewave);
             }
         }
+
+        if (spellsOnCoolDown.Count > 0)
+        {
+            foreach (Slider slide in spellsOnCoolDown.ToList())
+            {
+                slide.value -= Time.deltaTime;
+                //Debug.Log("Current: " + Time.realtimeSinceStartup);
+                if (slide.value <= 0)
+                {
+                    slide.value = 0;
+                    Debug.Log(Time.fixedTime);
+                    spellsOnCoolDown.Remove(slide);
+                }
+            }
+        }
+        
+
     }
 
     #endregion

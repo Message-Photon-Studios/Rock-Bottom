@@ -62,6 +62,8 @@ public class ColorInventory : MonoBehaviour
     /// Sends a bool as parameter; if bool == true the spell got in range and if bool == false the spell left the range
     /// </summary>
     public UnityAction<bool> onSpellPickupInRange;
+
+    public UnityAction<float> onCoolDownSet;
     
     private System.Action<InputAction.CallbackContext> divideColorHandler;
 
@@ -157,6 +159,19 @@ public class ColorInventory : MonoBehaviour
             return ActiveSlot().gameColor;
         }
         return null;
+    }
+
+    public bool IsSpellReady()
+    {
+        if (ActiveSlot().coolDown <= Time.fixedTime) return true;
+        return false;
+    }
+
+   public void SetCoolDown(float time)
+    {
+        ActiveSlot().coolDown = Time.fixedTime + time;
+        onCoolDownSet?.Invoke(time);
+        Debug.Log("Current time: " + Time.fixedTime + " CoolDown Set: " + ActiveSlot().coolDown);
     }
 
     /// <summary>
@@ -489,6 +504,7 @@ public class ColorInventory : MonoBehaviour
             return;
         }
         colorSlots[index].colorSpell = newSpell;
+        colorSlots[index].coolDown = 0;
         onColorSpellChanged?.Invoke(index);
     }
 
@@ -563,6 +579,8 @@ public class ColorSlot
     [SerializeField] public int charge;
     [SerializeField] public GameColor gameColor;
     [SerializeField] public ColorSpell colorSpell;
+
+    public float coolDown = 0;
     public void Init(Image setImage)
     {
         SetGameColor(gameColor);
