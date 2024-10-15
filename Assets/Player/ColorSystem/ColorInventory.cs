@@ -553,6 +553,9 @@ public class ColorInventory : MonoBehaviour
         }
         colorSlots.Add(new ColorSlot());
         colorSlots[colorSlots.Count-1].maxCapacity = colorSlots[0].maxCapacity;
+
+        foreach (ColorSlot slot in colorSlots) slot.coolDown = 0;
+
         onColorSlotsChanged?.Invoke();
     }
 

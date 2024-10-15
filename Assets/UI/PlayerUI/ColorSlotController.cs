@@ -316,7 +316,13 @@ public class ColorSlotController : MonoBehaviour
     /// <param name="time"></param>
     private void StartCoolDownSlider(float time)
     {
+        Debug.Log("list count: " + slotList.Count + " Active Index: " + colorInventory.activeSlot + " Name: " + gameObject.name);
+        if (colorInventory.activeSlot >= slotList.Count) return;
+
         Slider slide = slotList[colorInventory.activeSlot].GetComponentInChildren<Slider>();
+
+        if (slide == null) return;
+        
         if (spellsOnCoolDown.Contains(slide)) return;
         slide.maxValue = time;
         slide.value = time;
