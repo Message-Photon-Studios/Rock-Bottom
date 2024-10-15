@@ -5,7 +5,7 @@ using UnityEngine;
 public class ColorBeamScript : MonoBehaviour
 {
     [SerializeField] float range = 10;
-    [SerializeField] ParticleSystem hitParticle;
+    [SerializeField] GameObject hitShape;
     [SerializeField] ParticleSystem rootParticle;
     // Start is called before the first frame update
     void Start()
@@ -25,11 +25,8 @@ public class ColorBeamScript : MonoBehaviour
         collider.size = new Vector2(hitRange, collider.size.y);
         Vector2 hitVector = new Vector2(hitRange / 2 * dir, 0);
         transform.position = new Vector3(transform.position.x + hitVector.x, transform.position.y);
-        ParticleSystem.ShapeModule hitShapeImpact = GetComponent<ColorSpellImpact>().onImpactParticles.shape;
-        ParticleSystem.ShapeModule hitShape = hitParticle.shape;
+        hitShape.transform.position = new Vector2(hitShape.transform.position.x + hitVector.x, hitShape.transform.position.y);
         ParticleSystem.ShapeModule rootShape = rootParticle.shape;
-        hitShapeImpact.position = hitVector;
-        hitShape.position = hitVector;
         rootShape.position = hitVector * -1;
     }
 
