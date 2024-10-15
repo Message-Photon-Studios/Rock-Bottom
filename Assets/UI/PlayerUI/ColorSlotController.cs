@@ -54,6 +54,8 @@ public class ColorSlotController : MonoBehaviour
 
     [SerializeField] public Sprite[] FullBottleEffectSprites;
 
+    private List<Slider> spellsOnCoolDown = new List<Slider>();
+
     # region Setup
     /// <summary>
     /// When enabling the Player In game UI, set up the script.
@@ -308,8 +310,10 @@ public class ColorSlotController : MonoBehaviour
         }
     }
 
-    private List<Slider> spellsOnCoolDown = new List<Slider>();
-
+    /// <summary>
+    /// Add the CoolDown indicator to a list when a spell is used. 
+    /// </summary>
+    /// <param name="time"></param>
     private void StartCoolDownSlider(float time)
     {
         Slider slide = slotList[colorInventory.activeSlot].GetComponentInChildren<Slider>();
@@ -345,16 +349,15 @@ public class ColorSlotController : MonoBehaviour
             }
         }
 
+        //Updates cooldown display
         if (spellsOnCoolDown.Count > 0)
         {
             foreach (Slider slide in spellsOnCoolDown.ToList())
             {
                 slide.value -= Time.deltaTime;
-                //Debug.Log("Current: " + Time.realtimeSinceStartup);
                 if (slide.value <= 0)
                 {
                     slide.value = 0;
-                    Debug.Log(Time.fixedTime);
                     spellsOnCoolDown.Remove(slide);
                 }
             }

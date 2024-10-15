@@ -166,6 +166,7 @@ public class PlayerCombatSystem : MonoBehaviour
         playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
         playerSounds.PlayCastingSpell();
+        colorInventory.DisableRotation();
     }
 
     /// <summary>
@@ -174,6 +175,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private void SpecialAttack()
     {
         GameColor color = colorInventory.UseActiveColor();
+        colorInventory.EnableRotation();
 
         if(currentSpell == null) return;
 
@@ -183,7 +185,7 @@ public class PlayerCombatSystem : MonoBehaviour
         if(spell != null)
         {
             spell.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
-            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown);
+            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown); //When adding items to change the cooldown change it here! 
         }
             
         transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
