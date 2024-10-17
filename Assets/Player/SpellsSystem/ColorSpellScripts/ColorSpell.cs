@@ -16,6 +16,8 @@ public class ColorSpell : MonoBehaviour
     /// </summary>
     [SerializeField] public float powerScale = 1;
 
+    [SerializeField] public float coolDown = 1;
+
     /// <summary>
     /// The projectile will be destroyed on impact with any object
     /// </summary>
