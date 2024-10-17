@@ -177,7 +177,7 @@ public class PlayerCombatSystem : MonoBehaviour
         GameColor color = colorInventory.UseActiveColor();
         colorInventory.EnableRotation();
 
-        if(currentSpell == null) return;
+        if(currentSpell == null || color == null) return;
 
         Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+currentSpell.transform.position.x) * playerMovement.lookDir, 
                                         currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
