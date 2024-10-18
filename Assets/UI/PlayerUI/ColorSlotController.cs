@@ -326,6 +326,11 @@ public class ColorSlotController : MonoBehaviour
         spellsOnCoolDown.Add(slide);
     }
 
+    void OnDestroy()
+    {
+        colorInventory.onCoolDownSet -= StartCoolDownSlider;
+    }
+
     private void Update()
     {
         // Get sinewave value based on time
