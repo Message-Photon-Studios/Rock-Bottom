@@ -41,16 +41,11 @@ public class ColorSpell : MonoBehaviour
     /// If true the spell will only trigger once.
     /// </summary>
     [SerializeField] protected bool triggerOnlyOnce;
-    
-    /// <summary>
-    /// If true then the enemy already triggered list will be reset with timer.
-    /// </summary>
-    [SerializeField] protected bool canResetEnemyTriggeredList = false;
 
     /// <summary>
     /// How often enemy already triggered will be reset
     /// </summary>
-    [SerializeField] protected float resetEnemyTriggeredTimer = -1;
+    [SerializeField] protected float attackAgainTimer = -1;
     protected float resetEnemyTime;
 
     /// <summary>
@@ -85,7 +80,7 @@ public class ColorSpell : MonoBehaviour
 
     public int lookDir {get; protected set;}
 
-    private HashSet<GameObject> objectsAlreadyHit = new HashSet<GameObject>();
+    private HashSet<Collider2D> objectsAlreadyHit = new HashSet<Collider2D>();
 
     /// <summary>
     /// Needs to be called after the spell is instantiated
@@ -100,7 +95,7 @@ public class ColorSpell : MonoBehaviour
         this.power = power+powerScale;
         this.player = player;
         this.lookDir = lookDir;
-        resetEnemyTime = resetEnemyTriggeredTimer;
+        resetEnemyTime = attackAgainTimer;
 
         foreach(Collider2D col in GetComponents<Collider2D>())
         {
@@ -150,7 +145,7 @@ public class ColorSpell : MonoBehaviour
             impact.Init(this);
         }
 
-        objectsAlreadyHit = new HashSet<GameObject>();
+        objectsAlreadyHit = new HashSet<Collider2D>();
 
         if(requirePlayerLOSonSpawn)
         {
@@ -175,10 +170,10 @@ public class ColorSpell : MonoBehaviour
         if(other.CompareTag("Item") || other.CompareTag("Player")) return;
         if(!impactOnEnemies && other.CompareTag("Enemy")) return;
         if(!impactOnNonEnemies && !other.CompareTag("Enemy")) return;
-        if(objectsAlreadyHit.Contains(other.gameObject)) return;
+        if(objectsAlreadyHit.Contains(other)) return;
         hasTriggered = true;
         Impact(other);
-        objectsAlreadyHit.Add(other.gameObject);
+        objectsAlreadyHit.Add(other);
 
         if(destroyOnAllImpact)
         {
@@ -193,38 +188,26 @@ public class ColorSpell : MonoBehaviour
         }
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    void OnTriggerExit2D(Collider2D other)
     {
         if(triggerOnlyOnce) return;
-        if(other.CompareTag("Item") || other.CompareTag("Player")) return;
-        if(!impactOnEnemies && other.CompareTag("Enemy")) return;
-        if(!impactOnNonEnemies && !other.CompareTag("Enemy")) return;
-        if(objectsAlreadyHit.Contains(other.gameObject)) return;
-        hasTriggered = true;
-        Impact(other);
-        objectsAlreadyHit.Add(other.gameObject);
+        if(!objectsAlreadyHit.Contains(other)) return;
 
-        if(destroyOnAllImpact)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        if(destroyOnEnemyHit && other.CompareTag("Enemy"))
-        {
-            Destroy(gameObject);
-            return;
-        }
+        objectsAlreadyHit.Remove(other);
     }
 
     private void Update() {
-        if(canResetEnemyTriggeredList && objectsAlreadyHit.Count > 0)
+        if(!triggerOnlyOnce && resetEnemyTime > 0f && objectsAlreadyHit.Count > 0)
         {
-            if(resetEnemyTriggeredTimer > 0) resetEnemyTriggeredTimer -= Time.deltaTime;
+            if(attackAgainTimer > 0) attackAgainTimer -= Time.deltaTime;
             else
             {
-                objectsAlreadyHit.Clear();
-                resetEnemyTriggeredTimer = resetEnemyTime;
+
+                foreach (Collider2D obj in objectsAlreadyHit)
+                {
+                    Impact(obj);
+                }
+                attackAgainTimer = resetEnemyTime;
             }
         }
     }
