@@ -64,8 +64,22 @@ public class ClockTimerController : MonoBehaviour
                 tracker = false;
             }
             if (time.min <= 1) animator.SetBool("WakeUp", true);
+            if (time.min == 0) animator.SetBool("FasterLook", true);
             if (time.min == 0 && time.sec < 30) {
                 animator.SetBool("Glitch", true);
+            }
+            if (time.min <= 0 && time.sec <= 0)
+            {
+                animator.SetBool("Done", true);
+                (String text, float size, Color color) clockVars;
+                clockVars = GameManager.instance.GetClockTimeString();
+                timeText.text = clockVars.text;
+                timeText.color = clockVars.color;
+                //rectTransform.sizeDelta = new Vector2(clockVars.size, rectTransform.sizeDelta.y);
+            } else 
+            {
+                timeText.text = "";
+                timeText.gameObject.SetActive(false);
             }
             
         }
@@ -73,7 +87,7 @@ public class ClockTimerController : MonoBehaviour
 
     //Sets clocks active state acording to if it's active or not.
     private void LoadClock() {
-        if (LevelManager.instance.allowsClockTimer) animator.SetTrigger("Activate");
+        if (LevelManager.instance.allowsClockTimer) animator.SetBool("Active", true);
         //timer.SetActive(LevelManager.instance.allowsClockTimer);
     }
 
@@ -81,7 +95,7 @@ public class ClockTimerController : MonoBehaviour
     {
         animator.Rebind();
         animator.Update(0f);
-        if (LevelManager.instance.allowsClockTimer) animator.SetTrigger("Activate");
+        if (LevelManager.instance.allowsClockTimer) animator.SetBool("Active", true);
     }
 
     
