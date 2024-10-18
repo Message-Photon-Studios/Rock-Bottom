@@ -11,8 +11,6 @@ public class ClockTimerController : MonoBehaviour
     [SerializeField] GameObject timer;
     [SerializeField] UIController UIController;
     [SerializeField] RectTransform rectTransform;
-    Animator animator;
-    bool tracker = false;
     private PlayerStats player;
 
     /* Here are the useful methods to get the current clock time.
@@ -28,61 +26,20 @@ public class ClockTimerController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>(); 
         UIController.UILoaded += LoadClock;
-        GameManager.instance.onLevelLoaded += ResetAnimator;
-        animator = timer.GetComponent<Animator>();
-    }
-
-    private void OnDisable()
-    {
-        GameManager.instance.onLevelLoaded -= ResetAnimator;
-        UIController.UILoaded -= LoadClock;
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*(String text, float size, Color color) clockVars;
+        (String text, float size, Color color) clockVars;
         clockVars = GameManager.instance.GetClockTimeString();
         timeText.text = clockVars.text;
         timeText.color = clockVars.color;
-        rectTransform.sizeDelta = new Vector2(clockVars.size, rectTransform.sizeDelta.y);*/
-
-        if (LevelManager.instance.allowsClockTimer)
-        {
-            (int min, int sec) time;
-            time = GameManager.instance.getTime();
-            if ((time.min == 4 || time.min == 3 || time.min == 2) && time.sec > 30 && !tracker)
-            {
-                animator.ResetTrigger("UnBlink");
-                animator.SetTrigger("Blink");
-                tracker = true;
-            }
-            if ((time.min == 4 || time.min == 3 || time.min == 2) && time.sec < 30 && tracker)
-            {
-                animator.ResetTrigger("Blink");
-                animator.SetTrigger("UnBlink");
-                tracker = false;
-            }
-            if (time.min <= 1) animator.SetBool("WakeUp", true);
-            if (time.min == 0 && time.sec < 30) {
-                animator.SetBool("Glitch", true);
-            }
-            
-        }
+        rectTransform.sizeDelta = new Vector2(clockVars.size, rectTransform.sizeDelta.y);
     }
 
     //Sets clocks active state acording to if it's active or not.
     private void LoadClock() {
-        if (LevelManager.instance.allowsClockTimer) animator.SetTrigger("Activate");
-        //timer.SetActive(LevelManager.instance.allowsClockTimer);
+        timer.SetActive(LevelManager.instance.allowsClockTimer);
     }
-
-    private void ResetAnimator()
-    {
-        animator.Rebind();
-        animator.Update(0f);
-        if (LevelManager.instance.allowsClockTimer) animator.SetTrigger("Activate");
-    }
-
-    
 }
