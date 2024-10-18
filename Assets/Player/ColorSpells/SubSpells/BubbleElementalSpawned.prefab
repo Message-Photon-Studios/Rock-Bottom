@@ -125,8 +125,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.08, y: -0.95}
-  m_Size: {x: 2.6, y: 0.4}
+  m_Offset: {x: -0.08, y: -0.9}
+  m_Size: {x: 2.7, y: 0.4}
   m_Direction: 1
 --- !u!95 &6271258304019460346
 Animator:
@@ -163,6 +163,7 @@ MonoBehaviour:
   description: 
   spellCost: 0
   powerScale: 0
+  coolDown: 1
   destroyOnAllImpact: 0
   destroyOnEnemyHit: 0
   impactOnEnemies: 1
@@ -254,7 +255,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.26, y: 1.56}
+  m_Size: {x: 2.33, y: 1.56}
   m_EdgeRadius: 0
 --- !u!1 &4700441065278621949
 GameObject:
@@ -305,6 +306,7 @@ MonoBehaviour:
   animator: {fileID: 6271258304019460346}
   spriteRenderer: {fileID: 4874330200776334801}
   body: {fileID: 3321278458073070400}
+  box: {fileID: 7032269442749619395}
 --- !u!70 &6968527287218514599
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -318,6 +320,6 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.08, y: -0.95}
-  m_Size: {x: 2.6, y: 0.4}
+  m_Offset: {x: -0.08, y: -0.9}
+  m_Size: {x: 2.7, y: 0.4}
   m_Direction: 1
