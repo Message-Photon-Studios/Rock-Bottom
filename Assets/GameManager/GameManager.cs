@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     private PlayerStats player;
     private UIController uiController;
     private LevelManager currentLevelManager;
+    public UnityAction onLevelLoaded;
 
     public TipsManager tipsManager;
 
@@ -102,6 +103,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         }
         
         allowsTips = levelManager.allowTips;
+        onLevelLoaded?.Invoke();
     }
 
     #region MainMenu and Quit
@@ -214,6 +216,16 @@ public class GameManager : MonoBehaviour, IDataPersistence
         } 
 
         return (retString, retSize, retColor);
+    }
+
+    public (int, int) getTime()
+    {
+        if(clockTime > 0)
+        {
+            return ((int)clockTime / 60, (int)clockTime % 60);
+        }
+
+        return (0, 0);
     }
 
     #endregion
