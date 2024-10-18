@@ -114,6 +114,7 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onColorSpellChanged -= BottleChanged;
         uiController.UILoaded -= UpdateAllSprites;
         uiController.ColorSlotAmountChanged -= UpdateAllSprites;
+        colorInventory.onCoolDownSet -= StartCoolDownSlider;
     }
     #endregion
     #region SlotMovement
@@ -325,12 +326,6 @@ public class ColorSlotController : MonoBehaviour
         slide.value = time;
         spellsOnCoolDown.Add(slide);
     }
-
-    void OnDestroy()
-    {
-        colorInventory.onCoolDownSet -= StartCoolDownSlider;
-    }
-
     private void Update()
     {
         // Get sinewave value based on time
