@@ -317,12 +317,18 @@ public class ColorSlotController : MonoBehaviour
     private void StartCoolDownSlider(float time)
     {
         if (colorInventory.activeSlot >= slotList.Count) return;
+        if (slotList[colorInventory.activeSlot] == null) return; 
         Slider slide = slotList[colorInventory.activeSlot].GetComponentInChildren<Slider>();
         if (slide == null) return;    
         if (spellsOnCoolDown.Contains(slide)) return;
         slide.maxValue = time;
         slide.value = time;
         spellsOnCoolDown.Add(slide);
+    }
+
+    void OnDestroy()
+    {
+        colorInventory.onCoolDownSet -= StartCoolDownSlider;
     }
 
     private void Update()
