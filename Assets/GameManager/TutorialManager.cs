@@ -6,33 +6,47 @@ using UnityEngine.InputSystem;
 
 public class TutorialManager : MonoBehaviour
 {
-    int textNr = 0;
+    [SerializeField] float respawnTime;
 
     [SerializeField] GameObject dummyTemplate;
     [SerializeField] GameObject[] dummys;
 
-    Vector3[] spawnPoints = new Vector3[0];
-
     void Start()
     {
-        spawnPoints = new Vector3[dummys.Length];
         for (int i = 0; i < dummys.Length; i++)
         {
-            spawnPoints[i] = dummys[i].transform.position;
+            int index = i;
+            Vector3 position = dummys[i].transform.position;
+            dummys[i].GetComponent<EnemyStats>().onEnemyDeath += () => { StartRespawn(position, index);};
         }
 
     }
 
-    void Update()
+    void OnDisable()
     {
         for (int i = 0; i < dummys.Length; i++)
         {
-            if(!dummys[i])
-            {
-                GameObject newDummy = GameObject.Instantiate(dummyTemplate,spawnPoints[i], dummyTemplate.transform.rotation) as GameObject;
-                newDummy.GetComponent<EnemyStats>().SetColor(GetComponent<EnemyManager>().GetRandomEnemyColor());
-                dummys[i] = newDummy;
-            }
+            int index = i;
+            if(dummys[i] ==  null) continue;
+            Vector3 position = dummys[i].transform.position;
+            dummys[i].GetComponent<EnemyStats>().onEnemyDeath -= () => { StartRespawn(position, index);};
         }
+    }
+
+    private void StartRespawn(Vector3 position, int index)
+    {
+        dummys[index].GetComponent<EnemyStats>().onEnemyDeath -= () => { StartRespawn(position, index);};
+        StartCoroutine(Respawn(position, index));
+    }
+
+    IEnumerator Respawn(Vector3 position, int index)
+    {
+        yield return new WaitForSeconds(respawnTime);
+        GameObject newDummy = GameObject.Instantiate(dummyTemplate,position, dummyTemplate.transform.rotation) as GameObject;
+        newDummy.GetComponent<EnemyStats>().SetColor(GetComponent<EnemyManager>().GetRandomEnemyColor());
+        dummys[index] = newDummy;
+        dummys[index].GetComponent<EnemyStats>().onEnemyDeath += () => { StartRespawn(position, index);};
+        yield return null;
+
     }
 }

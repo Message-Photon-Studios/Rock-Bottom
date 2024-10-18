@@ -424,6 +424,11 @@ public class LevelGenerator
                 itemLock.transform.parent = itemHolder.transform;
             }
 
+            foreach(var petrifiedPigment in roomObj.transform.GetComponentsInChildren<PetrifiedPigmentPickup>())
+            {
+                petrifiedPigment.transform.parent = itemHolder.transform;
+            }
+
             // Finish setting up the room
             roomObj.name = room.Item2.name + " | " + room.Item1;
             roomObj.transform.parent = roomHolder.transform;
@@ -761,7 +766,7 @@ public class LevelGenerator
                 enemy.position.y - enemy.localScale.y / 2, 
                 enemy.localScale.x, 
                 enemy.localScale.y);
-
+            
             enemy.gameObject.SetActive(cullSquare.Overlaps(enemySquare));
         }
     }

@@ -132,7 +132,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""id"": ""96a22342-4dc2-446a-a5bb-3d8484bec3fc"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.6)"",
+                    ""interactions"": ""Hold(duration=0.8)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -295,8 +295,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""25406eb6-7cd6-4a69-a78a-748baf2fa0c2"",
                     ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.1)"",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": ""PlayStation;XboxController"",
                     ""action"": ""DropDown"",
                     ""isComposite"": false,
@@ -658,8 +658,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""name"": ""1D Axis"",
                     ""id"": ""df854b3e-cc1c-4d20-a75c-7f3882fa564c"",
                     ""path"": ""1DAxis"",
-                    ""interactions"": ""Hold(duration=0.2,pressPoint=0.6)"",
-                    ""processors"": ""AxisDeadzone(min=0.4),Scale(factor=10),Clamp(min=-1,max=1)"",
+                    ""interactions"": ""Hold(duration=0.1,pressPoint=0.6)"",
+                    ""processors"": ""AxisDeadzone(min=0.3),Scale(factor=10),Clamp(min=-1,max=1)"",
                     ""groups"": """",
                     ""action"": ""VerticalLook"",
                     ""isComposite"": true,
@@ -690,7 +690,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3bcbe760-e80e-41a6-bb7b-d8ce33178d88"",
-                    ""path"": ""<XInputController>/buttonNorth"",
+                    ""path"": ""<XInputController>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XboxController"",
@@ -701,7 +701,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""76712484-ddae-4462-94cd-c418c91e7563"",
-                    ""path"": ""<DualShockGamepad>/buttonNorth"",
+                    ""path"": ""<DualShockGamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PlayStation"",
@@ -712,7 +712,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3d3c56e3-f25e-4b8d-9f4e-28116275c3ba"",
-                    ""path"": ""<Keyboard>/l"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard;KeyboardMouse"",
@@ -723,7 +723,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""506ec695-0748-4cd1-af5a-b1452c85aeda"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",

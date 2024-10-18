@@ -16,6 +16,8 @@ public class ColorSpell : MonoBehaviour
     /// </summary>
     [SerializeField] public float powerScale = 1;
 
+    [SerializeField] public float coolDown = 1;
+
     /// <summary>
     /// The projectile will be destroyed on impact with any object
     /// </summary>
@@ -111,7 +113,23 @@ public class ColorSpell : MonoBehaviour
             spriteRenderer.flipX = lookDir == -1;
         }
         spriteRenderer.material = gameColor?.colorMat;
+
+        foreach(var child in gameObject.GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (child != null)
+            {
+                child.flipX = lookDir == -1;
+            }
+            child.material = gameColor?.colorMat;
+        }
         
+        foreach (var ballTray in GetComponentsInChildren<ParticleSystem>())
+        {
+            var main = ballTray.main;
+            main.startColor = gameColor.colorMat.color;
+            ballTray.Play();
+        }
+        /*
         var ballTray = GetComponentInChildren<ParticleSystem>();
         if (ballTray != null)
         {
@@ -120,7 +138,7 @@ public class ColorSpell : MonoBehaviour
             ballTray.Play();
         }
         // Initialize the spell movers
-        
+        */
 
         foreach (SpellMover mover in gameObject.GetComponents<SpellMover>())
         {

@@ -34,6 +34,7 @@ public class ColorInventory : MonoBehaviour
     SpellPickup pickUpSpell = null;
 
     public int blockDrainColor = 0;
+    private bool CanSwap = true;
 
     #region Actions for UI
     
@@ -62,6 +63,8 @@ public class ColorInventory : MonoBehaviour
     /// Sends a bool as parameter; if bool == true the spell got in range and if bool == false the spell left the range
     /// </summary>
     public UnityAction<bool> onSpellPickupInRange;
+
+    public UnityAction<float> onCoolDownSet;
     
     private System.Action<InputAction.CallbackContext> divideColorHandler;
 
@@ -107,8 +110,19 @@ public class ColorInventory : MonoBehaviour
     /// <param name="dir"></param>
     public void RotateActive(int dir)
     {
+        if (!CanSwap) return;
         activeSlot = (colorSlots.Count+activeSlot+dir)%colorSlots.Count;
         onSlotChanged?.Invoke(dir);
+    }
+
+    public void DisableRotation()
+    {
+        CanSwap = false;
+    }
+
+    public void EnableRotation()
+    {
+        CanSwap = true;
     }
 
     /// <summary>
@@ -157,6 +171,26 @@ public class ColorInventory : MonoBehaviour
             return ActiveSlot().gameColor;
         }
         return null;
+    }
+
+    /// <summary>
+    /// Checks if the cooldown for a spell is done
+    /// </summary>
+    /// <returns></returns>
+    public bool IsSpellReady()
+    {
+        if (ActiveSlot().coolDown <= Time.fixedTime) return true;
+        return false;
+    }
+
+    /// <summary>
+    /// Starts the cooldown
+    /// </summary>
+    /// <param name="time"></param>
+   public void SetCoolDown(float time)
+    {
+        ActiveSlot().coolDown = Time.fixedTime + time;
+        onCoolDownSet?.Invoke(time);
     }
 
     /// <summary>
@@ -327,6 +361,10 @@ public class ColorInventory : MonoBehaviour
     {
         if(color == null) return;
         ColorSlot fillSlot = null;
+        
+        fillSlot = ActiveSlot();
+
+        /*
         if(ActiveSlot().IsEmpty() || ActiveSlot().gameColor == color)
             fillSlot = ActiveSlot();
         else if(!ActiveSlot().IsEmpty())
@@ -349,7 +387,7 @@ public class ColorInventory : MonoBehaviour
             for (int i = 1; i < colorSlots.Count; i++)
             {
                 int pick = (activeSlot+i)%colorSlots.Count;
-                if(colorSlots[pick].gameColor == color)
+                if(colorSlots[pick].gameColor == color && colorSlots[pick].charge > 0)
                 {
                     if(fillSlot == null || fillSlot.IsFilledMax())
                     {
@@ -359,7 +397,7 @@ public class ColorInventory : MonoBehaviour
             }
 
             if(fillSlot == null) fillSlot = ActiveSlot();
-        }
+        } */
 
         // Slot to Fill is now chosen
 
@@ -485,6 +523,7 @@ public class ColorInventory : MonoBehaviour
             return;
         }
         colorSlots[index].colorSpell = newSpell;
+        colorSlots[index].coolDown = 0;
         onColorSpellChanged?.Invoke(index);
     }
 
@@ -514,6 +553,9 @@ public class ColorInventory : MonoBehaviour
         }
         colorSlots.Add(new ColorSlot());
         colorSlots[colorSlots.Count-1].maxCapacity = colorSlots[0].maxCapacity;
+
+        foreach (ColorSlot slot in colorSlots) slot.coolDown = 0;
+
         onColorSlotsChanged?.Invoke();
     }
 
@@ -559,6 +601,8 @@ public class ColorSlot
     [SerializeField] public int charge;
     [SerializeField] public GameColor gameColor;
     [SerializeField] public ColorSpell colorSpell;
+
+    public float coolDown = 0;
     public void Init(Image setImage)
     {
         SetGameColor(gameColor);

@@ -16,11 +16,14 @@ public class ColorSlotController : MonoBehaviour
     ColorInventory colorInventory;
     [SerializeField] UIController uiController;
 
+    [SerializeField] Color backBottleTint;
+
     //Color slots the player currently has.
     List<ColorSlot> colorSlots;
 
     //All created UI elements for slots.
     [SerializeField] List<RectTransform> slotList;
+    
 
     //Positions of all UI Containers for slots.
     List<Vector2> slotPositions = new List<Vector2>();
@@ -30,6 +33,7 @@ public class ColorSlotController : MonoBehaviour
 
     //List of booleans to signal if each bottle is full
     List<bool> bottleFull = new List<bool>();
+    
 
     // Spline to animate the filling effect of the color slots
     public AnimationCurve fillCurve;
@@ -50,6 +54,8 @@ public class ColorSlotController : MonoBehaviour
 
     [SerializeField] public Sprite[] FullBottleEffectSprites;
 
+    private List<Slider> spellsOnCoolDown = new List<Slider>();
+
     # region Setup
     /// <summary>
     /// When enabling the Player In game UI, set up the script.
@@ -64,6 +70,7 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onColorUpdated += ColorUpdate;
         colorInventory.onSlotChanged += ActiveColorChanged;
         colorInventory.onColorSpellChanged += BottleChanged;
+        colorInventory.onCoolDownSet += StartCoolDownSlider;
         uiController.UILoaded += UpdateAllSprites;
         uiController.ColorSlotAmountChanged += UpdateAllSprites;
 
@@ -107,6 +114,7 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onColorSpellChanged -= BottleChanged;
         uiController.UILoaded -= UpdateAllSprites;
         uiController.ColorSlotAmountChanged -= UpdateAllSprites;
+        colorInventory.onCoolDownSet -= StartCoolDownSlider;
     }
     #endregion
     #region SlotMovement
@@ -149,7 +157,9 @@ public class ColorSlotController : MonoBehaviour
                 // We want the change of resolution to happen in the middle of the movement, so it's not noticeable
                 // But it must only happen once
                 if (middleOfAnim && !bottleChangedDone)
+                {
                     BottleChanged(i, trueIndex);
+                }
             }
             bottleChangedDone = middleOfAnim;
             yield return new WaitForEndOfFrame();
@@ -161,6 +171,7 @@ public class ColorSlotController : MonoBehaviour
             RectTransform rect = slotList[i];
             rect.anchoredPosition = slotPositions[trueIndex];
             rect.transform.localScale = slotScales[trueIndex];
+
             if (!bottleChangedDone)
                 BottleChanged(i, trueIndex);
         }
@@ -271,6 +282,19 @@ public class ColorSlotController : MonoBehaviour
             bottleMask.sprite = bottleSprite.smallSpriteMask;
             capMask.sprite = bottleSprite.smallSpriteCapMask;
         }
+
+        slotList[index].GetComponentInChildren<Slider>().GetComponentInChildren<Image>().sprite = bottle.sprite;
+
+        foreach (Image image in slotList[index].GetComponentsInChildren<Image>())
+        {
+            if(pos == 0)
+            {
+                image.color = Color.white;
+            } else
+            {
+                image.color = backBottleTint;
+            }
+        }
     }
 
     private void BottleChanged(int index) {
@@ -287,6 +311,21 @@ public class ColorSlotController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Add the CoolDown indicator to a list when a spell is used. 
+    /// </summary>
+    /// <param name="time"></param>
+    private void StartCoolDownSlider(float time)
+    {
+        if (colorInventory.activeSlot >= slotList.Count) return;
+        if (slotList[colorInventory.activeSlot] == null) return; 
+        Slider slide = slotList[colorInventory.activeSlot].GetComponentInChildren<Slider>();
+        if (slide == null) return;    
+        if (spellsOnCoolDown.Contains(slide)) return;
+        slide.maxValue = time;
+        slide.value = time;
+        spellsOnCoolDown.Add(slide);
+    }
     private void Update()
     {
         // Get sinewave value based on time
@@ -312,6 +351,22 @@ public class ColorSlotController : MonoBehaviour
                 cap.material.SetFloat("_BloomPower", sinewave);
             }
         }
+
+        //Updates cooldown display
+        if (spellsOnCoolDown.Count > 0)
+        {
+            foreach (Slider slide in spellsOnCoolDown.ToList())
+            {
+                slide.value -= Time.deltaTime;
+                if (slide.value <= 0)
+                {
+                    slide.value = 0;
+                    spellsOnCoolDown.Remove(slide);
+                }
+            }
+        }
+        
+
     }
 
     #endregion

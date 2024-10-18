@@ -54,13 +54,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 120
+  health: 150
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
   colorAmmount: 6
   movementSpeed: 1800
   coinsDropped:
-    min: 15
-    max: 20
+    min: 7
+    max: 12
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   comboParticles: {fileID: 6205137580783060889, guid: 08a80dfa497e1524d8b1d91a3ef76662, type: 3}
   knockbackImune: 0
@@ -71,6 +71,7 @@ MonoBehaviour:
   colorOrbPrefab: {fileID: 3555706799306581111, guid: e632eca802dd6974981edd7786f7e079, type: 3}
   currentCombo: 0
   enemySounds: {fileID: 1459781731267820079}
+  spawnPower: 1
 --- !u!114 &1462253517624165458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff05b56a3ed20004b87f3c83123a640b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
+  playerCollisionDamage: 30
   playerCollisionForce: {x: 1000, y: 5000}
   viewTrigger:
     radius: 6

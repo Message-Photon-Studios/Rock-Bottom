@@ -41,7 +41,8 @@ public class PlayerLevelMananger : MonoBehaviour
             me = this.gameObject;
             foreach (GameObject obj in loadWithPlayerObjects)
             {
-                DontDestroyOnLoad(obj);
+                if(obj != null)
+                    DontDestroyOnLoad(obj);
             }
             DontDestroyOnLoad(this); 
 

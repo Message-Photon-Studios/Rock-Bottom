@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -301831581
+  m_SortingLayer: 12
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 512992e80de2de2418d329a6c434fbd2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -134,13 +134,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelGenerator: {fileID: 6781334976677708192}
   onDeathLevel: CaveTown
+  saveProgressionOnStart: 0
   nextLevelName: 
   canvas: {fileID: 0}
   allowsClockTimer: 1
+  addLevelClockTime: 0
+  restartClockTimer: 0
   clearInventoryOnLevelEnd: 0
   videoOnPlayerDeath: {fileID: 0}
   videoObjecCanvas: {fileID: 0}
   backgroundMusic: {fileID: 0}
+  allowTips: 1
 --- !u!114 &6781334976677708192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +164,7 @@ MonoBehaviour:
   size: 0
   regionSize:
     _serializedList: []
+  regionSizeMargin: 10
 --- !u!114 &6781334976677708207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,10 +215,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1074224bb687ebe449ceb43c9abb1d1a, type: 2}
   - {fileID: 11400000, guid: 9533fd7e20424fa4bb2a5b2c415367c5, type: 2}
   - {fileID: 11400000, guid: 03e62550d0443e24f88230b63a8f71f4, type: 2}
-  spawnableSpells:
+  - {fileID: 11400000, guid: f7796efd1b050ec4aadf4f447a83ff04, type: 2}
+  - {fileID: 11400000, guid: b269e3666f343224a9c36b6bed8f79f6, type: 2}
+  - {fileID: 11400000, guid: 263a16ee834b34e4c87577b78482d26a, type: 2}
+  - {fileID: 11400000, guid: 98aff30b79256784495d423d76aeff43, type: 2}
+  - {fileID: 11400000, guid: 55137dba5acbe6d4b8e4e0f86045a8a7, type: 2}
+  - {fileID: 11400000, guid: bce40fa9d28fb3347b8c21ab6d2bf49c, type: 2}
+  - {fileID: 11400000, guid: ce58f298a7a3159409e36112d80ec1cb, type: 2}
+  - {fileID: 11400000, guid: 68eb7ba71f63cfa4ebb23dad9f6edb3e, type: 2}
+  - {fileID: 11400000, guid: b5450b3b561448c42aceab555c9bb0ee, type: 2}
+  - {fileID: 11400000, guid: 577f648da571b3443afab2723efd0e8f, type: 2}
+  - {fileID: 11400000, guid: 52c1551e0da99374488b23aa0a160259, type: 2}
+  - {fileID: 11400000, guid: 9d0bdb381e0f168469872a62cc0e5201, type: 2}
+  levelSpells:
+  - {fileID: -7692674297862362138, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
   - {fileID: -7692674297862362138, guid: ce7465a19865c2a44a0fbdce826d783e, type: 3}
+  - {fileID: -7692674297862362138, guid: e115a84ea227d044590791de70291cf4, type: 3}
   - {fileID: -7692674297862362138, guid: 3de06464deaee1d4b938974b88ead071, type: 3}
   - {fileID: -7692674297862362138, guid: dc39c17fa0b7cdd41be7ca6e26dd7c9f, type: 3}
-  - {fileID: -7692674297862362138, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
-  - {fileID: -7692674297862362138, guid: ecda5f5278ae77a4ba9dc72760ae1362, type: 3}
   - {fileID: -7692674297862362138, guid: 4d714332baa57cb46b2d801f8c1364ed, type: 3}
+  - {fileID: -7692674297862362138, guid: ecda5f5278ae77a4ba9dc72760ae1362, type: 3}

@@ -53,13 +53,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 350
+  health: 400
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
   colorAmmount: 6
   movementSpeed: 4500
   coinsDropped:
-    min: 15
-    max: 25
+    min: 10
+    max: 15
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   comboParticles: {fileID: 6205137580783060889, guid: 08a80dfa497e1524d8b1d91a3ef76662, type: 3}
   knockbackImune: 1
@@ -70,6 +70,7 @@ MonoBehaviour:
   colorOrbPrefab: {fileID: 3555706799306581111, guid: e632eca802dd6974981edd7786f7e079, type: 3}
   currentCombo: 0
   enemySounds: {fileID: 2042908631029740834, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+  spawnPower: 1
 --- !u!114 &264917189925170245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,7 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc30e9374fe69ce46b13f9d2aa2ea27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
+  playerCollisionDamage: 25
   playerCollisionForce: {x: 2000, y: 0.5}
   viewRange: 15
   eyePosY: -0.7
@@ -92,7 +93,7 @@ MonoBehaviour:
     width: 360
     offset: {x: -2, y: -0.5}
     color: {r: 1, g: 0, b: 0, a: 1}
-  swordDamage: 30
+  swordDamage: 40
   swordForce: 5000
   quakeTrigger:
     radius: 15

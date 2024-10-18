@@ -11,7 +11,7 @@ public class BrownColorEffect : ColorEffect
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
-        if(enemy.GetColor() == null || enemy.GetColorAmmount() == 0)
+        if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0)
         {
             enemy.DamageEnemy(Mathf.RoundToInt(uncoloredDamage*power));
             return;

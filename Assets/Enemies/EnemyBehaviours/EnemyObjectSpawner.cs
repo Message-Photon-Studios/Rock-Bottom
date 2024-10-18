@@ -46,6 +46,9 @@ public class EnemyObjectSpawner : Node
         {
             GameObject spwn = GameObject.Instantiate(spawnTemp, stats.GetPosition()+useOffset, stats.gameObject.transform.rotation) as GameObject;
             spwn.GetComponent<Rigidbody2D>()?.AddForce(force*(Vector2.right*stats.lookDir+Vector2.up)*(Random.Range(0f,forceRandomVariation)+1f));
+
+            EnemyStats spwnStats = spwn.GetComponent<EnemyStats>();
+            if(spwnStats) spwnStats.spawnPower = stats.GetDamageFactor();
             if(setColor) spwn.GetComponent<EnemyStats>()?.SetColor(stats.GetColor());
             else if(setColor) spwn.GetComponent<EnemyStats>()?.SetColor(null);
         }   

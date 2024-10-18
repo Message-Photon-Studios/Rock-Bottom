@@ -1,8 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IDataPersistence
 {
     public static GameManager instance;
     
@@ -11,13 +15,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject hunterPrefab;
     [SerializeField] float hunterSpawnDist;
     [SerializeField] int maxHunters;
+    
+    [SerializeField] ColorSpell[] startSpells;
+    private List<string> unlockedSpells;
+    private HashSet<string> spawnableSpells;
+    [SerializeField] AudioSource spellUnlockSound;
+
+    [SerializeField] AudioSource petrifiedPickupSound;
+    public SoundEffectManager soundEffectManager;
+
+    private int petrifiedPigment = 0;
+    string gameStartScene = "Tutorial_0";
+    public bool allowsTips {get; private set;} = true;
     float hunterTimer = 0f;
     int hunters = 0;
     float maxClockTime;
     public MaskLibrary maskLibrary;
     private PlayerStats player;
-
+    private UIController uiController;
     private LevelManager currentLevelManager;
+
+    public TipsManager tipsManager;
 
     void Awake()
     {
@@ -33,9 +51,18 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        unlockedSpells = new List<string>();
+        spawnableSpells = new HashSet<string>();
+        foreach (ColorSpell spell in startSpells)
+        {
+            spawnableSpells.Add(spell.name);
+        }
+
         maxClockTime = clockTime;
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-        player.onPlayerDied += OnPlayerDied;
+        player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerStats>();
+        if(player != null)
+            player.onPlayerDied += OnPlayerDied;
+        
     }
 
     private void OnPlayerDied()
@@ -43,11 +70,21 @@ public class GameManager : MonoBehaviour
         clockTime = maxClockTime;
         hunterTimer = 0;
         hunters = 0;
+        DataPersistenceManager.instance.SaveGame();
+    }
+
+    public void SetUiController(UIController uiController)
+    {
+        this.uiController = uiController;
+        tipsManager.SetUi(uiController);
     }
 
     public void SetLevelManager (LevelManager levelManager, float addClockTime, bool restartTimer) 
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+
+        
+
         currentLevelManager = levelManager;
         hunterTimer = 0f;
         hunters = 0;
@@ -55,7 +92,76 @@ public class GameManager : MonoBehaviour
             clockTime = addClockTime + ((clockTime < 0)?0:clockTime);
         else
             clockTime = maxClockTime;
+
+
+
+        if(levelManager.saveProgressionOnStart)
+        {
+            gameStartScene = levelManager.onDeathLevel;
+            DataPersistenceManager.instance.SaveGame();
+        }
+        
+        allowsTips = levelManager.allowTips;
     }
+
+    #region MainMenu and Quit
+    public void GoToMainMenu()
+    {
+        StartCoroutine(uiController.FadeOutCoroutine(false, GoToMainMenuAsync));
+        Resume();
+        DataPersistenceManager.instance.SaveGame();
+        Debug.Log("Loading to main menu...");
+    }
+    public IEnumerator GoToMainMenuAsync()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
+        yield break;
+    }
+
+    public void QuitGame()
+    {
+        DataPersistenceManager.instance.SaveGame();
+        Application.Quit();
+        Debug.Log("Quitting game...");
+    }
+
+    #endregion
+
+    #region Save Load
+
+    void IDataPersistence.LoadData(GameData data)
+    {
+        gameStartScene = data.startScene;
+        spawnableSpells = new HashSet<string>();
+        unlockedSpells = new List<string>();
+        foreach (ColorSpell spell in startSpells)
+        {
+            spawnableSpells.Add(spell.name);
+        }
+        spawnableSpells.AddRange(data.unlockedColorSpells);
+        unlockedSpells.AddRange(data.unlockedColorSpells);
+
+        petrifiedPigment = data.petrifiedPigment;
+        pickedUpPetrifiedPigment = new HashSet<string>();
+        pickedUpPetrifiedPigment.AddRange(data.petrifiedPigmentPickedUp);
+    }
+
+    void IDataPersistence.SaveData(GameData data)
+    {
+        data.startScene = gameStartScene;
+        data.unlockedColorSpells = unlockedSpells.ToArray();
+        data.petrifiedPigment = petrifiedPigment;
+        data.petrifiedPigmentPickedUp = pickedUpPetrifiedPigment.ToArray();
+    }
+
+    public string GetStartScene()
+    {
+        return gameStartScene;
+    }
+
+    #endregion
+
+    #region Game clock
 
     void Update()
     {
@@ -109,7 +215,106 @@ public class GameManager : MonoBehaviour
 
         return (retString, retSize, retColor);
     }
+
+    #endregion
+
+    #region Spell Unlock
+
+    /// <summary>
+    /// Checks if this spell is spawnable
+    /// </summary>
+    /// <param name="spell"></param>
+    /// <returns></returns>
+    public bool IsSpellSpawnable(ColorSpell spell)
+    {
+        bool ret = spawnableSpells.Contains(spell.name);
+        Debug.Log(spell.name + " is spawnable: " + ret);
+
+        return ret;
+    }
+
+
+    /// <summary>
+    /// Permanently unlocks this spell.
+    /// </summary>
+    /// <param name="spell"></param>
+    public void UnlockedSpell(ColorSpell spell)
+    {
+        unlockedSpells.Add(spell.name);
+        spawnableSpells.Add(spell.name);
+        spellUnlockSound.Play();
+        DataPersistenceManager.instance.SaveGame();
+    }
+
+    #endregion
+
+    #region Petrified Pigment
+
+    public UnityAction<int> onPetrifiedPigmentChanged;
+
+    public bool TryRemovePetrifiedPigment(int removePigment)
+    {
+        if(removePigment > petrifiedPigment) return false;
+
+        petrifiedPigment-=removePigment;
+        onPetrifiedPigmentChanged?.Invoke(-removePigment);
+        return true;
+    }
+
+    public bool HasPetrifiedPigment(int hasAmount)
+    {
+        return petrifiedPigment >= hasAmount;
+    }
+
+    public int GetPetrifiedPigmentAmount()
+    {
+        return petrifiedPigment;
+    }
+
+    HashSet<string> pickedUpPetrifiedPigment = new HashSet<string>();
+
+    public bool IsPetrifiedPigmentPickedUp(string name)
+    {
+        return pickedUpPetrifiedPigment.Contains(name);
+    }
+
+    public void PickedUpPetrifiedPigment(string name)
+    {
+        petrifiedPigment ++;
+        pickedUpPetrifiedPigment.Add(name);
+        onPetrifiedPigmentChanged?.Invoke(1);
+        petrifiedPickupSound.Play();
+        DataPersistenceManager.instance.SaveGame();
+    }
+
+    #endregion
     
+    #region Pause Game
+    [HideInInspector] public bool disablePausing = false;
+
+    /// <summary>
+    /// Pauses the game by setting timescale to 0.
+    /// </summary>
+    public void Pause()
+    {
+        if(disablePausing) return;
+        Time.timeScale = 0f;
+        Debug.Log("Game is paused...");
+
+    }
+
+    /// <summary>
+    /// Resumes the game by setting timescale to 1.
+    /// </summary>
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        Debug.Log("Game is resumed...");
+
+    }
+    #endregion
+
+    #region Mask Library
     [System.Serializable]
     public struct MaskLibrary {
         public int playerLayer;
@@ -125,4 +330,6 @@ public class GameManager : MonoBehaviour
             return onlyGround & ~onlyPlatforms;
         }
     }
+
+    #endregion
 }

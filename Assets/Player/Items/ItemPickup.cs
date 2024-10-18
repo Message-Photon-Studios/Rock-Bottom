@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Handles the item spawn points
@@ -18,18 +19,42 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] GameObject collectObj, buyObj;
+
+    [SerializeField] EnemyStats spawnFromEnemy;
     ItemInventory inventory;
 
     private Coroutine hoverCoroutine;
 
     int itemCost;
+    
 
     void OnEnable()
     {
-        if(setByhand)
+        if(spawnFromEnemy != null)
+        {
+            spawnFromEnemy.onEnemyDeath += SpawnFromEnemy;
+        } 
+        else if(setByhand)
         {
             SetItem(item, item.itemCost);
         }
+    }
+
+    private void SpawnFromEnemy()
+    {
+        transform.position = spawnFromEnemy.transform.position;
+        RaycastHit2D hit;
+        hit = Physics2D.Raycast(transform.position, Vector2.down,100f, GameManager.instance.maskLibrary.onlyGround | GameManager.instance.maskLibrary.onlyPlatforms);
+        transform.position = hit.point + Vector2.up*.6f;
+        SetItem(item, item.itemCost);
+        gameObject.SetActive(true);
+        spawnFromEnemy.onEnemyDeath -= SpawnFromEnemy;
+    }
+
+    void OnDisable()
+    {
+        if(spawnFromEnemy != null) spawnFromEnemy.onEnemyDeath -= SpawnFromEnemy;
     }
 
     /// <summary>
@@ -75,10 +100,22 @@ public class ItemPickup : MonoBehaviour
             {
                 inventory.EnablePickUp(this);
                 cost.gameObject.SetActive(false);
+                collectObj.SetActive(true);
+                buyObj.SetActive(false);
             } else
             {
+                if(inventory.GetCoins() < itemCost)
+                {
+                    cost.color = Color.red;
+                } else
+                {
+                    cost.color = Color.white;
+                }
+
                 inventory.EnableBuyItem(this);
                 cost.gameObject.SetActive(true);
+                buyObj.SetActive(true);
+                collectObj.SetActive(false);
             }
 
             canvas.SetActive(true);

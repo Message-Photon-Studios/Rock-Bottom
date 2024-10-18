@@ -47,7 +47,9 @@ public class EnemyObjectSpawnerAim : Node
         spwn.transform.rotation = Quaternion.Euler(0,0,deg);
 
         spwn.GetComponent<Rigidbody2D>()?.AddForce(spwn.transform.localToWorldMatrix.MultiplyPoint((force * Vector2.right)));
-
+        
+        EnemyStats spwnStats = spwn.GetComponent<EnemyStats>();
+        if(spwnStats) spwnStats.spawnPower = stats.GetDamageFactor();
 
         spwn.GetComponent<EnemyStats>()?.SetColor(stats.GetColor());
         state = NodeState.SUCCESS;

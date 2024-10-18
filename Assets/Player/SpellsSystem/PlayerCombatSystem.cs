@@ -11,6 +11,7 @@ public class PlayerCombatSystem : MonoBehaviour
 {
     //[SerializeField] float defaultAttackDamage;
     [SerializeField] float defaultAttackForce;
+    public int rainbowComboDamage = 20;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
     [SerializeField] PlayerDefaultAttack defaultAttackHitbox; //The object that controlls the default attack hitbox
     [SerializeField] Vector2 defaultAttackOffset; //The offset that the default attack will be set to
@@ -26,6 +27,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     private bool defaultAirHit = false;
     private bool spellAirHit = false;
+    private bool attackDoubleJumped = false;
     Action<InputAction.CallbackContext> specialAttackHandler;
     Action<InputAction.CallbackContext> defaultAttackHandler;
 
@@ -67,7 +69,13 @@ public class PlayerCombatSystem : MonoBehaviour
         }
 
         if(!playerMovement.IsGrounded()) defaultAirHit = true;
-
+        {
+            if(!attackDoubleJumped)
+            {
+                attackDoubleJumped = true;
+                playerMovement.ResetDoubleJump();
+            }
+        }
         attacking = true;
         playerMovement.inAttackAnimation = true;
 
@@ -135,13 +143,22 @@ public class PlayerCombatSystem : MonoBehaviour
         if(currentSpell == null) return;
         if(attacking) return;
         if(!colorInventory.CheckActveColor()) return;
+        if (!colorInventory.IsSpellReady()) return;
 
         if(playerMovement.IsGrappeling())
         {
             playerMovement.WallAttackLock();
         }
         
-        if(!playerMovement.IsGrounded()) spellAirHit = true;
+        if(!playerMovement.IsGrounded()) 
+        {
+            spellAirHit = true;
+            if(!attackDoubleJumped) 
+            {
+                playerMovement.ResetDoubleJump();
+                attackDoubleJumped = true;
+            }
+        }
         attacking = true;
         playerMovement.inAttackAnimation = true;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
@@ -149,6 +166,7 @@ public class PlayerCombatSystem : MonoBehaviour
         playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
         playerSounds.PlayCastingSpell();
+        colorInventory.DisableRotation();
     }
 
     /// <summary>
@@ -157,14 +175,19 @@ public class PlayerCombatSystem : MonoBehaviour
     private void SpecialAttack()
     {
         GameColor color = colorInventory.UseActiveColor();
+        colorInventory.EnableRotation();
 
-        if(currentSpell == null) return;
+        if(currentSpell == null || color == null) return;
 
         Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+currentSpell.transform.position.x) * playerMovement.lookDir, 
                                         currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
         GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
         if(spell != null)
+        {
             spell.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir);
+            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown); //When adding items to change the cooldown change it here! 
+        }
+            
         transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
     }
 
@@ -195,5 +218,6 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         defaultAirHit = false;
         spellAirHit = false;
+        attackDoubleJumped = false;
     }
 }

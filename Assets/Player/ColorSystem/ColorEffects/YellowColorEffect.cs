@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,10 +14,12 @@ public class YellowColorEffect : ColorEffect
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
         List<GameObject> affected = new List<GameObject>();
 
+        float range = effectRange*EffectFunction(power);
+
         foreach (GameObject obj in objs)
         {
             if(obj == null) continue;
-            if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange*power,2))
+            if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(range,2))
             {
                 AffectObject(obj, 0, enemyObj);
             }
@@ -33,14 +36,14 @@ public class YellowColorEffect : ColorEffect
                 with = affected.Count;
             }
             if (depth > maxBounces) return;
-            if (effectRange*power <= depth) return;
+            if (range <= depth) return;
 
             foreach (GameObject obj in objs)
             {
                 if(obj == null) continue;
                 if(affected[i] == null) continue;
                  
-                if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(effectRange*power-depth,2))
+                if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(range-depth,2))
                 {
                     AffectObject(obj, depth, affected[i]);
                 }
@@ -69,7 +72,7 @@ public class YellowColorEffect : ColorEffect
             Vector3 forceDir =  (enemyObj.transform.position - obj.transform.position);
             if(forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
             if (!obj.GetComponent<EnemyStats>().IsKnockbackImune())
-                obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir);
+                obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir*force);
             obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power-depth*5));
         }
     }

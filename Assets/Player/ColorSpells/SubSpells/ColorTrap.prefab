@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 816937159620727808}
   - component: {fileID: 1163189697346373350}
   - component: {fileID: 4580992892010644555}
+  - component: {fileID: 6335882509958570277}
   m_Layer: 8
   m_Name: ColorTrap
   m_TagString: Spell
@@ -68,7 +69,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -169,6 +170,7 @@ MonoBehaviour:
   impactOnEnemies: 1
   impactOnNonEnemies: 0
   triggerOnlyOnce: 1
+  requirePlayerLOSonSpawn: 0
   lifeTime: 1000
   animationTrigger: handSpell
   onImpact:
@@ -227,6 +229,22 @@ MonoBehaviour:
   detonateTimer: 15
   spawnPrefabs:
   - {fileID: 3321278458073070463, guid: fe02eea5ce2d7014c81405a630ea6988, type: 3}
+--- !u!70 &6335882509958570277
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 3.4, y: 2}
+  m_Direction: 1
 --- !u!1 &5302223586745146273
 GameObject:
   m_ObjectHideFlags: 0

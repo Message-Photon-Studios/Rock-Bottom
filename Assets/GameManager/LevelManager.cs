@@ -8,7 +8,8 @@ using Unity.VisualScripting;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] LevelGenManager levelGenerator;
-    [SerializeField] string onDeathLevel;
+    [SerializeField] public string onDeathLevel;
+    public bool saveProgressionOnStart = false;
     [SerializeField] string nextLevelName;
     [SerializeField] UIController canvas;
     public bool allowsClockTimer = true;
@@ -18,6 +19,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] VideoPlayer videoOnPlayerDeath;
     [SerializeField] GameObject videoObjecCanvas;
     [SerializeField] GameObject backgroundMusic;
+    [SerializeField] public bool allowTips = true;
 
     public static LevelManager instance = null;
 
@@ -55,7 +57,8 @@ public class LevelManager : MonoBehaviour
             obj.GetComponent<PlayerLevelMananger>().SetStartLevel(this);
         }
         StartCoroutine(canvas.FadeOutCoroutine(true));
-        canvas.disablePausing = false;
+        if(GameManager.instance != null)
+            GameManager.instance.disablePausing = false;
 
         GameManager.instance?.SetLevelManager(this, addLevelClockTime, restartClockTimer);
     }
@@ -72,7 +75,7 @@ public class LevelManager : MonoBehaviour
         if(!specialLevel.Equals("")) nextLevelName = specialLevel;
         if (!clearInventoryOnLevelEnd)
         {
-            canvas.disablePausing = true;
+            GameManager.instance.disablePausing = true;
             if (player) player.GetComponent<Rigidbody2D>().simulated = false;
             if(player) player.GetComponent<Rigidbody2D>().velocity= Vector3.zero;
             player?.GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("endLevel", true);
@@ -82,6 +85,8 @@ public class LevelManager : MonoBehaviour
         }
 
         StartCoroutine(canvas.FadeOutCoroutine(false, EndLevelAsync));
+
+
     }
 
     public IEnumerator PlayerDiedAsync()
@@ -111,7 +116,7 @@ public class LevelManager : MonoBehaviour
 
     void StartDeathVideo ()
     {
-        GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>().disablePausing = true;
+        GameManager.instance.disablePausing = true;
         backgroundMusic.SetActive(false);
         videoObjecCanvas.SetActive(true);
         videoOnPlayerDeath.Play();

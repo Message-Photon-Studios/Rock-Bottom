@@ -7,7 +7,8 @@ public class AddSpellSlot : ItemEffect
     public override void ActivateEffect()
     {
         ColorInventory inv = GetPlayer().GetComponent<ColorInventory>();
-        inv.AddColorSlot();
+        if(inv.colorSlots.Count < 5)
+            inv.AddColorSlot();
     }
 
     public override void DisableEffect()
@@ -18,6 +19,6 @@ public class AddSpellSlot : ItemEffect
     public override bool CanBeSpawned()
     {
         ColorInventory inv = GetPlayer().GetComponent<ColorInventory>();
-        return inv.colorSlots.Count < 6;
+        return inv.colorSlots.Count < 5;
     }
 }

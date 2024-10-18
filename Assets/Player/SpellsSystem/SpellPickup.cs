@@ -13,16 +13,23 @@ public class SpellPickup : MonoBehaviour
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
+    [SerializeField] GameObject swapText, buyText;
     [SerializeField] Collider2D collider;
     Rigidbody2D body;
     SpriteRenderer spriteRenderer;
     ColorInventory inventory;
+    ItemInventory itemInventory;
     bool pickedup = false;
 
 
     private void Start()
     {
-        Physics2D.IgnoreCollision(collider, GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>());
+        foreach (Collider2D coll in GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Collider2D>())
+        {
+            Physics2D.IgnoreCollision(collider, coll);
+        }
+        //Physics2D.IgnoreCollision(collider, GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>());
+
         body = GetComponent<Rigidbody2D>();
     }
 
@@ -43,8 +50,8 @@ public class SpellPickup : MonoBehaviour
 
         canvas.SetActive(false);
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
+        itemInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
     }
-
     /// <summary>
     /// Randomly destroys the spawn point depending on the initial conditions
     /// </summary>
@@ -68,6 +75,21 @@ public class SpellPickup : MonoBehaviour
             if(needsPayment)
             {
                 cost.gameObject.SetActive(true);
+                swapText.SetActive(false);
+                buyText.SetActive(true);
+
+                if(itemInventory.GetCoins() < colorSpell.spellCost)
+                {
+                    cost.color = Color.red;
+                } else
+                {
+                    cost.color = Color.white;
+                }
+                
+            } else
+            {
+                swapText.SetActive(true);
+                buyText.SetActive(false); 
             }
 
             canvas.SetActive(true);

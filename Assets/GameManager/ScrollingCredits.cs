@@ -31,7 +31,7 @@ public class ScrollingCredits : MonoBehaviour
     {
         rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y + 1);
 
-        if (rect.anchoredPosition.y > 3474)
+        if (rect.anchoredPosition.y > 2565.74)
         {
             rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -1100);
         }
