@@ -10,12 +10,17 @@ public class EnemyHpController : MonoBehaviour
     public EnemyStats enemy;
     [SerializeField] Slider healthSlider;
     [SerializeField] Slider healthSubSlider;
+    [SerializeField] Slider rainbowIndicator;
     [SerializeField] float subBarRate;
+
+    PlayerStats playerStats;
+    PlayerCombatSystem playerCombat;
     
     private void Start() {
         gameObject.SetActive(true);
         enemy.onHealthChanged +=  HpChanged;
         enemy.onEnemyDeath += EnemyDied;
+        enemy.onColorChanged += SetRainbowIndicator;
         
         var sliders = GetComponents<Slider>();
 
@@ -23,8 +28,12 @@ public class EnemyHpController : MonoBehaviour
         healthSubSlider.maxValue = enemy.GetHealth();
         healthSlider.value = enemy.GetHealth();
         healthSubSlider.value = enemy.GetHealth();
+        rainbowIndicator.maxValue = enemy.GetHealth();
         healthSlider.gameObject.SetActive(false);
         healthSubSlider.gameObject.SetActive(false);
+        rainbowIndicator.gameObject.SetActive(false);
+        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        playerCombat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCombatSystem>();
     }
 
     /// <summary>
@@ -35,6 +44,7 @@ public class EnemyHpController : MonoBehaviour
         healthSlider.value = newHp;
         healthSlider.gameObject.SetActive(true);
         healthSubSlider.gameObject.SetActive(true);
+        rainbowIndicator.gameObject.SetActive(true);
     }
 
     private void Update()
@@ -54,5 +64,21 @@ public class EnemyHpController : MonoBehaviour
     /// </summary>
     private void EnemyDied() {
         gameObject.SetActive(false);
+    }
+
+    private void SetRainbowIndicator(GameColor color)
+    {
+        if (color == null)
+        {
+            rainbowIndicator.value = 0;
+            return;
+        }
+        if (color.name.Equals("Rainbow"))
+        {
+            rainbowIndicator.value = (int)(playerCombat.rainbowComboDamage * playerStats.colorRainbowMaxedPower);
+            return;
+        }
+        rainbowIndicator.value = 0;
+        return;
     }
 }
