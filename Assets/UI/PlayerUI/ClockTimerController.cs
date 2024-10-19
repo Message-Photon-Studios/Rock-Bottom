@@ -13,6 +13,7 @@ public class ClockTimerController : MonoBehaviour
     [SerializeField] RectTransform rectTransform;
     Animator animator;
     bool tracker = false;
+    bool active = false;
     private PlayerStats player;
 
     /* Here are the useful methods to get the current clock time.
@@ -47,20 +48,20 @@ public class ClockTimerController : MonoBehaviour
         timeText.color = clockVars.color;
         rectTransform.sizeDelta = new Vector2(clockVars.size, rectTransform.sizeDelta.y);*/
 
-        if (LevelManager.instance.allowsClockTimer)
+        if (LevelManager.instance.allowsClockTimer && active)
         {
             (int min, int sec) time;
             time = GameManager.instance.getTime();
             if ((time.min == 4 || time.min == 3 || time.min == 2) && time.sec > 30 && !tracker)
             {
-                animator.ResetTrigger("UnBlink");
-                animator.SetTrigger("Blink");
+                animator.SetBool("UnBlink", false);
+                animator.SetBool("Blink", true);
                 tracker = true;
             }
             if ((time.min == 4 || time.min == 3 || time.min == 2) && time.sec < 30 && tracker)
             {
-                animator.ResetTrigger("Blink");
-                animator.SetTrigger("UnBlink");
+                animator.SetBool("UnBlink", true);
+                animator.SetBool("Blink", false);
                 tracker = false;
             }
             if (time.min <= 1) animator.SetBool("WakeUp", true);
@@ -75,9 +76,9 @@ public class ClockTimerController : MonoBehaviour
                 clockVars = GameManager.instance.GetClockTimeString();
                 timeText.text = clockVars.text;
                 timeText.color = clockVars.color;
-                //rectTransform.sizeDelta = new Vector2(clockVars.size, rectTransform.sizeDelta.y);
             } else 
             {
+                animator.SetBool("Done", false);
                 timeText.text = "";
                 timeText.gameObject.SetActive(false);
             }
@@ -87,15 +88,33 @@ public class ClockTimerController : MonoBehaviour
 
     //Sets clocks active state acording to if it's active or not.
     private void LoadClock() {
-        if (LevelManager.instance.allowsClockTimer) animator.SetBool("Active", true);
-        //timer.SetActive(LevelManager.instance.allowsClockTimer);
+        if (LevelManager.instance.allowsClockTimer)
+        {
+            animator.SetBool("Active", true);
+            active = true;
+        }
     }
 
+    //Resets all animations and checks if the timer should start again
     private void ResetAnimator()
     {
         animator.Rebind();
         animator.Update(0f);
-        if (LevelManager.instance.allowsClockTimer) animator.SetBool("Active", true);
+        LoadClock();
+    }
+
+    //Triggers the closing animation and keeps the timer closed until started again
+    public void PauseTimer()
+    {
+        animator.SetBool("Active", false);
+        active = false;
+    }
+
+    //Resumes all animations
+    public void ResumeTimer()
+    {
+        animator.SetBool("Active", true);
+        active = true;
     }
 
     
