@@ -22,7 +22,6 @@ public class BubbleElementalMovement : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {   
-            Debug.Log("Slide");
             spriteRenderer.flipX = (other.transform.position.x > transform.position.x);
             body.velocity = (new Vector2(slideSpeed*((spriteRenderer.flipX)?-1:1), 0));
             hasTriggered = true;

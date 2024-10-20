@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -152,7 +153,7 @@ public class ColorSpell : MonoBehaviour
             RaycastHit2D playerLOS = Physics2D.Raycast(transform.position, player.transform.position-transform.position, Vector2.Distance(transform.position, player.transform.position), GameManager.instance.maskLibrary.onlyGround);
             if(playerLOS.collider != null) 
             {
-                if(impactOnNonEnemies) Impact(playerLOS.collider);
+                if(impactOnNonEnemies) Impact(playerLOS.collider, transform.position);
                 Destroy(gameObject);
                 return;
             }
@@ -172,7 +173,7 @@ public class ColorSpell : MonoBehaviour
         if(!impactOnNonEnemies && !other.CompareTag("Enemy")) return;
         if(objectsAlreadyHit.Contains(other)) return;
         hasTriggered = true;
-        Impact(other);
+        Impact(other, GetComponent<Collider2D>().ClosestPoint(other.transform.position));
         objectsAlreadyHit.Add(other);
 
         if(destroyOnAllImpact)
@@ -202,10 +203,15 @@ public class ColorSpell : MonoBehaviour
             if(attackAgainTimer > 0) attackAgainTimer -= Time.deltaTime;
             else
             {
-
-                foreach (Collider2D obj in objectsAlreadyHit)
+                try{
+                    foreach (Collider2D obj in objectsAlreadyHit)
+                    {
+                        if(obj != null)
+                            Impact(obj, GetComponent<Collider2D>().ClosestPoint(obj.transform.position));
+                    }
+                } catch (InvalidOperationException e)
                 {
-                    Impact(obj);
+                    Debug.LogWarning(e);
                 }
                 attackAgainTimer = resetEnemyTime;
             }
@@ -216,11 +222,11 @@ public class ColorSpell : MonoBehaviour
     /// This is called when the spell should do its effect
     /// </summary>
     /// <param name="other"></param>
-    void Impact(Collider2D other)
+    void Impact(Collider2D other, Vector2 impactPoint)
     {
         foreach (SpellImpact impact in onImpact)
         {
-            impact.Impact(other);
+            impact.Impact(other, impactPoint);
         }
     }
 
