@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "Hold(duration=0.8)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SelectSpell",
+                    "type": "Button",
+                    "id": "f03ff6c1-102c-45ab-9de8-fa1114ec5306",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.3)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -706,6 +715,50 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "DivideColor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7d4eb12-e9ae-4806-9a92-27f82c8cc6db",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard;KeyboardMouse",
+                    "action": "SelectSpell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0924d68-0cc7-465e-8b6a-3e4f68f4686f",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard;KeyboardMouse",
+                    "action": "SelectSpell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "78b2e920-8969-4638-b3a3-e53893d71878",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PlayStation;XboxController",
+                    "action": "SelectSpell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db932f35-a7b6-4ab6-b08c-fa7893bb0d9e",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PlayStation;XboxController",
+                    "action": "SelectSpell",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

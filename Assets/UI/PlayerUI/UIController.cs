@@ -31,12 +31,14 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject pauseMenuContainer;
     [SerializeField] GameObject mapContainer;
     [SerializeField] GameObject inventoryContainer;
+    [SerializeField] GameObject spellSelector;
 
     //Bools for tracking which menu is open.
     private bool anyMenuOpen = false;
     private bool pauseMenuOpen = false;
     private bool mapOpen = false;
     private bool inventoryOpen = false;
+    private bool selectorOpen = false;
 
     //When UIController is loaded, sends out action.
     public UnityAction UILoaded;
@@ -47,6 +49,7 @@ public class UIController : MonoBehaviour
     [SerializeField] InputActionReference openMap;
     [SerializeField] InputActionReference openInventory;
     [SerializeField] InputActionReference closeTips;
+    [SerializeField] InputActionReference selectSpell;
 
     public UnityAction<Sprite, String> inspired;
 
@@ -64,6 +67,8 @@ public class UIController : MonoBehaviour
         openMap.action.performed += OpenMap;
         openInventory.action.performed += OpenInventory;
         closeTips.action.performed += CloseTips;
+        selectSpell.action.performed += OpenSpellSelector;
+        selectSpell.action.canceled += CloseSpellSelector;
         lightbox.SetActive(false);
         pauseMenuContainer.SetActive(false);
         mapContainer.SetActive(false);
@@ -79,6 +84,8 @@ public class UIController : MonoBehaviour
         openMap.action.performed -= OpenMap;
         openInventory.action.performed -= OpenInventory;
         closeTips.action.performed -= CloseTips;
+        selectSpell.action.performed -= OpenSpellSelector;
+        selectSpell.action.canceled -= CloseSpellSelector;
     }
 
 
@@ -158,6 +165,41 @@ public class UIController : MonoBehaviour
         inventoryContainer.SetActive(inventoryOpen);
         lightbox.SetActive(inventoryOpen);
         playerMovement.movementRoot.SetTotalRoot("menuOpen", inventoryOpen);
+        pauseMenuOpen = false;
+        pauseMenuContainer.SetActive(pauseMenuOpen);
+        mapOpen = false;
+        mapContainer.SetActive(mapOpen);
+    }
+
+    private void OpenSpellSelector(InputAction.CallbackContext ctx) { OpenSpellSelector(); }
+
+    private void OpenSpellSelector()
+    {
+        if (selectorOpen) return;
+        selectorOpen = true;
+        if (selectorOpen) GameManager.instance.Pause();
+
+        anyMenuOpen = selectorOpen;
+        spellSelector.SetActive(selectorOpen);
+        lightbox.SetActive(selectorOpen);
+        playerMovement.movementRoot.SetTotalRoot("menuOpen", selectorOpen);
+        pauseMenuOpen = false;
+        pauseMenuContainer.SetActive(pauseMenuOpen);
+        mapOpen = false;
+        mapContainer.SetActive(mapOpen);
+    }
+
+    private void CloseSpellSelector(InputAction.CallbackContext ctx) { CloseSpellSelector(); }
+    private void CloseSpellSelector()
+    {
+        if (!selectorOpen) return;
+        selectorOpen = false;
+        GameManager.instance.Resume();
+
+        anyMenuOpen = selectorOpen;
+        spellSelector.SetActive(selectorOpen);
+        lightbox.SetActive(selectorOpen);
+        playerMovement.movementRoot.SetTotalRoot("menuOpen", selectorOpen);
         pauseMenuOpen = false;
         pauseMenuContainer.SetActive(pauseMenuOpen);
         mapOpen = false;

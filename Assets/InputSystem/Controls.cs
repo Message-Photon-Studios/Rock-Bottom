@@ -134,6 +134,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Hold(duration=0.8)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectSpell"",
+                    ""type"": ""Button"",
+                    ""id"": ""f03ff6c1-102c-45ab-9de8-fa1114ec5306"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.3)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -730,6 +739,50 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""DivideColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7d4eb12-e9ae-4806-9a92-27f82c8cc6db"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""SelectSpell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0924d68-0cc7-465e-8b6a-3e4f68f4686f"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""SelectSpell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78b2e920-8969-4638-b3a3-e53893d71878"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""SelectSpell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db932f35-a7b6-4ab6-b08c-fa7893bb0d9e"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation;XboxController"",
+                    ""action"": ""SelectSpell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -800,6 +853,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_SpecialAttack = m_Player.FindAction("SpecialAttack", throwIfNotFound: true);
         m_Player_VerticalLook = m_Player.FindAction("VerticalLook", throwIfNotFound: true);
         m_Player_DivideColor = m_Player.FindAction("DivideColor", throwIfNotFound: true);
+        m_Player_SelectSpell = m_Player.FindAction("SelectSpell", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -871,6 +925,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SpecialAttack;
     private readonly InputAction m_Player_VerticalLook;
     private readonly InputAction m_Player_DivideColor;
+    private readonly InputAction m_Player_SelectSpell;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -887,6 +942,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @SpecialAttack => m_Wrapper.m_Player_SpecialAttack;
         public InputAction @VerticalLook => m_Wrapper.m_Player_VerticalLook;
         public InputAction @DivideColor => m_Wrapper.m_Player_DivideColor;
+        public InputAction @SelectSpell => m_Wrapper.m_Player_SelectSpell;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -932,6 +988,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @DivideColor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor;
                 @DivideColor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor;
                 @DivideColor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor;
+                @SelectSpell.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectSpell;
+                @SelectSpell.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectSpell;
+                @SelectSpell.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSelectSpell;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -972,6 +1031,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @DivideColor.started += instance.OnDivideColor;
                 @DivideColor.performed += instance.OnDivideColor;
                 @DivideColor.canceled += instance.OnDivideColor;
+                @SelectSpell.started += instance.OnSelectSpell;
+                @SelectSpell.performed += instance.OnSelectSpell;
+                @SelectSpell.canceled += instance.OnSelectSpell;
             }
         }
     }
@@ -1026,5 +1088,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnSpecialAttack(InputAction.CallbackContext context);
         void OnVerticalLook(InputAction.CallbackContext context);
         void OnDivideColor(InputAction.CallbackContext context);
+        void OnSelectSpell(InputAction.CallbackContext context);
     }
 }
