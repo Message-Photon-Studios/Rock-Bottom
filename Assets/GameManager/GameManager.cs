@@ -84,8 +84,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
 
-        
-
         currentLevelManager = levelManager;
         hunterTimer = 0f;
         hunters = 0;
@@ -93,8 +91,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
             clockTime = addClockTime + ((clockTime < 0)?0:clockTime);
         else
             clockTime = maxClockTime;
-
-
 
         if(levelManager.saveProgressionOnStart)
         {
@@ -111,6 +107,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         StartCoroutine(uiController.FadeOutCoroutine(false, GoToMainMenuAsync));
         Resume();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         DataPersistenceManager.instance.SaveGame();
         Debug.Log("Loading to main menu...");
     }
@@ -317,6 +315,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         if(disablePausing) return;
         Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Debug.Log("Game is paused...");
 
     }
@@ -326,9 +326,11 @@ public class GameManager : MonoBehaviour, IDataPersistence
     /// </summary>
     public void Resume()
     {
+        if (Time.timeScale == 1f) return; 
         Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         Debug.Log("Game is resumed...");
-
     }
     #endregion
 
