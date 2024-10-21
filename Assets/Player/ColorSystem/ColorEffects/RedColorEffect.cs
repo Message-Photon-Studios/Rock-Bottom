@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -11,7 +12,7 @@ public class RedColorEffect : ColorEffect
     [SerializeField] float force;
     [SerializeField] GameObject orb;
     [SerializeField] float healingPercent;
-    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
+    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         PlayerStats player = playerObj.GetComponent<PlayerStats>();
@@ -23,7 +24,10 @@ public class RedColorEffect : ColorEffect
         instantiatedParticles.transform.parent = enemyObj.transform;
 
         if (!enemy.IsKnockbackImune())
-            enemy?.GetComponent<Rigidbody2D>()?.AddForce((player.transform.position- enemy.transform.position).normalized * force);
+        {
+            Vector3 pullPoint = (forcePerspectivePlayer)?playerObj.transform.position : new Vector3(impactPoint.x, impactPoint.y, enemy.transform.position.z);
+            enemy?.GetComponent<Rigidbody2D>()?.AddForce((pullPoint - enemy.transform.position).normalized * force);
+        }
         float enemyHP = enemy.GetHealth() - Mathf.RoundToInt(damage * power);
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power));
         //player.HealPlayer(Mathf.RoundToInt(healing*power));

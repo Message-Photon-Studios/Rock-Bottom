@@ -59,7 +59,7 @@ public class GameColor : ScriptableObject
         
         return false;
     }
-    public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
+    public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
 
@@ -93,7 +93,7 @@ public class GameColor : ScriptableObject
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         power = power / powerDivide;
         if(setPowerZero) power = 0;
-        colorEffect.Apply(enemyObj, impactPoint, playerObj, power);
+        colorEffect.Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer);
 
         
 

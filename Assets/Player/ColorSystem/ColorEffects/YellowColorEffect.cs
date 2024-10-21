@@ -9,7 +9,7 @@ public class YellowColorEffect : ColorEffect
     [SerializeField] float force;
     [SerializeField] int maxBounces;
     [SerializeField] GameObject lightning;
-    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
+    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer)
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Enemy");
         List<GameObject> affected = new List<GameObject>();

@@ -60,7 +60,8 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void DefaultAttackAnimation ()
     {
-        if(!playerMovement.IsGrounded() && defaultAirHit) return;
+        if (Time.timeScale == 0) return;
+        if (!playerMovement.IsGrounded() && defaultAirHit) return;
         if(attacking) return;
         
         if(playerMovement.IsGrappeling())
@@ -138,6 +139,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpecialAttackAnimation()
     {
+        if (Time.timeScale == 0) return;
         if(!playerMovement.IsGrounded() && spellAirHit) return;
         currentSpell= colorInventory.GetActiveColorSpell().gameObject;
         if(currentSpell == null) return;

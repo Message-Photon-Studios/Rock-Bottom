@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,6 +44,12 @@ public class ColorSpell : MonoBehaviour
     [SerializeField] protected bool triggerOnlyOnce;
 
     /// <summary>
+    /// How often enemy already triggered will be reset
+    /// </summary>
+    [SerializeField] protected float attackAgainTimer = -1;
+    protected float resetEnemyTime;
+
+    /// <summary>
     /// If true the spell checks if it has LOS to the player on spawn and destroys itself if not
     /// </summary>
     [SerializeField] protected bool requirePlayerLOSonSpawn;
@@ -74,7 +81,7 @@ public class ColorSpell : MonoBehaviour
 
     public int lookDir {get; protected set;}
 
-    private HashSet<GameObject> objectsAlreadyHit = new HashSet<GameObject>();
+    private HashSet<Collider2D> objectsAlreadyHit = new HashSet<Collider2D>();
 
     /// <summary>
     /// Needs to be called after the spell is instantiated
@@ -89,6 +96,7 @@ public class ColorSpell : MonoBehaviour
         this.power = power+powerScale;
         this.player = player;
         this.lookDir = lookDir;
+        resetEnemyTime = attackAgainTimer;
 
         foreach(Collider2D col in GetComponents<Collider2D>())
         {
@@ -138,14 +146,14 @@ public class ColorSpell : MonoBehaviour
             impact.Init(this);
         }
 
-        objectsAlreadyHit = new HashSet<GameObject>();
+        objectsAlreadyHit = new HashSet<Collider2D>();
 
         if(requirePlayerLOSonSpawn)
         {
             RaycastHit2D playerLOS = Physics2D.Raycast(transform.position, player.transform.position-transform.position, Vector2.Distance(transform.position, player.transform.position), GameManager.instance.maskLibrary.onlyGround);
             if(playerLOS.collider != null) 
             {
-                if(impactOnNonEnemies) Impact(playerLOS.collider);
+                if(impactOnNonEnemies) Impact(playerLOS.collider, transform.position);
                 Destroy(gameObject);
                 return;
             }
@@ -163,10 +171,10 @@ public class ColorSpell : MonoBehaviour
         if(other.CompareTag("Item") || other.CompareTag("Player")) return;
         if(!impactOnEnemies && other.CompareTag("Enemy")) return;
         if(!impactOnNonEnemies && !other.CompareTag("Enemy")) return;
-        if(objectsAlreadyHit.Contains(other.gameObject)) return;
+        if(objectsAlreadyHit.Contains(other)) return;
         hasTriggered = true;
-        Impact(other);
-        objectsAlreadyHit.Add(other.gameObject);
+        Impact(other, GetComponent<Collider2D>().ClosestPoint(other.transform.position));
+        objectsAlreadyHit.Add(other);
 
         if(destroyOnAllImpact)
         {
@@ -181,15 +189,44 @@ public class ColorSpell : MonoBehaviour
         }
     }
 
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if(triggerOnlyOnce) return;
+        if(!objectsAlreadyHit.Contains(other)) return;
+
+        objectsAlreadyHit.Remove(other);
+    }
+
+    private void Update() {
+        if(!triggerOnlyOnce && resetEnemyTime > 0f && objectsAlreadyHit.Count > 0)
+        {
+            if(attackAgainTimer > 0) attackAgainTimer -= Time.deltaTime;
+            else
+            {
+                try{
+                    foreach (Collider2D obj in objectsAlreadyHit)
+                    {
+                        if(obj != null)
+                            Impact(obj, GetComponent<Collider2D>().ClosestPoint(obj.transform.position));
+                    }
+                } catch (InvalidOperationException e)
+                {
+                    Debug.LogWarning(e);
+                }
+                attackAgainTimer = resetEnemyTime;
+            }
+        }
+    }
+
     /// <summary>
     /// This is called when the spell should do its effect
     /// </summary>
     /// <param name="other"></param>
-    void Impact(Collider2D other)
+    void Impact(Collider2D other, Vector2 impactPoint)
     {
         foreach (SpellImpact impact in onImpact)
         {
-            impact.Impact(other);
+            impact.Impact(other, impactPoint);
         }
     }
 

@@ -21,16 +21,16 @@ public class ColorSpellGroundedDec : SpellImpact
         if (fail != null) fail.Init(spell);
     }
 
-    public override void Impact(Collider2D other)
+    public override void Impact(Collider2D other, Vector2 impactPoint)
     {
         bool test = Physics2D.Raycast((Vector2) transform.position + Vector2.right*radius, Vector2.down, 1.5f, GameManager.instance.maskLibrary.onlyGround) || 
             Physics2D.Raycast((Vector2)transform.position - Vector2.right * radius, Vector2.down, 1.5f, GameManager.instance.maskLibrary.onlyGround);
         if (test)
         {
-            success.Impact(other);
+            success.Impact(other, impactPoint);
         } else if (fail != null)
         {
-            fail.Impact(other);
+            fail.Impact(other, impactPoint);
         }
     }
 }
