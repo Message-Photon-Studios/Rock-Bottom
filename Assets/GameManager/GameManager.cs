@@ -190,6 +190,12 @@ public class GameManager : MonoBehaviour, IDataPersistence
         hunters++;
     }
 
+    public void RespawnHunter()
+    {
+        GameObject hunter = GameObject.Instantiate(hunterPrefab, player.transform.position + (new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0).normalized * hunterSpawnDist), hunterPrefab.transform.rotation, GameObject.Find("EnemyHolder").transform);
+        Debug.Log("Hunter ReSpawned");
+    }
+
     /// <summary>
     /// Returns the clock time as a formated string in the format "min:sec"
     /// </summary>
