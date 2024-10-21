@@ -48,7 +48,7 @@ public class ColorSpellSpawn : SpellImpact
         }
     }
     
-    public override void Impact(Collider2D other)
+    public override void Impact(Collider2D other, Vector2 impactPoint)
     {
 
     }

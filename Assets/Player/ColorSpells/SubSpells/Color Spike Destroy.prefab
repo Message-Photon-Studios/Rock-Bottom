@@ -206,6 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0900cb19f680a734ba6a9d1fcb2ffcdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forcePerspectivePlayer: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -297,11 +298,13 @@ MonoBehaviour:
     100%'
   spellCost: 50
   powerScale: -0.4
+  coolDown: 1
   destroyOnAllImpact: 0
   destroyOnEnemyHit: 0
   impactOnEnemies: 0
   impactOnNonEnemies: 0
   triggerOnlyOnce: 0
+  attackAgainTimer: -1
   requirePlayerLOSonSpawn: 0
   lifeTime: 0.3
   animationTrigger: handSpell

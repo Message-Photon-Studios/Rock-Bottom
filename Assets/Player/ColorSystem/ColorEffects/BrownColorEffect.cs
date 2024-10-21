@@ -8,7 +8,7 @@ using UnityEngine;
 public class BrownColorEffect : ColorEffect
 {
     [SerializeField] int uncoloredDamage;
-    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
+    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0)

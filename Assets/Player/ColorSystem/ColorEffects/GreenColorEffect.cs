@@ -12,7 +12,7 @@ public class GreenColorEffect : ColorEffect
     [SerializeField] float damageReduction;
     [SerializeField] float time;
     [SerializeField] GameObject poisonOrb;
-    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
+    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         

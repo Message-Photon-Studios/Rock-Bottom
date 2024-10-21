@@ -6,10 +6,15 @@ using UnityEngine;
 /// </summary>
 public class ColorSpellImpact : SpellImpact
 {
+    /// <summary>
+    /// Setting this variable to true will change the forces of some spells to refer to the player instead of the spells impact point
+    /// </summary>
+    [SerializeField] protected bool forcePerspectivePlayer;
+
 
     [SerializeField] public ParticleSystem onImpactParticles;
 
-    public override void Impact(Collider2D other)
+    public override void Impact(Collider2D other, Vector2 impactPoint)
     {
         if(other.CompareTag("Enemy"))
         {
@@ -33,12 +38,12 @@ public class ColorSpellImpact : SpellImpact
 
             if (enemy != null)
             {
-                spell.GetColor().ApplyColorEffect(other.gameObject, transform.position, spell.GetPlayerObj(), spell.GetPower());
+                spell.GetColor().ApplyColorEffect(other.gameObject, transform.position, spell.GetPlayerObj(), spell.GetPower(), forcePerspectivePlayer);
                 enemy.enemySounds?.PlaySpellHit();
             }
         }
 
-        var instantiatedParticles = GameObject.Instantiate(onImpactParticles, transform.position, transform.rotation);
+        var instantiatedParticles = GameObject.Instantiate(onImpactParticles, impactPoint, transform.rotation);
         // Change the particle color to the color of the spell
         var main = instantiatedParticles.main;
         main.startColor = spell.GetColor().plainColor;

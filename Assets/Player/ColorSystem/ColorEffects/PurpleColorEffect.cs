@@ -10,7 +10,7 @@ public class PurpleColorEffect : ColorEffect
 {
     [SerializeField] float sleepTime;
     [SerializeField] float sleepDamageBonus;
-    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power)
+    public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         if(enemy != null) enemy.SleepEnemy(sleepTime * EffectFunction(power), sleepDamageBonus * power, particles);
