@@ -52,6 +52,11 @@ public class BossHandHunter : Enemy
         return root;
     }
 
+    private void OnDestroy()
+    {
+        GameManager.instance.RespawnHunter();
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {

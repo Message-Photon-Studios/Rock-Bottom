@@ -54,6 +54,8 @@ public class ColorSlotController : MonoBehaviour
 
     [SerializeField] public Sprite[] FullBottleEffectSprites;
 
+    private List<Slider> spellsOnCoolDown = new List<Slider>();
+
     # region Setup
     /// <summary>
     /// When enabling the Player In game UI, set up the script.
@@ -68,6 +70,7 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onColorUpdated += ColorUpdate;
         colorInventory.onSlotChanged += ActiveColorChanged;
         colorInventory.onColorSpellChanged += BottleChanged;
+        colorInventory.onCoolDownSet += StartCoolDownSlider;
         uiController.UILoaded += UpdateAllSprites;
         uiController.ColorSlotAmountChanged += UpdateAllSprites;
 
@@ -111,6 +114,7 @@ public class ColorSlotController : MonoBehaviour
         colorInventory.onColorSpellChanged -= BottleChanged;
         uiController.UILoaded -= UpdateAllSprites;
         uiController.ColorSlotAmountChanged -= UpdateAllSprites;
+        colorInventory.onCoolDownSet -= StartCoolDownSlider;
     }
     #endregion
     #region SlotMovement
@@ -279,6 +283,8 @@ public class ColorSlotController : MonoBehaviour
             capMask.sprite = bottleSprite.smallSpriteCapMask;
         }
 
+        slotList[index].GetComponentInChildren<Slider>().GetComponentInChildren<Image>().sprite = bottle.sprite;
+
         foreach (Image image in slotList[index].GetComponentsInChildren<Image>())
         {
             if(pos == 0)
@@ -305,6 +311,21 @@ public class ColorSlotController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Add the CoolDown indicator to a list when a spell is used. 
+    /// </summary>
+    /// <param name="time"></param>
+    private void StartCoolDownSlider(float time)
+    {
+        if (colorInventory.activeSlot >= slotList.Count) return;
+        if (slotList[colorInventory.activeSlot] == null) return; 
+        Slider slide = slotList[colorInventory.activeSlot].GetComponentInChildren<Slider>();
+        if (slide == null) return;    
+        if (spellsOnCoolDown.Contains(slide)) return;
+        slide.maxValue = time;
+        slide.value = time;
+        spellsOnCoolDown.Add(slide);
+    }
     private void Update()
     {
         // Get sinewave value based on time
@@ -330,6 +351,22 @@ public class ColorSlotController : MonoBehaviour
                 cap.material.SetFloat("_BloomPower", sinewave);
             }
         }
+
+        //Updates cooldown display
+        if (spellsOnCoolDown.Count > 0)
+        {
+            foreach (Slider slide in spellsOnCoolDown.ToList())
+            {
+                slide.value -= Time.deltaTime;
+                if (slide.value <= 0)
+                {
+                    slide.value = 0;
+                    spellsOnCoolDown.Remove(slide);
+                }
+            }
+        }
+        
+
     }
 
     #endregion

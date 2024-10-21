@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     private PlayerStats player;
     private UIController uiController;
     private LevelManager currentLevelManager;
+    public UnityAction onLevelLoaded;
 
     public TipsManager tipsManager;
 
@@ -83,8 +84,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
 
-        
-
         currentLevelManager = levelManager;
         hunterTimer = 0f;
         hunters = 0;
@@ -93,8 +92,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
         else
             clockTime = maxClockTime;
 
-
-
         if(levelManager.saveProgressionOnStart)
         {
             gameStartScene = levelManager.onDeathLevel;
@@ -102,6 +99,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         }
         
         allowsTips = levelManager.allowTips;
+        onLevelLoaded?.Invoke();
     }
 
     #region MainMenu and Quit
@@ -109,6 +107,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         StartCoroutine(uiController.FadeOutCoroutine(false, GoToMainMenuAsync));
         Resume();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         DataPersistenceManager.instance.SaveGame();
         Debug.Log("Loading to main menu...");
     }
@@ -188,6 +188,12 @@ public class GameManager : MonoBehaviour, IDataPersistence
         hunters++;
     }
 
+    public void RespawnHunter()
+    {
+        GameObject hunter = GameObject.Instantiate(hunterPrefab, player.transform.position + (new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0).normalized * hunterSpawnDist), hunterPrefab.transform.rotation, GameObject.Find("EnemyHolder").transform);
+        Debug.Log("Hunter ReSpawned");
+    }
+
     /// <summary>
     /// Returns the clock time as a formated string in the format "min:sec"
     /// </summary>
@@ -214,6 +220,16 @@ public class GameManager : MonoBehaviour, IDataPersistence
         } 
 
         return (retString, retSize, retColor);
+    }
+
+    public (int, int) getTime()
+    {
+        if(clockTime > 0)
+        {
+            return ((int)clockTime / 60, (int)clockTime % 60);
+        }
+
+        return (0, 0);
     }
 
     #endregion
@@ -299,6 +315,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         if(disablePausing) return;
         Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Debug.Log("Game is paused...");
 
     }
@@ -308,9 +326,11 @@ public class GameManager : MonoBehaviour, IDataPersistence
     /// </summary>
     public void Resume()
     {
+        if (Time.timeScale == 1f) return; 
         Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         Debug.Log("Game is resumed...");
-
     }
     #endregion
 
