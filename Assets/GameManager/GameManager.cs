@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     private PlayerStats player;
     private UIController uiController;
     private LevelManager currentLevelManager;
+    public UnityAction onLevelLoaded;
 
     public TipsManager tipsManager;
 
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         }
         
         allowsTips = levelManager.allowTips;
+        onLevelLoaded?.Invoke();
     }
 
     #region MainMenu and Quit
@@ -186,6 +188,12 @@ public class GameManager : MonoBehaviour, IDataPersistence
         hunters++;
     }
 
+    public void RespawnHunter()
+    {
+        GameObject hunter = GameObject.Instantiate(hunterPrefab, player.transform.position + (new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0).normalized * hunterSpawnDist), hunterPrefab.transform.rotation, GameObject.Find("EnemyHolder").transform);
+        Debug.Log("Hunter ReSpawned");
+    }
+
     /// <summary>
     /// Returns the clock time as a formated string in the format "min:sec"
     /// </summary>
@@ -212,6 +220,16 @@ public class GameManager : MonoBehaviour, IDataPersistence
         } 
 
         return (retString, retSize, retColor);
+    }
+
+    public (int, int) getTime()
+    {
+        if(clockTime > 0)
+        {
+            return ((int)clockTime / 60, (int)clockTime % 60);
+        }
+
+        return (0, 0);
     }
 
     #endregion
