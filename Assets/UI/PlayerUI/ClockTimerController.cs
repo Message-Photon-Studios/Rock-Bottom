@@ -66,7 +66,7 @@ public class ClockTimerController : MonoBehaviour
             }
             if (time.min <= 1) animator.SetBool("WakeUp", true);
             if (time.min == 0) animator.SetBool("FasterLook", true);
-            if (time.min == 0 && time.sec < 30) {
+            if (time.min == 0 && time.sec <= 20) {
                 animator.SetBool("Glitch", true);
             }
             if (time.min <= 0 && time.sec <= 0)
