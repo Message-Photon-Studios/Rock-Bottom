@@ -177,11 +177,11 @@ public class UIController : MonoBehaviour
     {
         if (selectorOpen) return;
         selectorOpen = true;
-        if (selectorOpen) GameManager.instance.Pause();
+        if (selectorOpen) GameManager.instance.SlowDownGame(0.5f);
 
         anyMenuOpen = selectorOpen;
         spellSelector.SetActive(selectorOpen);
-        lightbox.SetActive(selectorOpen);
+        //lightbox.SetActive(selectorOpen);
         playerMovement.movementRoot.SetTotalRoot("menuOpen", selectorOpen);
         pauseMenuOpen = false;
         pauseMenuContainer.SetActive(pauseMenuOpen);
@@ -198,7 +198,7 @@ public class UIController : MonoBehaviour
 
         anyMenuOpen = selectorOpen;
         spellSelector.SetActive(selectorOpen);
-        lightbox.SetActive(selectorOpen);
+        //lightbox.SetActive(selectorOpen);
         playerMovement.movementRoot.SetTotalRoot("menuOpen", selectorOpen);
         pauseMenuOpen = false;
         pauseMenuContainer.SetActive(pauseMenuOpen);

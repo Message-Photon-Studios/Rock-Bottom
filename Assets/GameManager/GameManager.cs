@@ -303,6 +303,11 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     }
 
+    public void SlowDownGame(float time)
+    {
+        Time.timeScale = time;
+    }
+
     /// <summary>
     /// Resumes the game by setting timescale to 1.
     /// </summary>
