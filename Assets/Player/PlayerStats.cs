@@ -26,7 +26,7 @@ public class PlayerStats : MonoBehaviour
     public float colorRainbowMaxedPower = 1;
     
     int shield = 0;
-    int shieldDecay = -1;
+    int shieldDecay = 0;
 
     public int chanceThatEnemyDontMix = 0;
 
@@ -193,7 +193,7 @@ public class PlayerStats : MonoBehaviour
     public void AddShield(int addShield)
     {
         shield += addShield;
-        shieldDecay = -1;
+        shieldDecay = 0;
         if(shield > maxShield) shield = maxShield;
         onShieldChanged?.Invoke(shield);
     }
