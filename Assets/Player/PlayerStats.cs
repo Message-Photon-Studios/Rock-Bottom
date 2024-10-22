@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] int health = 100;
     [SerializeField] int maxShield = 50;
-    [SerializeField] int shieldDecayOverSec = 1;
+    [SerializeField] int shieldDecayIncrease = 1;
     [SerializeField] float hitInvincibilityTime;
     [SerializeField] LevelManager levelManager;
     [SerializeField] Animator animator;
@@ -26,6 +26,7 @@ public class PlayerStats : MonoBehaviour
     public float colorRainbowMaxedPower = 1;
     
     int shield = 0;
+    int shieldDecay = 0;
 
     public int chanceThatEnemyDontMix = 0;
 
@@ -79,7 +80,8 @@ public class PlayerStats : MonoBehaviour
 
             if(shield > 0)
             {
-                shield -= shieldDecayOverSec;
+                shield -= shieldDecay;
+                shieldDecay += shieldDecayIncrease;
                 if(shield < 0) shield = 0;
                 onShieldChanged?.Invoke(shield);
             }
@@ -191,6 +193,7 @@ public class PlayerStats : MonoBehaviour
     public void AddShield(int addShield)
     {
         shield += addShield;
+        shieldDecay = 0;
         if(shield > maxShield) shield = maxShield;
         onShieldChanged?.Invoke(shield);
     }
