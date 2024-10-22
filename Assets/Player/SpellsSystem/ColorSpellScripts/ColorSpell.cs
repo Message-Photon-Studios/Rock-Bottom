@@ -175,6 +175,7 @@ public class ColorSpell : MonoBehaviour
         hasTriggered = true;
         Impact(other, GetComponent<Collider2D>().ClosestPoint(other.transform.position));
         objectsAlreadyHit.Add(other);
+        if(attackAgainTimer < 0.5f) attackAgainTimer += 0.5f;
 
         if(destroyOnAllImpact)
         {
