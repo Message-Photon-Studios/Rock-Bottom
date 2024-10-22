@@ -34,7 +34,7 @@ public class RedColorEffect : ColorEffect
         int healing = 0;
         if (enemyHP >= 0)
         {
-            healing = Mathf.RoundToInt((damage * power)/2);
+            healing = Mathf.RoundToInt(damage * power * healingPercent);
         } else
         {
             healing = Mathf.RoundToInt(((damage * power) + enemyHP) * healingPercent);

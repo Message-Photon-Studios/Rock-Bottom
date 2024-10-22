@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
@@ -33,7 +34,7 @@ public class PlayerHpController : MonoBehaviour
 
         set
         {
-            text.text = $"{(int)Math.Max(Math.Round(value / healthMultiplier), 0)}/{(int)maxHealth}";
+            if(text) text.text = $"{(int)Math.Max(Math.Round(value / healthMultiplier), 0)}/{(int)maxHealth}";
             healthSlider.value = value;
         }
     }

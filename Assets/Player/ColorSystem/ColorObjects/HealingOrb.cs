@@ -43,7 +43,7 @@ public class HealingOrb : MonoBehaviour
         if (collision.CompareTag("Player") && healing > 0)
         {
             GetComponent<ParticleSystem>().Stop();
-            player.GetComponent<PlayerStats>().HealPlayer(healing);
+            player.GetComponent<PlayerStats>().AddShield(healing);
             healing = 0;
             Destroy(transform.GetChild(0).gameObject);
             Destroy(gameObject,0.5f);
