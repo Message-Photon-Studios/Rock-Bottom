@@ -15,10 +15,10 @@ public class PoisonOrb : MonoBehaviour
     float poisonDamageReduction;
     GameObject poisonOrbPrefab;
     Transform target;
-    float deathTime = 1f;
+    float deathTime = 2f;
 
     bool dead = false;
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if(other != null && other.CompareTag("Enemy"))
         {
@@ -32,17 +32,6 @@ public class PoisonOrb : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D other)
-    {
-        if(other.collider.CompareTag("Enemy"))
-        {
-            EnemyStats stats = other.collider.GetComponent<EnemyStats>();
-            if(stats)
-            {
-
-            }
-        }
-    }
     private void FixedUpdate()
     {
         if(dead) return;

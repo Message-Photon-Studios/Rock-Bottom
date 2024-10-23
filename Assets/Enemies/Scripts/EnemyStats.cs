@@ -311,8 +311,12 @@ public class EnemyStats : MonoBehaviour
         int drainAmount = 0;
         if(color != null && color.name.Equals("Rainbow") && colorOrbPrefab != null && colorAmmount-drainAmount > 0)
         {
-            GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;
-            orb.GetComponent<ColorOrb>().SetTarget(GameObject.FindGameObjectWithTag("Player"), colorAmmount - drainAmount, color);
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if(player != null)
+            {
+                GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;  
+                orb.GetComponent<ColorOrb>().SetTarget(player, colorAmmount - drainAmount, color);
+            }
         }
         onEnemyDeath?.Invoke();
     }
