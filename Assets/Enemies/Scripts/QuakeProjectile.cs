@@ -20,7 +20,7 @@ public class QuakeProjectile : Enemy
         new Selector(new List<Node>{
             new Sequence(new List<Node>{
                 new EnemyCollide(GetComponent<ColliderCheck>(), "Player"),
-                new AnimationBool(animator, "dead", true),
+                new SuicideEnemy(stats),
             }),
 
             new Sequence(new List<Node> {

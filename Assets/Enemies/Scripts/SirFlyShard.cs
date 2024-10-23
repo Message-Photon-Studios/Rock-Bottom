@@ -17,7 +17,7 @@ public class SirFlyShard : Enemy
             new Selector(new List<Node>{
                 new Sequence(new List<Node>{
                     new EnemyCollide(GetComponent<ColliderCheck>(), ""),
-                    new AnimationBool(animator, "dead", true)
+                    new SuicideEnemy(stats)
                 })
             });
         
