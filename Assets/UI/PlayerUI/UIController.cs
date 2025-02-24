@@ -49,6 +49,7 @@ public class UIController : MonoBehaviour
     [SerializeField] InputActionReference openMap;
     [SerializeField] InputActionReference openInventory;
     [SerializeField] InputActionReference closeTips;
+    [SerializeField] GameObject[] hideSlots;
 
     public UnityAction<Sprite, String> inspired;
 
@@ -72,6 +73,9 @@ public class UIController : MonoBehaviour
         inventoryContainer.SetActive(false);
         loadingText.gameObject.SetActive(false);
 
+        if(hideSlots.Length>0)
+        foreach(GameObject slot in hideSlots) slot.SetActive(false);
+
         GameManager.instance.SetUiController(this);
     }
 
@@ -81,6 +85,11 @@ public class UIController : MonoBehaviour
         openMap.action.performed -= OpenMap;
         openInventory.action.performed -= OpenInventory;
         closeTips.action.performed -= CloseTips;
+    }
+
+    public void UnlockColorSlots()
+    {
+        foreach(GameObject slot in hideSlots) slot.SetActive(true);
     }
 
 

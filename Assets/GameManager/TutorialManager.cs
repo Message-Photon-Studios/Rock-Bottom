@@ -13,6 +13,8 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] int fillPlayerBottle;
     [SerializeField] GameColor fillColor;
 
+    [SerializeField] bool unlockBottleRotation;
+
     void Start()
     {
         for (int i = 0; i < dummys.Length; i++)
@@ -25,6 +27,12 @@ public class TutorialManager : MonoBehaviour
         if(fillPlayerBottle > 0)
         {
             PlayerLevelMananger.instance.GetComponent<ColorInventory>().AddColor(fillColor, fillPlayerBottle);
+        }
+
+        if(unlockBottleRotation) 
+        {   
+            PlayerLevelMananger.instance.GetComponent<ColorInventory>().lockSwapping = false;
+            PlayerLevelMananger.instance.playerUi.UnlockColorSlots();
         }
     }
 
