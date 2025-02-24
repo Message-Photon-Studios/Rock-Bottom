@@ -10,6 +10,8 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField] GameObject dummyTemplate;
     [SerializeField] GameObject[] dummys;
+    [SerializeField] int fillPlayerBottle;
+    [SerializeField] GameColor fillColor;
 
     void Start()
     {
@@ -20,6 +22,10 @@ public class TutorialManager : MonoBehaviour
             dummys[i].GetComponent<EnemyStats>().onEnemyDeath += (EnemyStats _) => { StartRespawn(position, index);};
         }
 
+        if(fillPlayerBottle > 0)
+        {
+            PlayerLevelMananger.instance.GetComponent<ColorInventory>().AddColor(fillColor, fillPlayerBottle);
+        }
     }
 
     void OnDisable()
