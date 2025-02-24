@@ -192,7 +192,6 @@ public class PlayerMovement : MonoBehaviour
         wasClimbing = false;
         if (IsGrounded() || coyoteTimer > 0)
         {
-            Debug.Log("Test 1");
             body.AddForce(new Vector2(movement, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
@@ -218,7 +217,6 @@ public class PlayerMovement : MonoBehaviour
         } 
         else if(IsGrappeling() || coyoteTimerWall > 0)
         {
-            Debug.Log("Test 2");
             body.AddForce(Vector2.up * jumpPower);
 
             bool wallRight = Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2 +playerCollider.offset, Vector2.right, 1f, 3);
@@ -231,7 +229,6 @@ public class PlayerMovement : MonoBehaviour
             coyoteTimerWall = 0;
         } else if(!doubleJumpActive)
         {
-            Debug.Log("Test 3");
             body.AddForce(new Vector2(movement*leapPower, 0));
             body.velocity = new Vector2(body.velocity.x, 0);
             body.AddForce(Vector2.up * jumpPower);
