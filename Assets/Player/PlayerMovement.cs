@@ -370,7 +370,7 @@ public class PlayerMovement : MonoBehaviour
                 Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.right, .5f, GameManager.instance.maskLibrary.onlyGround)) ||
                 ((!startHitL || startHitL.normal.y < 0.9f) &&
                 Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.left, .5f, GameManager.instance.maskLibrary.onlyGround)) ||
-                ((wasClimbing) && (
+                ((wasClimbing || isDashing) && (
                     ((!continueHitR || continueHitR.normal.y < 0.9f)  && 
                     Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2+playerCollider.offset, Vector2.right, .7f, GameManager.instance.maskLibrary.onlyGround)) ||
                     ((!continueHitL || continueHitL.normal.y < 0.9f) &&
@@ -420,8 +420,9 @@ public class PlayerMovement : MonoBehaviour
 
         //Check if the dash should be canceled
         if(isDashing)
-        {       
-            if(Time.time-dashTimeout > 0.35f || (Time.time-dashTimeout > 0.001f && transform.position.Equals(lastDashPos)) || Mathf.Abs(transform.position.x - dashStartPosX) > dashDistance || CollidesWithWall(lookDir))
+        {
+            if(IsGrappeling() && !wasClimbing) StopDash();
+            else if(Time.time-dashTimeout > 0.35f || (Time.time-dashTimeout > 0.001f && transform.position.Equals(lastDashPos)) || Mathf.Abs(transform.position.x - dashStartPosX) > dashDistance || CollidesWithWall(lookDir))
             {
                 StopDash();
             }
@@ -712,6 +713,7 @@ public class PlayerMovement : MonoBehaviour
     private void StopDash()
     {
         if(!isDashing) return;
+        if(IsGrappeling()) wasClimbing = true;
         Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerFeetLayer, GameManager.instance.maskLibrary.platformLayer, false);
         body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         movementRoot.SetRoot("dash", false);
