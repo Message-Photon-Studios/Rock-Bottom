@@ -10,6 +10,7 @@ public class SpellPickup : MonoBehaviour
     [SerializeField] int inspirationRequired = 0;
     [SerializeField] float spawnChance = 1f;
     [SerializeField] bool needsPayment;
+    [SerializeField] bool lockBottleAfterSwap = false;
     [SerializeField] ColorSpell colorSpell;
     [SerializeField] GameObject canvas;
     [SerializeField] GameObject costContainer;
@@ -75,6 +76,7 @@ public class SpellPickup : MonoBehaviour
         if (inventory == null) inventory = PlayerLevelMananger.instance.GetComponent<ColorInventory>();
         if(other.CompareTag("Player"))
         {
+            if(pickedup && lockBottleAfterSwap) return;
             if(inspirationRequired > GameManager.instance.GetInspiration())
             {
                 //TODO Add text about it being locked or something
