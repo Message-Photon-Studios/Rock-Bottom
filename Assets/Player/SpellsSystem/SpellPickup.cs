@@ -142,6 +142,12 @@ public class SpellPickup : MonoBehaviour
         body.velocity = new Vector2(0,0);
         GetComponent<Rigidbody2D>().AddForce(new Vector2(player.GetComponent<PlayerMovement>().lookDir * 200, 500));
         body.gravityScale = 2;
+        if(lockBottleAfterSwap) 
+        {
+            canvas.SetActive(false);
+            costContainer.gameObject.SetActive(false);
+            inventory.DisablePickUp(this);
+        }
     }
 
     /// <summary>
