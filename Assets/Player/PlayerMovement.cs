@@ -350,8 +350,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool HitCeling ()
     {
-        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround()) ||
-                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround());
+        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2-Vector3.right*0.05f, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround()) ||
+                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2+Vector3.right*0.05f, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround());
     }
 
     public bool IsGrappeling()
@@ -587,7 +587,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if(IsGrappeling() && !StairCollision())
+        if(IsGrappeling() && !stairLeap)
         {   
             playerFeet.SetActive(false);
             dashedDone = false;
