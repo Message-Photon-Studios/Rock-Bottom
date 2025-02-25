@@ -21,7 +21,7 @@ public class TutorialManager : MonoBehaviour
         {
             int index = i;
             Vector3 position = dummys[i].transform.position;
-            dummys[i].GetComponent<EnemyStats>().onEnemyDeath += (EnemyStats _) => { StartRespawn(position, index);};
+            dummys[i].GetComponent<EnemyStats>().onEnemyDeath += (EnemyStats _) => { StartRespawn(position, _.GetColor(), _.lookDir, index);};
         }
 
         if(fillPlayerBottle > 0)
@@ -43,23 +43,24 @@ public class TutorialManager : MonoBehaviour
             int index = i;
             if(dummys[i] ==  null) continue;
             Vector3 position = dummys[i].transform.position;
-            dummys[i].GetComponent<EnemyStats>().onEnemyDeath -= (EnemyStats _) => { StartRespawn(position, index);};
+            dummys[i].GetComponent<EnemyStats>().onEnemyDeath -= (EnemyStats _) => { StartRespawn(position, _.GetColor(), _.lookDir, index);};
         }
     }
 
-    private void StartRespawn(Vector3 position, int index)
+    private void StartRespawn(Vector3 position, GameColor color, float lookDir, int index)
     {
-        dummys[index].GetComponent<EnemyStats>().onEnemyDeath -= (EnemyStats _) => { StartRespawn(position, index);};
-        StartCoroutine(Respawn(position, index));
+        dummys[index].GetComponent<EnemyStats>().onEnemyDeath -= (EnemyStats _) => { StartRespawn(position, _.GetColor(), _.lookDir,  index);};
+        StartCoroutine(Respawn(position, color, lookDir, index));
     }
 
-    IEnumerator Respawn(Vector3 position, int index)
+    IEnumerator Respawn(Vector3 position, GameColor color, float lookDir,  int index)
     {
         yield return new WaitForSeconds(respawnTime);
         GameObject newDummy = GameObject.Instantiate(dummyTemplate,position, dummyTemplate.transform.rotation) as GameObject;
-        newDummy.GetComponent<EnemyStats>().SetColor(GetComponent<EnemyManager>().GetRandomEnemyColor());
+        newDummy.GetComponent<EnemyStats>().SetColor(color);
+        if(newDummy.GetComponent<EnemyStats>().lookDir != lookDir) newDummy.GetComponent<EnemyStats>().ChangeDirection();
         dummys[index] = newDummy;
-        dummys[index].GetComponent<EnemyStats>().onEnemyDeath += (EnemyStats _) => { StartRespawn(position, index);};
+        dummys[index].GetComponent<EnemyStats>().onEnemyDeath += (EnemyStats _) => { StartRespawn(position, color, lookDir, index);};
         yield return null;
 
     }
