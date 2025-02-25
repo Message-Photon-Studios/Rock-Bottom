@@ -42,12 +42,13 @@ public class TutorialEndpoint : MonoBehaviour
         trailer.SetActive(true);
         player.Play();
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("trailer", true);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLevelMananger>().ForceKillPlayer();
+        //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLevelMananger>().ForceKillPlayer();
     }
         
 
     void ExitLevel(VideoPlayer vp)
     {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("trailer", false);
         LevelManager.instance.EndLevel("");
     }
 

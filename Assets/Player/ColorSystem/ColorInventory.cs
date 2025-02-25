@@ -34,6 +34,7 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] float minCD = 0.3f;
     [SerializeField] int maxStoredSpells = 5;
     [SerializeField] float routedSheildCost = 0.5f;
+    [SerializeField] public bool lockSwapping = false;
     private Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
     public Dictionary<string, int> spellsSpawned = new Dictionary<string, int>();
     Dictionary<string, int> spellTracker = new Dictionary<string, int>();
@@ -158,6 +159,7 @@ public class ColorInventory : MonoBehaviour
     public void RotateActive(int dir)
     {
         if (!CanSwap) return;
+        if(lockSwapping) return;
         activeSlot = (colorSlots.Count+activeSlot+dir)%colorSlots.Count;
         onSlotChanged?.Invoke(dir);
         if (autoRotate) GetComponent<PlayerCombatSystem>().SpecialAttackAnimation();

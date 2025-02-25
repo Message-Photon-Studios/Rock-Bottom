@@ -192,7 +192,6 @@ public class PlayerMovement : MonoBehaviour
         wasClimbing = false;
         if (IsGrounded() || coyoteTimer > 0)
         {
-            Debug.Log("Test 1");
             body.AddForce(new Vector2(movement, 0));
             body.AddForce(Vector2.up * jumpPower);
             jump = jumpJetpack;
@@ -218,7 +217,6 @@ public class PlayerMovement : MonoBehaviour
         } 
         else if(IsGrappeling() || coyoteTimerWall > 0)
         {
-            Debug.Log("Test 2");
             body.AddForce(Vector2.up * jumpPower);
 
             bool wallRight = Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2 +playerCollider.offset, Vector2.right, 1f, 3);
@@ -231,7 +229,6 @@ public class PlayerMovement : MonoBehaviour
             coyoteTimerWall = 0;
         } else if(!doubleJumpActive)
         {
-            Debug.Log("Test 3");
             body.AddForce(new Vector2(movement*leapPower, 0));
             body.velocity = new Vector2(body.velocity.x, 0);
             body.AddForce(Vector2.up * jumpPower);
@@ -353,8 +350,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool HitCeling ()
     {
-        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround()) ||
-                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround());
+        return  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2-Vector3.right*0.05f, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround()) ||
+                Physics2D.Raycast(transform.position-Vector3.right* playerCollider.size.x/2+Vector3.right*0.05f, Vector2.up, .6f, GameManager.instance.maskLibrary.onlySolidGround());
     }
 
     public bool IsGrappeling()
@@ -370,7 +367,7 @@ public class PlayerMovement : MonoBehaviour
                 Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.right, .5f, GameManager.instance.maskLibrary.onlyGround)) ||
                 ((!startHitL || startHitL.normal.y < 0.9f) &&
                 Physics2D.Raycast(transform.position+Vector3.down* playerCollider.size.y/4, Vector2.left, .5f, GameManager.instance.maskLibrary.onlyGround)) ||
-                ((wasClimbing) && (
+                ((wasClimbing || isDashing) && (
                     ((!continueHitR || continueHitR.normal.y < 0.9f)  && 
                     Physics2D.Raycast((Vector2)transform.position+Vector2.down* playerCollider.size.y/2+playerCollider.offset, Vector2.right, .7f, GameManager.instance.maskLibrary.onlyGround)) ||
                     ((!continueHitL || continueHitL.normal.y < 0.9f) &&
@@ -420,8 +417,9 @@ public class PlayerMovement : MonoBehaviour
 
         //Check if the dash should be canceled
         if(isDashing)
-        {       
-            if(Time.time-dashTimeout > 0.35f || (Time.time-dashTimeout > 0.001f && transform.position.Equals(lastDashPos)) || Mathf.Abs(transform.position.x - dashStartPosX) > dashDistance || CollidesWithWall(lookDir))
+        {
+            if(IsGrappeling() && !wasClimbing) StopDash();
+            else if(Time.time-dashTimeout > 0.35f || (Time.time-dashTimeout > 0.001f && transform.position.Equals(lastDashPos)) || Mathf.Abs(transform.position.x - dashStartPosX) > dashDistance || CollidesWithWall(lookDir))
             {
                 StopDash();
             }
@@ -589,7 +587,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if(IsGrappeling() && !StairCollision())
+        if(IsGrappeling() && !stairLeap)
         {   
             playerFeet.SetActive(false);
             dashedDone = false;
@@ -712,6 +710,7 @@ public class PlayerMovement : MonoBehaviour
     private void StopDash()
     {
         if(!isDashing) return;
+        if(IsGrappeling()) wasClimbing = true;
         Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerFeetLayer, GameManager.instance.maskLibrary.platformLayer, false);
         body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         movementRoot.SetRoot("dash", false);
