@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using BehaviourTree;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -367,9 +368,21 @@ public class LevelGenerator
 
     private void instantiateRoom((Vector2, CustomRoom) room)
     {
+        
         // Instantiate the room
             var pos = room.Item1 * 2 * ROOMSIZE;
-            var roomObj = Object.Instantiate(room.Item2, pos, Quaternion.identity);
+            
+            CustomRoom pickedRoom = room.Item2;
+
+            //If room variants exist pick a random one
+            if(pickedRoom.roomVariants.Length > 0)
+            {
+                int picker = Random.Range(0, pickedRoom.roomVariants.Length+1); 
+                if(picker < pickedRoom.roomVariants.Length)
+                    pickedRoom = room.Item2.roomVariants[picker];
+            }
+
+            var roomObj = Object.Instantiate(pickedRoom, pos, Quaternion.identity);
             // Get child object called "enemies"
             var enemies = roomObj.transform.Find("Enemies");
             if (enemies != null)
