@@ -718,12 +718,12 @@ public class ColorInventory : MonoBehaviour
 
     public void MixRandom()
     {
-        if (chaosEnabled) AddColor(colorLib.GetRandomPrimaryColor(), 1);
+        MixRandom(colorSlots[activeSlot]);
     }
 
     public void MixRandom(ColorSlot slot)
     {
-        if (chaosEnabled) AddColor(colorLib.GetRandomPrimaryColor(), 1, slot);
+        if (chaosEnabled && slot.charge > 0 && slot.gameColor != null) AddColor(colorLib.GetRandomPrimaryColor(), 1, slot);
     }
 
     public GameColor GetEmptyBottleColor()
