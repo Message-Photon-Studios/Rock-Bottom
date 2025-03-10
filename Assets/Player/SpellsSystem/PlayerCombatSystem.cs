@@ -22,7 +22,6 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] PlayerSounds playerSounds;
     [SerializeField] float bunnyCastTolerance;
-
     public int defaultAttackDamage = 0;
     private float bunnyCast = 0;
 
@@ -174,7 +173,7 @@ public class PlayerCombatSystem : MonoBehaviour
             SetBunnySpell();
             return;
         }
-        if(!colorInventory.CheckActveColor()) return;
+        //if(!colorInventory.CheckActveColor()) return;
         if (!colorInventory.IsSpellReady()) return;
 
 

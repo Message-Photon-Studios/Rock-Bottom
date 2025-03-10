@@ -35,6 +35,8 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] int maxStoredSpells = 5;
     [SerializeField] float routedSheildCost = 0.5f;
     [SerializeField] public bool lockSwapping = false;
+
+    [SerializeField] GameColor emptyBottleColor;
     private Dictionary<GameColor, float> colorBuffs = new Dictionary<GameColor, float>();
     public Dictionary<string, int> spellsSpawned = new Dictionary<string, int>();
     Dictionary<string, int> spellTracker = new Dictionary<string, int>();
@@ -226,11 +228,11 @@ public class ColorInventory : MonoBehaviour
 
     public GameColor CheckActveColor(ColorSlot slot)
     {
-        if (slot.charge > 0)
+        if (slot.charge > 0 && slot.gameColor != null)
         {
             return slot.gameColor;
         }
-        return null;
+        return emptyBottleColor;
     }
 
     public void AddSpellSpawned(string spell, int i)
@@ -957,7 +959,7 @@ public class ColorInventory : MonoBehaviour
         {
             ColorSpell spell = slot.colorSpell;
             if (spell == null) spell = defaultSpell;
-            if (spell.castWhenDamaged && slot.charge > 0)
+            if (spell.castWhenDamaged)
             {
                 if (spellTracker.ContainsKey(spell.spawnKey))
                 {
@@ -979,7 +981,7 @@ public class ColorInventory : MonoBehaviour
         {
             ColorSpell spell = slot.colorSpell;
             if (spell == null) spell = defaultSpell;
-            if (spell.castOnSpellImpact && slot.charge > 0)
+            if (spell.castOnSpellImpact)
             {
                 if (spellTracker.ContainsKey(spell.spawnKey))
                 {
@@ -1007,7 +1009,7 @@ public class ColorInventory : MonoBehaviour
         {
             ColorSpell spell = slot.colorSpell;
             if (spell == null) spell = defaultSpell;
-            if (spell.castOnDash && IsSpellReady(slot) && slot.charge > 0)
+            if (spell.castOnDash && IsSpellReady(slot))
             {
                 if (spellTracker.ContainsKey(spell.spawnKey))
                 {
@@ -1020,6 +1022,7 @@ public class ColorInventory : MonoBehaviour
             }
         }
         EnableRotation();
+
     }
 
     public IEnumerator DashSpecialAttack(string spell, int delay, ColorSlot slot, bool staggerd)
@@ -1034,7 +1037,7 @@ public class ColorInventory : MonoBehaviour
         {
             ColorSpell spell = slot.colorSpell;
             if (spell == null) spell = defaultSpell;
-            if (spell.castOnDoubleJump && IsSpellReady(slot) && slot.charge > 0)
+            if (spell.castOnDoubleJump && IsSpellReady(slot))
             {
                 if (spellTracker.ContainsKey(spell.spawnKey))
                 {
