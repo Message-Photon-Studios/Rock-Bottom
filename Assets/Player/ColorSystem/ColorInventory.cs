@@ -725,6 +725,11 @@ public class ColorInventory : MonoBehaviour
         if (chaosEnabled) AddColor(colorLib.GetRandomPrimaryColor(), 1, slot);
     }
 
+    public GameColor GetEmptyBottleColor()
+    {
+        return emptyBottleColor;
+    }
+
     #endregion
 
     #region Change color spells
