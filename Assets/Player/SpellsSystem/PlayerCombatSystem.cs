@@ -267,12 +267,12 @@ public class PlayerCombatSystem : MonoBehaviour
         if (spellSpawn != null)
         {
             spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
+            colorInventory.UseActiveColor(slot);
             spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom(slot);
         }
-        colorInventory.UseActiveColor(slot);
         cascadeDamage++;
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
 
