@@ -218,13 +218,13 @@ public class PlayerCombatSystem : MonoBehaviour
         {
             ColorSpell spellStats = spell.GetComponent<ColorSpell>();
             spellStats.Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
+            colorInventory.UseActiveColor();
             spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             if (!spellStats.spawnKey.Equals(""))onRecast?.Invoke(spellStats.spawnKey);
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown); //When adding items to change the cooldown change it here! 
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom();
         }
-        colorInventory.UseActiveColor();
         colorInventory.EnableRotation();
         cascadeDamage++;
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
@@ -244,11 +244,11 @@ public class PlayerCombatSystem : MonoBehaviour
         {
 
             spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
+            colorInventory.UseActiveColor(slot);
             spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom(slot);
         }
-        colorInventory.UseActiveColor(slot);
         cascadeDamage++;
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
 
@@ -294,12 +294,12 @@ public class PlayerCombatSystem : MonoBehaviour
             if(Time.time - playerMovement.lastFlipTime < 0.2f) lookDir *=-1;
 
             spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, lookDir, GetExtraDamage());
+            colorInventory.UseActiveColor(slot);
             spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom(slot);
         }
-        colorInventory.UseActiveColor(slot);
         cascadeDamage++;
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
 
