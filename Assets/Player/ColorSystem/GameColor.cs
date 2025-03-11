@@ -34,6 +34,8 @@ public class GameColor : ScriptableObject
 
     //Icon representing the color.
     [SerializeField] public Sprite colorIcon;
+
+    [SerializeField] private bool canColorEnemies = true;
     
     /// <summary>
     /// Returns the mix of this color with the specified color
@@ -89,18 +91,18 @@ public class GameColor : ScriptableObject
 
         if (GameManager.instance.GetComponent<ColorLibrary>().IsComplemtarty(enemy.GetColor(), this)) extraDamage += playerStats.complimentaryDamage;
         
-        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(enemy.GetColor());
+        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix && this.canColorEnemies)?this:MixColor(enemy.GetColor());
 
         bool delay = setToColor.name.Equals("Rainbow");
 
-        if (delay) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
+        if (delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
 
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         power = power / powerDivide;
         if(setPowerZero) power = 0;
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage);
 
-        if (!delay) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
+        if (!delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
         {
@@ -111,7 +113,7 @@ public class GameColor : ScriptableObject
                 if(obj != enemy.gameObject && Vector2.Distance(obj.transform.position, enemy.transform.position) < playerStats.colorNearbyRange)
                 {
                     GameColor setObjColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(objStats.GetColor());
-                    objStats.SetColor(setObjColor, objStats.GetColorAmmount() + 1);
+                    if(setObjColor.canColorEnemies) objStats.SetColor(setObjColor, objStats.GetColorAmmount() + 1);
                 }
             }
         }
@@ -133,7 +135,7 @@ public class GameColor : ScriptableObject
                 if (obj != enemy.gameObject && Vector2.Distance(obj.transform.position, enemy.transform.position) < playerStats.colorNearbyRange)
                 {
                     GameColor setObjColor = (Random.Range(0, 100) < playerStats.chanceThatEnemyDontMix) ? this : MixColor(objStats.GetColor());
-                    objStats.SetColor(setObjColor, objStats.GetColorAmmount() + 1);
+                    if(setObjColor.canColorEnemies) objStats.SetColor(setObjColor, objStats.GetColorAmmount() + 1);
                 }
             }
         }
