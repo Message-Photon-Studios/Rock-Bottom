@@ -56,6 +56,7 @@ public class ColorWell : MonoBehaviour
     {
         PlayerLevelMananger.instance.colorInventory.AddColor(color, colorAmount, activateOnSlot);
         PlayerLevelMananger.instance.playerCombatSystem.DeactivateAddColorMode();
+        mapIcon.SetActive(false);
     }
     
     #region Check playerClose

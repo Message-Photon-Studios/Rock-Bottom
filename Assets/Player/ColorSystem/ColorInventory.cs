@@ -124,11 +124,13 @@ public class ColorInventory : MonoBehaviour
         player.GetComponent<PlayerMovement>().onPlayerDoubleJump += DoubleJumpSpells;
         colorLib = GameManager.instance.GetComponent<ColorLibrary>();
 
+        /*
         foreach (ColorSlot colorSlot in colorSlots)
         {
             if(colorSlot.gameColor == null)
                 colorSlot.SetGameColor(colorLib.GetRandomColor());
         }
+        */
         onColorUpdated?.Invoke();
 
         if(playerLight) playerLight.color = colorSlots[activeSlot].gameColor.lightTintColor;
