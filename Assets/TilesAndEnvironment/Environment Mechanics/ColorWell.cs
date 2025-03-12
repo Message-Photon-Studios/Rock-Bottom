@@ -8,10 +8,12 @@ public class ColorWell : MonoBehaviour
 {
     public GameColor color;
     [SerializeField] int colorAmount;
-
+    
+    public SpawnPointChance wellPrioritization = SpawnPointChance.HighChance;
     [SerializeField] SpriteRenderer orbRenderer;
     [SerializeField] Animator orbAnimator;
     [SerializeField] Light2D orbLight;
+    [SerializeField] GameObject mapIcon;
     private bool playerClose = false;
     public bool wellUsed {get; private set; } = false; 
 
@@ -19,8 +21,16 @@ public class ColorWell : MonoBehaviour
 
     void Start()
     {
+        if(color == null) return;
+        else Setup(color);
+    }
+
+    public void Setup(GameColor color)
+    {
+        this.color = color;
         orbRenderer.material = color.colorMat;
         orbLight.color = color.lightTintColor;
+        mapIcon.SetActive(true);
     }
 
     void OnDisable()
