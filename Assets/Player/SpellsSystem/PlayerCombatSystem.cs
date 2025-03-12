@@ -34,6 +34,8 @@ public class PlayerCombatSystem : MonoBehaviour
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
     Action<InputAction.CallbackContext> specialAttackHandler;
+    bool addColorMode = false;
+    ColorWell colorWell;
 
 
     #region Setup & Update
@@ -80,6 +82,13 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     public void SpecialAttackAnimation()
     {
+        if(addColorMode)
+        {
+            AddColor(colorInventory.colorSlots[colorInventory.activeSlot]);
+            return;
+        }
+
+
         if (Time.timeScale == 0) return;
         if(!playerMovement.IsGrounded() && spellAirHit)
         {
@@ -270,6 +279,41 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         if (bunnyCast > Time.fixedTime) return;
         bunnyCast = Time.fixedTime + bunnyCastTolerance;
+    }
+
+    #endregion
+
+    #region Absorb Color
+
+    public void EnableAbsorbColor(ColorWell colorWell)
+    {
+        this.colorWell = colorWell;
+
+        if(colorWell.GetColorAmount() <= 0) 
+        {
+            DisableAbsorbColor();
+            return;
+        }
+        addColorMode = true;
+    }
+
+    public void DisableAbsorbColor()
+    {
+        this.colorWell = null;
+        addColorMode = false;
+    }
+
+    private void AddColor (ColorSlot slot)
+    {
+        if(!addColorMode) return;
+        if(colorWell == null) return;
+        if(colorWell.GetColorAmount() == 0 || colorWell.color == null) return;
+
+        colorInventory.AddColor(colorWell.color, colorWell.GetColorAmount(), slot);
+        colorWell.UseWell();
+        
+        colorWell = null;
+        addColorMode = false;
     }
 
     #endregion
