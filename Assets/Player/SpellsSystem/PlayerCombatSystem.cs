@@ -22,7 +22,6 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] PlayerSounds playerSounds;
     [SerializeField] float bunnyCastTolerance;
-
     public int defaultAttackDamage = 0;
     private float bunnyCast = 0;
 
@@ -32,6 +31,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private int cascadeDamage = 0;
     public int maxCascadeDamage;
     private int bonusDamage;
+    private int spellSorting = 0;
     private bool attacking;
     private Rigidbody2D body;
 
@@ -56,11 +56,19 @@ public class PlayerCombatSystem : MonoBehaviour
         defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
     }
 
+    private void Start()
+    {
+        GameManager.instance.onLevelLoaded += ResetSpellSortingCounter;
+    }
+
+
+
     private void OnDisable()
     {
         specialAttackAction.action.performed -= specialAttackHandler;
         defaultAttackAction.action.performed -= defaultAttackHandler;
         defaultAttackHitbox.onDefaultHit -= EnemyHitDefault;
+        GameManager.instance.onLevelLoaded -= ResetSpellSortingCounter;
     }
     #endregion
 
@@ -165,7 +173,7 @@ public class PlayerCombatSystem : MonoBehaviour
             SetBunnySpell();
             return;
         }
-        if(!colorInventory.CheckActveColor()) return;
+        //if(!colorInventory.CheckActveColor()) return;
         if (!colorInventory.IsSpellReady()) return;
 
 
@@ -209,13 +217,14 @@ public class PlayerCombatSystem : MonoBehaviour
         if(spell != null)
         {
             ColorSpell spellStats = spell.GetComponent<ColorSpell>();
-            spellStats.Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir, GetExtraDamage());
+            spellStats.Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
+            colorInventory.UseActiveColor();
+            spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             if (!spellStats.spawnKey.Equals(""))onRecast?.Invoke(spellStats.spawnKey);
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown); //When adding items to change the cooldown change it here! 
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom();
         }
-        colorInventory.UseActiveColor();
         colorInventory.EnableRotation();
         cascadeDamage++;
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
@@ -234,11 +243,12 @@ public class PlayerCombatSystem : MonoBehaviour
         if (spellSpawn != null)
         {
 
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir, GetExtraDamage());
+            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
+            colorInventory.UseActiveColor(slot);
+            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom(slot);
         }
-        colorInventory.UseActiveColor(slot);
         cascadeDamage++;
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
 
@@ -256,12 +266,13 @@ public class PlayerCombatSystem : MonoBehaviour
         GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
         if (spellSpawn != null)
         {
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir, GetExtraDamage());
+            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
+            colorInventory.UseActiveColor(slot);
+            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom(slot);
         }
-        colorInventory.UseActiveColor(slot);
         cascadeDamage++;
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
 
@@ -282,12 +293,13 @@ public class PlayerCombatSystem : MonoBehaviour
             int lookDir = playerMovement.lookDir;
             if(Time.time - playerMovement.lastFlipTime < 0.2f) lookDir *=-1;
 
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, lookDir, GetExtraDamage());
+            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, lookDir, GetExtraDamage());
+            colorInventory.UseActiveColor(slot);
+            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom(slot);
         }
-        colorInventory.UseActiveColor(slot);
         cascadeDamage++;
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
 
@@ -338,6 +350,11 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         if (bunnyCast > Time.fixedTime) return;
         bunnyCast = Time.fixedTime + bunnyCastTolerance;
+    }
+
+    private void ResetSpellSortingCounter()
+    {
+        spellSorting = 0;
     }
 
     void Update()

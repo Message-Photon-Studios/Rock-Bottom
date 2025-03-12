@@ -180,8 +180,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "Sommon a flail that is chained to you and becomes more powerful the
-    faster it moves. Casting it again will detatch the flail. \nPower: 100% - 200%"
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:6e8651b1cfc6ebb449fd5f17bc5f3aa5
+    m_TableEntryReference:
+      m_KeyId: 4585164800
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:6e8651b1cfc6ebb449fd5f17bc5f3aa5
+    m_TableEntryReference:
+      m_KeyId: 7026249728
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 1
   coolDown: 3
@@ -216,6 +232,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 9a85fea4a628cf641b2aabea7d059528, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: e4d302883d167c640b3df05640ba678c, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 826eccca9136fe7488bbb3a88edf4b72, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!231 &1597900124364257174
 SpringJoint2D:
   m_ObjectHideFlags: 0

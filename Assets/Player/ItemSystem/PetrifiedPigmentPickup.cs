@@ -6,7 +6,6 @@ public class PetrifiedPigmentPickup : MonoBehaviour
 {
     [SerializeField] string id;
     [SerializeField] Transform image;
-    [SerializeField] float spawnChance = .5f;
     private Coroutine hoverCoroutine;
     void OnValidate()
     {
@@ -19,13 +18,14 @@ public class PetrifiedPigmentPickup : MonoBehaviour
         #endif
     }
 
-    private void Start()
-{
+    void Awake()
+    {
+        ItemSpellManager.instance.AddPetrifiedPigment(this);
+        gameObject.SetActive(false);
+    }
 
-        if(GameManager.instance.IsPetrifiedPigmentPickedUp(id) || Random.Range(0f,1f)<.5f)
-        {
-            Destroy(gameObject);
-        }
+    private void Start()
+    {
         hoverCoroutine = StartCoroutine(hoverAnimation());
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -49,4 +49,6 @@ public class PetrifiedPigmentPickup : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
     }
+
+    public string GetID() { return id; }
 }

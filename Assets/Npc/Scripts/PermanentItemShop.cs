@@ -13,8 +13,8 @@ public class PermanentItemShop : NpcUpgradeShop
     void Start()
     {
         displayImage.sprite = item.sprite;
-        itemDescription.text = item.description;
-        itemName.text = item.name;
+        itemDescription.text = item.GetDesc();
+        itemName.text = item.GetName();
     }
 
     protected override void Shop()

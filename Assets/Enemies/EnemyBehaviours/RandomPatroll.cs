@@ -38,8 +38,6 @@ public class RandomPatroll : Node
             new CheckPlatformEdge(stats, legPos), 
             new Sequence(new List<Node>{
                 new CheckVelocity(body, 0, .1f),
-                new Wait(1f, .2f),
-                new EnemyJump(stats, body, 1000, 500),
             })
         })
     {
@@ -100,7 +98,10 @@ public class RandomPatroll : Node
 
         body.AddForce(new Vector2(((patrollPoint < stats.GetPosition().x)?-1:1)*stats.GetSpeed()*patrollSpeedFactor, 0)*Time.deltaTime);
 
-        children[1].Evaluate();
+        if(children[1].Evaluate() == NodeState.SUCCESS)
+        {
+            body.transform.position += new Vector3(0.01f * stats.lookDir, .01f, 0f);
+        }
         state = NodeState.RUNNING;
         return state;
     }

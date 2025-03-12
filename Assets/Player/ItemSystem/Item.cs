@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using JetBrains.Annotations;
 using System;
+using UnityEngine.Localization;
 
 /// <summary>
 /// This is the base class for an item
@@ -13,7 +14,8 @@ using System;
 public class Item : ScriptableObject
 {
     public Sprite sprite;
-    [TextArea(5,20)] public string description;
+    [SerializeField] public LocalizedString itemName;
+    [SerializeField] public LocalizedString description;
     public int itemCost;
     [SerializeReference] public List<ItemEffect> effects = new List<ItemEffect>(); 
     [SerializeField] public ItemCategory itemCategory;
@@ -65,6 +67,22 @@ public class Item : ScriptableObject
             if (count >= maxSpawn) ret = false;
         }
         return ret;
+    }
+
+    /// <summary>
+    /// Gives name of item depending on which language is selected.
+    /// </summary>
+    /// <returns>Localized Name.</returns>
+    public string GetName() {
+        return itemName.GetLocalizedString();
+    }
+
+    /// <summary>
+    /// Gives description of item depending on which language is selected.
+    /// </summary>
+    /// <returns>Localized description.</returns>
+    public string GetDesc() {
+        return description.GetLocalizedString();
     }
 
     #if UNITY_EDITOR

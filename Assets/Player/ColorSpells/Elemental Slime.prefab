@@ -174,10 +174,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Create an elemental slime that attacks enemies that walk over it.
-
-    Power:
-    30% for 10 sec'
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:9e0880cc33ebca94598bc11b2bc68c12
+    m_TableEntryReference:
+      m_KeyId: 4966846464
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:9e0880cc33ebca94598bc11b2bc68c12
+    m_TableEntryReference:
+      m_KeyId: 7886082048
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 0.3
   coolDown: 3
@@ -212,6 +226,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 576dc167c57d9b34d83a2e51330ea60e, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: 9446ee9959758a54aa8e50f44bdad00a, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: eb7e8e5f09cbc464891c3d2390e67645, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &6257197701204440230
 MonoBehaviour:
   m_ObjectHideFlags: 0

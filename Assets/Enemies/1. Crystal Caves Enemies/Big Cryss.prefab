@@ -84,14 +84,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 201812b66451e8a499903791add5d2a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0}
   viewRange: 6
   attackTrigger:
-    radius: 0.9
+    radius: 1.05
     direction: 0
     width: 360
-    offset: {x: -0.8, y: 0}
+    offset: {x: -0.65, y: 0}
     color: {r: 1, g: 0, b: 0, a: 1}
   swordDamage: 25
   swordForce: 4000
@@ -359,6 +357,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8908701851532999919, guid: 65c4a424b962e634c800bc5035526aef, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8972155622757345861, guid: 65c4a424b962e634c800bc5035526aef, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8972155622757345861, guid: 65c4a424b962e634c800bc5035526aef, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

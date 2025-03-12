@@ -192,7 +192,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "Wield a blade of color. Autocast on Dash. \nPower: 100%"
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:b0ba66eaa2a546042a2702e4175bbe50
+    m_TableEntryReference:
+      m_KeyId: 4320923648
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:b0ba66eaa2a546042a2702e4175bbe50
+    m_TableEntryReference:
+      m_KeyId: 7324045312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 1
   coolDown: 3
@@ -200,9 +217,10 @@ MonoBehaviour:
   castOnSpellImpact: 0
   castOnDash: 1
   castOnDoubleJump: 0
+  staggeredSpell: 1
   storedSpells: 2
-  maxSpawn: 0
-  spawnKey: 
+  maxSpawn: -1
+  spawnKey: Blade
   ignoreLookDir: 0
   destroyOnAllImpact: 0
   destroyOnEnemyHit: 0
@@ -227,6 +245,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 6b3d2c8d7f0bc7d45bd71728ac9cf316, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: f2e5010ada927924f9632ef6bbf95f83, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 16c8706a787e7664786199a20684504e, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &7939297641866764751
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,9 +13,24 @@ MonoBehaviour:
   m_Name: Cascading Brush
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 885ea8e04f1654e4893b99f72c618cf6, type: 3}
-  description: 'Each time you cast a spell increase the impact damage of all spells
-    with +1. This item can increase the damage up to a maximum of +5 (+5 per item).
-    Collecting color with your brush resets the damage to 0. '
+  itemName:
+    m_TableReference:
+      m_TableCollectionName: GUID:89fde91523eb9d2489c04c7abd4c5915
+    m_TableEntryReference:
+      m_KeyId: 5277224960
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:89fde91523eb9d2489c04c7abd4c5915
+    m_TableEntryReference:
+      m_KeyId: 7403737088
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   itemCost: 30
   effects:
   - rid: 7200585725861953537

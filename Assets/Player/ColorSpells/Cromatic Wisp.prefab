@@ -179,11 +179,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Fires a wisp that will target a random enemy nearby. This spell will
-    also automatically fire when you hit an enemy with another spell
-
-    Power:
-    30%'
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:39d55ffd3a32a6b40b8b31f510d8dd28
+    m_TableEntryReference:
+      m_KeyId: 6300635136
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:39d55ffd3a32a6b40b8b31f510d8dd28
+    m_TableEntryReference:
+      m_KeyId: 8532004864
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 0.2
   coolDown: 3
@@ -218,6 +231,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: eb413851556396b4c87daf4dc28375c5, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: 43a8d9cb7ee05be4697536f36657190e, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 71204b02b274c984db1f24bc53b56ed3, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &1609077829872420345
 MonoBehaviour:
   m_ObjectHideFlags: 0

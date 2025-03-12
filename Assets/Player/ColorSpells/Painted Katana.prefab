@@ -191,8 +191,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "Paint a slicing Katana in front of you. Autocast on double jump.
-    \nPower 120%"
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:0ae3b96e973c10345a7f20915208b9c7
+    m_TableEntryReference:
+      m_KeyId: 4786491392
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:0ae3b96e973c10345a7f20915208b9c7
+    m_TableEntryReference:
+      m_KeyId: 6996889600
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 1.2
   coolDown: 4
@@ -200,9 +216,10 @@ MonoBehaviour:
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 1
+  staggeredSpell: 1
   storedSpells: 3
   maxSpawn: 0
-  spawnKey: 
+  spawnKey: Katana
   ignoreLookDir: 0
   destroyOnAllImpact: 0
   destroyOnEnemyHit: 0
@@ -227,6 +244,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 849fca71e00881143a45badb88271720, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: 84c3331a586a4694786a13348a39e5f9, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: c5d7d023a924d724581b9b8e1e96f3e3, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &1007130421494915340
 PrefabInstance:
   m_ObjectHideFlags: 0

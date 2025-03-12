@@ -192,10 +192,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Fires a burst of four bubbles that float upwards
-
-    Power:  4 x
-    75%'
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:2dcfddcb6e79d1d4e86772395a33ee61
+    m_TableEntryReference:
+      m_KeyId: 4866183168
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:2dcfddcb6e79d1d4e86772395a33ee61
+    m_TableEntryReference:
+      m_KeyId: 43810295808
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 0.75
   coolDown: 2
@@ -232,6 +246,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 12e2ec0b9b281b243bd3a990c05a089d, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: db228589e35ee364eb56ea4a51b08650, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: ca3917dacf1a31c4aa189227a71b4fff, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!58 &7683476481911508829
 CircleCollider2D:
   m_ObjectHideFlags: 0

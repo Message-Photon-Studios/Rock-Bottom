@@ -162,8 +162,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "Paint a small cat that flies forward. Landing on the ground causes
-    the cat to lurk for enemies. \nPower: 140%"
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:46e270f3cf9a570488f0b24b8d7d461c
+    m_TableEntryReference:
+      m_KeyId: 6174806016
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:46e270f3cf9a570488f0b24b8d7d461c
+    m_TableEntryReference:
+      m_KeyId: 26332631040
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 1.4
   coolDown: 3
@@ -198,6 +214,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: fcb07cba04c2fd541a3eb2efd14b27a7, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: a1c2025957c93cb45bf00eec7808c574, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 5792eb689c8852341943f02d5e40ca80, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &1585154843906230144
 MonoBehaviour:
   m_ObjectHideFlags: 0

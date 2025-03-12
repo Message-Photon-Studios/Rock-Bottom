@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Rendering.Universal;
 
 /// <summary>
@@ -10,7 +11,8 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(Collider2D))]
 public class ColorSpell : MonoBehaviour
 {
-    [TextArea(5, 20)] public string description;
+    [SerializeField] public LocalizedString bottleName;
+    [SerializeField] public LocalizedString description;
 
     public int spellCost;
     /// <summary>
@@ -22,6 +24,7 @@ public class ColorSpell : MonoBehaviour
     [SerializeField] public bool castOnSpellImpact;
     [SerializeField] public bool castOnDash;
     [SerializeField] public bool castOnDoubleJump;
+    [SerializeField] public bool staggeredSpell;
 
     [SerializeField] public int storedSpells = 1;
 
@@ -338,6 +341,22 @@ public class ColorSpell : MonoBehaviour
         return spellSprite;
     }
 
+    /// <summary>
+    /// Gives name of ColorSpell depending on which language is selected.
+    /// </summary>
+    /// <returns>Localized ColorSpell Name.</returns>
+    public string GetName() {
+        return bottleName.GetLocalizedString();
+    }
+
+    /// <summary>
+    /// Gives description of ColorSpell depending on which language is selected.
+    /// </summary>
+    /// <returns>Localized ColorSpell description.</returns>
+    public string GetDesc() {
+        return description.GetLocalizedString();
+    }
+
     public void SetDir(int lookDir)
     {
         /*
@@ -360,6 +379,11 @@ public class ColorSpell : MonoBehaviour
             }
             child.material = gameColor?.colorMat;
         }*/
+    }
+
+    public void TriggerQueue()
+    {
+        player.GetComponent<ColorInventory>().QuedSpells(spawnKey);
     }
 
     public void DestroySpell()

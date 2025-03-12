@@ -191,8 +191,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "Fires a borrowing worm that will hunt down a nearby enemy. This spell
-    will automatically fires when you take damage. \nPower: 100%"
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:c34ae696256391e4d88218cc3c657cfa
+    m_TableEntryReference:
+      m_KeyId: 5411442688
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:c34ae696256391e4d88218cc3c657cfa
+    m_TableEntryReference:
+      m_KeyId: 8410370048
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 1
   coolDown: 4
@@ -227,6 +243,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 20569e7496c76e0478faf1edb6771755, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: 5d6bd89140e44714b9cc40f4f5446d2d, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 25a6021fab106ca448c8a114f71c976e, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &1609077829872420345
 MonoBehaviour:
   m_ObjectHideFlags: 0

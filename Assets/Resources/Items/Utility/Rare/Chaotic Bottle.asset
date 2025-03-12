@@ -13,7 +13,24 @@ MonoBehaviour:
   m_Name: Chaotic Bottle
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 130ff6ea6d61b024394ff2ee7a17cd80, type: 3}
-  description: Mixes in a random primary color into your bottle after casting a spell
+  itemName:
+    m_TableReference:
+      m_TableCollectionName: GUID:b42dd4c19cb36944cb58d22543c8ce34
+    m_TableEntryReference:
+      m_KeyId: 3930853376
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:b42dd4c19cb36944cb58d22543c8ce34
+    m_TableEntryReference:
+      m_KeyId: 6350966784
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   itemCost: 45
   effects:
   - rid: 7456394559367938049
@@ -29,3 +46,5 @@ MonoBehaviour:
         dontMixColor: 0
         autoRotate: 0
         chaosBottle: 1
+        routedSheild: 0
+        chaoticMixer: 0

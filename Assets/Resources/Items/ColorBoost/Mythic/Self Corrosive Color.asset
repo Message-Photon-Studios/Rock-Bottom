@@ -13,9 +13,24 @@ MonoBehaviour:
   m_Name: Self Corrosive Color
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: bbb4a229ffeb0f44eb7e1d0336d440a8, type: 3}
-  description: Removes all immunities. All spells are only 75% effective against
-    colored enemies unless they are the same color as the spell. Buff the power of
-    each color with 30%
+  itemName:
+    m_TableReference:
+      m_TableCollectionName: GUID:923062efa1fa27e428fae27173cacb4f
+    m_TableEntryReference:
+      m_KeyId: 7747670016
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:923062efa1fa27e428fae27173cacb4f
+    m_TableEntryReference:
+      m_KeyId: 21647593472
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   itemCost: 60
   effects:
   - rid: 7456394610235932673

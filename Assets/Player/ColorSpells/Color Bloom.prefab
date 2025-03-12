@@ -174,8 +174,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "Paint a large flower above you that affects multiple nearby targets
-    around you. Autocast on Dash. \nPower: 120%"
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:76d26e5d100de344681328fb91b87722
+    m_TableEntryReference:
+      m_KeyId: 6007033856
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:76d26e5d100de344681328fb91b87722
+    m_TableEntryReference:
+      m_KeyId: 30694707200
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 1.2
   coolDown: 1.5
@@ -183,9 +199,10 @@ MonoBehaviour:
   castOnSpellImpact: 0
   castOnDash: 1
   castOnDoubleJump: 0
+  staggeredSpell: 1
   storedSpells: 3
   maxSpawn: 0
-  spawnKey: 
+  spawnKey: bloom
   ignoreLookDir: 0
   destroyOnAllImpact: 0
   destroyOnEnemyHit: 0
@@ -210,6 +227,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: b6d805c094610354ebfd66b2a16d4071, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: 93def2863a66a7e4688cca07d478ffa6, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 93426f525be01bc4d9b5df58dd4688b7, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &6486060746719903368
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -9,19 +9,30 @@ using Unity.VisualScripting;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] LevelGenManager levelGenerator;
+
+    [Header("Adjacent Levels")]
     [SerializeField] public string onDeathLevel;
-    public bool saveProgressionOnStart = false;
     [SerializeField] string nextLevelName;
-    [SerializeField] UIController canvas;
+
+
+    [Header("Clock Timer")]
     public bool allowsClockTimer = true;
     [SerializeField] float addLevelClockTime;
     [SerializeField] bool restartClockTimer;
+
+    [Header("Settings")]
+    public bool saveProgressionOnStart = false;
     [SerializeField] bool clearInventoryOnLevelEnd = false;
-    [SerializeField] VideoPlayer videoOnPlayerDeath;
-    [SerializeField] GameObject videoObjecCanvas;
-    [SerializeField] GameObject backgroundMusic;
     [SerializeField] public bool allowTips = true;
     [SerializeField] public bool isCaveTownLevel = false;
+
+    [Header("References")]
+    [SerializeField] UIController canvas;
+    [SerializeField] GameObject backgroundMusic;
+    
+    [Header("Video on Death")]
+    [SerializeField] VideoPlayer videoOnPlayerDeath;
+    [SerializeField] GameObject videoObjecCanvas;
 
     public static LevelManager instance = null;
 
@@ -38,9 +49,11 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        DataPersistenceManager.instance.Start();
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
         if (levelGenerator)
         {
+            ItemSpellManager.instance.ClearPetrifiedPigmentList();
             levelGenerator.init(canvas, true);
         }
         else

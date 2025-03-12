@@ -16,26 +16,28 @@ public class MiniBossSpawner : MonoBehaviour
     float spawnTimer = 0;
 
     List<EnemyStats> spawnedEnemies = new List<EnemyStats>();    
-
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
     private void Update()
     {
-        if(bossEnemy == null)
+        if(bossEnemy == null || bossEnemy.GetComponent<EnemyStats>().IsDead())
         {
             if(spawnedEnemies.Count > 0)
             {
-                while(spawnedEnemies.Count > 0)
+                EnemyStats[] enemiesToKill = new EnemyStats[spawnedEnemies.Count];
+                spawnedEnemies.CopyTo(enemiesToKill, 0);
+
+                for(int i = 0; i < enemiesToKill.Length; i++)
                 {
-                    if(spawnedEnemies[0] != null)
-                        spawnedEnemies[0].DamageEnemy(1000000);
+                    if(enemiesToKill[i] != null)
+                        enemiesToKill[i].DamageEnemy(1000000);
                 }
             }
 
             return;
         }
-        
+
         if(spawnedEnemies.Count < maxSpawnedEnemies)
         {
             spawnTimer -= Time.deltaTime;
@@ -51,6 +53,7 @@ public class MiniBossSpawner : MonoBehaviour
 
     private void SpawnWisp()
     {
+        if(bossEnemy == null || bossEnemy.GetComponent<EnemyStats>().IsDead()) return;
         Debug.Log("Spawn wisp");
         GameObject spwnWisp = GameObject.Instantiate(wisp, transform.position, transform.rotation);
         spwnWisp.GetComponent<Wisp>().onObjectSpawned.AddListener(EnemySpawned);

@@ -175,10 +175,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Summons a spike that will rotate around the player.
-
-    Power: 3
-    x 50%'
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:db25cb29281f1ac4aaff86581c7f77d4
+    m_TableEntryReference:
+      m_KeyId: 4069265408
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:db25cb29281f1ac4aaff86581c7f77d4
+    m_TableEntryReference:
+      m_KeyId: 6699094016
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 0.5
   coolDown: 5
@@ -215,6 +229,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 9418f67dea6464a45aa35a84e848fa33, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: 86bea8269d37aa0479d68b91c0031005, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 4f48403ea640c0442b983d164c84a579, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &5242649665175928134
 MonoBehaviour:
   m_ObjectHideFlags: 0

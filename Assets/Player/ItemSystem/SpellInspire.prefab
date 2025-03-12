@@ -561,6 +561,7 @@ GameObject:
   - component: {fileID: 308409809827378387}
   - component: {fileID: 1569904497173203150}
   - component: {fileID: 5830189890176296583}
+  - component: {fileID: -5595379822860589214}
   m_Layer: 9
   m_Name: SpellInspire
   m_TagString: Untagged
@@ -617,13 +618,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellToEnable: {fileID: 4335947958849118120}
   unlockSpell: {fileID: 0}
-  petrifiedPigmentCost: 5
-  spell: {fileID: 21300000, guid: f655e624572f6d443ae3a01439e7e8fe, type: 3}
-  text: You have unlocked the Bloom Spell.
+  petrifiedPigmentCost: 3
+  inspiredSprite: {fileID: 0}
+  inspireText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  unlockString:
+    m_TableReference:
+      m_TableCollectionName: GUID:7fad935b6fe17134a88e9adac8ee9459
+    m_TableEntryReference:
+      m_KeyId: 4987817984
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  costString:
+    m_TableReference:
+      m_TableCollectionName: GUID:7fad935b6fe17134a88e9adac8ee9459
+    m_TableEntryReference:
+      m_KeyId: 145996124160
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   ui: {fileID: 7507607046761687548}
   costText: {fileID: 6212120280095761447}
   descriptionText: {fileID: 9174853900908101037}
   headerText: {fileID: 7980404673463999618}
+  animator: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &5830189890176296583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,6 +682,58 @@ MonoBehaviour:
   - image: {fileID: 1362060223231459453}
     keyboardImg: {fileID: 21300000, guid: b65732f6bc0353744875fa79332c905e, type: 3}
     controllerImg: {fileID: 21300000, guid: 338ee44a62d443148b78a936b34c6baf, type: 3}
+--- !u!212 &-5595379822860589214
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4085804624318830516}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 770068331
+  m_SortingLayer: -2
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2, y: 2}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &5079676153778521890
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,7 +935,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 15.6, y: 0}
+  m_AnchoredPosition: {x: 15.59375, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!1 &7507607046761687548
@@ -1074,11 +1157,11 @@ RectTransform:
   m_Father: {fileID: 6030054631652322440}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 5, y: 5}
-  m_SizeDelta: {x: 30, y: 10}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -28, y: 5}
+  m_SizeDelta: {x: 40, y: 10}
+  m_Pivot: {x: 1, y: 0}
 --- !u!222 &1609759317732050096
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1170,7 +1253,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -27.92221, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

@@ -84,8 +84,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7ae34e08b4e67d4d81807f4ca89b93a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 2000, y: 0}
+  damage: 20
+  attackForce: 4000
+  attackTrigger:
+    radius: 0.44
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0.01}
+    color: {r: 1, g: 0, b: 0, a: 1}
   patrollIdleTime: 4
 --- !u!50 &3141353343972162463
 Rigidbody2D:

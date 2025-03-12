@@ -239,8 +239,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "Fire a small seed that grows into a mushroom. This mushroom will
-    then produce 10 small hooming spores. \nPower. 10 x 20%"
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:e3e668f8c6adbe8458168d0bc282be75
+    m_TableEntryReference:
+      m_KeyId: 4794880000
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:e3e668f8c6adbe8458168d0bc282be75
+    m_TableEntryReference:
+      m_KeyId: 7156273152
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 0.2
   coolDown: 6
@@ -276,6 +292,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 6e11aaa2b93f929428ea5e5ed8754bab, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: 345f26c77c1caad478d4d350d5bc6dc4, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 0a8a1926dea420741812d1997e2abb19, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &7571504440280734828
 MonoBehaviour:
   m_ObjectHideFlags: 0

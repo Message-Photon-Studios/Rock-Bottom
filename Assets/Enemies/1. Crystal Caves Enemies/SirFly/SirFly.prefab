@@ -85,8 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2996a6f36971beb47b286e7fe6c4941b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 2000, y: 0.5}
+  spikesDamage: 20
   rangeTrigger:
     radius: 7.5
     direction: 90
@@ -98,6 +97,12 @@ MonoBehaviour:
     direction: 90
     width: 130
     offset: {x: 0, y: 0}
+    color: {r: 1, g: 0.42267352, b: 0, a: 1}
+  damageTrigger:
+    radius: 0.7
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0.1}
     color: {r: 1, g: 0, b: 0, a: 1}
   patrollIdleTime: 2
   attackSpawn: {fileID: 8094419970937011932, guid: a559141a38b8717499efe9c0e074bf90, type: 3}

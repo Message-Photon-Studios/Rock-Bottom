@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using BehaviourTree;
 using UnityEditor;
-
 /// <summary>
 /// This is the ai for the Crystoffer enemy
 /// </summary>
 public class SirFly : Enemy
 {
-
+    [SerializeField] int spikesDamage;
     [SerializeField] Trigger rangeTrigger;
     [SerializeField] Trigger attackTrigger;
+    [SerializeField] Trigger damageTrigger;
     [SerializeField] float patrollIdleTime;
     [SerializeField] GameObject attackSpawn;
     [SerializeField] Vector2 spawnOffset;
@@ -23,6 +23,11 @@ public class SirFly : Enemy
 
         Node root = new Selector(new List<Node>{
 
+            new Sequence(new List<Node>{
+                new CheckBool("inRange", true),
+                new CheckPlayerArea(stats, player, damageTrigger),
+                new DamagePlayer(stats, player, spikesDamage)
+            }),
             new Sequence(new List<Node>{
                 new CheckBool("attackDone", true),
                 new EnemyObjectSpawnerAim(stats, attackSpawn, spawnOffset, player, spawnForce),
@@ -60,12 +65,15 @@ public class SirFly : Enemy
         root.SetData("attackDone", false);
         root.SetData("swordAttack", false);
         triggersToFlip.Add(attackTrigger);
+        triggersToFlip.Add(damageTrigger);
+        triggersToFlip.Add(rangeTrigger);
         return root;
     }
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         attackTrigger.DrawTrigger(stats.GetPosition());
         rangeTrigger.DrawTrigger(stats.GetPosition());
+        damageTrigger.DrawTrigger(stats.GetPosition());
     }
 #endif
 }

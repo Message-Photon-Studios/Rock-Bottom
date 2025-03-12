@@ -85,8 +85,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff05b56a3ed20004b87f3c83123a640b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 30
-  playerCollisionForce: {x: 1000, y: 5000}
+  damage: 30
+  attackForce: 4000
+  attackTrigger:
+    radius: 0.95
+    direction: 0
+    width: 360
+    offset: {x: -0.1, y: 0}
+    color: {r: 1, g: 0, b: 0, a: 1}
   viewTrigger:
     radius: 8.5
     direction: 0
@@ -103,6 +109,8 @@ MonoBehaviour:
   jumpForce: 6200
   checkJumpHight: 3
   forwardJumpForce: 5200
+  smallJumpForce: 3100
+  smallJumpForward: 2600
   jumpIdleTime: 2
   patrollIdleTime: 2
 --- !u!50 &1462253517624165469

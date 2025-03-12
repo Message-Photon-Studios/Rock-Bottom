@@ -345,16 +345,16 @@ public class PlayerStats : MonoBehaviour
 
     public void SetPlayerInvincible()
     {
-        Physics2D.IgnoreLayerCollision(3,6);
-        Physics2D.IgnoreLayerCollision(3,13);
+        //Physics2D.IgnoreLayerCollision(3,6);
+        //Physics2D.IgnoreLayerCollision(3,13);
         Physics2D.IgnoreLayerCollision(3,2);
         invincibilityTimer = hitInvincibilityTime + invincibilityBonus;
     }
 
     public void RemovePlayerInvincible()
     {
-        Physics2D.IgnoreLayerCollision(3,6, false);
-        Physics2D.IgnoreLayerCollision(3,13, false);
+        //Physics2D.IgnoreLayerCollision(3,6, false);
+        //Physics2D.IgnoreLayerCollision(3,13, false);
         Physics2D.IgnoreLayerCollision(3,2, false);
 
         invincibilityTimer = 0;

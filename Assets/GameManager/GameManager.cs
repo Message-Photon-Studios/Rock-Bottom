@@ -398,6 +398,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [System.Serializable]
     public struct MaskLibrary {
         public int playerLayer;
+        public int playerFeetLayer;
         public int platformLayer;
         public int groundLayer;
         public LayerMask onlyGround;

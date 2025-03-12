@@ -9,6 +9,7 @@ public class CrystalQuake : Enemy
     [SerializeField] float viewRange;
     [SerializeField] float eyePosY;
     [SerializeField] Trigger attackTrigger;
+    [SerializeField] Trigger quakeSmashTrigger;
     [SerializeField] int swordDamage;
     [SerializeField] float swordForce;
     [SerializeField] Trigger quakeTrigger;
@@ -31,7 +32,7 @@ public class CrystalQuake : Enemy
                 new CheckBool("attack", true),
                 new CheckBool("attackDone", false),
                 new NormalAttack("hornAttack", player, swordDamage, swordForce, 0.5f, attackTrigger, stats),
-                new SetParentVariable("attackDone", true, 2)
+
             }),
 
             new Sequence(new List<Node>{
@@ -41,6 +42,13 @@ public class CrystalQuake : Enemy
                 new EnemyObjectSpawner(stats, quakeProjectile, projectileSpawn2, Vector2.up*projectileSpawnUpForce, false, projectileForceRandomness),
                 new EnemyObjectSpawner(stats, quakeProjectile, projectileSpawn3, Vector2.up*projectileSpawnUpForce, false, projectileForceRandomness),
                 new SetParentVariable("stoneThrowAttack", false, 2),
+            }),
+
+            new Sequence(new List<Node>{
+                new CheckBool("attack", true),
+                new CheckBool("attackDone", false),
+                new NormalAttack("smashAttack", player, swordDamage, swordForce, .5f, quakeSmashTrigger, stats),
+                new SetParentVariable("attackDone", true, 2)    
             }),
 
             new Sequence(new List<Node>{
@@ -68,8 +76,10 @@ public class CrystalQuake : Enemy
         root.SetData("attackDone", false);
         root.SetData("hornAttack", false);
         root.SetData("stoneThrowAttack", false);
+        root.SetData("smashAttack" , false);
         triggersToFlip.Add(attackTrigger);
         triggersToFlip.Add(quakeTrigger);
+        triggersToFlip.Add(quakeSmashTrigger);
         return root;
     }
 
@@ -78,6 +88,7 @@ public class CrystalQuake : Enemy
     {
         attackTrigger.DrawTrigger(stats.GetPosition());
         quakeTrigger.DrawTrigger(stats.GetPosition());
+        quakeSmashTrigger.DrawTrigger(stats.GetPosition());
         Handles.color = Color.blue;
         Handles.DrawLine(stats.GetPosition()+Vector2.left*viewRange+ Vector2.up*eyePosY, stats.GetPosition()+Vector2.right*viewRange+ Vector2.up*eyePosY);
         Handles.color = Color.green;

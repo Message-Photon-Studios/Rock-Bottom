@@ -190,10 +190,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Fire a bolt of color that impacts the first target it hits.
-
-    Power:
-    100%'
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:7868fb2d48a2dbb4e944fcbb7b4cfd68
+    m_TableEntryReference:
+      m_KeyId: 4241231872
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:7868fb2d48a2dbb4e944fcbb7b4cfd68
+    m_TableEntryReference:
+      m_KeyId: 36524789760
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 1
   coolDown: 1
@@ -228,6 +242,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 0e4410dc1c8445849863eb9a57105ac2, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: c0da91dbb370a2a4eae7a5661573c13d, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 6e26f46f0d2fe6840a3e2d330dbce090, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!70 &5526896281579278936
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

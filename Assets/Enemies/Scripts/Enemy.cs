@@ -11,8 +11,8 @@ using BehaviourTree;
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class Enemy : BehaviourTree.Tree
 {
-    [SerializeField] int playerCollisionDamage = 10; //The damage that will be dealt to the player if they walk into the enemy
-    [SerializeField] Vector2 playerCollisionForce = new Vector2(2000, 0.5f); //The force that will be added to the player if they walk into the enemy
+    //[SerializeField] int playerCollisionDamage = 10; //The damage that will be dealt to the player if they walk into the enemy
+    //[SerializeField] Vector2 playerCollisionForce = new Vector2(2000, 0.5f); //The force that will be added to the player if they walk into the enemy
     protected EnemyStats stats;
     protected Animator animator;
     protected Rigidbody2D body; 
@@ -61,18 +61,22 @@ public abstract class Enemy : BehaviourTree.Tree
 
     #endregion
 
+    /*
+
     #region  Collision with player
-    void OnCollisionEnter2D(Collision2D other)
+    public void CollideWithPlayer(GameObject player)
     {
-        if(other.collider.CompareTag("Player") && !stats.IsAsleep())
+        if(player.CompareTag("Player") && !stats.IsAsleep())
         {
-            other.rigidbody.AddForce(Vector2.up * playerCollisionForce.y + ((Vector2)player.transform.position-stats.GetPosition()) * Vector2.right * playerCollisionForce.x);
+            player.gameObject.GetComponent<Rigidbody2D>().AddForce(((Vector2)player.transform.position-stats.GetPosition()) * Vector2.right * playerCollisionForce.x);
             body.velocity = new Vector2(0, body.velocity.y);
-            other.gameObject.GetComponent<PlayerStats>().DamagePlayer(stats.GetScaledDamage(playerCollisionDamage), stats);
-            other.gameObject.GetComponent<PlayerMovement>().movementRoot.SetRoot(gameObject.name + "enemyCollision", 0.3f);
+            player.gameObject.GetComponent<PlayerStats>().DamagePlayer(stats.GetScaledDamage(playerCollisionDamage), stats);
+            player.gameObject.GetComponent<PlayerMovement>().movementRoot.SetRoot(gameObject.name + "enemyCollision", 0.3f);
         }
     }
     #endregion
+
+    */
     
     #region Switches the players direction
     public void SwitchDirection()

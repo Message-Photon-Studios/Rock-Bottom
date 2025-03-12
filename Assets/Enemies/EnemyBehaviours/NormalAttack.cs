@@ -53,7 +53,7 @@ public class NormalAttack : Node
             state = NodeState.SUCCESS;
             return state;
         }
-
+        
         state = NodeState.FAILURE;
         return state;
     }

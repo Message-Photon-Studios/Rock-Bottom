@@ -13,10 +13,24 @@ MonoBehaviour:
   m_Name: Pipette
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: abc029b47ffb6ac46b44ee5908b548fe, type: 3}
-  description: 'An usefull item for picking colors.
-
-    Absorbing colors no longer
-    mixes in bottles. Instead overrides the previous color'
+  itemName:
+    m_TableReference:
+      m_TableCollectionName: GUID:d969001fe7a9abd428853509813a6fd0
+    m_TableEntryReference:
+      m_KeyId: 3247181824
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:d969001fe7a9abd428853509813a6fd0
+    m_TableEntryReference:
+      m_KeyId: 8989184000
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   itemCost: 45
   effects:
   - rid: 7456394559367938050
@@ -32,3 +46,5 @@ MonoBehaviour:
         dontMixColor: 1
         autoRotate: 0
         chaosBottle: 0
+        routedSheild: 0
+        chaoticMixer: 0

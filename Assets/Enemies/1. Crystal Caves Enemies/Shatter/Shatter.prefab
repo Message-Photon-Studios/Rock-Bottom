@@ -84,8 +84,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af4b6960793ca64eb8602955848f8d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 1000, y: 0}
+  damage: 20
+  attackTrigger:
+    radius: 0.9
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 1, g: 0, b: 0, a: 1}
+  lookTrigger:
+    radius: 3
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0.44900656, b: 1, a: 1}
 --- !u!50 &7646013780313188473
 Rigidbody2D:
   serializedVersion: 4

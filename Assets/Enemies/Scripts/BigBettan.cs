@@ -7,6 +7,7 @@ using UnityEditor;
 public class BigBettan : Enemy
 {
     [SerializeField] float viewRange;
+    [SerializeField] Trigger attackFrontFirstTrigger;
     [SerializeField] Trigger attackFrontTrigger;
     [SerializeField] Trigger attackBackTrigger;
     [SerializeField] int swordDamage;
@@ -22,6 +23,7 @@ public class BigBettan : Enemy
                 new CheckBool("attackDone", false),
                 new Selector(new List<Node>
                 {
+                    new NormalAttack("swordFrontAttackFirst", player, swordDamage, swordForce, 0.5f, attackFrontFirstTrigger, stats),
                     new NormalAttack("swordFrontAttack", player, swordDamage, swordForce, 0.5f, attackFrontTrigger, stats),
                     new NormalAttack("swordBackAttack", player, swordDamage, swordForce, 0.5f, attackBackTrigger, stats)
                 }),
@@ -29,7 +31,7 @@ public class BigBettan : Enemy
             }),
             new Sequence(new List<Node>{
                 new CheckBool("attack", false),
-                new CheckPlayerArea(stats, player, attackFrontTrigger),
+                new CheckPlayerArea(stats, player, attackFrontFirstTrigger),
                 new AnimationTrigger(animator, "attack")
                 }),
 
@@ -41,10 +43,12 @@ public class BigBettan : Enemy
 
             });
         
+        root.SetData("swordFrontAttackFirst", false);
         root.SetData("attack", false);
         root.SetData("attackDone", false);
         root.SetData("swordFrontAttack", false);
         root.SetData("swordBackAttack", false);
+        triggersToFlip.Add(attackFrontFirstTrigger);
         triggersToFlip.Add(attackFrontTrigger);
         triggersToFlip.Add(attackBackTrigger);
         return root;
@@ -54,6 +58,7 @@ public class BigBettan : Enemy
     private void OnDrawGizmosSelected() {
         attackFrontTrigger.DrawTrigger(stats.GetPosition());
         attackBackTrigger.DrawTrigger(stats.GetPosition());
+        attackFrontFirstTrigger.DrawTrigger(stats.GetPosition());
         Handles.color = Color.blue;
         Handles.DrawLine(stats.GetPosition()+Vector2.left*viewRange, stats.GetPosition()+Vector2.right*viewRange);
     }

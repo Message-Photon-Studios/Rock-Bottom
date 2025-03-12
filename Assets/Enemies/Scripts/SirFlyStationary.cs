@@ -9,7 +9,8 @@ using UnityEditor;
 /// </summary>
 public class SirFlyStationary : Enemy
 {
-
+    [SerializeField] int spikesDamage;
+    [SerializeField] Trigger damageTrigger;
     [SerializeField] Trigger rangeTrigger;
     [SerializeField] Trigger attackTrigger;
     [SerializeField] GameObject attackSpawn;
@@ -21,7 +22,11 @@ public class SirFlyStationary : Enemy
     {
 
         Node root = new Selector(new List<Node>{
-
+            new Sequence(new List<Node>{
+                new CheckBool("inRange", true),
+                new CheckPlayerArea(stats, player, damageTrigger),
+                new DamagePlayer(stats, player, spikesDamage)
+            }),
             new Sequence(new List<Node>{
                 new CheckBool("attackDone", true),
                 new EnemyObjectSpawnerAim(stats, attackSpawn, spawnOffset, player, spawnForce),
@@ -55,12 +60,14 @@ public class SirFlyStationary : Enemy
         root.SetData("attackReady", false);
         root.SetData("attackDone", false);
         triggersToFlip.Add(attackTrigger);
+        triggersToFlip.Add(damageTrigger);
         return root;
     }
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         attackTrigger.DrawTrigger(stats.GetPosition());
         rangeTrigger.DrawTrigger(stats.GetPosition());
+        damageTrigger.DrawTrigger(stats.GetPosition());
         Handles.color = Color.yellow;
     }
 #endif

@@ -13,13 +13,17 @@ public class Inspired : MonoBehaviour
     [SerializeField] GameObject spellToEnable;
     [SerializeField] ColorSpell unlockSpell;
     [SerializeField] public int petrifiedPigmentCost;
-    [SerializeField] Sprite spell;
+    [SerializeField] Sprite inspiredSprite;
     [SerializeField] LocalizedString inspireText;
+
+    [SerializeField] LocalizedString unlockString;
+    [SerializeField] LocalizedString costString;
 
     [SerializeField] GameObject ui;
     [SerializeField] TMP_Text costText;
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] TMP_Text headerText;
+    [SerializeField] Animator animator;
 
     private ItemInventory inventory;
     private bool triggered;
@@ -30,27 +34,43 @@ public class Inspired : MonoBehaviour
         if(spellToEnable) spellToEnable.SetActive(false);
         if(GameManager.instance.IsSpellSpawnable(unlockSpell))
         {
+            if(animator) animator.SetBool("inspired", true);
             if(spellToEnable)
             {
                 spellToEnable.SetActive(true);
-                spellToEnable.GetComponent<SpellPickup>().SetSpell(unlockSpell);
             }
+
+            triggered = true;
             GetComponent<Collider2D>().enabled = false;
-            this.enabled = false;
+        } else 
+        {
+            triggered = false;
         }
-        
-        triggered = false;
         UI = PlayerLevelMananger.instance.playerUi;
         inventory = PlayerLevelMananger.instance.playerInventory;
 
-        costText.text = "Cost: " + petrifiedPigmentCost;
-        descriptionText.text = unlockSpell.description;
-        headerText.text = "Unlock " + unlockSpell.name;
+        costText.text = costString.GetLocalizedString() + petrifiedPigmentCost;
+        descriptionText.text = unlockSpell.description.GetLocalizedString();
+        headerText.text = unlockString.GetLocalizedString() + unlockSpell.GetName();
         ui.SetActive(false);
+    }
+
+    void OnEnable()
+    {
+        if(triggered)
+        {
+            if(animator) animator.SetBool("inspired", true);
+        }
     }
     
     public void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("Player") && !triggered && !GameManager.instance.IsSpellSpawnable(unlockSpell)) {
+
+            costText.text = costString.GetLocalizedString() + petrifiedPigmentCost;
+            descriptionText.text = unlockSpell.description.GetLocalizedString();
+            headerText.text = unlockString.GetLocalizedString() + unlockSpell.GetName();
+            if(GameManager.instance.GetPetrifiedPigmentAmount() < petrifiedPigmentCost) costText.color = Color.red;
+            else costText.color = Color.white;
             ui.SetActive(true);
             inventory.EnableInspired(this);
         }
@@ -68,7 +88,7 @@ public class Inspired : MonoBehaviour
     public void TriggerUnlock()
     {
         triggered = true;
-        UI.inspired?.Invoke(spell, inspireText.GetLocalizedString());
+        UI.inspired?.Invoke(inspiredSprite, inspireText.GetLocalizedString());
         GameManager.instance.UnlockedSpell(unlockSpell);
         if(spellToEnable) 
         {
@@ -77,6 +97,9 @@ public class Inspired : MonoBehaviour
         }
         GameManager.instance.AddInspiration(1);
         ui.SetActive(false);
+
+        if(animator) animator.SetBool("inspired", true);
+
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
     }

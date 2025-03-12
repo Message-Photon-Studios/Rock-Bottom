@@ -6,6 +6,8 @@ using UnityEditor;
 
 public class LobberProjectile : Enemy
 {
+    [SerializeField] int damage;
+    [SerializeField] Trigger attackTrigger;
     [SerializeField] float startIdleTime;
     [SerializeField] float maxSpeed;
     [SerializeField] float acceleration;
@@ -18,9 +20,11 @@ public class LobberProjectile : Enemy
     {
         Node root =
         new Selector(new List<Node>{
+
             new Sequence(new List<Node>{
-                new EnemyCollide(GetComponent<ColliderCheck>(), "Player"),
-                new SuicideEnemy(stats),
+                new CheckPlayerArea(stats, player, attackTrigger),
+                new DamagePlayer(stats, player, damage),
+                new SuicideEnemy(stats)
             }),
 
             new Sequence(new List<Node>{
@@ -57,7 +61,14 @@ public class LobberProjectile : Enemy
         if(Random.Range(0,10) == 0) animator.SetTrigger("boulder2");
 
         body?.AddTorque(Random.Range(-20f,20f));
+        triggersToFlip.Add(attackTrigger);
 
         return root;
     }
+
+    #if UNITY_EDITOR
+    private void OnDrawGizmosSelected() {
+        attackTrigger.DrawTrigger(stats.GetPosition());
+    }
+    #endif
 }

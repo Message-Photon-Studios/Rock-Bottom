@@ -176,8 +176,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: "Fire a big and a small jellyfish that impacts the first target they
-    hit. The smaller jellyfish is weaker. \r\nPower: 80% + 40%\r\n"
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: GUID:22f5804f448791447979b5c9edc0e9a3
+    m_TableEntryReference:
+      m_KeyId: 7219187712
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:22f5804f448791447979b5c9edc0e9a3
+    m_TableEntryReference:
+      m_KeyId: 10813706240
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 20
   powerScale: 0.8
   coolDown: 0.5
@@ -214,6 +230,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: b7796412ff16a0a4b9ce54fccd159b64, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: e28fe8a2a3a41bd4c81e91319d8bf6b5, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 08b3332c76e5bb94a9268e3cb2743139, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &2230045413262427663
 MonoBehaviour:
   m_ObjectHideFlags: 0

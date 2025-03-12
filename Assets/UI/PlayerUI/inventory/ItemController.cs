@@ -300,8 +300,8 @@ public class ItemController : MonoBehaviour
     private void ShowSelectedItem(Item item) {
         selectedItemContainer.SetActive(true);
         selectedImage.sprite = item.sprite;
-        selectedName.text = item.name;
-        selectedDesc.text = item.description;
+        selectedName.text = item.GetName();
+        selectedDesc.text = item.GetDesc();
     }
 
     /// <summary>
@@ -323,6 +323,6 @@ public class ItemController : MonoBehaviour
         selectedItemContainer.SetActive(true);
         selectedImage.sprite =bottle.GetBottleSprite().bigSprite;
         selectedName.text = bottle.name;
-        selectedDesc.text = bottle.description;
+        selectedDesc.text = bottle.description.GetLocalizedString();
     }
 }

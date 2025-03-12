@@ -24302,8 +24302,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7860c35235fbd124c866a8f772fda057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 30
   playerCollisionForce: {x: 2000, y: 0.5}
+  damage: 35
+  attackTrigger:
+    radius: 0.3
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 1, g: 0, b: 0, a: 1}
   startIdleTime: 1
   maxSpeed: 8000
   acceleration: 15000

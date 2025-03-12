@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class SirFlyShard : Enemy
 {
-    [SerializeField] float damage;
+    [SerializeField] int damage;
     [SerializeField] Vector2 force;
     [SerializeField] Trigger attackTrigger;
 
@@ -15,6 +15,13 @@ public class SirFlyShard : Enemy
         
         Node root =     
             new Selector(new List<Node>{
+
+                new Sequence(new List<Node>{
+                    new CheckPlayerArea(stats, player, attackTrigger),
+                    new DamagePlayer(stats, player, damage),
+                    new SuicideEnemy(stats)
+                }),
+
                 new Sequence(new List<Node>{
                     new EnemyCollide(GetComponent<ColliderCheck>(), ""),
                     new SuicideEnemy(stats)
@@ -29,7 +36,6 @@ public class SirFlyShard : Enemy
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected() {
         attackTrigger.DrawTrigger(stats.GetPosition());
-        Handles.color = Color.yellow;
     }
 #endif
 }

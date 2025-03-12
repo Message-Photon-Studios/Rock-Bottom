@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
+using UnityEngine.Localization;
 
 public class HealingShrine : MonoBehaviour
 {
@@ -14,8 +15,8 @@ public class HealingShrine : MonoBehaviour
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text description;
     [SerializeField] InputActionReference buyAction;
-    [SerializeField] List<string> phrases;
-    [SerializeField] string healAmoutText;
+    [SerializeField] List<LocalizedString> phrases;
+    [SerializeField] LocalizedString healAmoutText;
     Animator animator;
 
 
@@ -33,7 +34,7 @@ public class HealingShrine : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         animator = GetComponent<Animator>();
         cost.text = CalculatePrice().ToString();
-        description.text = phrases[0] + "\n" + healAmoutText;
+        description.text = phrases[0].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
     }
 
     private void OnEnable()
@@ -60,8 +61,8 @@ public class HealingShrine : MonoBehaviour
             cost.color = Color.white;
             buyable = true;
         }
-        if (count >= phrases.Count) description.text = phrases[phrases.Count-1] + "\n" + healAmoutText;
-        else description.text = phrases[count] + "\n" + healAmoutText;
+        if (count >= phrases.Count) description.text = phrases[phrases.Count-1].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
+        else description.text = phrases[count].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
         if (player.GetHealth() >= player.GetMaxHealth()) buyable = false;
     }
 

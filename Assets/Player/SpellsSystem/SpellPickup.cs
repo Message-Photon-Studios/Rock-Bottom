@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
 public class SpellPickup : MonoBehaviour
@@ -9,8 +10,10 @@ public class SpellPickup : MonoBehaviour
     [SerializeField] int inspirationRequired = 0;
     [SerializeField] float spawnChance = 1f;
     [SerializeField] bool needsPayment;
+    [SerializeField] bool lockBottleAfterSwap = false;
     [SerializeField] ColorSpell colorSpell;
     [SerializeField] GameObject canvas;
+    [SerializeField] GameObject costContainer;
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text descriptionText;
@@ -42,9 +45,9 @@ public class SpellPickup : MonoBehaviour
     {
         if (colorSpell == null || pickedup) this.colorSpell = setSpell;
                 
-        descriptionText.text = colorSpell.description;
-        nameText.text = colorSpell.name;
-        cost.text = "Cost: " + colorSpell.spellCost;
+        descriptionText.text = colorSpell.GetDesc();
+        nameText.text = colorSpell.GetName();
+        cost.text = colorSpell.spellCost.ToString();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = colorSpell.GetBottleSprite().smallSprite;
@@ -70,8 +73,10 @@ public class SpellPickup : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
+        if (inventory == null) inventory = PlayerLevelMananger.instance.GetComponent<ColorInventory>();
         if(other.CompareTag("Player"))
         {
+            if(pickedup && lockBottleAfterSwap) return;
             if(inspirationRequired > GameManager.instance.GetInspiration())
             {
                 //TODO Add text about it being locked or something
@@ -81,7 +86,7 @@ public class SpellPickup : MonoBehaviour
             inventory.EnablePickUp(this);
             if(needsPayment)
             {
-                cost.gameObject.SetActive(true);
+                costContainer.gameObject.SetActive(true);
                 swapText.SetActive(false);
                 buyText.SetActive(true);
 
@@ -95,10 +100,13 @@ public class SpellPickup : MonoBehaviour
                 
             } else
             {
+                costContainer.gameObject.SetActive(false);
                 swapText.SetActive(true);
                 buyText.SetActive(false); 
             }
 
+            descriptionText.text = colorSpell.GetDesc();
+            nameText.text = colorSpell.GetName();
             canvas.SetActive(true);
         }
     }
@@ -109,7 +117,7 @@ public class SpellPickup : MonoBehaviour
         {
             inventory.DisablePickUp(this);
             canvas.SetActive(false);
-            cost.gameObject.SetActive(false);
+            costContainer.gameObject.SetActive(false);
         }
     }
 
@@ -134,6 +142,12 @@ public class SpellPickup : MonoBehaviour
         body.velocity = new Vector2(0,0);
         GetComponent<Rigidbody2D>().AddForce(new Vector2(player.GetComponent<PlayerMovement>().lookDir * 200, 500));
         body.gravityScale = 2;
+        if(lockBottleAfterSwap) 
+        {
+            canvas.SetActive(false);
+            costContainer.gameObject.SetActive(false);
+            inventory.DisablePickUp(this);
+        }
     }
 
     /// <summary>

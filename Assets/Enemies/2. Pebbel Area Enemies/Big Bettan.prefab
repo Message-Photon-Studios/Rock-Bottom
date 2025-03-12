@@ -84,14 +84,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77b2ab2f6931a348b244a58ecc71710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 2000, y: 0.5}
   viewRange: 10
-  attackFrontTrigger:
+  attackFrontFirstTrigger:
     radius: 0.9
     direction: 0
     width: 360
-    offset: {x: -0.51, y: 0.3}
+    offset: {x: -0.4, y: 0.1}
+    color: {r: 1, g: 0.431498, b: 0, a: 1}
+  attackFrontTrigger:
+    radius: 1.1
+    direction: 0
+    width: 360
+    offset: {x: -0.7, y: 0.3}
     color: {r: 1, g: 0, b: 0, a: 1}
   attackBackTrigger:
     radius: 1.1

@@ -12,9 +12,13 @@ public class ItemSpellManager : MonoBehaviour
     public static ItemSpellManager instance;
     [SerializeField] int itemPop;
     [SerializeField] public float stageCostMultiplier = 1;
+
+    [SerializeField] int petrifiedPigmentDrops = 2;
     [SerializeField] ColorSpell[] levelSpells;
 
     private Dictionary<Type, List<ItemEffect>> itemEffectsInLevel = new Dictionary<Type, List<ItemEffect>>();
+
+    private List<PetrifiedPigmentPickup> petrifiedPigments = new List<PetrifiedPigmentPickup>(0);
 
     void Awake()
     {
@@ -118,5 +122,28 @@ public class ItemSpellManager : MonoBehaviour
             obj.GetComponent<SpellPickup>().SetSpell(spell);
             if(spawnSetSpell.Count <= 0) spawnSetSpell.AddRange(spawnableSpells);
         }
+
+        for (int i = 0, j = 0; i < petrifiedPigmentDrops && j+i < petrifiedPigments.Count; i++)
+        {
+            int pick = i+j;
+            if(GameManager.instance.IsPetrifiedPigmentPickedUp(petrifiedPigments[pick].GetID())) 
+            {
+                j++;
+                i--;
+                continue;
+            }
+
+            petrifiedPigments[pick].gameObject.SetActive(true);
+        }
+    }
+
+    public void AddPetrifiedPigment(PetrifiedPigmentPickup petrifiedPigmentPickup)
+    {
+        petrifiedPigments.Add(petrifiedPigmentPickup);
+    }
+
+    public void ClearPetrifiedPigmentList()
+    {
+        petrifiedPigments = new List<PetrifiedPigmentPickup>();
     }
 }
