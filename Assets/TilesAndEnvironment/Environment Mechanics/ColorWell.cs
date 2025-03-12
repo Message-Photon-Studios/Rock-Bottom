@@ -10,9 +10,12 @@ public class ColorWell : MonoBehaviour
     [SerializeField] int colorAmount;
 
     [SerializeField] SpriteRenderer orbRenderer;
+    [SerializeField] Animator orbAnimator;
     [SerializeField] Light2D orbLight;
     private bool playerClose = false;
     public bool wellUsed {get; private set; } = false; 
+
+    private ColorSlot activateOnSlot = null;
 
     void Start()
     {
@@ -31,10 +34,18 @@ public class ColorWell : MonoBehaviour
         else return 0;
     }
 
-    public void UseWell()
+    public void UseWellAnimation(ColorSlot colorSlot)
     {
+        orbAnimator.SetBool("useWell", true);
         wellUsed = true;
         playerClose = false;
+        activateOnSlot = colorSlot;
+    }
+
+    public void UseWell()
+    {
+        PlayerLevelMananger.instance.colorInventory.AddColor(color, colorAmount, activateOnSlot);
+        PlayerLevelMananger.instance.playerCombatSystem.DeactivateAddColorMode();
     }
     
     #region Check playerClose

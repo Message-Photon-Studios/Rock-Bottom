@@ -84,7 +84,7 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         if(addColorMode)
         {
-            AddColor(colorInventory.colorSlots[colorInventory.activeSlot]);
+            AddColorAnimation(colorInventory.colorSlots[colorInventory.activeSlot]);
             return;
         }
 
@@ -303,21 +303,26 @@ public class PlayerCombatSystem : MonoBehaviour
         addColorMode = false;
     }
 
-    private void AddColor (ColorSlot slot)
+    private void AddColorAnimation (ColorSlot slot)
     {
         if(!addColorMode) return;
         if(colorWell == null) return;
         if(colorWell.GetColorAmount() == 0 || colorWell.color == null) return;
-
-        colorInventory.AddColor(colorWell.color, colorWell.GetColorAmount(), slot);
-        colorWell.UseWell();
+        
+        colorWell.UseWellAnimation(slot);
         
         animator.SetTrigger("gainColor");
 
+        playerMovement.movementRoot.SetTotalRoot("colorWellActivation", true);
+
         colorWell = null;
-        addColorMode = false;
     }
 
+    public void DeactivateAddColorMode()
+    {
+        addColorMode = false;
+        playerMovement.movementRoot.SetTotalRoot("colorWellActivation", false);
+    }
     #endregion
 
     #region Old Default Attack
