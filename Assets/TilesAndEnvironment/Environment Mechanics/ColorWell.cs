@@ -31,6 +31,12 @@ public class ColorWell : MonoBehaviour
         orbRenderer.material = color.colorMat;
         orbLight.color = color.lightTintColor;
         mapIcon.SetActive(true);
+
+        if(wellUsed) 
+        {
+            orbAnimator.SetTrigger("deactivateWell");
+            mapIcon.SetActive(false);
+        }
     }
 
     void OnDisable()
