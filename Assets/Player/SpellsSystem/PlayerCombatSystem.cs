@@ -312,6 +312,8 @@ public class PlayerCombatSystem : MonoBehaviour
         colorInventory.AddColor(colorWell.color, colorWell.GetColorAmount(), slot);
         colorWell.UseWell();
         
+        animator.SetTrigger("gainColor");
+
         colorWell = null;
         addColorMode = false;
     }

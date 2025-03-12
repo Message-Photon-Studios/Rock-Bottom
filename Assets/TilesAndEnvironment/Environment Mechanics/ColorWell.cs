@@ -2,13 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class ColorWell : MonoBehaviour
 {
     public GameColor color;
     [SerializeField] int colorAmount;
+
+    [SerializeField] SpriteRenderer orbRenderer;
+    [SerializeField] Light2D orbLight;
     private bool playerClose = false;
     public bool wellUsed {get; private set; } = false; 
+
+    void Start()
+    {
+        orbRenderer.material = color.colorMat;
+        orbLight.color = color.lightTintColor;
+    }
 
     void OnDisable()
     {
