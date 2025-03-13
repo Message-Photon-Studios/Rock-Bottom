@@ -23,5 +23,13 @@ public class BrownColorEffect : ColorEffect
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = enemyObj.transform;
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power)+extraDamage);
+
+        ColorLibrary colorLib = GameManager.instance.GetComponent<ColorLibrary>();
+        GameColor bonusEffect = colorLib.GetRandomPrimaryColor();
+        if (Random.value > 0.5)
+        {
+            bonusEffect = colorLib.GetRandomSecondaryColor();
+        }
+        bonusEffect.GetColorEffect().Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage);
     }
 }
