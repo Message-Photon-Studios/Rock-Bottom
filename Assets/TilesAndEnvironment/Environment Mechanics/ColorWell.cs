@@ -17,7 +17,7 @@ public class ColorWell : MonoBehaviour
     [SerializeField] Light2D orbLight;
     [SerializeField] GameObject mapIcon;
     [SerializeField] SpriteRenderer colorIconImage;
-    private Color iconShadedColor;
+    private Color iconShadedColor = Color.black;
     private bool playerClose = false;
     public bool wellUsed {get; private set; } = false; 
 
@@ -25,14 +25,14 @@ public class ColorWell : MonoBehaviour
 
     void Start()
     {
-        iconShadedColor = colorIconImage.color;
-
+        if(iconShadedColor == Color.black) iconShadedColor = colorIconImage.color;
         if(color == null) return;
         else Setup(color);
     }
 
     void OnEnable()
     {
+        if(iconShadedColor == Color.black) iconShadedColor = colorIconImage.color;
         if(wellUsed) DisableWell();
         else
         {
