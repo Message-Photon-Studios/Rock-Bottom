@@ -31,6 +31,10 @@ public class ColorWell : MonoBehaviour
     void OnEnable()
     {
         if(wellUsed) DisableWell();
+        else
+        {
+            mapIcon.SetActive(true);
+        }
     }
 
     public void Setup(GameColor color)
