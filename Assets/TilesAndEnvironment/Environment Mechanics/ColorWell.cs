@@ -38,6 +38,7 @@ public class ColorWell : MonoBehaviour
         this.color = color;
         orbRenderer.material = color.colorMat;
         orbLight.color = color.lightTintColor;
+        mapIcon.GetComponent<SpriteRenderer>().sprite = color.colorIcon;
         mapIcon.SetActive(true);
         colorIconImage.sprite = color.colorIcon;
         //colorIconImage.material = color.colorMat;
