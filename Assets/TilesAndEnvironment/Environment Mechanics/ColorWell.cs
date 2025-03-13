@@ -76,7 +76,6 @@ public class ColorWell : MonoBehaviour
     public void UseWell()
     {
         PlayerLevelMananger.instance.colorInventory.AddColor(color, colorAmount, activateOnSlot);
-        PlayerLevelMananger.instance.playerCombatSystem.DeactivateAddColorMode();
         mapIcon.SetActive(false);
         colorIconImage.gameObject.SetActive(false);
     }
@@ -88,6 +87,7 @@ public class ColorWell : MonoBehaviour
         mapIcon.SetActive(false);
         colorIconImage.gameObject.SetActive(false);
         orbAnimator.SetTrigger("deactivateWell");
+        PlayerLevelMananger.instance.playerCombatSystem.DeactivateAddColorMode();
         wellUsed = true;
         
     }

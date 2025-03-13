@@ -34,7 +34,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
     Action<InputAction.CallbackContext> specialAttackHandler;
-    bool addColorMode = false;
+    public bool addColorMode {get; private set;} = false;
     ColorWell colorWell;
 
 

@@ -513,6 +513,8 @@ public class ColorInventory : MonoBehaviour
     
     private void DivideColor()
     {
+        if(PlayerLevelMananger.instance.playerCombatSystem.addColorMode) return;
+        
         GameColor gameColor = ActiveSlot().gameColor;
         int amount = ActiveSlot().charge;
         if(gameColor == null || amount <= 0) return;
