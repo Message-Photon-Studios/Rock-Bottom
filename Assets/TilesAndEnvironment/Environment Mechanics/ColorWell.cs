@@ -25,6 +25,11 @@ public class ColorWell : MonoBehaviour
         else Setup(color);
     }
 
+    void OnEnable()
+    {
+        if(wellUsed) DisableWell();
+    }
+
     public void Setup(GameColor color)
     {
         this.color = color;
@@ -63,6 +68,16 @@ public class ColorWell : MonoBehaviour
         PlayerLevelMananger.instance.colorInventory.AddColor(color, colorAmount, activateOnSlot);
         PlayerLevelMananger.instance.playerCombatSystem.DeactivateAddColorMode();
         mapIcon.SetActive(false);
+    }
+
+    public void DisableWell()
+    {
+        orbRenderer.enabled = false;
+        orbLight.gameObject.SetActive(false);
+        mapIcon.SetActive(false);
+        orbAnimator.SetTrigger("deactivateWell");
+        wellUsed = true;
+        
     }
     
     #region Check playerClose
