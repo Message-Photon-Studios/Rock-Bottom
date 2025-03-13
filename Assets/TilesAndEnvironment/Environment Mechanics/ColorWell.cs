@@ -17,6 +17,7 @@ public class ColorWell : MonoBehaviour
     [SerializeField] Light2D orbLight;
     [SerializeField] GameObject mapIcon;
     [SerializeField] SpriteRenderer colorIconImage;
+    private Color iconShadedColor;
     private bool playerClose = false;
     public bool wellUsed {get; private set; } = false; 
 
@@ -24,6 +25,8 @@ public class ColorWell : MonoBehaviour
 
     void Start()
     {
+        iconShadedColor = colorIconImage.color;
+
         if(color == null) return;
         else Setup(color);
     }
@@ -46,7 +49,8 @@ public class ColorWell : MonoBehaviour
         mapIcon.SetActive(true);
         colorIconImage.sprite = color.colorIcon;
         //colorIconImage.material = color.colorMat;
-        colorIconImage.gameObject.SetActive(false);
+        colorIconImage.color = iconShadedColor;
+        colorIconImage.gameObject.SetActive(true);
 
         if(wellUsed) 
         {
@@ -77,7 +81,7 @@ public class ColorWell : MonoBehaviour
     {
         PlayerLevelMananger.instance.colorInventory.AddColor(color, colorAmount, activateOnSlot);
         mapIcon.SetActive(false);
-        colorIconImage.gameObject.SetActive(false);
+        colorIconImage.color = iconShadedColor;
     }
 
     public void DisableWell()
@@ -87,6 +91,8 @@ public class ColorWell : MonoBehaviour
         mapIcon.SetActive(false);
         colorIconImage.gameObject.SetActive(false);
         orbAnimator.SetTrigger("deactivateWell");
+        colorIconImage.color = new Color(255, 255, 255, 255*.4f);
+        colorIconImage.gameObject.SetActive(false);
         PlayerLevelMananger.instance.playerCombatSystem.DeactivateAddColorMode();
         wellUsed = true;
         
@@ -98,7 +104,7 @@ public class ColorWell : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             playerClose = true;
-            if(!wellUsed) colorIconImage.gameObject.SetActive(true);
+            if(!wellUsed) colorIconImage.color = Color.white;
             PlayerLevelMananger.instance.playerCombatSystem.EnableAbsorbColor(this);
         }
     }
@@ -108,7 +114,7 @@ public class ColorWell : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             playerClose = false;
-            colorIconImage.gameObject.SetActive(false);
+            colorIconImage.color = iconShadedColor;
             PlayerLevelMananger.instance.playerCombatSystem.DisableAbsorbColor();
         }
     }
