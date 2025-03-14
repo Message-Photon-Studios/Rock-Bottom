@@ -32,4 +32,10 @@ public class BrownColorEffect : ColorEffect
         }
         bonusEffect.GetColorEffect().Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage);
     }
+
+    private IEnumerator ApplyBonusEffect(GameColor color, GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
+    {
+        yield return new WaitForSeconds(0.1f);
+        color.GetColorEffect().Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage);
+    }
 }
