@@ -35,7 +35,7 @@ public class PlayerCombatSystem : MonoBehaviour
     public UnityAction<string> onRecast;
     Action<InputAction.CallbackContext> specialAttackHandler;
     public bool addColorMode {get; private set;} = false;
-    ColorWell colorWell;
+    public ColorWell colorWell {get; private set;}
 
 
     #region Setup & Update
@@ -299,8 +299,12 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public void DisableAbsorbColor()
     {
-        this.colorWell = null;
         addColorMode = false;
+    }
+
+    public void MovedAwayFromWell(ColorWell movedAwayFrom)
+    {
+        if(colorWell == movedAwayFrom) colorWell = null;
     }
 
     private void AddColorAnimation (ColorSlot slot)
@@ -314,8 +318,6 @@ public class PlayerCombatSystem : MonoBehaviour
         animator.SetTrigger("gainColor");
 
         playerMovement.movementRoot.SetTotalRoot("colorWellActivation", true);
-
-        colorWell = null;
     }
 
     public void DeactivateAddColorMode()

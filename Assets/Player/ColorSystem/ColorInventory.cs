@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using Steamworks;
 using UnityEngine.Rendering.Universal;
+using System.Linq;
 
 /// <summary>
 /// Keeps track of the colors that the player has gathered. 
@@ -512,16 +513,46 @@ public class ColorInventory : MonoBehaviour
     #region Divide color action
     
     private void DivideColor()
-    {
+    {        
         if(PlayerLevelMananger.instance.playerCombatSystem.addColorMode) return;
-        
         GameColor gameColor = ActiveSlot().gameColor;
         int amount = ActiveSlot().charge;
         if(gameColor == null || amount <= 0) return;
 
-        ActiveSlot().RemoveColor();
         
         int rootAmount = amount/gameColor.rootColors.Length;
+
+        ColorWell colorWell = PlayerLevelMananger.instance.playerCombatSystem.colorWell;
+        if(colorWell != null)
+        {
+            bool foundRootColor = false;
+            List<GameColor> remainingColors = new List<GameColor>();
+            foreach(GameColor rootColor in gameColor.rootColors)
+            {
+                if(colorWell.color.ContainsRootColor(rootColor))
+                {
+                    foundRootColor = true;
+                    colorWell.AddColorAmount(rootAmount);
+                } else
+                {
+                    remainingColors.Add(rootColor);
+                }
+            }
+
+            if(foundRootColor)
+            {
+                ActiveSlot().RemoveColor();
+                foreach (GameColor remainingColor in remainingColors)
+                {
+                    AddColor(remainingColor, rootAmount, ActiveSlot());
+                }
+
+                onColorUpdated?.Invoke();
+                return;
+            }
+        }
+
+        ActiveSlot().RemoveColor();
         int existingRootAmount = 0;
         foreach(GameColor rootColor in gameColor.rootColors)
         {
