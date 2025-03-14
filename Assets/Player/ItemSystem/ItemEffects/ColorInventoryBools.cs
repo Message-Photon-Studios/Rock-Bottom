@@ -9,6 +9,7 @@ public class ColorInventoryBools : ItemEffect
     [SerializeField] bool chaosBottle;
     [SerializeField] bool routedSheild;
     [SerializeField] bool chaoticMixer;
+    [SerializeField] bool shatteredPrism;
     public override void ActivateEffect()
     {
         ColorInventory colorInv = GetPlayer().GetComponent<ColorInventory>();
@@ -17,6 +18,7 @@ public class ColorInventoryBools : ItemEffect
         if (chaosBottle) colorInv.chaosEnabled = true;
         if (routedSheild) colorInv.routedSheild = true;
         if (chaoticMixer) EnemyStats.chaoticMixer = true;
+        if (shatteredPrism) colorInv.shatteredPrism = true;
 
     }
 
@@ -28,6 +30,7 @@ public class ColorInventoryBools : ItemEffect
         if (chaosBottle) colorInv.chaosEnabled = false;
         if (routedSheild) colorInv.routedSheild = false;
         if (chaoticMixer) EnemyStats.chaoticMixer = false;
+        if (shatteredPrism) colorInv.shatteredPrism = false;
     }
 
 }

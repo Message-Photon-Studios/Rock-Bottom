@@ -24,21 +24,23 @@ public class BrownColorEffect : ColorEffect
         instantiatedParticles.transform.parent = enemyObj.transform;
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power)+extraDamage);
 
-
-        if (!Application.isPlaying)
+        if (playerObj.GetComponent<ColorInventory>().shatteredPrism)
         {
-            Debug.LogError("Cannot run coroutine outside of play mode");
-            return;
+            if (!Application.isPlaying)
+            {
+                Debug.LogError("Cannot run coroutine outside of play mode");
+                return;
+            }
+            RainbowCoWorker coWorker = new GameObject().AddComponent<RainbowCoWorker>();
+            ColorLibrary colorLib = GameManager.instance.GetComponent<ColorLibrary>();
+            GameColor bonusEffect = colorLib.GetRandomPrimaryColor();
+            if (Random.value > 0.5)
+            {
+                bonusEffect = colorLib.GetRandomSecondaryColor();
+            }
+            float bonusPower = playerObj.GetComponent<ColorInventory>().GetColorBuff(bonusEffect);
+            coWorker.Work(ApplyBonusEffect(bonusEffect, enemyObj, impactPoint, playerObj, power + bonusPower, forcePerspectivePlayer, extraDamage));
         }
-        RainbowCoWorker coWorker = new GameObject().AddComponent<RainbowCoWorker>();
-        ColorLibrary colorLib = GameManager.instance.GetComponent<ColorLibrary>();
-        GameColor bonusEffect = colorLib.GetRandomPrimaryColor();
-        if (Random.value > 0.5)
-        {
-            bonusEffect = colorLib.GetRandomSecondaryColor();
-        }
-        float bonusPower = playerObj.GetComponent<ColorInventory>().GetColorBuff(bonusEffect);
-        coWorker.Work(ApplyBonusEffect(bonusEffect, enemyObj, impactPoint, playerObj, power + bonusPower, forcePerspectivePlayer, extraDamage));
     }
 
     private IEnumerator ApplyBonusEffect(GameColor color, GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)

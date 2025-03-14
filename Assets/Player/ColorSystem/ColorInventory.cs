@@ -55,6 +55,7 @@ public class ColorInventory : MonoBehaviour
     public bool autoRotate = false;
     public bool chaosEnabled = false;
     public bool routedSheild = false;
+    public bool shatteredPrism = false;
     private float rngMax = 0;
     private float rngMin = 0;
     private float rngBuff = 0;
