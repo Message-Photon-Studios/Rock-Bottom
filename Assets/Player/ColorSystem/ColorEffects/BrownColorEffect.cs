@@ -10,6 +10,7 @@ public class BrownColorEffect : ColorEffect
     [SerializeField] int uncoloredDamage;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
     {
+
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0)
         {
@@ -38,8 +39,8 @@ public class BrownColorEffect : ColorEffect
             {
                 bonusEffect = colorLib.GetRandomSecondaryColor();
             }
-            float bonusPower = playerObj.GetComponent<ColorInventory>().GetColorBuff(bonusEffect);
-            coWorker.Work(ApplyBonusEffect(bonusEffect, enemyObj, impactPoint, playerObj, power + bonusPower, forcePerspectivePlayer, extraDamage));
+            float colorPower = playerObj.GetComponent<ColorInventory>().GetColorBuff(bonusEffect);
+            coWorker.Work(ApplyBonusEffect(bonusEffect, enemyObj, impactPoint, playerObj, Mathf.Max(0.5f + colorPower * 0.5f, 0.1f) , forcePerspectivePlayer, extraDamage));
         }
     }
 
