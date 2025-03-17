@@ -35,6 +35,7 @@ public class PlayerCombatSystem : MonoBehaviour
     public UnityAction<string> onRecast;
     Action<InputAction.CallbackContext> attackHandler1, attackHandler2, attackHandler3, attackHandler4;
     public bool addColorMode {get; private set;} = false;
+    public bool pickUpSpellMode = false;
     public ColorWell colorWell {get; private set;}
 
 
@@ -95,6 +96,12 @@ public class PlayerCombatSystem : MonoBehaviour
     public void AttackAnimation(int slotIndex)
     {
         if(slotIndex >= colorInventory.colorSlots.Count) return;
+        
+        if(pickUpSpellMode)
+        {
+            if(colorInventory.PickUp(slotIndex)) return;
+        }
+
         if(addColorMode)
         {
             AddColorAnimation(colorInventory.GetSlot(slotIndex));

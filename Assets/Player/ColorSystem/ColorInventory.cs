@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using Steamworks;
 using UnityEngine.Rendering.Universal;
 using System.Linq;
+using System.ComponentModel;
 
 /// <summary>
 /// Keeps track of the colors that the player has gathered. 
@@ -117,7 +118,7 @@ public class ColorInventory : MonoBehaviour
         onSlotChanged += slotChangedBrush;
         ColorSpellImpact.onSpellImpact += SpellImactTrigger;
         SpellImactOnVelocity.onSpellImpact += SpellImactTrigger;
-        pickUpAction.action.performed += PickUp;
+        //pickUpAction.action.performed += PickUp;
 
         divideColorHandler1 = (InputAction.CallbackContext ctx) => DivideColor(0);
         divideColorHandler2 = (InputAction.CallbackContext ctx) => DivideColor(1);
@@ -153,7 +154,7 @@ public class ColorInventory : MonoBehaviour
         onColorUpdated -= updateBrushColor;
         onSlotChanged -= slotChangedBrush;
         
-        pickUpAction.action.performed -= PickUp;
+        //pickUpAction.action.performed -= PickUp;
         
         removeColorAction1.action.performed -= divideColorHandler1;
         removeColorAction2.action.performed -= divideColorHandler2;
@@ -790,18 +791,21 @@ public class ColorInventory : MonoBehaviour
     #endregion
 
     #region Change color spells
-    public void PickUp(InputAction.CallbackContext ctx)
+    public bool PickUp(int slotIndex)
     {
-        if(pickUpSpell == null) return;
+        if(pickUpSpell == null) return false;
         if(pickUpSpell.GetNeedsPayement())
         {
             if(GetComponent<ItemInventory>().PayCost(pickUpSpell.GetSpell().spellCost))
             {
-                pickUpSpell.PickedUp();
+                pickUpSpell.PickedUp(slotIndex);
+                return true;
             }
+            return false;
         } else
         {
-            pickUpSpell.PickedUp();
+            pickUpSpell.PickedUp(slotIndex);
+            return true;
         }
     }
 
@@ -817,6 +821,7 @@ public class ColorInventory : MonoBehaviour
         }
 
         pickUpSpell = spell;
+        PlayerLevelMananger.instance.playerCombatSystem.pickUpSpellMode = true;
         onSpellPickupInRange?.Invoke(true);
     }
 
@@ -827,8 +832,11 @@ public class ColorInventory : MonoBehaviour
     public void DisablePickUp (SpellPickup spell) 
     {
         pickUpSpell = null;  
+        PlayerLevelMananger.instance.playerCombatSystem.pickUpSpellMode = false;
         onSpellPickupInRange?.Invoke(false);
     }
+
+    /*
 
     /// <summary>
     /// Chagnes the color spell for the active slot
@@ -845,7 +853,13 @@ public class ColorInventory : MonoBehaviour
         }
         ActiveSlot().storedSpellCDs = CreateCDList(newSpell, min);
         onColorSpellChanged?.Invoke(activeSlot);
-    }
+    }*/
+
+    /// <summary>
+    /// Change the spell of the color slot
+    /// </summary>
+    /// <param name="slotIndex"></param>
+    /// <param name="newSpell"></param>
 
     public List<float> CreateCDList(ColorSpell spell, float min)
     {

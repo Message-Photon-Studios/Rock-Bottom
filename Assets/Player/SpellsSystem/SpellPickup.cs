@@ -53,8 +53,8 @@ public class SpellPickup : MonoBehaviour
         spriteRenderer.sprite = colorSpell.GetBottleSprite().smallSprite;
 
         canvas.SetActive(false);
-        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
-        itemInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
+        inventory = PlayerLevelMananger.instance.colorInventory;
+        itemInventory = PlayerLevelMananger.instance.playerInventory;
     }
     /// <summary>
     /// Randomly destroys the spawn point depending on the initial conditions
@@ -130,11 +130,11 @@ public class SpellPickup : MonoBehaviour
     /// <summary>
     /// Is called when this color spell is picked up
     /// </summary>
-    public void PickedUp()
+    public void PickedUp(int slotIndex)
     {
         pickedup = true;
-        ColorSpell tmp = inventory.GetActiveColorSpell();
-        inventory.ChangeActiveSlotColorSpell(colorSpell);
+        ColorSpell tmp = inventory.GetColorSpell(slotIndex);
+        inventory.ChangeColorSpell(slotIndex, colorSpell);
         needsPayment = false;
         SetSpell(tmp);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
