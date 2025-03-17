@@ -39,7 +39,7 @@ public class PrIndicationController : MonoBehaviour
     /// </summary>
     private void UpdatePrIndicator(){
         #nullable enable
-        GameColor? currentColor = colorInventory.CheckActveColor();
+        GameColor? currentColor = colorInventory.CheckActiveColor();
         if(currentColor == null) {
             powerText.gameObject.SetActive(false);
             border.color = new Color32(255, 255, 255, 150);

@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "DefaultAttack",
+                    "name": "Attack2",
                     "type": "Button",
                     "id": "376b0d1a-1f6d-4313-b0fc-8d7f3031f39d",
                     "expectedControlType": "Button",
@@ -78,9 +78,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SpecialAttack",
+                    "name": "Attack1",
                     "type": "Button",
                     "id": "ba16ae19-c792-4e75-a54b-d1e20b66999e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attack3",
+                    "type": "Button",
+                    "id": "b3a56f99-41ca-41f7-b6a2-e304001255fb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attack4",
+                    "type": "Button",
+                    "id": "44e18770-9df9-4357-8b7f-c57c90909de3",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -105,9 +123,36 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "DivideColor",
+                    "name": "DivideColor1",
                     "type": "Button",
                     "id": "96a22342-4dc2-446a-a5bb-3d8484bec3fc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.8)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DivideColor2",
+                    "type": "Button",
+                    "id": "f5a9ed5b-d314-43cf-912c-eba98e7c0ad4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.8)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DivideColor3",
+                    "type": "Button",
+                    "id": "b4b30c80-9858-4725-9adf-f3ae7f6411dd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.8)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DivideColor4",
+                    "type": "Button",
+                    "id": "775a382d-9ce5-4083-a678-69badfffc638",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Hold(duration=0.8)",
@@ -461,7 +506,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "DefaultAttack",
+                    "action": "Attack2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -472,7 +517,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XboxController",
-                    "action": "DefaultAttack",
+                    "action": "Attack2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -483,7 +528,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PlayStation",
-                    "action": "DefaultAttack",
+                    "action": "Attack2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -494,7 +539,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard;KeyboardMouse",
-                    "action": "DefaultAttack",
+                    "action": "Attack2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -505,7 +550,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "SpecialAttack",
+                    "action": "Attack1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -516,7 +561,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XboxController",
-                    "action": "SpecialAttack",
+                    "action": "Attack1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -527,7 +572,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PlayStation",
-                    "action": "SpecialAttack",
+                    "action": "Attack1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -538,7 +583,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard;KeyboardMouse",
-                    "action": "SpecialAttack",
+                    "action": "Attack1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -648,7 +693,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XboxController",
-                    "action": "DivideColor",
+                    "action": "DivideColor1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -659,7 +704,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PlayStation",
-                    "action": "DivideColor",
+                    "action": "DivideColor1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -670,7 +715,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard;KeyboardMouse",
-                    "action": "DivideColor",
+                    "action": "DivideColor1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -681,7 +726,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "DivideColor",
+                    "action": "DivideColor1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -814,6 +859,204 @@
                     "processors": "",
                     "groups": "PlayStation;XboxController",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1dbe3020-7820-44c6-9d1c-1f71ca23f007",
+                    "path": "<XInputController>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XboxController",
+                    "action": "Attack3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b177d042-cdc3-42e3-834d-b773419e4ef5",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse;Keyboard",
+                    "action": "Attack3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a19973ae-51d3-42ae-99dc-2977fee60f8c",
+                    "path": "<DualShockGamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PlayStation",
+                    "action": "Attack3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "85ae0fc6-7b96-43ad-99c4-a436fd923c55",
+                    "path": "<XInputController>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XboxController",
+                    "action": "Attack4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "31b03eb9-1b8d-40eb-9aef-9746f433369b",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Attack4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8765d2a2-3b0e-4cf0-a552-b300e503cf9a",
+                    "path": "<DualShockGamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92bcfeb7-f6d3-4f4a-a236-d278535d4a64",
+                    "path": "<XInputController>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XboxController",
+                    "action": "DivideColor2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6f63792c-544f-4d42-b692-b0c061710375",
+                    "path": "<DualShockGamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PlayStation",
+                    "action": "DivideColor2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a37a2076-a81f-4f62-839e-18935ed870de",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard;KeyboardMouse",
+                    "action": "DivideColor2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "76dfe1d2-0802-4f3b-8f5b-dcc56ce84cf7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "DivideColor2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1b77c0fb-f476-45fc-acf4-69cdf203296d",
+                    "path": "<XInputController>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XboxController",
+                    "action": "DivideColor3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2cc2a65-4fe6-4956-99cf-4901206a1107",
+                    "path": "<DualShockGamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PlayStation",
+                    "action": "DivideColor3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2378cc58-33aa-46ef-bb24-5799503e1488",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard;KeyboardMouse",
+                    "action": "DivideColor3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "06f5c0e7-1476-47ff-8fe5-2b8be371a0da",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "DivideColor3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3923e7cf-bdda-4293-b550-5f7493503079",
+                    "path": "<XInputController>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XboxController",
+                    "action": "DivideColor4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "586236eb-2041-4eb2-bdc1-e6a4af5c5da3",
+                    "path": "<DualShockGamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PlayStation",
+                    "action": "DivideColor4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93cec63a-0296-4ad8-a098-5f67207eec76",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard;KeyboardMouse",
+                    "action": "DivideColor4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b94f951d-e9db-495b-bd5f-fee8863a32bc",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "DivideColor4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

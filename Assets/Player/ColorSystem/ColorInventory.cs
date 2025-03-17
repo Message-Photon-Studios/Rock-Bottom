@@ -30,7 +30,7 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] InputActionReference changeRightActions;
     [SerializeField] InputActionReference pickUpAction;
     [SerializeField] public Material defaultColor;
-    [SerializeField] InputActionReference removeColorAction;
+    [SerializeField] InputActionReference removeColorAction1, removeColorAction2, removeColorAction3, removeColorAction4;
     [SerializeField] int rainbowExtraDrain;
     [SerializeField] float minCD = 0.3f;
     [SerializeField] int maxStoredSpells = 5;
@@ -99,7 +99,7 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     public UnityAction onSpellChargeChange;
     
-    private System.Action<InputAction.CallbackContext> divideColorHandler;
+    private System.Action<InputAction.CallbackContext> divideColorHandler1, divideColorHandler2, divideColorHandler3, divideColorHandler4;
 
     #endregion
 
@@ -111,14 +111,24 @@ public class ColorInventory : MonoBehaviour
         playerLight = GetComponentInChildren<Light2D>();
         startColorSlots = colorSlots.Count;
         slotChangedBrush = (int dir) => {updateBrushColor();}; 
-        changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
+        //TODO this disables rotation. Reactivate later if needed.
+        //changeRightActions.action.performed += (dir) => {RotateActive((int)dir.ReadValue<float>()); };
         onColorUpdated += updateBrushColor;
         onSlotChanged += slotChangedBrush;
         ColorSpellImpact.onSpellImpact += SpellImactTrigger;
         SpellImactOnVelocity.onSpellImpact += SpellImactTrigger;
         pickUpAction.action.performed += PickUp;
-        divideColorHandler = (InputAction.CallbackContext ctx) => DivideColor();
-        removeColorAction.action.performed += divideColorHandler;
+
+        divideColorHandler1 = (InputAction.CallbackContext ctx) => DivideColor(0);
+        divideColorHandler2 = (InputAction.CallbackContext ctx) => DivideColor(1);
+        divideColorHandler3 = (InputAction.CallbackContext ctx) => DivideColor(2);
+        divideColorHandler4 = (InputAction.CallbackContext ctx) => DivideColor(3);
+
+        removeColorAction1.action.performed += divideColorHandler1;
+        removeColorAction2.action.performed += divideColorHandler2;
+        removeColorAction3.action.performed += divideColorHandler3;
+        removeColorAction4.action.performed += divideColorHandler4;
+
         GameObject player = GameObject.FindWithTag("Player");
         player.GetComponent<PlayerStats>().onPlayerDamaged += WhenDamaged;
         player.GetComponent<PlayerMovement>().onPlayerDash += DashSpells;
@@ -134,17 +144,22 @@ public class ColorInventory : MonoBehaviour
         */
         onColorUpdated?.Invoke();
 
-        if(playerLight) playerLight.color = colorSlots[activeSlot].gameColor.lightTintColor;
+        if(playerLight) playerLight.color = emptyBottleColor.lightTintColor;
     }
 
     void OnDisable()
     {
-        changeRightActions.action.performed -= (dir) => {RotateActive((int)dir.ReadValue<float>()); };
+        //changeRightActions.action.performed -= (dir) => {RotateActive((int)dir.ReadValue<float>()); };
         onColorUpdated -= updateBrushColor;
         onSlotChanged -= slotChangedBrush;
         
         pickUpAction.action.performed -= PickUp;
-        removeColorAction.action.performed -= divideColorHandler;
+        
+        removeColorAction1.action.performed -= divideColorHandler1;
+        removeColorAction2.action.performed -= divideColorHandler2;
+        removeColorAction3.action.performed -= divideColorHandler3;
+        removeColorAction4.action.performed -= divideColorHandler4;
+
         ColorSpellImpact.onSpellImpact -= SpellImactTrigger;
         SpellImactOnVelocity.onSpellImpact -= SpellImactTrigger;
         GameObject player = GameObject.FindWithTag("Player");
@@ -167,7 +182,8 @@ public class ColorInventory : MonoBehaviour
         if(lockSwapping) return;
         activeSlot = (colorSlots.Count+activeSlot+dir)%colorSlots.Count;
         onSlotChanged?.Invoke(dir);
-        if (autoRotate) GetComponent<PlayerCombatSystem>().SpecialAttackAnimation();
+        //TODO fix centrifuge item
+        //if (autoRotate) GetComponent<PlayerCombatSystem>().AttackAnimation();
     }
 
     public void DisableRotation()
@@ -180,16 +196,7 @@ public class ColorInventory : MonoBehaviour
         CanSwap = true;
     }
 
-    /// <summary>
-    /// Returns the color effect from the active color slot and decreases its charge with 1
-    /// </summary>
-    /// <returns></returns>
-    public GameColor UseActiveColor()
-    {
-        return UseActiveColor(ActiveSlot());
-    }
-
-    public GameColor UseActiveColor(ColorSlot slot)
+    public GameColor UseColorSlot(ColorSlot slot)
     {
         if(slot.charge > 0)
         {   
@@ -221,15 +228,27 @@ public class ColorInventory : MonoBehaviour
         return colorSlots[activeSlot];
     }
 
+    public ColorSlot GetSlot(int index)
+    {
+        if(index >= colorSlots.Count) return null;
+        return colorSlots[index];
+    }
+
     /// <summary>
     /// Returns the color effect from the active color slot
     /// </summary>
-    public GameColor CheckActveColor()
+    public GameColor CheckActiveColor()
     {
-        return CheckActveColor(ActiveSlot());
+        return GetColorSlotColor(ActiveSlot());
     }
 
-    public GameColor CheckActveColor(ColorSlot slot)
+    public GameColor GetColorSlotColor(int slotIndex)
+    {
+        if(slotIndex >= colorSlots.Count) return null;
+        return GetColorSlotColor(colorSlots[slotIndex]);
+    }
+
+    public GameColor GetColorSlotColor(ColorSlot slot)
     {
         if (slot.charge > 0 && slot.gameColor != null)
         {
@@ -490,7 +509,7 @@ public class ColorInventory : MonoBehaviour
     /// <returns></returns>
     public float GetColorBuff()
     {
-        return GetColorBuff(CheckActveColor());
+        return GetColorBuff(CheckActiveColor());
     }
 
     public void SetRandomBuff()
@@ -512,11 +531,13 @@ public class ColorInventory : MonoBehaviour
 
     #region Divide color action
     
-    private void DivideColor()
+    private void DivideColor(int colorSlotIndex)
     {        
+
         if(PlayerLevelMananger.instance.playerCombatSystem.addColorMode) return;
-        GameColor gameColor = ActiveSlot().gameColor;
-        int amount = ActiveSlot().charge;
+        ColorSlot colorSlot = colorSlots[colorSlotIndex];
+        GameColor gameColor = colorSlot.gameColor;
+        int amount = colorSlot.charge;
         if(gameColor == null || amount <= 0) return;
 
         
@@ -541,10 +562,10 @@ public class ColorInventory : MonoBehaviour
 
             if(foundRootColor)
             {
-                ActiveSlot().RemoveColor();
+                colorSlot.RemoveColor();
                 foreach (GameColor remainingColor in remainingColors)
                 {
-                    AddColor(remainingColor, rootAmount, ActiveSlot());
+                    AddColor(remainingColor, rootAmount, colorSlot);
                 }
 
                 onColorUpdated?.Invoke();
@@ -552,7 +573,7 @@ public class ColorInventory : MonoBehaviour
             }
         }
 
-        ActiveSlot().RemoveColor();
+        colorSlot.RemoveColor();
         int existingRootAmount = 0;
         foreach(GameColor rootColor in gameColor.rootColors)
         {

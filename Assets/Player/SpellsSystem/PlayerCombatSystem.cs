@@ -12,7 +12,7 @@ public class PlayerCombatSystem : MonoBehaviour
 {
     public int rainbowComboDamage = 20;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
-    [SerializeField] InputActionReference specialAttackAction;
+    [SerializeField] InputActionReference attackAction1, attackAction2, attackAction3, attackAction4;
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
@@ -33,7 +33,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private bool spellAirHit = false;
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
-    Action<InputAction.CallbackContext> specialAttackHandler;
+    Action<InputAction.CallbackContext> attackHandler1, attackHandler2, attackHandler3, attackHandler4;
     public bool addColorMode {get; private set;} = false;
     public ColorWell colorWell {get; private set;}
 
@@ -41,11 +41,18 @@ public class PlayerCombatSystem : MonoBehaviour
     #region Setup & Update
     private void OnEnable() {
 
-        specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
+        attackHandler1 = (InputAction.CallbackContext ctx) => AttackAnimation(0);
+        attackHandler2 = (InputAction.CallbackContext ctx) => AttackAnimation(1);
+        attackHandler3 = (InputAction.CallbackContext ctx) => AttackAnimation(2);        
+        attackHandler4 = (InputAction.CallbackContext ctx) => AttackAnimation(4);
         
         body = GetComponent<Rigidbody2D>();
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
-        specialAttackAction.action.performed += specialAttackHandler;
+
+        attackAction1.action.performed += attackHandler1;
+        attackAction2.action.performed += attackHandler2;
+        attackAction3.action.performed += attackHandler3;
+        attackAction4.action.performed += attackHandler4;
     }
 
     private void Start()
@@ -55,7 +62,11 @@ public class PlayerCombatSystem : MonoBehaviour
 
     private void OnDisable()
     {
-        specialAttackAction.action.performed -= specialAttackHandler;
+        attackAction1.action.performed -= attackHandler1;
+        attackAction2.action.performed -= attackHandler2;
+        attackAction3.action.performed -= attackHandler3;
+        attackAction4.action.performed -= attackHandler4;
+
         GameManager.instance.onLevelLoaded -= ResetSpellSortingCounter;
     }
 
@@ -69,7 +80,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
         if (bunnyCast > 0 && bunnyCast >= Time.fixedTime)
         {
-            SpecialAttackAnimation();
+            AttackAnimation(activeSpellSlot);
         }
     }
 
@@ -77,14 +88,16 @@ public class PlayerCombatSystem : MonoBehaviour
 
     #region Attacks
     private GameObject currentSpell = null;
+    private int activeSpellSlot = -1;   
     /// <summary>
     /// Plays the animation for the special attack
     /// </summary>
-    public void SpecialAttackAnimation()
+    public void AttackAnimation(int slotIndex)
     {
+        if(slotIndex >= colorInventory.colorSlots.Count) return;
         if(addColorMode)
         {
-            AddColorAnimation(colorInventory.colorSlots[colorInventory.activeSlot]);
+            AddColorAnimation(colorInventory.GetSlot(slotIndex));
             return;
         }
 
@@ -92,18 +105,18 @@ public class PlayerCombatSystem : MonoBehaviour
         if (Time.timeScale == 0) return;
         if(!playerMovement.IsGrounded() && spellAirHit)
         {
-            SetBunnySpell();
+            SetBunnySpell(slotIndex);
             return;
         }
-        currentSpell= colorInventory.GetActiveColorSpell().gameObject;
+        currentSpell= colorInventory.GetColorSpell(slotIndex).gameObject;
         if(currentSpell == null) return;
         if(attacking)
         {
-            SetBunnySpell();
+            SetBunnySpell(slotIndex);
             return;
         }
         //if(!colorInventory.CheckActveColor()) return;
-        if (!colorInventory.IsSpellReady()) return;
+        if (!colorInventory.IsSpellReady(colorInventory.GetSlot(slotIndex))) return;
 
 
 
@@ -121,6 +134,7 @@ public class PlayerCombatSystem : MonoBehaviour
                 attackDoubleJumped = true;
             }
         }
+        activeSpellSlot = slotIndex;
         attacking = true;
         playerMovement.inAttackAnimation = true;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
@@ -135,11 +149,12 @@ public class PlayerCombatSystem : MonoBehaviour
     /// <summary>
     /// Handles the players special attack. Called by animation event
     /// </summary>
-    private void SpecialAttack()
+    private void SpellAttack()
     {
-        GameColor color = colorInventory.CheckActveColor();
-        if(currentSpell == null || color == null) return;
+        if(activeSpellSlot < 0) return;
 
+        GameColor color = colorInventory.GetColorSlotColor(activeSpellSlot);
+        if(currentSpell == null || color == null) return;
         Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+currentSpell.transform.position.x) * playerMovement.lookDir, 
                                         currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
         GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
@@ -147,10 +162,10 @@ public class PlayerCombatSystem : MonoBehaviour
         {
             ColorSpell spellStats = spell.GetComponent<ColorSpell>();
             spellStats.Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
-            colorInventory.UseActiveColor();
+            colorInventory.UseColorSlot(colorInventory.colorSlots[activeSpellSlot]);
             spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             if (!spellStats.spawnKey.Equals(""))onRecast?.Invoke(spellStats.spawnKey);
-            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown); //When adding items to change the cooldown change it here! 
+            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, colorInventory.GetSlot(activeSpellSlot)); //When adding items to change the cooldown change it here! 
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom();
         }
@@ -162,7 +177,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public void PocketSpecialAttack(ColorSlot slot)
     {
-        GameColor color = colorInventory.CheckActveColor(slot);
+        GameColor color = colorInventory.GetColorSlotColor(slot);
         ColorSpell spell = slot.colorSpell;
         if (spell == null || color == null) return;
 
@@ -173,7 +188,7 @@ public class PlayerCombatSystem : MonoBehaviour
         {
 
             spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
-            colorInventory.UseActiveColor(slot);
+            colorInventory.UseColorSlot(slot);
             spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetRandomBuff();
             colorInventory.MixRandom(slot);
@@ -186,7 +201,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public void DashSpecialAttack(ColorSlot slot)
     {
-        GameColor color = colorInventory.CheckActveColor(slot);
+        GameColor color = colorInventory.GetColorSlotColor(slot);
         ColorSpell spell = slot.colorSpell;
         if (spell == null || color == null) return;
 
@@ -196,7 +211,7 @@ public class PlayerCombatSystem : MonoBehaviour
         if (spellSpawn != null)
         {
             spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
-            colorInventory.UseActiveColor(slot);
+            colorInventory.UseColorSlot(slot);
             spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
             colorInventory.SetRandomBuff();
@@ -210,7 +225,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public void DoubleJumpSpecialAttack(ColorSlot slot)
     {
-        GameColor color = colorInventory.CheckActveColor(slot);
+        GameColor color = colorInventory.GetColorSlotColor(slot);
         ColorSpell spell = slot.colorSpell;
         if (spell == null || color == null) return;
 
@@ -223,7 +238,7 @@ public class PlayerCombatSystem : MonoBehaviour
             if(Time.time - playerMovement.lastFlipTime < 0.2f) lookDir *=-1;
 
             spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, lookDir, GetExtraDamage());
-            colorInventory.UseActiveColor(slot);
+            colorInventory.UseColorSlot(slot);
             spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
             colorInventory.SetRandomBuff();
@@ -275,9 +290,10 @@ public class PlayerCombatSystem : MonoBehaviour
         attackDoubleJumped = false;
     }
 
-    private void SetBunnySpell()
+    private void SetBunnySpell(int spellSlot)
     {
         if (bunnyCast > Time.fixedTime) return;
+        activeSpellSlot = spellSlot;
         bunnyCast = Time.fixedTime + bunnyCastTolerance;
     }
 
@@ -311,6 +327,7 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         if(!addColorMode) return;
         if(colorWell == null) return;
+        if(slot == null) return;
         if(colorWell.GetColorAmount() == 0 || colorWell.color == null) return;
         
         colorWell.UseWellAnimation(slot);
