@@ -934,7 +934,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
                     ""action"": ""Attack4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -945,7 +945,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<DualShockGamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PlayStation"",
                     ""action"": ""Attack4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

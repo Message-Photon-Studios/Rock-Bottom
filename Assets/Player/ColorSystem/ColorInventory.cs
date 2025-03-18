@@ -686,7 +686,7 @@ public class ColorInventory : MonoBehaviour
     public void AddColor(GameColor color, int amount, ColorSlot fillSlot)
     {
         if(color == null) return;
-        if(fillSlot == null) fillSlot = ActiveSlot();
+        if(fillSlot == null) return;
 
         /*
         if(ActiveSlot().IsEmpty() || ActiveSlot().gameColor == color)

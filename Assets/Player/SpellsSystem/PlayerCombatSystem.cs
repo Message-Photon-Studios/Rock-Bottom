@@ -45,7 +45,7 @@ public class PlayerCombatSystem : MonoBehaviour
         attackHandler1 = (InputAction.CallbackContext ctx) => AttackAnimation(0);
         attackHandler2 = (InputAction.CallbackContext ctx) => AttackAnimation(1);
         attackHandler3 = (InputAction.CallbackContext ctx) => AttackAnimation(2);        
-        attackHandler4 = (InputAction.CallbackContext ctx) => AttackAnimation(4);
+        attackHandler4 = (InputAction.CallbackContext ctx) => AttackAnimation(3);
         
         body = GetComponent<Rigidbody2D>();
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
@@ -158,7 +158,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpellAttack()
     {
-        if(activeSpellSlot < 0) return;
+        if(activeSpellSlot < 0 || activeSpellSlot >= colorInventory.colorSlots.Count) return;
 
         GameColor color = colorInventory.GetColorSlotColor(activeSpellSlot);
         if(currentSpell == null || color == null) return;
