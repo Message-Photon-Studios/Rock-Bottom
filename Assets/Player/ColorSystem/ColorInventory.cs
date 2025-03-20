@@ -28,9 +28,7 @@ public class ColorInventory : MonoBehaviour
     [SerializeField] public int activeSlot;
 
     [SerializeField] public ColorSpell defaultSpell;
-    [SerializeField] InputActionReference changeRightActions;
     [SerializeField] public Material defaultColor;
-    [SerializeField] InputActionReference removeColorAction1, removeColorAction2, removeColorAction3, removeColorAction4;
     [SerializeField] int rainbowExtraDrain;
     [SerializeField] float minCD = 0.3f;
     [SerializeField] int maxStoredSpells = 5;
@@ -119,15 +117,7 @@ public class ColorInventory : MonoBehaviour
         SpellImactOnVelocity.onSpellImpact += SpellImactTrigger;
         //pickUpAction.action.performed += PickUp;
 
-        divideColorHandler1 = (InputAction.CallbackContext ctx) => DivideColor(0);
-        divideColorHandler2 = (InputAction.CallbackContext ctx) => DivideColor(1);
-        divideColorHandler3 = (InputAction.CallbackContext ctx) => DivideColor(2);
-        divideColorHandler4 = (InputAction.CallbackContext ctx) => DivideColor(3);
-
-        removeColorAction1.action.performed += divideColorHandler1;
-        removeColorAction2.action.performed += divideColorHandler2;
-        removeColorAction3.action.performed += divideColorHandler3;
-        removeColorAction4.action.performed += divideColorHandler4;
+        Player.instance.removeColorAction += DivideColor;
 
         GameObject player = GameObject.FindWithTag("Player");
         player.GetComponent<PlayerStats>().onPlayerDamaged += WhenDamaged;
@@ -155,10 +145,7 @@ public class ColorInventory : MonoBehaviour
         
         //pickUpAction.action.performed -= PickUp;
         
-        removeColorAction1.action.performed -= divideColorHandler1;
-        removeColorAction2.action.performed -= divideColorHandler2;
-        removeColorAction3.action.performed -= divideColorHandler3;
-        removeColorAction4.action.performed -= divideColorHandler4;
+        Player.instance.removeColorAction -= DivideColor;
 
         ColorSpellImpact.onSpellImpact -= SpellImactTrigger;
         SpellImactOnVelocity.onSpellImpact -= SpellImactTrigger;

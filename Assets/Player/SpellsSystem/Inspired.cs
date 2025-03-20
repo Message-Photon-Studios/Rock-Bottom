@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Localization;
 
-public class Inspired : MonoBehaviour
+public class Inspired : InteractionObject
 {
     [SerializeField] GameObject spellToEnable;
     [SerializeField] ColorSpell unlockSpell;
@@ -25,12 +25,13 @@ public class Inspired : MonoBehaviour
     [SerializeField] TMP_Text headerText;
     [SerializeField] Animator animator;
 
-    private ItemInventory inventory;
     private bool triggered;
 
     private UIController UI;
 
-    public void Start() {
+    protected override void Start() {
+        base.Start();
+
         if(spellToEnable) spellToEnable.SetActive(false);
         if(GameManager.instance.IsSpellSpawnable(unlockSpell))
         {
@@ -47,7 +48,6 @@ public class Inspired : MonoBehaviour
             triggered = false;
         }
         UI = Player.instance.playerUi;
-        inventory = Player.instance.playerInventory;
 
         costText.text = costString.GetLocalizedString() + petrifiedPigmentCost;
         descriptionText.text = unlockSpell.description.GetLocalizedString();
@@ -63,29 +63,32 @@ public class Inspired : MonoBehaviour
         }
     }
     
-    public void OnTriggerEnter2D(Collider2D other) {
-        if(other.CompareTag("Player") && !triggered && !GameManager.instance.IsSpellSpawnable(unlockSpell)) {
-
-            costText.text = costString.GetLocalizedString() + petrifiedPigmentCost;
-            descriptionText.text = unlockSpell.description.GetLocalizedString();
-            headerText.text = unlockString.GetLocalizedString() + unlockSpell.GetName();
-            if(GameManager.instance.GetPetrifiedPigmentAmount() < petrifiedPigmentCost) costText.color = Color.red;
-            else costText.color = Color.white;
-            ui.SetActive(true);
-            inventory.EnableInspired(this);
-        }
-    }
-
-    public void OnTriggerExit2D(Collider2D other)
-    {
-        if(other.CompareTag("Player"))
+    protected override void PlayerClose(bool isClose) {
+        if(isClose)
         {
-            inventory.DisableInspired();
-            ui.SetActive(false);
+            if(!triggered && !GameManager.instance.IsSpellSpawnable(unlockSpell)) {
+
+                costText.text = costString.GetLocalizedString() + petrifiedPigmentCost;
+                descriptionText.text = unlockSpell.description.GetLocalizedString();
+                headerText.text = unlockString.GetLocalizedString() + unlockSpell.GetName();
+                if(GameManager.instance.GetPetrifiedPigmentAmount() < petrifiedPigmentCost) costText.color = Color.red;
+                else costText.color = Color.white;
+
+            }
+        } 
+
+        ui.SetActive(isClose);
+    }
+
+    protected override void PlayerInteract()
+    {
+        if(GameManager.instance.TryRemovePetrifiedPigment(petrifiedPigmentCost))
+        {
+            TriggerUnlock();
         }
     }
 
-    public void TriggerUnlock()
+    private void TriggerUnlock()
     {
         triggered = true;
         UI.inspired?.Invoke(inspiredSprite, inspireText.GetLocalizedString());
