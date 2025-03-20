@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
-public class SpellPickup : MonoBehaviour
+public class SpellPickup : InteractionObject
 {
     [SerializeField] int inspirationRequired = 0;
     [SerializeField] float spawnChance = 1f;
@@ -23,11 +24,12 @@ public class SpellPickup : MonoBehaviour
     SpriteRenderer spriteRenderer;
     ColorInventory inventory;
     ItemInventory itemInventory;
-    bool pickedup = false;
+    bool bought = false;
 
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         foreach (Collider2D coll in GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Collider2D>())
         {
             Physics2D.IgnoreCollision(collider, coll);
@@ -43,7 +45,7 @@ public class SpellPickup : MonoBehaviour
     /// <param name="setItem"></param>
     public void SetSpell(ColorSpell setSpell)
     {
-        if (colorSpell == null || pickedup) this.colorSpell = setSpell;
+        if (colorSpell == null || bought) this.colorSpell = setSpell;
                 
         descriptionText.text = colorSpell.GetDesc();
         nameText.text = colorSpell.GetName();
@@ -71,19 +73,18 @@ public class SpellPickup : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    protected override void PlayerClose (bool isClose)
     {
         if (inventory == null) inventory = Player.instance.GetComponent<ColorInventory>();
-        if(other.CompareTag("Player"))
+        if(isClose)
         {
-            if(pickedup && lockBottleAfterSwap) return;
+            if(bought && lockBottleAfterSwap) return;
             if(inspirationRequired > GameManager.instance.GetInspiration())
             {
                 //TODO Add text about it being locked or something
                 return;
             }
             
-            inventory.EnablePickUp(this);
             if(needsPayment)
             {
                 costContainer.gameObject.SetActive(true);
@@ -107,18 +108,14 @@ public class SpellPickup : MonoBehaviour
 
             descriptionText.text = colorSpell.GetDesc();
             nameText.text = colorSpell.GetName();
-            canvas.SetActive(true);
-        }
-    }
-
-    public void OnTriggerExit2D(Collider2D other)
-    {
-        if(other.CompareTag("Player"))
+         
+        } else 
         {
-            inventory.DisablePickUp(this);
-            canvas.SetActive(false);
+                        
             costContainer.gameObject.SetActive(false);
         }
+
+        canvas.SetActive(isClose);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -127,12 +124,31 @@ public class SpellPickup : MonoBehaviour
         
     }
 
+    protected override void PlayerInteract()
+    {
+        if(needsPayment && !bought && !itemInventory.PayCost(colorSpell.spellCost)) return;
+
+        bought = true;
+        PlayerCombatSystem pcs = Player.instance.playerCombatSystem;
+        
+        if(!pcs.pickUpSpellMode)
+        {
+            pcs.SpellPickup(true, this);
+            Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", true);
+        } else if(!lockBottleAfterSwap)
+        {
+            pcs.SpellPickup(false, null);
+            Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", false);
+        }
+    }
+
     /// <summary>
     /// Is called when this color spell is picked up
     /// </summary>
     public void PickedUp(int slotIndex)
     {
-        pickedup = true;
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", false);
+        bought = true;
         ColorSpell tmp = inventory.GetColorSpell(slotIndex);
         inventory.ChangeColorSpell(slotIndex, colorSpell);
         needsPayment = false;
@@ -146,7 +162,6 @@ public class SpellPickup : MonoBehaviour
         {
             canvas.SetActive(false);
             costContainer.gameObject.SetActive(false);
-            inventory.DisablePickUp(this);
         }
     }
 

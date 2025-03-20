@@ -84,12 +84,6 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     public UnityAction<int> onColorSpellChanged;
 
-    /// <summary>
-    /// Called whenever a color spell gets in range our out of range of being picked up.
-    /// Sends a bool as parameter; if bool == true the spell got in range and if bool == false the spell left the range
-    /// </summary>
-    public UnityAction<bool> onSpellPickupInRange;
-
     public UnityAction<List<float>, float, int> onCoolDownSet;
 
     /// <summary>
@@ -522,6 +516,7 @@ public class ColorInventory : MonoBehaviour
     {        
 
         if(Player.instance.playerCombatSystem.addColorMode) return;
+        if(colorSlots.Count <= colorSlotIndex) return;
         ColorSlot colorSlot = colorSlots[colorSlotIndex];
         GameColor gameColor = colorSlot.gameColor;
         int amount = colorSlot.charge;
@@ -794,33 +789,6 @@ public class ColorInventory : MonoBehaviour
             pickUpSpell.PickedUp(slotIndex);
             return true;
         }
-    }
-
-    /// <summary>
-    /// Enables a spell to be picked up
-    /// </summary>
-    /// <param name="spell"></param>
-    public void EnablePickUp(SpellPickup spell)
-    {
-        if(pickUpSpell != null)
-        {
-            pickUpSpell.OnTriggerExit2D(GetComponent<Collider2D>());
-        }
-
-        pickUpSpell = spell;
-        Player.instance.playerCombatSystem.pickUpSpellMode = true;
-        onSpellPickupInRange?.Invoke(true);
-    }
-
-    /// <summary>
-    /// Disables a spell from being picked up
-    /// </summary>
-    /// <param name="spell"></param>
-    public void DisablePickUp (SpellPickup spell) 
-    {
-        pickUpSpell = null;  
-        Player.instance.playerCombatSystem.pickUpSpellMode = false;
-        onSpellPickupInRange?.Invoke(false);
     }
 
     /*

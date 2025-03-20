@@ -33,9 +33,9 @@ public class PlayerCombatSystem : MonoBehaviour
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
     public bool addColorMode {get; private set;} = false;
-    public bool pickUpSpellMode = false;
     public ColorWell colorWell {get; private set;}
-
+    public bool pickUpSpellMode {get; private set;} = false;
+    public SpellPickup spellPickup {get; private set;}
 
     #region Setup & Update
     private void OnEnable() {
@@ -86,7 +86,9 @@ public class PlayerCombatSystem : MonoBehaviour
         
         if(pickUpSpellMode)
         {
-            if(colorInventory.PickUp(slotIndex)) return;
+            spellPickup.PickedUp(slotIndex);
+            SpellPickup(false, null);
+            return;
         }
 
         if(addColorMode)
@@ -293,7 +295,19 @@ public class PlayerCombatSystem : MonoBehaviour
 
     #endregion
 
-    #region Absorb Color
+    #region Absorb Color & Pick up spell
+
+    public void SpellPickup (bool pickup, SpellPickup spellPickup)
+    {
+        pickUpSpellMode = pickup;
+        if(pickup)
+        {
+            this.spellPickup = spellPickup;
+        } else
+        {
+            this.spellPickup = null;
+        }
+    }
 
     public void EnableAbsorbColor(ColorWell colorWell)
     {
