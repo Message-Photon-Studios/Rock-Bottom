@@ -109,11 +109,9 @@ public class ColorWell : InteractionObject
         if(!Player.instance.playerCombatSystem.addColorMode)
         {
             Player.instance.playerCombatSystem.EnableAbsorbColor(this);
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("colorWellActivation", true);
         } else
         {
-            Player.instance.playerCombatSystem.DisableAbsorbColor();
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("colorWellActivation", false);
+            Player.instance.playerCombatSystem.DeactivateAddColorMode();
         }
     }
 
@@ -133,7 +131,7 @@ public class ColorWell : InteractionObject
         {
             colorIconImage.color = iconShadedColor;
             if(wellUsed) colorIconImage.gameObject.SetActive(false);
-            Player.instance.playerCombatSystem.DisableAbsorbColor();
+            Player.instance.playerCombatSystem.DeactivateAddColorMode();
             Player.instance.playerCombatSystem.MovedAwayFromWell(this);
         }
     }

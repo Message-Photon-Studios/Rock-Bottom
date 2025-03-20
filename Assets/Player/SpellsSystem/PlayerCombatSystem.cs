@@ -311,13 +311,9 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public void EnableAbsorbColor(ColorWell colorWell)
     {
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("colorWellActivation", true);
         this.colorWell = colorWell;
         addColorMode = true;
-    }
-
-    public void DisableAbsorbColor()
-    {
-        addColorMode = false;
     }
 
     public void MovedAwayFromWell(ColorWell movedAwayFrom)
