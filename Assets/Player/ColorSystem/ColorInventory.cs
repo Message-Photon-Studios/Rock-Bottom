@@ -29,7 +29,6 @@ public class ColorInventory : MonoBehaviour
 
     [SerializeField] public ColorSpell defaultSpell;
     [SerializeField] InputActionReference changeRightActions;
-    [SerializeField] InputActionReference pickUpAction;
     [SerializeField] public Material defaultColor;
     [SerializeField] InputActionReference removeColorAction1, removeColorAction2, removeColorAction3, removeColorAction4;
     [SerializeField] int rainbowExtraDrain;
@@ -535,7 +534,7 @@ public class ColorInventory : MonoBehaviour
     private void DivideColor(int colorSlotIndex)
     {        
 
-        if(PlayerLevelMananger.instance.playerCombatSystem.addColorMode) return;
+        if(Player.instance.playerCombatSystem.addColorMode) return;
         ColorSlot colorSlot = colorSlots[colorSlotIndex];
         GameColor gameColor = colorSlot.gameColor;
         int amount = colorSlot.charge;
@@ -544,7 +543,7 @@ public class ColorInventory : MonoBehaviour
         
         int rootAmount = amount/gameColor.rootColors.Length;
 
-        ColorWell colorWell = PlayerLevelMananger.instance.playerCombatSystem.colorWell;
+        ColorWell colorWell = Player.instance.playerCombatSystem.colorWell;
         if(colorWell != null)
         {
             bool foundRootColor = false;
@@ -791,6 +790,7 @@ public class ColorInventory : MonoBehaviour
     #endregion
 
     #region Change color spells
+
     public bool PickUp(int slotIndex)
     {
         if(pickUpSpell == null) return false;
@@ -821,7 +821,7 @@ public class ColorInventory : MonoBehaviour
         }
 
         pickUpSpell = spell;
-        PlayerLevelMananger.instance.playerCombatSystem.pickUpSpellMode = true;
+        Player.instance.playerCombatSystem.pickUpSpellMode = true;
         onSpellPickupInRange?.Invoke(true);
     }
 
@@ -832,7 +832,7 @@ public class ColorInventory : MonoBehaviour
     public void DisablePickUp (SpellPickup spell) 
     {
         pickUpSpell = null;  
-        PlayerLevelMananger.instance.playerCombatSystem.pickUpSpellMode = false;
+        Player.instance.playerCombatSystem.pickUpSpellMode = false;
         onSpellPickupInRange?.Invoke(false);
     }
 

@@ -77,7 +77,7 @@ public class ColorWell : MonoBehaviour
             colorIconImage.color = Color.white;
             wellUsed = false;
             Setup(color);
-            PlayerLevelMananger.instance.playerCombatSystem.EnableAbsorbColor(this);
+            Player.instance.playerCombatSystem.EnableAbsorbColor(this);
         }
     }
 
@@ -91,7 +91,7 @@ public class ColorWell : MonoBehaviour
 
     public void UseWell()
     {
-        PlayerLevelMananger.instance.colorInventory.AddColor(color, colorAmount, activateOnSlot);
+        Player.instance.colorInventory.AddColor(color, colorAmount, activateOnSlot);
         colorAmount = 0;
         mapIcon.SetActive(false);
         colorIconImage.color = iconShadedColor;
@@ -104,7 +104,7 @@ public class ColorWell : MonoBehaviour
         mapIcon.SetActive(false);
         orbAnimator.SetTrigger("deactivateWell");
         colorIconImage.color = iconShadedColor;
-        PlayerLevelMananger.instance.playerCombatSystem.DeactivateAddColorMode();
+        Player.instance.playerCombatSystem.DeactivateAddColorMode();
         wellUsed = true;
         
     }
@@ -120,7 +120,7 @@ public class ColorWell : MonoBehaviour
             {
                 colorIconImage.color = Color.white;
             }
-            PlayerLevelMananger.instance.playerCombatSystem.EnableAbsorbColor(this);
+            Player.instance.playerCombatSystem.EnableAbsorbColor(this);
         }
     }
 
@@ -131,8 +131,8 @@ public class ColorWell : MonoBehaviour
             playerClose = false;
             colorIconImage.color = iconShadedColor;
             if(wellUsed) colorIconImage.gameObject.SetActive(false);
-            PlayerLevelMananger.instance.playerCombatSystem.DisableAbsorbColor();
-            PlayerLevelMananger.instance.playerCombatSystem.MovedAwayFromWell(this);
+            Player.instance.playerCombatSystem.DisableAbsorbColor();
+            Player.instance.playerCombatSystem.MovedAwayFromWell(this);
         }
     }
     #endregion

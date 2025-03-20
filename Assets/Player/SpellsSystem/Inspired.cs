@@ -46,8 +46,8 @@ public class Inspired : MonoBehaviour
         {
             triggered = false;
         }
-        UI = PlayerLevelMananger.instance.playerUi;
-        inventory = PlayerLevelMananger.instance.playerInventory;
+        UI = Player.instance.playerUi;
+        inventory = Player.instance.playerInventory;
 
         costText.text = costString.GetLocalizedString() + petrifiedPigmentCost;
         descriptionText.text = unlockSpell.description.GetLocalizedString();

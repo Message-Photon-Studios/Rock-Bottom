@@ -12,7 +12,6 @@ public class PlayerCombatSystem : MonoBehaviour
 {
     public int rainbowComboDamage = 20;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
-    [SerializeField] InputActionReference attackAction1, attackAction2, attackAction3, attackAction4;
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
@@ -33,7 +32,6 @@ public class PlayerCombatSystem : MonoBehaviour
     private bool spellAirHit = false;
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
-    Action<InputAction.CallbackContext> attackHandler1, attackHandler2, attackHandler3, attackHandler4;
     public bool addColorMode {get; private set;} = false;
     public bool pickUpSpellMode = false;
     public ColorWell colorWell {get; private set;}
@@ -41,32 +39,21 @@ public class PlayerCombatSystem : MonoBehaviour
 
     #region Setup & Update
     private void OnEnable() {
-
-        attackHandler1 = (InputAction.CallbackContext ctx) => AttackAnimation(0);
-        attackHandler2 = (InputAction.CallbackContext ctx) => AttackAnimation(1);
-        attackHandler3 = (InputAction.CallbackContext ctx) => AttackAnimation(2);        
-        attackHandler4 = (InputAction.CallbackContext ctx) => AttackAnimation(3);
         
         body = GetComponent<Rigidbody2D>();
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
-
-        attackAction1.action.performed += attackHandler1;
-        attackAction2.action.performed += attackHandler2;
-        attackAction3.action.performed += attackHandler3;
-        attackAction4.action.performed += attackHandler4;
     }
 
     private void Start()
     {
         GameManager.instance.onLevelLoaded += ResetSpellSortingCounter;
+        
+        Player.instance.attackAction += AttackAnimation;
     }
 
     private void OnDisable()
     {
-        attackAction1.action.performed -= attackHandler1;
-        attackAction2.action.performed -= attackHandler2;
-        attackAction3.action.performed -= attackHandler3;
-        attackAction4.action.performed -= attackHandler4;
+        Player.instance.attackAction -= AttackAnimation;
 
         GameManager.instance.onLevelLoaded -= ResetSpellSortingCounter;
     }

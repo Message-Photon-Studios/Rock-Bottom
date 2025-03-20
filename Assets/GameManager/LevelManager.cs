@@ -79,7 +79,7 @@ public class LevelManager : MonoBehaviour
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
         foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
         {
-            obj.GetComponent<PlayerLevelMananger>().SetStartLevel(this);
+            obj.GetComponent<Player>().SetStartLevel(this);
         }
         StartCoroutine(canvas.FadeOutCoroutine(true));
         if(GameManager.instance != null)

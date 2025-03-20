@@ -49,7 +49,7 @@ public class DeathShrine : MonoBehaviour
     {
         if(!buyable || bought) return;
 
-        PlayerLevelMananger.instance.playerStats.RemoveMaxHealth(healthCost);
+        Player.instance.playerStats.RemoveMaxHealth(healthCost);
         itemPickup.gameObject.SetActive(true);
         canvasObject.SetActive(false);
 

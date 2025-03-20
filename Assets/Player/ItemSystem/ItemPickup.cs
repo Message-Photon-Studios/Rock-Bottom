@@ -38,7 +38,7 @@ public class ItemPickup : MonoBehaviour
     
     void Start()
     {
-        inventory = PlayerLevelMananger.instance.playerInventory;
+        inventory = Player.instance.playerInventory;
         if(spawnFromEnemy != null)
         {
             spawnFromEnemy.onEnemyDeath += SpawnFromEnemy;

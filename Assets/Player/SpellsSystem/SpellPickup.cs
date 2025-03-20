@@ -53,8 +53,8 @@ public class SpellPickup : MonoBehaviour
         spriteRenderer.sprite = colorSpell.GetBottleSprite().smallSprite;
 
         canvas.SetActive(false);
-        inventory = PlayerLevelMananger.instance.colorInventory;
-        itemInventory = PlayerLevelMananger.instance.playerInventory;
+        inventory = Player.instance.colorInventory;
+        itemInventory = Player.instance.playerInventory;
     }
     /// <summary>
     /// Randomly destroys the spawn point depending on the initial conditions
@@ -73,7 +73,7 @@ public class SpellPickup : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (inventory == null) inventory = PlayerLevelMananger.instance.GetComponent<ColorInventory>();
+        if (inventory == null) inventory = Player.instance.GetComponent<ColorInventory>();
         if(other.CompareTag("Player"))
         {
             if(pickedup && lockBottleAfterSwap) return;
