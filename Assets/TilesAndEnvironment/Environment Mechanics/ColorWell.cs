@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEditor.UI;
 using UnityEngine.UI;
 
-public class ColorWell : MonoBehaviour
+public class ColorWell : InteractionObject
 {
     public GameColor color;
     [SerializeField] int colorAmount;
@@ -18,13 +18,14 @@ public class ColorWell : MonoBehaviour
     [SerializeField] GameObject mapIcon;
     [SerializeField] SpriteRenderer colorIconImage;
     private Color iconShadedColor = Color.black;
-    private bool playerClose = false;
     public bool wellUsed {get; private set; } = false; 
 
     private ColorSlot activateOnSlot = null;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         if(iconShadedColor == Color.black) iconShadedColor = colorIconImage.color;
         if(color == null) return;
         else Setup(color);
@@ -54,14 +55,9 @@ public class ColorWell : MonoBehaviour
 
         if(wellUsed) 
         {
-            DisableWell();
         } else orbAnimator.SetBool("useWell", false);
     }
 
-    void OnDisable()
-    {
-        playerClose = false;
-    }
 
     public int GetColorAmount()
     {
@@ -85,7 +81,6 @@ public class ColorWell : MonoBehaviour
     {
         orbAnimator.SetBool("useWell", true);
         wellUsed = true;
-        playerClose = false;
         activateOnSlot = colorSlot;
     }
 
@@ -108,27 +103,34 @@ public class ColorWell : MonoBehaviour
         wellUsed = true;
         
     }
-    
-    #region Check playerClose
-    void OnTriggerEnter2D(Collider2D other)
+
+    protected override void PlayerInteract()
     {
-        if(other.CompareTag("Player"))
+        if(!Player.instance.playerCombatSystem.addColorMode)
         {
-            playerClose = true;
+            Player.instance.playerCombatSystem.EnableAbsorbColor(this);
+            Player.instance.playerMovement.movementRoot.SetTotalRoot("colorWellActivation", true);
+        } else
+        {
+            Player.instance.playerCombatSystem.DisableAbsorbColor();
+            Player.instance.playerMovement.movementRoot.SetTotalRoot("colorWellActivation", false);
+        }
+    }
+
+    #region Check playerClose
+    protected override void PlayerClose(bool isClose)
+    {
+        base.PlayerClose(isClose);
+
+        if(isClose)
+        {
             colorIconImage.gameObject.SetActive(true);
             if(!wellUsed) 
             {
                 colorIconImage.color = Color.white;
             }
-            Player.instance.playerCombatSystem.EnableAbsorbColor(this);
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if(other.CompareTag("Player"))
+        } else
         {
-            playerClose = false;
             colorIconImage.color = iconShadedColor;
             if(wellUsed) colorIconImage.gameObject.SetActive(false);
             Player.instance.playerCombatSystem.DisableAbsorbColor();

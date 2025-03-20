@@ -93,7 +93,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
         if(addColorMode)
         {
-            AddColorAnimation(colorInventory.GetSlot(slotIndex));
+            AddColorAnimation(slotIndex);
             return;
         }
 
@@ -312,12 +312,6 @@ public class PlayerCombatSystem : MonoBehaviour
     public void EnableAbsorbColor(ColorWell colorWell)
     {
         this.colorWell = colorWell;
-
-        if(colorWell.GetColorAmount() <= 0) 
-        {
-            DisableAbsorbColor();
-            return;
-        }
         addColorMode = true;
     }
 
@@ -331,18 +325,23 @@ public class PlayerCombatSystem : MonoBehaviour
         if(colorWell == movedAwayFrom) colorWell = null;
     }
 
-    private void AddColorAnimation (ColorSlot slot)
+    private void AddColorAnimation (int slotIndex)
     {
+        ColorSlot slot = colorInventory.GetSlot(slotIndex);
         if(!addColorMode) return;
         if(colorWell == null) return;
         if(slot == null) return;
-        if(colorWell.GetColorAmount() == 0 || colorWell.color == null) return;
+        if(colorWell.GetColorAmount() == 0 || colorWell.color == null)
+        {
+            addColorMode = false;
+            colorInventory.DivideColor(slotIndex);
+            DeactivateAddColorMode();
+            return;
+        }
         
         colorWell.UseWellAnimation(slot);
         
         animator.SetTrigger("gainColor");
-
-        playerMovement.movementRoot.SetTotalRoot("colorWellActivation", true);
     }
 
     public void DeactivateAddColorMode()

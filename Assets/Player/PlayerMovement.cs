@@ -760,6 +760,7 @@ public class PlayerMovement : MonoBehaviour
 
     void DropDown()
     {
+        if(movementRoot.rooted) return;
         if(Mathf.Abs(body.velocity.x) < 10f)
             Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerFeetLayer, GameManager.instance.maskLibrary.platformLayer, true);
     }

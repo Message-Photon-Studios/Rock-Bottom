@@ -5,14 +5,14 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public abstract class InteractionObject : MonoBehaviour
 {
-    protected bool playerInRange = false;
+    protected bool playerInRange {get; private set;} = false;
 
     protected virtual void Start()
     {
         Player.instance.interactAction += HandleInteractInput;
     }
 
-    protected virtual void OnDisable()
+    protected virtual void OnDestroy()
     {
         Player.instance.interactAction -= HandleInteractInput;
     }

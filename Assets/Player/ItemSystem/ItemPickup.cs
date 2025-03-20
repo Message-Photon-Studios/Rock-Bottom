@@ -72,10 +72,8 @@ public class ItemPickup : InteractionObject
         spawnFromEnemy.onEnemyDeath -= SpawnFromEnemy;
     }
 
-    protected override void OnDisable()
+    void OnDisable()
     {
-        base.OnDisable();
-
         if(spawnFromEnemy != null) spawnFromEnemy.onEnemyDeath -= SpawnFromEnemy;
     }
 

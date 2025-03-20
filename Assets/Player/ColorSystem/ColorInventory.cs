@@ -512,7 +512,7 @@ public class ColorInventory : MonoBehaviour
 
     #region Divide color action
     
-    private void DivideColor(int colorSlotIndex)
+    public void DivideColor(int colorSlotIndex)
     {        
 
         if(Player.instance.playerCombatSystem.addColorMode) return;

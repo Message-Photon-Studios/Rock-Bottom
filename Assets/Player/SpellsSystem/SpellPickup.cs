@@ -30,7 +30,7 @@ public class SpellPickup : InteractionObject
     protected override void Start()
     {
         base.Start();
-        foreach (Collider2D coll in GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Collider2D>())
+        foreach (Collider2D coll in Player.instance.gameObject.GetComponentsInChildren<Collider2D>())
         {
             Physics2D.IgnoreCollision(collider, coll);
         }
