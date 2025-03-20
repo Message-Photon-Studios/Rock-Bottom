@@ -42,7 +42,10 @@ public class Player : MonoBehaviour
     public Action   interactAction;
     public Action <int> attackAction, removeColorAction;
     public Action<int> rotateColorAction;
-    public Action jumpAction, dashAction, lookAction;
+    public Action jumpAction, jumpCancelAction, dashAction;
+    public Action<float> lookAction;
+    public Action lookCancelAction; 
+    public Action verticalMoveAction, verticalMoveCancelAction;
 
     public float walkDir = 0;
     public float verticalMoveDir = 0;
@@ -62,14 +65,24 @@ public class Player : MonoBehaviour
         rotateColorInput.action.performed += (InputAction.CallbackContext ctx) => rotateColorAction?.Invoke(rotateColorInput.action.ReadValue<int>());
 
         jumpInput.action.performed += (InputAction.CallbackContext ctx) => jumpAction?.Invoke();
+        jumpInput.action.canceled += (InputAction.CallbackContext ctx) => jumpCancelAction?.Invoke();
+
         dashInput.action.performed += (InputAction.CallbackContext ctx) => dashAction?.Invoke();
-        lookInput.action.performed += (InputAction.CallbackContext ctx) => lookAction?.Invoke();
+
+        lookInput.action.performed += (InputAction.CallbackContext ctx) => lookAction?.Invoke(lookInput.action.ReadValue<float>());
+        lookInput.action.canceled += (InputAction.CallbackContext ctx) => lookCancelAction?.Invoke();
 
         walkInput.action.performed += (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
         walkInput.action.canceled += (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
 
-        verticalMoveInput.action.performed += (InputAction.CallbackContext ctx) => {verticalMoveDir = verticalMoveInput.action.ReadValue<float>();};
-        verticalMoveInput.action.canceled += (InputAction.CallbackContext ctx) => {verticalMoveDir = verticalMoveInput.action.ReadValue<float>();};
+        verticalMoveInput.action.performed += (InputAction.CallbackContext ctx) => {
+            verticalMoveDir = verticalMoveInput.action.ReadValue<float>(); 
+            verticalMoveAction?.Invoke();
+            };
+        verticalMoveInput.action.canceled += (InputAction.CallbackContext ctx) => {
+            verticalMoveDir = verticalMoveInput.action.ReadValue<float>();
+            verticalMoveCancelAction?.Invoke();
+            };
     }
     
     public void RemoveActionListeners()
@@ -87,13 +100,21 @@ public class Player : MonoBehaviour
 
         jumpInput.action.performed -= (InputAction.CallbackContext ctx) => jumpAction?.Invoke();
         dashInput.action.performed -= (InputAction.CallbackContext ctx) => dashAction?.Invoke();
-        lookInput.action.performed -= (InputAction.CallbackContext ctx) => lookAction?.Invoke();
+
+        lookInput.action.performed -= (InputAction.CallbackContext ctx) => lookAction?.Invoke(lookInput.action.ReadValue<float>());
+        lookInput.action.canceled -= (InputAction.CallbackContext ctx) => lookCancelAction?.Invoke();
 
         walkInput.action.performed -= (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
         walkInput.action.canceled -= (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
 
-        verticalMoveInput.action.performed -= (InputAction.CallbackContext ctx) => {verticalMoveDir = verticalMoveInput.action.ReadValue<float>();};
-        verticalMoveInput.action.canceled -= (InputAction.CallbackContext ctx) => {verticalMoveDir = verticalMoveInput.action.ReadValue<float>();};
+        verticalMoveInput.action.performed -= (InputAction.CallbackContext ctx) => {
+            verticalMoveDir = verticalMoveInput.action.ReadValue<float>(); 
+            verticalMoveAction?.Invoke();
+            };
+        verticalMoveInput.action.canceled -= (InputAction.CallbackContext ctx) => {
+            verticalMoveDir = verticalMoveInput.action.ReadValue<float>();
+            verticalMoveCancelAction?.Invoke();
+            };
     }
 
     #endregion
