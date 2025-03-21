@@ -37,6 +37,8 @@ public class PlayerStats : MonoBehaviour
 
     public bool corrosiveColor = false;
 
+    private List<EnemyStats> RedList = new List<EnemyStats>();
+
     [SerializeField] PlayerSounds playerSounds;
 
     float secTimer = 1;
@@ -150,6 +152,7 @@ public class PlayerStats : MonoBehaviour
             if (damage <= 0) damage = 1;
         }
 
+        DealRedListDamage(damage);
         shieldDecay = 0;
         if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
         {
@@ -358,6 +361,36 @@ public class PlayerStats : MonoBehaviour
         Physics2D.IgnoreLayerCollision(3,2, false);
 
         invincibilityTimer = 0;
+    }
+
+    #endregion
+
+    #region Red Damage Effect
+
+    public void AddEnemyToRedList(EnemyStats enemy)
+    {
+        if (!RedList.Contains(enemy))
+        {
+            RedList.Add(enemy);
+        }
+    }
+
+    public void RemoveEnemyFromRedList(EnemyStats enemy)
+    {
+        RedList.Remove(enemy);
+    }
+
+    public void DealRedListDamage(int damage)
+    {
+        foreach(EnemyStats enemy in RedList.ToArray())
+        {
+            if (enemy == null)
+            {
+                RedList.Remove(enemy);
+                continue;
+            }
+            enemy.DoRedDamage(damage);
+        }
     }
 
     #endregion
