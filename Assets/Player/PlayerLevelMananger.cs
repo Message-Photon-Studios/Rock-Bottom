@@ -15,7 +15,9 @@ public class PlayerLevelMananger : MonoBehaviour
     public PlayerMovement playerMovement {get; private set;} //Handles the players movement
     public LevelManager levelManager {get; private set;} //The game manager handles the specific scene
     public PlayerStats playerStats {get; private set;}
+    public PlayerCombatSystem playerCombatSystem {get; private set;}
     public ItemInventory playerInventory {get; private set;}
+    public ColorInventory colorInventory {get; private set;}
     public UIController playerUi {get; private set;}
     Animator animator;
     PlayerStats stats; //A class that handles the players health and statistics
@@ -61,6 +63,8 @@ public class PlayerLevelMananger : MonoBehaviour
         animator = GetComponent<Animator>();
         stats = GetComponent<PlayerStats>();
         playerInventory = GetComponent<ItemInventory>();
+        playerCombatSystem = GetComponent<PlayerCombatSystem>();
+        colorInventory = GetComponent<ColorInventory>();
 
         foreach (GameObject obj in loadWithPlayerObjects)
         {
