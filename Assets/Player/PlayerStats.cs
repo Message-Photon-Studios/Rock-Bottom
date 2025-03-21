@@ -54,6 +54,8 @@ public class PlayerStats : MonoBehaviour
     /// This event fires when the shield takes damage. The float is the new shield.
     /// </summary>
     public UnityAction<float> onShieldChanged;
+
+    public UnityAction<float> onMaxShieldChanged;
     
     /// <summary>
     /// This event fires when the players max health is set or changed. The float is the new max health
@@ -269,6 +271,12 @@ public class PlayerStats : MonoBehaviour
 
         onMaxHealthChanged?.Invoke(maxHealth);
         onHealthChanged?.Invoke(health);
+    }
+
+    public void AddMaxShield(int addMaxShield)
+    {
+        maxShield += addMaxShield;
+        //onShieldChanged?.Invoke(addMaxShield);
     }
 
     #endregion

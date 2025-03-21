@@ -57,6 +57,7 @@ public class ColorInventory : MonoBehaviour
     public bool chaosEnabled = false;
     public bool routedSheild = false;
     public bool shatteredPrism = false;
+    public bool centrifuge = false;
     private float rngMax = 0;
     private float rngMin = 0;
     private float rngBuff = 0;
@@ -456,13 +457,11 @@ public class ColorInventory : MonoBehaviour
         float buff = 0;
         foreach (ColorSlot slot in colorSlots)
         {
-            if((slot.gameColor == color || balanceColors) && slot.charge == slot.maxCapacity) 
+            if((slot.gameColor == color || balanceColors) && IsSlotFull(slot)) 
             {
                 buff += colorMaxBuff + colorMaxBonus;
             }
         }
-
-        
 
         if (balanceColors)
         {
@@ -476,6 +475,11 @@ public class ColorInventory : MonoBehaviour
         buff += defaultBuff + rngBuff;
 
         return buff;
+    }
+
+    public bool IsSlotFull(ColorSlot slot)
+    {
+        return slot.charge == slot.maxCapacity || (crackedUrn && slot.charge >= slot.maxCapacity / 2);
     }
 
     public void AddDefaultBuff(float buff)
@@ -498,7 +502,7 @@ public class ColorInventory : MonoBehaviour
         int damageBonus = 0;
         foreach (ColorSlot slot in colorSlots)
         {
-            if (slot.charge == slot.maxCapacity)
+            if (IsSlotFull(slot))
             {
                 damageBonus += colorMaxDamageBonus;
             }
@@ -669,6 +673,7 @@ public class ColorInventory : MonoBehaviour
         foreach (ColorSlot slot in fillableSlots)
         {
             slot.AddCharge(amount);
+            GetComponent<PlayerStats>().AddShield(amount);
         }
 
         onColorUpdated?.Invoke();
@@ -735,6 +740,7 @@ public class ColorInventory : MonoBehaviour
 
         fillSlot.AddCharge(amount);
         fillSlot.SetGameColor(setColor);
+        if (centrifuge) GetComponent<PlayerStats>().AddShield(amount);
         onColorUpdated?.Invoke();
     }
 
@@ -1002,9 +1008,9 @@ public class ColorInventory : MonoBehaviour
         if (color == null) return false;
         foreach (ColorSlot slot in colorSlots)
         {
-            if (slot.gameColor == color && slot.charge == slot.maxCapacity)
+            if (slot.gameColor == color && IsSlotFull(slot))
             {
-                if (Random.Range(0, 100) > blockDrainColor) AddColor(color, (int) (slot.charge * -routedSheildCost), slot);
+                if (Random.Range(0, 100) > blockDrainColor) slot.SetCharge((int) (slot.charge * routedSheildCost));
                 return true;
             }
         }
