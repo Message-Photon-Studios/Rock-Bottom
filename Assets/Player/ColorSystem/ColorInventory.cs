@@ -53,7 +53,7 @@ public class ColorInventory : MonoBehaviour
     private int bonusSpells = 0;
     public bool balanceColors = false;
     public bool dontMixColor = false;
-    public bool autoRotate = false;
+    public bool crackedUrn = false;
     public bool chaosEnabled = false;
     public bool routedSheild = false;
     public bool shatteredPrism = false;
@@ -168,7 +168,6 @@ public class ColorInventory : MonoBehaviour
         if(lockSwapping) return;
         activeSlot = (colorSlots.Count+activeSlot+dir)%colorSlots.Count;
         onSlotChanged?.Invoke(dir);
-        if (autoRotate) GetComponent<PlayerCombatSystem>().SpecialAttackAnimation();
     }
 
     public void DisableRotation()
@@ -196,7 +195,7 @@ public class ColorInventory : MonoBehaviour
         {   
             GameColor ret = slot.gameColor;
 
-            if (Random.Range(0, 100) > blockDrainColor)
+            if (Random.Range(0, 100) > blockDrainColor && !crackedUrn)
             {
                 int charge = slot.charge - 1;
                 if (slot.gameColor.name == "Rainbow")
@@ -211,6 +210,28 @@ public class ColorInventory : MonoBehaviour
             
         }
         return null;
+    }
+
+    int drainCounter = 0;
+
+    public void DrainAllSlots(int amount)
+    {
+        drainCounter++;
+        if (drainCounter > 1)
+        {
+            drainCounter = 0;
+            return;
+        }
+        foreach (ColorSlot slot in colorSlots)
+        {
+            if (slot.charge > 0 && Random.Range(0, 100) > blockDrainColor)
+            {
+                int charge = slot.charge - amount;
+                if (charge < 0) charge = 0;
+                slot.SetCharge(charge);
+            }
+        }
+        onColorUpdated?.Invoke();
     }
 
     /// <summary>

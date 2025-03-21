@@ -113,6 +113,7 @@ public class PlayerStats : MonoBehaviour
                 if(shield < maxPermanetShield) shield = maxPermanetShield;
                 onShieldChanged?.Invoke(shield);
             }
+            if (colorInventory.crackedUrn) colorInventory.DrainAllSlots(1);
         }
 
         if(invincibilityTimer >= 0)
