@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using UnityEngine.Video;
 using Unity.VisualScripting;
-using System.Collections.Generic;
-using System.Linq;
 
 [RequireComponent(typeof (EnemyManager))]
 public class LevelManager : MonoBehaviour
@@ -28,12 +26,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public bool allowTips = true;
     [SerializeField] public bool isCaveTownLevel = false;
 
-    [Header("Color Wells")]
-    [SerializeField] int wellSpawnAmount = 2;
-    [SerializeField] GameColor[] spawnableColors;
-    [SerializeField] int sameColorRerolls = 1;
-    private HashSet<GameColor> spawnedColors = new HashSet<GameColor>();
-
     [Header("References")]
     [SerializeField] UIController canvas;
     [SerializeField] GameObject backgroundMusic;
@@ -53,8 +45,6 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
-        spawnedColors = new HashSet<GameColor>();
     }
 
     private void Start()
@@ -86,7 +76,6 @@ public class LevelManager : MonoBehaviour
             GameManager.instance.disablePausing = false;
 
         GameManager.instance?.SetLevelManager(this, addLevelClockTime, restartClockTimer);
-        ProneColorWells();
     }
 
     public IEnumerator EndLevelAsync()
@@ -159,62 +148,5 @@ public class LevelManager : MonoBehaviour
     public EnemyManager GetEnemyManager()
     {
         return GetComponent<EnemyManager>();
-    }
-
-    private void ProneColorWells()
-    {
-        ColorWell[] colorWells = FindObjectsOfType<ColorWell>();
-        List<ColorWell> prioritizedWells = new List<ColorWell>();
-        List<ColorWell> backupWells = new List<ColorWell>();
-
-        for (int i = 0; i < colorWells.Length; i++)
-        {
-            if(colorWells[i].wellPrioritization == SpawnPointChance.Guaranteed)
-            {
-                if(colorWells[i].color == null) colorWells[i].Setup(GetColorWellColor());
-                continue;
-            }
-
-            colorWells[i].gameObject.SetActive(false);
-            if(colorWells[i].wellPrioritization == SpawnPointChance.HighChance) prioritizedWells.Add(colorWells[i]);
-            else backupWells.Add(colorWells[i]);
-        }
-        int spawned = 0;
-        for (int i = 0; i < wellSpawnAmount && prioritizedWells.Count > 0; i++)
-        {
-            int picker = Random.Range(0, prioritizedWells.Count);
-            ColorWell well = prioritizedWells[picker];
-            prioritizedWells.RemoveAt(picker);
-            well.gameObject.SetActive(true);
-            if(well.color == null) well.Setup(GetColorWellColor());
-            spawned ++;
-        }
-
-        if(spawned >= wellSpawnAmount) return;
-
-        for (int i = 0; i < wellSpawnAmount && spawned < wellSpawnAmount && backupWells.Count > 0; i++)
-        {
-            int picker = Random.Range(0, backupWells.Count);
-            ColorWell well = backupWells[picker];
-            backupWells.RemoveAt(picker);
-            well.gameObject.SetActive(true);
-            if(well.color == null) well.Setup(GetColorWellColor());
-            spawned ++;
-        }
-    }
-
-    public GameColor GetColorWellColor()
-    {
-        if(spawnedColors.Count >= spawnableColors.Length) spawnedColors = new HashSet<GameColor>();
-
-        GameColor color = spawnableColors[Random.Range(0, spawnableColors.Length)];
-        for (int i = 0; i < sameColorRerolls; i++)
-        {
-            if(spawnedColors.Contains(color)) color = spawnableColors[Random.Range(0, spawnableColors.Length)];
-            else break;
-        }
-
-        if(!spawnedColors.Contains(color)) spawnedColors.Add(color);
-        return color;
     }
 }

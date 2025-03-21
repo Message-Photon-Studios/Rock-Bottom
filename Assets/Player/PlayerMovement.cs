@@ -785,6 +785,7 @@ public class PlayerMovement : MonoBehaviour
         //focusPoint.localPosition = new Vector3(-focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
         if(IsGrounded())
             playerAnimator.SetTrigger("turn");
+        GetComponent<PlayerCombatSystem>().FlipDefaultAttack();
 
         lastFlipTime = Time.time; 
     }

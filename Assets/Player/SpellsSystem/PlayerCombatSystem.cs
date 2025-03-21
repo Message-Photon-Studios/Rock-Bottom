@@ -10,9 +10,13 @@ using UnityEngine.Events;
 /// </summary>
 public class PlayerCombatSystem : MonoBehaviour
 {
+    //[SerializeField] float defaultAttackDamage;
+    [SerializeField] float defaultAttackForce;
     public int rainbowComboDamage = 20;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
-    [SerializeField] InputActionReference specialAttackAction;
+    [SerializeField] PlayerDefaultAttack defaultAttackHitbox; //The object that controlls the default attack hitbox
+    [SerializeField] Vector2 defaultAttackOffset; //The offset that the default attack will be set to
+    [SerializeField] InputActionReference defaultAttackAction, specialAttackAction, verticalLookDir;
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
@@ -30,22 +34,26 @@ public class PlayerCombatSystem : MonoBehaviour
     private int spellSorting = 0;
     private bool attacking;
     private Rigidbody2D body;
+
+    private bool defaultAirHit = false;
     private bool spellAirHit = false;
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
     Action<InputAction.CallbackContext> specialAttackHandler;
-    public bool addColorMode {get; private set;} = false;
-    public ColorWell colorWell {get; private set;}
+    Action<InputAction.CallbackContext> defaultAttackHandler;
 
 
-    #region Setup & Update
+    #region Setup
     private void OnEnable() {
 
         specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
+        defaultAttackHandler = (InputAction.CallbackContext ctx) => DefaultAttackAnimation();
         
         body = GetComponent<Rigidbody2D>();
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
         specialAttackAction.action.performed += specialAttackHandler;
+        defaultAttackAction.action.performed += defaultAttackHandler;
+        defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
     }
 
     private void Start()
@@ -53,42 +61,105 @@ public class PlayerCombatSystem : MonoBehaviour
         GameManager.instance.onLevelLoaded += ResetSpellSortingCounter;
     }
 
+
+
     private void OnDisable()
     {
         specialAttackAction.action.performed -= specialAttackHandler;
+        defaultAttackAction.action.performed -= defaultAttackHandler;
+        defaultAttackHitbox.onDefaultHit -= EnemyHitDefault;
         GameManager.instance.onLevelLoaded -= ResetSpellSortingCounter;
     }
+    #endregion
 
-    private void ResetSpellSortingCounter()
+    #region Default Attack
+
+    /// <summary>
+    /// Makes checks for and plays animation for default attack.
+    /// </summary>
+    private void DefaultAttackAnimation ()
     {
-        spellSorting = 0;
+        if (Time.timeScale == 0) return;
+        if (!playerMovement.IsGrounded() && defaultAirHit) return;
+        if(attacking) return;
+        
+        cascadeDamage = 0;
+
+        if(playerMovement.IsGrappeling())
+        {
+            playerMovement.WallAttackLock();
+        }
+
+        if(!playerMovement.IsGrounded()) defaultAirHit = true;
+        {
+            if(!attackDoubleJumped)
+            {
+                attackDoubleJumped = true;
+                playerMovement.ResetDoubleJump();
+            }
+        }
+        attacking = true;
+        playerMovement.inAttackAnimation = true;
+
+        animator.SetTrigger("defaultAttack");
+        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
+}
+
+    /// <summary>
+    /// Handles the players default attack
+    /// </summary>
+    private void DefaultAttack()
+    {
+        playerSounds.PlayDefaultAttack();
+        Debug.Log("Default attack");
+        //TODO add attacking = true;
+        FlipDefaultAttack();
+        defaultAttackHitbox.HitEnemies();
     }
 
-    void Update()
+    /// <summary>
+    /// Flips the default attack
+    /// </summary>
+    public void FlipDefaultAttack()
     {
+        float offsetX = defaultAttackOffset.x * playerMovement.lookDir;
+        defaultAttackHitbox.transform.position = new Vector3(transform.position.x + offsetX, defaultAttackHitbox.transform.position.y, transform.position.z);
+    }
 
-        if (bunnyCast > 0 && bunnyCast >= Time.fixedTime)
+    /// <summary>
+    /// Is called when the player hits an enemy with the default attack
+    /// </summary>
+    /// <param name="enemyObj"></param>
+    private void EnemyHitDefault((List<GameObject> absorbList, List<GameObject> pushList) enemies)
+    {
+        foreach (GameObject enemyObj in enemies.absorbList)
         {
-            SpecialAttackAnimation();
+            EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
+            (GameColor absorb, int ammount) = enemy.AbsorbColor();
+            if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
+            if(defaultAttackDamage > 0)
+                enemy.DamageEnemy(defaultAttackDamage);
+            colorInventory.AddColor(absorb, ammount);
+        }
+        foreach (GameObject enemyObj in enemies.pushList)
+        {
+            if(enemyObj == null) continue;
+            EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
+            if (!enemy.IsKnockbackImune())
+                enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
         }
     }
 
     #endregion
 
-    #region Attacks
+    #region Special Attack
     private GameObject currentSpell = null;
     /// <summary>
     /// Plays the animation for the special attack
     /// </summary>
     public void SpecialAttackAnimation()
     {
-        if(addColorMode)
-        {
-            AddColorAnimation(colorInventory.colorSlots[colorInventory.activeSlot]);
-            return;
-        }
-
-
         if (Time.timeScale == 0) return;
         if(!playerMovement.IsGrounded() && spellAirHit)
         {
@@ -247,7 +318,6 @@ public class PlayerCombatSystem : MonoBehaviour
 
     #endregion
 
-    #region Movement & root impacts
     /// <summary>
     /// Removes the attack root. Called by animation event
     /// </summary>
@@ -271,6 +341,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     public void SetPlayerGrounded()
     {
+        defaultAirHit = false;
         spellAirHit = false;
         attackDoubleJumped = false;
     }
@@ -281,131 +352,17 @@ public class PlayerCombatSystem : MonoBehaviour
         bunnyCast = Time.fixedTime + bunnyCastTolerance;
     }
 
-    #endregion
-
-    #region Absorb Color
-
-    public void EnableAbsorbColor(ColorWell colorWell)
+    private void ResetSpellSortingCounter()
     {
-        this.colorWell = colorWell;
+        spellSorting = 0;
+    }
 
-        if(colorWell.GetColorAmount() <= 0) 
+    void Update()
+    {
+
+        if (bunnyCast > 0 && bunnyCast >= Time.fixedTime)
         {
-            DisableAbsorbColor();
-            return;
-        }
-        addColorMode = true;
-    }
-
-    public void DisableAbsorbColor()
-    {
-        addColorMode = false;
-    }
-
-    public void MovedAwayFromWell(ColorWell movedAwayFrom)
-    {
-        if(colorWell == movedAwayFrom) colorWell = null;
-    }
-
-    private void AddColorAnimation (ColorSlot slot)
-    {
-        if(!addColorMode) return;
-        if(colorWell == null) return;
-        if(colorWell.GetColorAmount() == 0 || colorWell.color == null) return;
-        
-        colorWell.UseWellAnimation(slot);
-        
-        animator.SetTrigger("gainColor");
-
-        playerMovement.movementRoot.SetTotalRoot("colorWellActivation", true);
-    }
-
-    public void DeactivateAddColorMode()
-    {
-        addColorMode = false;
-        playerMovement.movementRoot.SetTotalRoot("colorWellActivation", false);
-    }
-    #endregion
-
-    #region Old Default Attack
-
-    /*
-    /// <summary>
-    /// Makes checks for and plays animation for default attack.
-    /// </summary>
-    private void DefaultAttackAnimation ()
-    {
-        if (Time.timeScale == 0) return;
-        if (!playerMovement.IsGrounded() && defaultAirHit) return;
-        if(attacking) return;
-        
-        cascadeDamage = 0;
-
-        if(playerMovement.IsGrappeling())
-        {
-            playerMovement.WallAttackLock();
-        }
-
-        if(!playerMovement.IsGrounded()) defaultAirHit = true;
-        {
-            if(!attackDoubleJumped)
-            {
-                attackDoubleJumped = true;
-                playerMovement.ResetDoubleJump();
-            }
-        }
-        attacking = true;
-        playerMovement.inAttackAnimation = true;
-
-        animator.SetTrigger("defaultAttack");
-        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
-        playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
-}
-
-    /// <summary>
-    /// Handles the players default attack
-    /// </summary>
-    private void DefaultAttack()
-    {
-        playerSounds.PlayDefaultAttack();
-        Debug.Log("Default attack");
-        //TODO add attacking = true;
-        FlipDefaultAttack();
-        defaultAttackHitbox.HitEnemies();
-    }
-
-    /// <summary>
-    /// Flips the default attack
-    /// </summary>
-    public void FlipDefaultAttack()
-    {
-        float offsetX = defaultAttackOffset.x * playerMovement.lookDir;
-        defaultAttackHitbox.transform.position = new Vector3(transform.position.x + offsetX, defaultAttackHitbox.transform.position.y, transform.position.z);
-    }
-
-    /// <summary>
-    /// Is called when the player hits an enemy with the default attack
-    /// </summary>
-    /// <param name="enemyObj"></param>
-    private void EnemyHitDefault((List<GameObject> absorbList, List<GameObject> pushList) enemies)
-    {
-        foreach (GameObject enemyObj in enemies.absorbList)
-        {
-            EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
-            (GameColor absorb, int ammount) = enemy.AbsorbColor();
-            if(absorb && ammount > 0) enemy.enemySounds?.PlayOnHit();
-            if(defaultAttackDamage > 0)
-                enemy.DamageEnemy(defaultAttackDamage);
-            colorInventory.AddColor(absorb, ammount);
-        }
-        foreach (GameObject enemyObj in enemies.pushList)
-        {
-            if(enemyObj == null) continue;
-            EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
-            if (!enemy.IsKnockbackImune())
-                enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
+            SpecialAttackAnimation();
         }
     }
-    */
-    #endregion
 }
