@@ -6,7 +6,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Localization;
 
-public class HealingShrine : MonoBehaviour
+public class HealingShrine : InteractionObject
 {
     [SerializeField] int heal;
     [SerializeField] int baseCost;
@@ -14,7 +14,6 @@ public class HealingShrine : MonoBehaviour
     [SerializeField] GameObject canvas;
     [SerializeField] TMP_Text cost;
     [SerializeField] TMP_Text description;
-    [SerializeField] InputActionReference buyAction;
     [SerializeField] List<LocalizedString> phrases;
     [SerializeField] LocalizedString healAmoutText;
     Animator animator;
@@ -28,24 +27,14 @@ public class HealingShrine : MonoBehaviour
     private bool buyable = false;
     private int count = 0;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         animator = GetComponent<Animator>();
         cost.text = CalculatePrice().ToString();
         description.text = phrases[0].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
-    }
-
-    private void OnEnable()
-    {
-        buy = (InputAction.CallbackContext ctx) => {Buy(); };
-        buyAction.action.performed += buy;
-    }
-
-    private void OnDisable()
-    {
-        buyAction.action.performed -= buy;
     }
 
     private void UpdateCost()
@@ -71,25 +60,14 @@ public class HealingShrine : MonoBehaviour
         return Mathf.RoundToInt((baseCost + increaseCost * count) * ItemSpellManager.instance.stageCostMultiplier);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected override void PlayerClose(bool isClose)
     {
-        if (other.CompareTag("Player"))
-        {
-            UpdateCost();
-            canvas.SetActive(true);
-        }
+        if(isClose) UpdateCost();
+        else buyable = false;
+        canvas.SetActive(isClose);
     }
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            canvas.SetActive(false);
-            buyable = false;
-        }
-    }
-
-    private void Buy()
+    protected override void PlayerInteract()
     {
         if (!buyable) return;
         if (animator.GetBool("heal")) return;
