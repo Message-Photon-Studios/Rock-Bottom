@@ -46,7 +46,7 @@ public class PrIndicationController : MonoBehaviour
             border.color = new Color32(255, 255, 255, 150);
             
         } else {
-            float buff = 100*(colorInventory.GetColorBuff() + colorInventory.GetColorSpell(slotIndex).powerScale);
+            float buff = 100*(colorInventory.GetColorBuff(currentColor) + colorInventory.GetColorSpell(slotIndex).powerScale);
             buff = Mathf.Round(buff);
             if (buff <= 10) buff = 10;
             powerText.text = (int) buff + "%";

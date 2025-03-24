@@ -484,15 +484,6 @@ public class ColorInventory : MonoBehaviour
         return damageBonus;
     }
 
-    /// <summary>
-    /// Gets the color buff for the active slots color- Returns 1 if no color buff exists.
-    /// </summary>
-    /// <returns></returns>
-    public float GetColorBuff()
-    {
-        return GetColorBuff(CheckActiveColor());
-    }
-
     public void SetRandomBuff()
     {
         float buff = Random.Range(rngMin, rngMax);
