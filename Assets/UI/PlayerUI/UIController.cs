@@ -13,7 +13,9 @@ using TMPro;
 public class UIController : MonoBehaviour
 {
     private ColorInventory colorInventory;
-    [SerializeField] List<GameObject> colorSlotContainers;
+    [SerializeField] List<GameObject> colorSlotContainersRotate;
+    
+    [SerializeField] List<GameObject> colorSlotContainersStuck;
     [SerializeField] Image fadeToBlackImg;
     [SerializeField] Image sylviaLoading;
 
@@ -94,12 +96,19 @@ public class UIController : MonoBehaviour
 
 
     private void colorSlotUpdate() {
-        foreach(GameObject colorSlotContainer in colorSlotContainers) {
+        foreach(GameObject colorSlotContainer in colorSlotContainersStuck) {
+            colorSlotContainer.SetActive(false);
+        }
+
+        foreach (GameObject colorSlotContainer in colorSlotContainersRotate)
+        {
             colorSlotContainer.SetActive(false);
         }
 
         var initialSlotCount = 3;
-        colorSlotContainers[colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
+        colorSlotContainersStuck[colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
+        colorSlotContainersRotate[colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
+        
         ColorSlotAmountChanged?.Invoke();
     }
 
