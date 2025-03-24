@@ -33,14 +33,16 @@ public class BrownColorEffect : ColorEffect
                 return;
             }
             RainbowCoWorker coWorker = new GameObject().AddComponent<RainbowCoWorker>();
+            List<GameColor> colors = playerObj.GetComponent<ColorInventory>().GetColorsInInv();
             ColorLibrary colorLib = GameManager.instance.GetComponent<ColorLibrary>();
-            GameColor bonusEffect = colorLib.GetRandomPrimaryColor();
-            if (Random.value > 0.5)
+            foreach (GameColor color in colors.ToArray())
             {
-                bonusEffect = colorLib.GetRandomSecondaryColor();
+                if (color == colorLib.rainbow) colors.Remove(color);
             }
-            float colorPower = playerObj.GetComponent<ColorInventory>().GetColorBuff(bonusEffect);
-            coWorker.Work(ApplyBonusEffect(bonusEffect, enemyObj, impactPoint, playerObj, Mathf.Max(0.5f + colorPower * 0.5f, 0.1f) , forcePerspectivePlayer, extraDamage));
+            if (colors.Count <= 0) return;
+            int spot = Random.Range(0, colors.Count);
+            float colorPower = playerObj.GetComponent<ColorInventory>().GetColorBuff(colors[spot]);
+            coWorker.Work(ApplyBonusEffect(colors[spot], enemyObj, impactPoint, playerObj, Mathf.Max(0.5f + colorPower * 0.5f, 0.1f) , forcePerspectivePlayer, extraDamage));
         }
     }
 

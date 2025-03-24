@@ -21,6 +21,7 @@ public class PlayerShieldController : MonoBehaviour
     private RectTransform secondaryRect;
     private float sizeMultiplier = 1;
     private float origSize;
+    private float maxPTHp = 0;
 
     private float maxTHealth = 0;
     private float healthMultiplier = 1;
@@ -46,12 +47,14 @@ public class PlayerShieldController : MonoBehaviour
         playerStats.onShieldChanged += ShieldChanged;
         playerStats.onMaxShieldChanged += MaxShieldChanged;
         playerStats.onPlayerDied += PlayerDied;
+        playerStats.onMaxPermanentShieldChanged += MaxPermanentShieldChanged;
 
         ShieldChanged(0);
         healthSliderValue = 0;
         MaxShieldChanged(playerStats.GetMaxShield());
 
-        float pthpX = GetComponent<RectTransform>().sizeDelta.x * ((float)playerStats.GetMaxPermanentShield()/(float)playerStats.GetMaxShield());
+        maxPTHp = (float)playerStats.GetMaxPermanentShield();
+        float pthpX = GetComponent<RectTransform>().sizeDelta.x * (maxPTHp / (float)playerStats.GetMaxShield());
         Debug.Log("size = " + GetComponent<RectTransform>().sizeDelta.x  + " * " + ((float)playerStats.GetMaxPermanentShield()/(float)playerStats.GetMaxShield()) + " = " + pthpX);
         permanentTHPMarker.anchoredPosition = new Vector3(pthpX , 0, 0);
     }
@@ -78,15 +81,24 @@ public class PlayerShieldController : MonoBehaviour
             StartCoroutine(IncreaseHealthBar(newMaxTHp > maxTHealth));
 
         maxTHealth = newMaxTHp;
-        healthMultiplier = 100 / maxTHealth;
+        healthMultiplier = 50 / maxTHealth;
         healthSliderValue = healthSliderValue;
         if (maxTHealth < healthSliderValue)
         {
-            //healthSliderValue = 100;
-            //secondarySlider.value = 100;
-            //targetValue = 100;
-            //movingValue = 100;
+            healthSliderValue = 50;
+            secondarySlider.value = 50;
+            targetValue = 50;
+            movingValue = 50;
         }
+    }
+
+    private void MaxPermanentShieldChanged(float newMaxPTHp)
+    {
+        maxPTHp = newMaxPTHp;
+        float pthpX = GetComponent<RectTransform>().sizeDelta.x * (maxPTHp / (float)playerStats.GetMaxShield());
+        Debug.Log("size = " + GetComponent<RectTransform>().sizeDelta.x + " * " + ((float)playerStats.GetMaxPermanentShield() / (float)playerStats.GetMaxShield()) + " = " + pthpX);
+        permanentTHPMarker.anchoredPosition = new Vector3(pthpX, 0, 0);
+        Debug.Log(newMaxPTHp);
     }
 
     private IEnumerator IncreaseHealthBar(bool increased)
@@ -107,6 +119,7 @@ public class PlayerShieldController : MonoBehaviour
             Vector2 size = new Vector2(origSize * value, rect.rect.height);
             rect.sizeDelta = size;
             secondaryRect.sizeDelta = size;
+            MaxPermanentShieldChanged(maxPTHp);
             yield return new WaitForSeconds(0.01f);
         }
     }

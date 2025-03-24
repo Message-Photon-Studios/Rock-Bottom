@@ -56,6 +56,8 @@ public class PlayerStats : MonoBehaviour
     public UnityAction<float> onShieldChanged;
 
     public UnityAction<float> onMaxShieldChanged;
+
+    public UnityAction<float> onMaxPermanentShieldChanged;
     
     /// <summary>
     /// This event fires when the players max health is set or changed. The float is the new max health
@@ -110,6 +112,7 @@ public class PlayerStats : MonoBehaviour
 
             if(shield > maxPermanetShield)
             {
+                Debug.Log(maxPermanetShield);
                 shield -= (shieldDecay<0)?0:shieldDecay;
                 shieldDecay += shieldDecayIncrease;
                 if(shield < maxPermanetShield) shield = maxPermanetShield;
@@ -276,7 +279,13 @@ public class PlayerStats : MonoBehaviour
     public void AddMaxShield(int addMaxShield)
     {
         maxShield += addMaxShield;
-        //onShieldChanged?.Invoke(addMaxShield);
+        onMaxShieldChanged?.Invoke(maxShield);
+    }
+
+    public void AddMaxPermanentShield(int addMaxPTHp)
+    {
+        maxPermanetShield += addMaxPTHp;
+        onMaxPermanentShieldChanged?.Invoke(maxPermanetShield);
     }
 
     #endregion

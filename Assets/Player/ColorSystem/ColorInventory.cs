@@ -218,9 +218,8 @@ public class ColorInventory : MonoBehaviour
     public void DrainAllSlots(int amount)
     {
         drainCounter++;
-        if (drainCounter > 1)
+        if (drainCounter < 3)
         {
-            drainCounter = 0;
             return;
         }
         foreach (ColorSlot slot in colorSlots)
@@ -232,6 +231,7 @@ public class ColorInventory : MonoBehaviour
                 slot.SetCharge(charge);
             }
         }
+        drainCounter = 0;
         onColorUpdated?.Invoke();
     }
 
@@ -318,6 +318,16 @@ public class ColorInventory : MonoBehaviour
             return ActiveSlot().colorSpell;
         }
         return defaultSpell;
+    }
+
+    public List<GameColor> GetColorsInInv()
+    {
+        List<GameColor> list = new List<GameColor>();
+        foreach (ColorSlot slot in colorSlots)
+        {
+            if (slot.gameColor != null && slot.charge > 0) list.Add(slot.gameColor);
+        }
+        return list;
     }
 
     #endregion
