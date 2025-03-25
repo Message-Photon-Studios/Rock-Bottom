@@ -66,6 +66,44 @@ public class GameColor : ScriptableObject
         
         return false;
     }
+    
+    /// <summary>
+    /// Returns true if this color and the other color shares at least one root color.
+    /// </summary>
+    /// <param name="otherColor"></param>
+    /// <returns></returns>
+    public bool SharesRootColor(GameColor otherColor)
+    {
+        foreach(GameColor rootColor in otherColor.rootColors)
+        {
+            if(ContainsRootColor(rootColor)) return true;
+        }
+
+        return false;
+    } 
+
+    /// <summary>
+    /// Returns a mixed color of all shared root colors between this color and the other color.
+    /// </summary>
+    /// <param name="otherColor"></param>
+    /// <returns></returns>
+    public GameColor SharedRootMix(GameColor otherColor)
+    {
+        if(!SharesRootColor(otherColor)) return null;
+
+        GameColor mix = null;
+        
+        foreach (GameColor rootColor in otherColor.rootColors)
+        {
+            if(ContainsRootColor(rootColor))
+            {
+                if(mix == null) mix = rootColor;
+                else mix = mix.MixColor(rootColor);
+            }
+        }
+
+        return mix;
+    }
     public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();

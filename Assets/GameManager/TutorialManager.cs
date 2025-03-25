@@ -26,7 +26,7 @@ public class TutorialManager : MonoBehaviour
 
         if(fillPlayerBottle > 0)
         {
-            Player.instance.GetComponent<ColorInventory>().AddColor(fillColor, fillPlayerBottle);
+            Player.instance.GetComponent<ColorInventory>().AddColor(fillColor, fillPlayerBottle, 0);
         }
 
         if(unlockBottleRotation) 

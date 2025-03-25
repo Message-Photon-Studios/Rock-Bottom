@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using UnityEngine.Events;
+using System.Linq;
 
 /// <summary>
 /// This class handles the players attack actions and spawn the color spells
@@ -32,10 +33,15 @@ public class PlayerCombatSystem : MonoBehaviour
     private bool spellAirHit = false;
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
+
+
     public bool addColorMode {get; private set;} = false;
     public ColorWell colorWell {get; private set;}
     public bool pickUpSpellMode {get; private set;} = false;
     public SpellPickup spellPickup {get; private set;}
+
+    public Action<bool, ColorSpell> onSpellPickupMode;
+    public Action<bool, GameColor> onColorPickupMode;
 
     #region Setup & Update
     private void OnEnable() {
@@ -303,10 +309,14 @@ public class PlayerCombatSystem : MonoBehaviour
         if(pickup)
         {
             this.spellPickup = spellPickup;
+            onSpellPickupMode?.Invoke(pickup, spellPickup.GetSpell());
         } else
         {
             this.spellPickup = null;
+            onSpellPickupMode?.Invoke(pickup, null);
         }
+
+        
     }
 
     public void EnableAbsorbColor(ColorWell colorWell)
@@ -314,6 +324,7 @@ public class PlayerCombatSystem : MonoBehaviour
         Player.instance.playerMovement.movementRoot.SetTotalRoot("colorWellActivation", true);
         this.colorWell = colorWell;
         addColorMode = true;
+        onColorPickupMode?.Invoke(true, colorWell.color);
     }
 
     public void MovedAwayFromWell(ColorWell movedAwayFrom)
@@ -327,10 +338,10 @@ public class PlayerCombatSystem : MonoBehaviour
         if(!addColorMode) return;
         if(colorWell == null) return;
         if(slot == null) return;
-        if(colorWell.GetColorAmount() == 0 || colorWell.color == null)
+        if(colorWell.GetColorAmount() == 0)
         {
             addColorMode = false;
-            colorInventory.DivideColor(slotIndex);
+            if(colorInventory.GetColorSlotColor(slotIndex).SharesRootColor(colorWell.color)) colorInventory.DivideColor(slotIndex);
             DeactivateAddColorMode();
             return;
         }
@@ -344,6 +355,7 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         addColorMode = false;
         playerMovement.movementRoot.SetTotalRoot("colorWellActivation", false);
+        onColorPickupMode?.Invoke(false, null);
     }
     #endregion
 

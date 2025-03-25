@@ -651,9 +651,9 @@ public class ColorInventory : MonoBehaviour
     /// </summary>
     /// <param name="color"></param>
     /// <param name="amount"></param>
-    public void AddColor(GameColor color, int amount)
+    public void AddColor(GameColor color, int amount, int slotIndex)
     {
-        AddColor(color, amount, null);
+        AddColor(color, amount, GetSlot(slotIndex));
     }
     public void AddColor(GameColor color, int amount, ColorSlot fillSlot)
     {
