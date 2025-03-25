@@ -10,39 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
-  m_Name: Rainbow Armor
+  m_Name: False Heart
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 6a075169d00e92d47a1c7c7ee7c2d85c, type: 3}
+  sprite: {fileID: 21300000, guid: e6ad36d1a6e624d45b41b4bfdd45534a, type: 3}
   itemName:
     m_TableReference:
-      m_TableCollectionName: GUID:b675053020917274e9aaa98c43a6f1da
+      m_TableCollectionName: GUID:16df55f3853da8047bd69f8dcff3c088
     m_TableEntryReference:
-      m_KeyId: 30493380608
+      m_KeyId: 3859550208
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   description:
     m_TableReference:
-      m_TableCollectionName: GUID:b675053020917274e9aaa98c43a6f1da
+      m_TableCollectionName: GUID:16df55f3853da8047bd69f8dcff3c088
     m_TableEntryReference:
-      m_KeyId: 40211582976
+      m_KeyId: 6367744000
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   itemCost: 45
   effects:
-  - rid: 3075677538533769217
+  - rid: 2516108691527172106
   itemCategory: 2
   itemRarity: 1
-  maxSpawn: 2
+  maxSpawn: 3
   references:
     version: 2
     RefIds:
-    - rid: 3075677538533769217
-      type: {class: ColorArmour, ns: , asm: Assembly-CSharp}
+    - rid: 2516108691527172106
+      type: {class: ChangeTemporaryHealth, ns: , asm: Assembly-CSharp}
       data:
-        color: {fileID: 0}
-        allColor: 1
-        armour: 0.1
+        addMaxTHP: 0
+        addMaxPermaTHP: 10
