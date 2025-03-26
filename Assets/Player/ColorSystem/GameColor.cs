@@ -104,6 +104,27 @@ public class GameColor : ScriptableObject
 
         return mix;
     }
+
+    /// <summary>
+    /// Returns the remaining color after you have removed the subtracting color from it.
+    /// </summary>
+    /// <param name="subtractingColor"></param>
+    /// <returns></returns>
+    public GameColor ColorSubtraction(GameColor subtractingColor)
+    {
+        if(!SharesRootColor(subtractingColor)) return this;
+
+        GameColor mix = Player.instance.colorInventory.GetEmptyBottleColor();
+        foreach (GameColor rootColor in rootColors)
+        {
+            if(!subtractingColor.ContainsRootColor(rootColor))
+            {
+                mix = mix.MixColor(rootColor);
+            }
+        }
+
+        return mix;
+    }
     public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();

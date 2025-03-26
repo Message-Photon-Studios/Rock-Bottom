@@ -4,12 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Steamworks;
 
 public class CombineToSlotsController : MonoBehaviour
 {
     [SerializeField] TMP_Text focusText;
     [SerializeField] Image focusImage;
-    [SerializeField] GameObject[] arrows;
+    [SerializeField] GameObject[] colorPickupArrows;
+    [SerializeField] GameObject[] divideColorArrows;
+    [SerializeField] GameObject[] bottlePickupArrows;
     [SerializeField] Image[] mixIcons;
     [SerializeField] float openYpos;
     [SerializeField] RectTransform slotsParent;
@@ -47,13 +50,14 @@ public class CombineToSlotsController : MonoBehaviour
 
         int slotCount = Player.instance.colorInventory.colorSlots.Count;
 
-        for (int i = 0; i < slotCount && i < arrows.Length && i < mixIcons.Length; i++)
+        for (int i = 0; i < slotCount && i < colorPickupArrows.Length && i < mixIcons.Length; i++)
         {
             GameColor mixColor = Player.instance.colorInventory.GetColorSlotColor(i).MixColor(colorToAdd);
            // arrows[i].GetComponent<Image>().color = mixColor.plainColor;
-            arrows[i].transform.GetChild(0).GetComponent<Image>().color = mixColor.plainColor;
+            colorPickupArrows[i].transform.GetChild(0).GetComponent<Image>().color = colorToAdd.plainColor;
             mixIcons[i].sprite = mixColor.colorIcon;
             mixIcons[i].gameObject.SetActive(true);
+            colorPickupArrows[i].SetActive(true);
         }
 
         OpenUi(colorToAdd.name, colorToAdd.colorIcon, slotCount);
@@ -64,19 +68,19 @@ public class CombineToSlotsController : MonoBehaviour
         int slotCount = Player.instance.colorInventory.colorSlots.Count;
         OpenUi(colorToShrine.name, colorToShrine.colorIcon, slotCount);
 
-        for (int i = 0; i < slotCount && i < arrows.Length && i < mixIcons.Length; i++)
+        for (int i = 0; i < slotCount && i < divideColorArrows.Length && i < mixIcons.Length; i++)
         {
             if(Player.instance.colorInventory.GetColorSlotColor(i) == null || !Player.instance.colorInventory.GetColorSlotColor(i).SharesRootColor(colorToShrine)) 
             {
-                arrows[i].SetActive(false);
+                colorPickupArrows[i].SetActive(false);
                 continue;
             }
 
             GameColor sharedRootMix = colorToShrine.SharedRootMix(Player.instance.colorInventory.GetColorSlotColor(i));
             //arrows[i].GetComponent<Image>().color = sharedRootMix.plainColor;
-            arrows[i].transform.GetChild(0).GetComponent<Image>().color = sharedRootMix.plainColor;
-            arrows[i].GetComponent<RectTransform>().rotation = Quaternion.Euler(Vector3.forward*180);
-            mixIcons[i].sprite = sharedRootMix.colorIcon;
+            divideColorArrows[i].transform.GetChild(0).GetComponent<Image>().color = sharedRootMix.plainColor;
+            divideColorArrows[i].SetActive(true);
+            mixIcons[i].sprite = Player.instance.colorInventory.GetColorSlotColor(i).ColorSubtraction(sharedRootMix).colorIcon;
             mixIcons[i].gameObject.SetActive(true);
         }
     }
@@ -91,9 +95,9 @@ public class CombineToSlotsController : MonoBehaviour
 
         int slotCount = Player.instance.colorInventory.colorSlots.Count;
 
-        for (int i = 0; i < slotCount; i++)
+        for (int i = 0; i < slotCount && i < bottlePickupArrows.Length; i++)
         {
-            arrows[i].GetComponent<Image>().color = Color.white;
+            bottlePickupArrows[i].SetActive(true);
         }
 
         OpenUi(spellToAdd.bottleName.GetLocalizedString(), spellToAdd.GetBottleSprite().smallSprite, slotCount);
@@ -101,16 +105,6 @@ public class CombineToSlotsController : MonoBehaviour
 
     private void OpenUi (string text, Sprite sprite, int slotCount)
     {
-        foreach (GameObject obj in arrows)
-        {
-            obj.SetActive(false);
-        }
-
-        for (int i = 0; i < slotCount && i < arrows.Length; i++)
-        {
-            arrows[i].SetActive(true);
-        }
-
         focusText.text = text;
         focusImage.sprite = sprite;
         
@@ -121,12 +115,23 @@ public class CombineToSlotsController : MonoBehaviour
     public void CloseUi()
     {
         uiObj.SetActive(false);
-        foreach (GameObject obj in arrows)
+        foreach (GameObject obj in colorPickupArrows)
         {
-            obj.GetComponent<RectTransform>().rotation = Quaternion.Euler(Vector3.zero);
             obj.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
             obj.SetActive(false);
         }
+
+        foreach (GameObject obj in divideColorArrows)
+        {
+            obj.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
+            obj.SetActive(false);
+        }
+
+        foreach (GameObject obj in bottlePickupArrows)
+        {
+            obj.SetActive(false);
+        }
+
 
         foreach (Image icon in mixIcons)
         {
