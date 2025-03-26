@@ -50,7 +50,7 @@ public class CombineToSlotsController : MonoBehaviour
         for (int i = 0; i < slotCount && i < arrows.Length && i < mixIcons.Length; i++)
         {
             GameColor mixColor = Player.instance.colorInventory.GetColorSlotColor(i).MixColor(colorToAdd);
-            arrows[i].GetComponent<Image>().color = mixColor.plainColor;
+           // arrows[i].GetComponent<Image>().color = mixColor.plainColor;
             mixIcons[i].sprite = mixColor.colorIcon;
             mixIcons[i].gameObject.SetActive(true);
         }
@@ -72,7 +72,7 @@ public class CombineToSlotsController : MonoBehaviour
             }
 
             GameColor sharedRootMix = colorToShrine.SharedRootMix(Player.instance.colorInventory.GetColorSlotColor(i));
-            arrows[i].GetComponent<Image>().color = sharedRootMix.plainColor;
+            //arrows[i].GetComponent<Image>().color = sharedRootMix.plainColor;
             arrows[i].GetComponent<RectTransform>().rotation = Quaternion.Euler(Vector3.forward*180);
             mixIcons[i].sprite = sharedRootMix.colorIcon;
             mixIcons[i].gameObject.SetActive(true);
