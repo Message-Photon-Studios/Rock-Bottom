@@ -51,6 +51,7 @@ public class CombineToSlotsController : MonoBehaviour
         {
             GameColor mixColor = Player.instance.colorInventory.GetColorSlotColor(i).MixColor(colorToAdd);
            // arrows[i].GetComponent<Image>().color = mixColor.plainColor;
+            arrows[i].transform.GetChild(0).GetComponent<Image>().color = mixColor.plainColor;
             mixIcons[i].sprite = mixColor.colorIcon;
             mixIcons[i].gameObject.SetActive(true);
         }
@@ -73,6 +74,7 @@ public class CombineToSlotsController : MonoBehaviour
 
             GameColor sharedRootMix = colorToShrine.SharedRootMix(Player.instance.colorInventory.GetColorSlotColor(i));
             //arrows[i].GetComponent<Image>().color = sharedRootMix.plainColor;
+            arrows[i].transform.GetChild(0).GetComponent<Image>().color = sharedRootMix.plainColor;
             arrows[i].GetComponent<RectTransform>().rotation = Quaternion.Euler(Vector3.forward*180);
             mixIcons[i].sprite = sharedRootMix.colorIcon;
             mixIcons[i].gameObject.SetActive(true);
@@ -122,6 +124,7 @@ public class CombineToSlotsController : MonoBehaviour
         foreach (GameObject obj in arrows)
         {
             obj.GetComponent<RectTransform>().rotation = Quaternion.Euler(Vector3.zero);
+            obj.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
             obj.SetActive(false);
         }
 
