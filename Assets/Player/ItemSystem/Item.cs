@@ -241,6 +241,10 @@ public class ItemInspector : Editor
         {
             item.effects.Add(new EmergencyBrushBuff());
         }
+        if (GUILayout.Button("Add D6 Damage Buff"))
+        {
+            item.effects.Add(new D6DamageBuff());
+        }
     }
 }
 

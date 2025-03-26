@@ -30,6 +30,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private int spellSorting = 0;
     private int emergecyBonusDamageMin = 0;
     private int emergecyBonusDamageMax = 0;
+    private int d6 = 0;
     private bool attacking;
     private Rigidbody2D body;
     private bool spellAirHit = false;
@@ -239,7 +240,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public int GetExtraDamage()
     {
-        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage + GetEmergencyDamage();
+        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage + GetEmergencyDamage() + GetD6Damage(d6);
     }
 
     public void AddBonusDamage(int bonus)
@@ -260,6 +261,21 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         emergecyBonusDamageMin += min;
         emergecyBonusDamageMax += max;
+    }
+
+    public int GetD6Damage(int amount)
+    {
+        int damage = 0;
+        for (int i = 0; i < amount; i++)
+        {
+            damage += UnityEngine.Random.Range(1, 7);
+        }
+        return damage;
+    }
+
+    public void AddD6(int i)
+    {
+        d6 += i;
     }
 
     #endregion
