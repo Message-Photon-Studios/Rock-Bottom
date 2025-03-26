@@ -10,6 +10,7 @@ public class CombineToSlotsController : MonoBehaviour
     [SerializeField] TMP_Text focusText;
     [SerializeField] Image focusImage;
     [SerializeField] GameObject[] arrows;
+    [SerializeField] Image[] mixIcons;
     [SerializeField] float openYpos;
     [SerializeField] RectTransform slotsParent;
     [SerializeField] GameObject uiObj;
@@ -21,6 +22,7 @@ public class CombineToSlotsController : MonoBehaviour
         startingPos = slotsParent.position;
         Player.instance.playerCombatSystem.onSpellPickupMode += AddBottle;
         Player.instance.playerCombatSystem.onColorPickupMode += AddColor;
+        CloseUi();
     }
 
     void OnDestroy()
@@ -45,9 +47,12 @@ public class CombineToSlotsController : MonoBehaviour
 
         int slotCount = Player.instance.colorInventory.colorSlots.Count;
 
-        for (int i = 0; i < slotCount; i++)
+        for (int i = 0; i < slotCount && i < arrows.Length && i < mixIcons.Length; i++)
         {
-            arrows[i].GetComponent<Image>().color = Player.instance.colorInventory.GetColorSlotColor(i).MixColor(colorToAdd).plainColor;
+            GameColor mixColor = Player.instance.colorInventory.GetColorSlotColor(i).MixColor(colorToAdd);
+            arrows[i].GetComponent<Image>().color = mixColor.plainColor;
+            mixIcons[i].sprite = mixColor.colorIcon;
+            mixIcons[i].gameObject.SetActive(true);
         }
 
         OpenUi(colorToAdd.name, colorToAdd.colorIcon, slotCount);
@@ -58,15 +63,19 @@ public class CombineToSlotsController : MonoBehaviour
         int slotCount = Player.instance.colorInventory.colorSlots.Count;
         OpenUi(colorToShrine.name, colorToShrine.colorIcon, slotCount);
 
-        for (int i = 0; i < slotCount; i++)
+        for (int i = 0; i < slotCount && i < arrows.Length && i < mixIcons.Length; i++)
         {
             if(Player.instance.colorInventory.GetColorSlotColor(i) == null || !Player.instance.colorInventory.GetColorSlotColor(i).SharesRootColor(colorToShrine)) 
             {
                 arrows[i].SetActive(false);
                 continue;
             }
-            arrows[i].GetComponent<Image>().color = colorToShrine.SharedRootMix(Player.instance.colorInventory.GetColorSlotColor(i)).plainColor;
+
+            GameColor sharedRootMix = colorToShrine.SharedRootMix(Player.instance.colorInventory.GetColorSlotColor(i));
+            arrows[i].GetComponent<Image>().color = sharedRootMix.plainColor;
             arrows[i].GetComponent<RectTransform>().rotation = Quaternion.Euler(Vector3.forward*180);
+            mixIcons[i].sprite = sharedRootMix.colorIcon;
+            mixIcons[i].gameObject.SetActive(true);
         }
     }
 
@@ -95,7 +104,7 @@ public class CombineToSlotsController : MonoBehaviour
             obj.SetActive(false);
         }
 
-        for (int i = 0; i < slotCount; i++)
+        for (int i = 0; i < slotCount && i < arrows.Length; i++)
         {
             arrows[i].SetActive(true);
         }
@@ -114,6 +123,11 @@ public class CombineToSlotsController : MonoBehaviour
         {
             obj.GetComponent<RectTransform>().rotation = Quaternion.Euler(Vector3.zero);
             obj.SetActive(false);
+        }
+
+        foreach (Image icon in mixIcons)
+        {
+            icon.gameObject.SetActive(false);
         }
         //slotsParent.position = startingPos;
     }
