@@ -17,6 +17,7 @@ public class ColorWell : InteractionObject
     [SerializeField] Light2D orbLight;
     [SerializeField] GameObject mapIcon;
     [SerializeField] SpriteRenderer colorIconImage;
+    [SerializeField] PickUpCanvasController pickUpCanvasController;
     private Color iconShadedColor = Color.black;
     public bool wellUsed {get; private set; } = false; 
 
@@ -113,6 +114,8 @@ public class ColorWell : InteractionObject
         {
             Player.instance.playerCombatSystem.DeactivateAddColorMode();
         }
+
+        pickUpCanvasController.SetColorShrine(this);
     }
 
     #region Check playerClose
@@ -127,8 +130,11 @@ public class ColorWell : InteractionObject
             {
                 colorIconImage.color = Color.white;
             }
+        
+            pickUpCanvasController.SetColorShrine(this);
         } else
         {
+            pickUpCanvasController.CloseUi();
             colorIconImage.color = iconShadedColor;
             if(wellUsed) colorIconImage.gameObject.SetActive(false);
             Player.instance.playerCombatSystem.DeactivateAddColorMode();

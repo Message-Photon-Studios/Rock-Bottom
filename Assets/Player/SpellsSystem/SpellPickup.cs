@@ -13,12 +13,7 @@ public class SpellPickup : InteractionObject
     [SerializeField] bool needsPayment;
     [SerializeField] bool lockBottleAfterSwap = false;
     [SerializeField] ColorSpell colorSpell;
-    [SerializeField] GameObject canvas;
-    [SerializeField] GameObject costContainer;
-    [SerializeField] TMP_Text cost;
-    [SerializeField] TMP_Text nameText;
-    [SerializeField] TMP_Text descriptionText;
-    [SerializeField] GameObject swapText, buyText;
+    [SerializeField] PickUpCanvasController pickUpController;
     [SerializeField] Collider2D collider;
     Rigidbody2D body;
     SpriteRenderer spriteRenderer;
@@ -46,15 +41,10 @@ public class SpellPickup : InteractionObject
     public void SetSpell(ColorSpell setSpell)
     {
         if (colorSpell == null || bought) this.colorSpell = setSpell;
-                
-        descriptionText.text = colorSpell.GetDesc();
-        nameText.text = colorSpell.GetName();
-        cost.text = colorSpell.spellCost.ToString();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = colorSpell.GetBottleSprite().smallSprite;
 
-        canvas.SetActive(false);
         inventory = Player.instance.colorInventory;
         itemInventory = Player.instance.playerInventory;
     }
@@ -84,38 +74,10 @@ public class SpellPickup : InteractionObject
                 //TODO Add text about it being locked or something
                 return;
             }
-            
-            if(needsPayment)
-            {
-                costContainer.gameObject.SetActive(true);
-                swapText.SetActive(false);
-                buyText.SetActive(true);
 
-                if(itemInventory.GetCoins() < colorSpell.spellCost)
-                {
-                    cost.color = Color.red;
-                } else
-                {
-                    cost.color = Color.white;
-                }
-                
-            } else
-            {
-                costContainer.gameObject.SetActive(false);
-                swapText.SetActive(true);
-                buyText.SetActive(false); 
-            }
+            pickUpController.SetBottle(this);
+        } else pickUpController.CloseUi();
 
-            descriptionText.text = colorSpell.GetDesc();
-            nameText.text = colorSpell.GetName();
-         
-        } else 
-        {
-                        
-            costContainer.gameObject.SetActive(false);
-        }
-
-        canvas.SetActive(isClose);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -160,8 +122,10 @@ public class SpellPickup : InteractionObject
         body.gravityScale = 2;
         if(lockBottleAfterSwap) 
         {
-            canvas.SetActive(false);
-            costContainer.gameObject.SetActive(false);
+            pickUpController.CloseUi();
+        } else 
+        {
+            pickUpController.SetBottle(this);
         }
     }
 

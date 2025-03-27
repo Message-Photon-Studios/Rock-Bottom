@@ -113,10 +113,20 @@ public class ItemInventory : MonoBehaviour
     /// <returns></returns>
     public bool PayCost(int cost)
     {
-        if(cost > coins) return false;
+        if(!HasEnoughCoins(cost)) return false;
         coins -= cost;
         onCoinsChanged?.Invoke(-cost);
         return true;
+    }
+
+    /// <summary>
+    /// Returns true if the player has enough coins for the cost
+    /// </summary>
+    /// <param name="cost"></param>
+    /// <returns></returns>
+    public bool HasEnoughCoins(int cost)
+    {
+        return (coins >= cost);
     }
 
     /// <summary>

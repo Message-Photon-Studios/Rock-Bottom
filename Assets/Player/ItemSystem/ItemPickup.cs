@@ -21,13 +21,8 @@ public class ItemPickup : InteractionObject
     [SerializeField] EnemyStats spawnFromEnemy;
 
     [Header("Functional")]
-    [SerializeField] GameObject canvas;
-    [SerializeField] GameObject costContainer;
-    [SerializeField] TMP_Text cost;
-    [SerializeField] TMP_Text nameText;
-    [SerializeField] TMP_Text descriptionText;
+    [SerializeField] PickUpCanvasController pickUpController;
     [SerializeField] SpriteRenderer spriteRenderer;
-    [SerializeField] GameObject collectObj, buyObj;
 
   
     ItemInventory inventory;
@@ -87,14 +82,8 @@ public class ItemPickup : InteractionObject
 
         this.item = setItem;
         this.itemCost = Mathf.RoundToInt(itemCost*ItemSpellManager.instance.stageCostMultiplier);
-                
-        descriptionText.text = item.GetDesc();
-        nameText.text = item.GetName();
-        cost.text = this.itemCost.ToString();
 
         spriteRenderer.sprite = item.sprite;
-
-        canvas.SetActive(false);
         hoverCoroutine = StartCoroutine(hoverAnimation());
     }
 
@@ -104,35 +93,15 @@ public class ItemPickup : InteractionObject
 
         if(isClose)
         {
-            descriptionText.text = item.GetDesc();
-            nameText.text = item.GetName();
-            if(!needsPayment)
-            {
-                costContainer.gameObject.SetActive(false);
-                collectObj.SetActive(true);
-                buyObj.SetActive(false);
-            } else
-            {
-                if(inventory.GetCoins() < this.itemCost)
-                {
-                    cost.color = Color.red;
-                } else
-                {
-                    cost.color = Color.white;
-                }
-                costContainer.gameObject.SetActive(true);
-                buyObj.SetActive(true);
-                collectObj.SetActive(false);
-            }
-        } else costContainer.gameObject.SetActive(false);   
-
-        canvas.SetActive(isClose);        
+            pickUpController.SetItem(this);
+        } else pickUpController.CloseUi();
     }
 
     protected override void PlayerInteract()
     {
         if(!needsPayment || inventory.PayCost(itemCost))
         {
+            pickUpController.CloseUi();
             inventory.AddItem(item);
             GameObject.Destroy(gameObject);
             StopCoroutine(hoverCoroutine);
@@ -146,6 +115,16 @@ public class ItemPickup : InteractionObject
     public Item GetItem()
     {
         return item;
+    }
+
+    public bool GetNeedsPayment()
+    {
+        return needsPayment;
+    }
+
+    public int GetItemCost()
+    {
+        return itemCost;
     }
 
     private IEnumerator hoverAnimation()

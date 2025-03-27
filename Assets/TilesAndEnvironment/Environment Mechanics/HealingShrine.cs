@@ -11,9 +11,8 @@ public class HealingShrine : InteractionObject
     [SerializeField] int heal;
     [SerializeField] int baseCost;
     [SerializeField] int increaseCost;
-    [SerializeField] GameObject canvas;
-    [SerializeField] TMP_Text cost;
-    [SerializeField] TMP_Text description;
+    [SerializeField] PickUpCanvasController pickUpController;
+    [SerializeField] LocalizedString healingShrineName;
     [SerializeField] List<LocalizedString> phrases;
     [SerializeField] LocalizedString healAmoutText;
     Animator animator;
@@ -24,7 +23,6 @@ public class HealingShrine : InteractionObject
 
     private ItemInventory inventory;
     private PlayerStats player;
-    private bool buyable = false;
     private int count = 0;
 
     protected override void Start()
@@ -33,53 +31,47 @@ public class HealingShrine : InteractionObject
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         animator = GetComponent<Animator>();
-        cost.text = CalculatePrice().ToString();
-        description.text = phrases[0].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
     }
 
-    private void UpdateCost()
-    {
-        cost.text = CalculatePrice().ToString();
-        if (inventory.GetCoins() < CalculatePrice())
-        {
-            cost.color = Color.red;
-            buyable = false;
-        }
-        else
-        {
-            cost.color = Color.white;
-            buyable = true;
-        }
-        if (count >= phrases.Count) description.text = phrases[phrases.Count-1].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
-        else description.text = phrases[count].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
-        if (player.GetHealth() >= player.GetMaxHealth()) buyable = false;
-    }
-
-    private int CalculatePrice()
+    public int CalculatePrice()
     {
         return Mathf.RoundToInt((baseCost + increaseCost * count) * ItemSpellManager.instance.stageCostMultiplier);
     }
 
     protected override void PlayerClose(bool isClose)
     {
-        if(isClose) UpdateCost();
-        else buyable = false;
-        canvas.SetActive(isClose);
+        if(isClose) pickUpController.SetHealthShrine(this);
+        else pickUpController.CloseUi();
     }
 
     protected override void PlayerInteract()
     {
-        if (!buyable) return;
         if (animator.GetBool("heal")) return;
-        inventory.PayCost(CalculatePrice());
-        player.HealPlayer(heal);
-        count++;
-        UpdateCost();
-        animator.SetBool("heal", true);
+        if(Player.instance.playerStats.GetHealth() >= Player.instance.playerStats.GetMaxHealth()) return;
+        if(inventory.PayCost(CalculatePrice()))
+        {
+            player.HealPlayer(heal);
+            count++;
+            pickUpController.SetHealthShrine(this);
+            animator.SetBool("heal", true);
+        }
     }
 
     protected void HealDone()
     {
         animator.SetBool("heal", false);
+    }
+
+    public string GetName()
+    {
+        return healingShrineName.GetLocalizedString();
+    }
+
+    public string GetDescription()
+    {
+        string ret = "";
+        if (count >= phrases.Count) ret = phrases[phrases.Count-1].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
+        else ret = phrases[count].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
+        return ret;
     }
 }
