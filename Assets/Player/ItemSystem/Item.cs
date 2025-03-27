@@ -229,6 +229,10 @@ public class ItemInspector : Editor
         {
             item.effects.Add(new AddSpellBonusDamage());
         }
+        if (GUILayout.Button("Add Change THP"))
+        {
+            item.effects.Add(new ChangeTemporaryHealth());
+        }
     }
 }
 

@@ -66,6 +66,9 @@ public class EnemyStats : MonoBehaviour
     private float poisonTimer = 0;
     GameObject poisonOrbPrefab;
 
+    private float redTimer = 0;
+    private float redPower = 0;
+
     [HideInInspector] public float spawnPower = 1f;
 
     private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, bool mustBurn, GameObject enemyParticles, int flames) burning;
@@ -231,6 +234,16 @@ public class EnemyStats : MonoBehaviour
                 {
                     poisonDamageToTake = 0;
                     poisonDamageReduction = 0;
+                }
+            }
+
+            if(redTimer > 0)
+            {
+                redTimer--;
+                if(redTimer <= 0)
+                {
+                    playerStats.RemoveEnemyFromRedList(this);
+                    redPower = 0;
                 }
             }
 
@@ -810,6 +823,36 @@ public class EnemyStats : MonoBehaviour
     public bool HasSleepCooldown()
     {
         return sleepCooldownTimer > 0f;
+    }
+
+    #endregion
+
+    #region Red effect
+
+    public void ApplyRedEffect(float timer, float power)
+    {
+        if (redTimer > 0)
+        {
+            redTimer = Mathf.Max(timer, redTimer);
+            redPower = Mathf.Max(redPower, power);
+        }
+        else
+        {
+            redTimer = timer;
+            redPower = power;
+            playerStats.AddEnemyToRedList(this);
+        }
+    }
+
+    public void DoRedDamage(int damage)
+    {
+        DamageEnemy(Mathf.Max(Mathf.RoundToInt(damage * redPower), 1));
+    }
+
+    public bool IsReded()
+    {
+        if (redTimer > 0) return true;
+        return false;
     }
 
     #endregion
