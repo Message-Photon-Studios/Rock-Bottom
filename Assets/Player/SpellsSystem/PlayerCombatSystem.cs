@@ -166,7 +166,7 @@ public class PlayerCombatSystem : MonoBehaviour
         if(spell != null)
         {
             ColorSpell spellStats = spell.GetComponent<ColorSpell>();
-            spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(), gameObject, playerMovement.lookDir, GetExtraDamage());
+            spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(activeSpellSlot), gameObject, playerMovement.lookDir, GetExtraDamage());
             colorInventory.UseColorSlot(colorInventory.colorSlots[activeSpellSlot]);
             spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             if (!spellStats.spawnKey.Equals(""))onRecast?.Invoke(spellStats.spawnKey);

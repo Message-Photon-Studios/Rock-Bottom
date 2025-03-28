@@ -546,9 +546,9 @@ public class ColorInventory : MonoBehaviour
         rngMin = min;
     }
 
-    public float GetSlotBuff()
+    public float GetSlotBuff(int slotIndex)
     {
-        return GetSlotBuff(ActiveSlot());
+        return GetSlotBuff(GetSlot(slotIndex));
     }
 
     public float GetSlotBuff(ColorSlot slot)
