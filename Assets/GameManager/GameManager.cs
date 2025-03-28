@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         unlockedSpells = new List<string>();
 
         maxClockTime = clockTime;
-        player = Player.instance.playerStats;
+        if(Player.instance) player = Player.instance.playerStats;
         if(player != null)
             player.onPlayerDied += OnPlayerDied;
         
