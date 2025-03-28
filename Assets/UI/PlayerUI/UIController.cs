@@ -99,7 +99,7 @@ public class UIController : MonoBehaviour
             colorSlotContainer.SetActive(false);
         }
 
-        var initialSlotCount = 3;
+        var initialSlotCount = 2;
         colorSlotContainersStuck[Player.instance.colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
         colorSlotContainersRotate[Player.instance.colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
         
