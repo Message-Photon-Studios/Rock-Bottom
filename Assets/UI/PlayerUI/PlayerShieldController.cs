@@ -63,6 +63,7 @@ public class PlayerShieldController : MonoBehaviour
         playerStats.onShieldChanged -= ShieldChanged;
         playerStats.onMaxShieldChanged -= MaxShieldChanged;
         playerStats.onPlayerDied -= PlayerDied;
+        playerStats.onMaxPermanentShieldChanged -= MaxPermanentShieldChanged;
         gameObject.SetActive(false);
     }
 

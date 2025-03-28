@@ -10,39 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
-  m_Name: Rainbow Armor
+  m_Name: D6
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 6a075169d00e92d47a1c7c7ee7c2d85c, type: 3}
+  sprite: {fileID: 21300000, guid: 4853d4edc39983d468d7426b92a81403, type: 3}
   itemName:
     m_TableReference:
-      m_TableCollectionName: GUID:b675053020917274e9aaa98c43a6f1da
+      m_TableCollectionName: GUID:9ffec281fe0964c4da4a677c877ef975
     m_TableEntryReference:
-      m_KeyId: 30493380608
+      m_KeyId: 8614289408
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   description:
     m_TableReference:
-      m_TableCollectionName: GUID:b675053020917274e9aaa98c43a6f1da
+      m_TableCollectionName: GUID:9ffec281fe0964c4da4a677c877ef975
     m_TableEntryReference:
-      m_KeyId: 40211582976
+      m_KeyId: 11365752832
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  itemCost: 45
+  itemCost: 30
   effects:
-  - rid: 3075677538533769217
-  itemCategory: 2
-  itemRarity: 1
-  maxSpawn: 2
+  - rid: 2516108715902894088
+  itemCategory: 1
+  itemRarity: 0
+  maxSpawn: -1
   references:
     version: 2
     RefIds:
-    - rid: 3075677538533769217
-      type: {class: ColorArmour, ns: , asm: Assembly-CSharp}
+    - rid: 2516108715902894088
+      type: {class: D6DamageBuff, ns: , asm: Assembly-CSharp}
       data:
-        color: {fileID: 0}
-        allColor: 1
-        armour: 0.1
+        addD6: 1

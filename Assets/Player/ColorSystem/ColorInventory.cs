@@ -59,6 +59,9 @@ public class ColorInventory : MonoBehaviour
     private float rngMax = 0;
     private float rngMin = 0;
     private float rngBuff = 0;
+    private float concentratedSmallBuff = 0;
+    private float concentratedMidBuff = 0;
+    private float concentratedMaxBuff = 0;
     private float colorMaxBonus = 0;
     private int colorMaxDamageBonus = 0;
     
@@ -542,6 +545,30 @@ public class ColorInventory : MonoBehaviour
         rngMax = max;
         rngMin = min;
     }
+
+    public float GetSlotBuff()
+    {
+        return GetSlotBuff(ActiveSlot());
+    }
+
+    public float GetSlotBuff(ColorSlot slot)
+    {
+        float buff = 0;
+        float relativeCharge = (float) slot.charge / (float) slot.maxCapacity;
+        Debug.Log("max: " + slot.maxCapacity + " charge: " + slot.charge + " " + relativeCharge);
+        if (relativeCharge <= 0.75 && slot.gameColor != null) buff += concentratedSmallBuff;
+        if (relativeCharge <= 0.50 && slot.gameColor != null) buff += concentratedMidBuff;
+        if (relativeCharge <= 0.25 && slot.gameColor != null) buff += concentratedMaxBuff;
+        return buff;
+    }
+
+    public void AddConcentratedColorBuffs(float small, float mid, float max)
+    {
+        concentratedSmallBuff += small;
+        concentratedMidBuff += mid;
+        concentratedMaxBuff += max;
+    }
+
     #endregion
 
     #region Divide color action
