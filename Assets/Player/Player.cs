@@ -121,8 +121,21 @@ public class Player : MonoBehaviour
 
     #region Initialization and Level loading
 
+
     private void Awake()
     {
+        Debug.Log("---------------- Start player init -------------------");
+        Debug.Log("This object ID: " + gameObject.GetInstanceID());
+        Debug.Log("Har previous instance: " + (instance != null));
+        if(instance != null) Debug.Log("Previous instance ID: " + instance.gameObject.GetInstanceID());
+        if(instance != null) Debug.Log("Destroy previous instance: " + instance.killMe);
+
+        if(instance != null && instance.killMe && instance != this)
+        {
+            instance.DestroyPlayer();
+            instance = null;
+        }
+
         //Singelton that ensures that only one player exists
         if(instance && instance != this.gameObject) 
         {
@@ -130,12 +143,7 @@ public class Player : MonoBehaviour
             instance.GetComponent<Player>().SetStartPosition(transform.position);
 
             Debug.Log("Set new start position " + startPosition);
-
-            foreach (GameObject obj in loadWithPlayerObjects)
-            {
-                Destroy(obj);
-            }
-            Destroy(this.gameObject);
+            DestroyPlayer();
             return;
         }
         else if(instance == null) 
@@ -211,15 +219,9 @@ public class Player : MonoBehaviour
         if(stats) stats.Setup(gameManager);
     }
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (!killMe && scene.name != "MainMenu") return;
-
-        foreach (GameObject obj in loadWithPlayerObjects)
-        {
-            Destroy(obj);
-        }
-        Destroy(gameObject);
+        if (scene.name == "MainMenu") DestroyPlayer();
     }
 
     #endregion
@@ -244,16 +246,26 @@ public class Player : MonoBehaviour
         {
             obj.tag = "DeadPlayer";
         }
-        instance = null;
         killMe = true;
     }
 
     private void OnDestroy()
     {   
+        Debug.Log("Player destroyed. ID: " + GetInstanceID());
+    }
+
+    public void DestroyPlayer()
+    {
+        Debug.Log("Start destroying player with ID: " + GetInstanceID());
         RemoveActionListeners();
         if(stats)
             stats.onPlayerDied -= ForceKillPlayer;
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        foreach (GameObject obj in loadWithPlayerObjects)
+            {
+                Destroy(obj);
+            }
+        Destroy(gameObject);
     }
 
     #endregion

@@ -23,7 +23,8 @@ public class ColorWell : InteractionObject
     protected override void Start()
     {
         base.Start();
-
+        
+        if(colorIconImage == null) return;
         if(iconShadedColor == Color.black) iconShadedColor = colorIconImage.color;
         if(color == null) return;
         else Setup(color);
@@ -31,6 +32,7 @@ public class ColorWell : InteractionObject
 
     void OnEnable()
     {
+        if(colorIconImage == null) return;
         if(iconShadedColor == Color.black) iconShadedColor = colorIconImage.color;
         if(wellUsed) DisableWell();
         else

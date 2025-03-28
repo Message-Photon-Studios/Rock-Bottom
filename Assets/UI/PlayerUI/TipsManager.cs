@@ -19,14 +19,12 @@ public class TipsManager : MonoBehaviour, IDataPersistence
 
     private GameObject gameTipsObj;
     private TMP_Text gameTipsText;
-    private UIController uiController;
     Action<InputAction.CallbackContext> removeTooltip;
 
-    public void SetUi(UIController uiController)
+    void Start()
     {
         removeTooltip = (InputAction.CallbackContext ctx) => {CloseTips();};
-        this.uiController = uiController;
-        gameTipsObj = uiController.tipsPanel;
+        gameTipsObj = Player.instance.playerUi.tipsPanel;
         gameTipsText = gameTipsObj.GetComponentInChildren<TMP_Text>();
     }
 
@@ -35,7 +33,7 @@ public class TipsManager : MonoBehaviour, IDataPersistence
         if(!gameTipsObj) return;
         if(!gameTipsObj || !gameTipsObj.activeSelf) return;
         gameTipsObj?.SetActive(false);
-        uiController.lightbox.SetActive(false);
+        Player.instance.playerUi.lightbox.SetActive(false);
         GameManager.instance.Resume();
     }
 
@@ -55,7 +53,7 @@ public class TipsManager : MonoBehaviour, IDataPersistence
                 gameTipsText.text = tipsObj.text.GetLocalizedString();
                 tipsObj.hasBeenDisplayed = true;
                 gameTipsObj.SetActive(true);
-                uiController.lightbox.SetActive(true);
+                Player.instance.playerUi.lightbox.SetActive(true);
                 GameManager.instance.Pause();
             }
         }
@@ -63,7 +61,7 @@ public class TipsManager : MonoBehaviour, IDataPersistence
         {
             gameTipsText.text = tipsKey;
             currentTipsDictionary.Add(tipsKey, new Tips(true, tipsDictionary[tipsKey].text, 0));
-            uiController.lightbox.SetActive(true);
+            Player.instance.playerUi.lightbox.SetActive(true);
             gameTipsObj.SetActive(true);
             GameManager.instance.Pause();
         }

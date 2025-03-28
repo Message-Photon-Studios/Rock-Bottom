@@ -17,12 +17,14 @@ public class VolumeSlider : MonoBehaviour
     }
 
     public void UpdateSlider() {
+        if(settingsManager == null) settingsManager = FindObjectOfType<SettingsManager>();
         float volume = slider.value;
         settingsManager.SetVolume(volume, group);
         number.text = Mathf.RoundToInt(slider.value*100).ToString();
     }
 
     private void LoadSlider() {
+        if(settingsManager == null) settingsManager = FindObjectOfType<SettingsManager>();
         slider.value = PlayerPrefs.GetFloat(group);
         number.text = Mathf.RoundToInt(slider.value*100).ToString();
     }
