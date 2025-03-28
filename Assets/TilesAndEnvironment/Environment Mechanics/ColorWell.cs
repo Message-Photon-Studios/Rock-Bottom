@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEditor.UI;
-using UnityEngine.UI;
 
 public class ColorWell : InteractionObject
 {

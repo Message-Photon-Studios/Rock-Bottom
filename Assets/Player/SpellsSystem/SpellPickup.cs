@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
 public class SpellPickup : InteractionObject
