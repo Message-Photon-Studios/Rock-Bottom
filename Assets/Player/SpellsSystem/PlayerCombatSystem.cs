@@ -169,7 +169,7 @@ public class PlayerCombatSystem : MonoBehaviour
             if (!spellStats.spawnKey.Equals(""))onRecast?.Invoke(spellStats.spawnKey);
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, colorInventory.GetSlot(activeSpellSlot)); //When adding items to change the cooldown change it here! 
             colorInventory.SetRandomBuff();
-            colorInventory.MixRandom();
+            colorInventory.MixRandom(activeSpellSlot);
         }
         colorInventory.EnableRotation();
         cascadeDamage++;

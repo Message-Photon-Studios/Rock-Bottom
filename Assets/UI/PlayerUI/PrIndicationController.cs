@@ -35,6 +35,11 @@ public class PrIndicationController : MonoBehaviour
         itemInventory.onItemPickedUpOrRemoved -= UpdatePrIndicator;
     }
 
+    private void UpdatePrIndicator(ColorSlot colorSlot)
+    {
+        UpdatePrIndicator();
+    }
+
     /// <summary>
     /// called every time number should update and sets parameters. 
     /// </summary>

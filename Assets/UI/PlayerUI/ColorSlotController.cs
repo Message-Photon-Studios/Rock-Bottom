@@ -216,6 +216,11 @@ public class ColorSlotController : MonoBehaviour
         activeCoroutines[index] = StartCoroutine(fillSlotGradually(frameImage, slot));
     }
 
+    private void ColorUpdate(ColorSlot colorSlot)
+    {
+        ColorUpdate();
+    }
+
     private void ColorUpdate() {
 
         for (int i = 0; i < colorInventory.colorSlots.Count; i++)
