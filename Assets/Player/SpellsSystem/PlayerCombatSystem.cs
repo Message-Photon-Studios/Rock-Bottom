@@ -28,6 +28,9 @@ public class PlayerCombatSystem : MonoBehaviour
     public int maxCascadeDamage;
     private int bonusDamage;
     private int spellSorting = 0;
+    private int emergecyBonusDamageMin = 0;
+    private int emergecyBonusDamageMax = 0;
+    private int d6 = 0;
     private bool attacking;
     private Rigidbody2D body;
     private bool spellAirHit = false;
@@ -146,7 +149,7 @@ public class PlayerCombatSystem : MonoBehaviour
         if(spell != null)
         {
             ColorSpell spellStats = spell.GetComponent<ColorSpell>();
-            spellStats.Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
+            spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(), gameObject, playerMovement.lookDir, GetExtraDamage());
             colorInventory.UseActiveColor();
             spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             if (!spellStats.spawnKey.Equals(""))onRecast?.Invoke(spellStats.spawnKey);
@@ -172,7 +175,7 @@ public class PlayerCombatSystem : MonoBehaviour
         if (spellSpawn != null)
         {
 
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
+            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, playerMovement.lookDir, GetExtraDamage());
             colorInventory.UseActiveColor(slot);
             spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetRandomBuff();
@@ -195,7 +198,7 @@ public class PlayerCombatSystem : MonoBehaviour
         GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
         if (spellSpawn != null)
         {
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, playerMovement.lookDir, GetExtraDamage());
+            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, playerMovement.lookDir, GetExtraDamage());
             colorInventory.UseActiveColor(slot);
             spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
@@ -222,7 +225,7 @@ public class PlayerCombatSystem : MonoBehaviour
             int lookDir = playerMovement.lookDir;
             if(Time.time - playerMovement.lastFlipTime < 0.2f) lookDir *=-1;
 
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color), gameObject, lookDir, GetExtraDamage());
+            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, lookDir, GetExtraDamage());
             colorInventory.UseActiveColor(slot);
             spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
             colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
@@ -237,12 +240,42 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public int GetExtraDamage()
     {
-        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage;
+        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage + GetEmergencyDamage() + GetD6Damage(d6);
     }
 
     public void AddBonusDamage(int bonus)
     {
         bonusDamage += bonus;
+    }
+
+    public int GetEmergencyDamage()
+    {
+        int damage = 0;
+        float relativeHealth = (float) GetComponent<PlayerStats>().GetHealth() / (float) GetComponent<PlayerStats>().GetMaxHealth();
+        if (relativeHealth <= 0.5) damage += emergecyBonusDamageMin;
+        if (relativeHealth <= 0.25) damage += emergecyBonusDamageMax;
+        return damage;
+    }
+
+    public void AddEmergencyDamage(int min, int max)
+    {
+        emergecyBonusDamageMin += min;
+        emergecyBonusDamageMax += max;
+    }
+
+    public int GetD6Damage(int amount)
+    {
+        int damage = 0;
+        for (int i = 0; i < amount; i++)
+        {
+            damage += UnityEngine.Random.Range(1, 7);
+        }
+        return damage;
+    }
+
+    public void AddD6(int i)
+    {
+        d6 += i;
     }
 
     #endregion

@@ -233,6 +233,18 @@ public class ItemInspector : Editor
         {
             item.effects.Add(new ChangeTemporaryHealth());
         }
+        if (GUILayout.Button("Add Concentraded Color Buff"))
+        {
+            item.effects.Add(new ConcentradedColorBuff());
+        }
+        if (GUILayout.Button("Add Emergency Brush Buff"))
+        {
+            item.effects.Add(new EmergencyBrushBuff());
+        }
+        if (GUILayout.Button("Add D6 Damage Buff"))
+        {
+            item.effects.Add(new D6DamageBuff());
+        }
     }
 }
 

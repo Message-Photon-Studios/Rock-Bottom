@@ -74,6 +74,11 @@ public class PlayerStats : MonoBehaviour
     /// </summary>
     public UnityAction<PlayerStats, EnemyStats> onPlayerDamaged;
 
+    /// <summary>
+    /// This event fires when the player is damaged and loses HP. The enemy stats is null when the player is damaged by non enemies.
+    /// </summary>
+    public UnityAction<PlayerStats, EnemyStats> onPlayerRealDamage;
+
     private bool isDeathExecuted;
 
     private Dictionary<GameColor, float> colorArmour = new Dictionary<GameColor, float>();
@@ -185,8 +190,8 @@ public class PlayerStats : MonoBehaviour
                 shield = 0;
                 onShieldChanged?.Invoke(shield);
             }
-
             health -= damage;
+            if (damage > 0 && health > 0) onPlayerRealDamage?.Invoke(this, enemy);
             animator.SetTrigger("damaged");
         }
         SetPlayerInvincible();

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
+  m_Name: Concentraded Color
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 6e812f477ed01084e97c40f7b0f26af8, type: 3}
+  itemName:
+    m_TableReference:
+      m_TableCollectionName: GUID:ce7fb609f79f8954786283a7fa066d10
+    m_TableEntryReference:
+      m_KeyId: 11478999040
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:ce7fb609f79f8954786283a7fa066d10
+    m_TableEntryReference:
+      m_KeyId: 15945932800
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  itemCost: 45
+  effects:
+  - rid: 2516108696356126722
+  itemCategory: 0
+  itemRarity: 1
+  maxSpawn: -1
+  references:
+    version: 2
+    RefIds:
+    - rid: 2516108696356126722
+      type: {class: ConcentradedColorBuff, ns: , asm: Assembly-CSharp}
+      data:
+        smallBuff: 0.15
+        midBuff: 0.15
+        maxBuff: 0.1
