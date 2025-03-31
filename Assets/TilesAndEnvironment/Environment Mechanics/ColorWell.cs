@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEditor.UI;
-using UnityEngine.UI;
 
-public class ColorWell : MonoBehaviour
+public class ColorWell : InteractionObject
 {
     public GameColor color;
     [SerializeField] int colorAmount;
@@ -17,14 +14,17 @@ public class ColorWell : MonoBehaviour
     [SerializeField] Light2D orbLight;
     [SerializeField] GameObject mapIcon;
     [SerializeField] SpriteRenderer colorIconImage;
+    [SerializeField] PickUpCanvasController pickUpCanvasController;
     private Color iconShadedColor = Color.black;
-    private bool playerClose = false;
     public bool wellUsed {get; private set; } = false; 
 
     private ColorSlot activateOnSlot = null;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+        
+        if(colorIconImage == null) return;
         if(iconShadedColor == Color.black) iconShadedColor = colorIconImage.color;
         if(color == null) return;
         else Setup(color);
@@ -32,6 +32,7 @@ public class ColorWell : MonoBehaviour
 
     void OnEnable()
     {
+        if(colorIconImage == null) return;
         if(iconShadedColor == Color.black) iconShadedColor = colorIconImage.color;
         if(wellUsed) DisableWell();
         else
@@ -54,14 +55,9 @@ public class ColorWell : MonoBehaviour
 
         if(wellUsed) 
         {
-            DisableWell();
         } else orbAnimator.SetBool("useWell", false);
     }
 
-    void OnDisable()
-    {
-        playerClose = false;
-    }
 
     public int GetColorAmount()
     {
@@ -77,7 +73,7 @@ public class ColorWell : MonoBehaviour
             colorIconImage.color = Color.white;
             wellUsed = false;
             Setup(color);
-            PlayerLevelMananger.instance.playerCombatSystem.EnableAbsorbColor(this);
+            Player.instance.playerCombatSystem.EnableAbsorbColor(this);
         }
     }
 
@@ -85,13 +81,12 @@ public class ColorWell : MonoBehaviour
     {
         orbAnimator.SetBool("useWell", true);
         wellUsed = true;
-        playerClose = false;
         activateOnSlot = colorSlot;
     }
 
     public void UseWell()
     {
-        PlayerLevelMananger.instance.colorInventory.AddColor(color, colorAmount, activateOnSlot);
+        Player.instance.colorInventory.AddColor(color, colorAmount, activateOnSlot);
         colorAmount = 0;
         mapIcon.SetActive(false);
         colorIconImage.color = iconShadedColor;
@@ -104,35 +99,45 @@ public class ColorWell : MonoBehaviour
         mapIcon.SetActive(false);
         orbAnimator.SetTrigger("deactivateWell");
         colorIconImage.color = iconShadedColor;
-        PlayerLevelMananger.instance.playerCombatSystem.DeactivateAddColorMode();
+        Player.instance.playerCombatSystem.DeactivateAddColorMode();
         wellUsed = true;
         
     }
-    
-    #region Check playerClose
-    void OnTriggerEnter2D(Collider2D other)
+
+    protected override void PlayerInteract()
     {
-        if(other.CompareTag("Player"))
+        if(!Player.instance.playerCombatSystem.addColorMode)
         {
-            playerClose = true;
+            Player.instance.playerCombatSystem.EnableAbsorbColor(this);
+        } else
+        {
+            Player.instance.playerCombatSystem.DeactivateAddColorMode();
+        }
+
+        pickUpCanvasController.SetColorShrine(this);
+    }
+
+    #region Check playerClose
+    protected override void PlayerClose(bool isClose)
+    {
+        base.PlayerClose(isClose);
+
+        if(isClose)
+        {
             colorIconImage.gameObject.SetActive(true);
             if(!wellUsed) 
             {
                 colorIconImage.color = Color.white;
             }
-            PlayerLevelMananger.instance.playerCombatSystem.EnableAbsorbColor(this);
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if(other.CompareTag("Player"))
+        
+            pickUpCanvasController.SetColorShrine(this);
+        } else
         {
-            playerClose = false;
+            pickUpCanvasController.CloseUi();
             colorIconImage.color = iconShadedColor;
             if(wellUsed) colorIconImage.gameObject.SetActive(false);
-            PlayerLevelMananger.instance.playerCombatSystem.DisableAbsorbColor();
-            PlayerLevelMananger.instance.playerCombatSystem.MovedAwayFromWell(this);
+            Player.instance.playerCombatSystem.DeactivateAddColorMode();
+            Player.instance.playerCombatSystem.MovedAwayFromWell(this);
         }
     }
     #endregion

@@ -10,8 +10,10 @@ public class PermanentItemShop : NpcUpgradeShop
     [SerializeField] TMP_Text itemDescription;
     [SerializeField] TMP_Text itemName;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+        
         displayImage.sprite = item.sprite;
         itemDescription.text = item.GetDesc();
         itemName.text = item.GetName();
