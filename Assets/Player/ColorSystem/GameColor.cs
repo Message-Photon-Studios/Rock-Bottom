@@ -129,24 +129,33 @@ public class GameColor : ScriptableObject
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         PlayerStats playerStats = playerObj.GetComponent<PlayerStats>();
+        float powerScale = 1;
         
         if (enemy.GetColor() == this && !playerStats.corrosiveColor)
         {
-            enemy.DamageEnemy(0);
+            powerScale = .75f;
             GameManager.instance.tipsManager.DisplayTips("colorImmunity");
-            return;
         }
 
-        float powerDivide = 1;
-        if (playerStats.corrosiveColor && enemy.GetColor() != this) powerDivide = 1.333f;
+        if(playerStats.corrosiveColor)
+        {   
+            if(enemy.GetColor() == this)
+                powerScale = 1.3f;
+            else 
+                powerScale = 0.8f;
+        }
+
         bool setPowerZero = false;
+
+        /*
         if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) 
         {
             GameManager.instance.tipsManager.DisplayTips("uncoloredDefense");
-            powerDivide = 2;
+            powerScale = 0.75f;
             GameManager.instance.soundEffectManager.PlaySound(name, .25f);
-        } else
-            GameManager.instance.soundEffectManager.PlaySound(name);
+        }*/
+        
+        GameManager.instance.soundEffectManager.PlaySound(name);
 
         if (GameManager.instance.GetComponent<ColorLibrary>().IsComplemtarty(enemy.GetColor(), this)) extraDamage += playerStats.complimentaryDamage;
 
@@ -157,7 +166,7 @@ public class GameColor : ScriptableObject
         if (delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
 
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
-        power = power / powerDivide;
+        power = power * powerScale;
         if(setPowerZero) power = 0;
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage);
 

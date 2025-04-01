@@ -249,7 +249,7 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.damage > 0 && burning.timer > 0)
             {
-                if (burning.mustBurn || playerStats.corrosiveColor || GetColor() == null || !GetColor().name.Equals("Orange")) DamageEnemy(burning.damage);
+                if (burning.mustBurn) DamageEnemy(burning.damage);
                 //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
                 //else DamageEnemy(0);
                 float timer = burning.timer;
