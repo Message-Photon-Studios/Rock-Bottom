@@ -13,7 +13,7 @@ public class BackgroundMusicController : MonoBehaviour
 
     void Start()
     {
-        if(startingMusic == null) return;
+        if(startingMusic == null && loopingMusic == null) return;
 
 
         musicSourceStart.loop = false;
