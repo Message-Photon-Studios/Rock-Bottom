@@ -71,7 +71,7 @@ public class EnemyStats : MonoBehaviour
 
     [HideInInspector] public float spawnPower = 1f;
 
-    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, bool mustBurn, GameObject enemyParticles, int flames) burning;
+    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, GameObject enemyParticles, int flames) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -249,7 +249,7 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.damage > 0 && burning.timer > 0)
             {
-                if (burning.mustBurn) DamageEnemy(burning.damage);
+                DamageEnemy(burning.damage);
                 //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
                 //else DamageEnemy(0);
                 float timer = burning.timer;
@@ -275,7 +275,7 @@ public class EnemyStats : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, obj.transform.position);
                     if(dist < burning.range)
                     {
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer+2, burning.range, burning.particles, burning.floorParticles, false, burning.flames);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer+2, burning.range, burning.particles, burning.floorParticles, burning.flames);
                     }
                 }
             }
@@ -476,7 +476,7 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     /// <param name="range"></param>
     /// <param name="burnParticles"></param>
-    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles, bool mustBurn, int flames)
+    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles, int flames)
     {
         if(timer <= 0) return;
         if(damage <= 0) return;
@@ -494,7 +494,7 @@ public class EnemyStats : MonoBehaviour
         main.duration = timer;
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
 
-        burning = (damage, timer, range, burnParticles, objs, floorParticles, mustBurn, instantiatedParticles, flames);
+        burning = (damage, timer, range, burnParticles, objs, floorParticles, instantiatedParticles, flames);
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = gameObject.transform;
 
@@ -515,7 +515,7 @@ public class EnemyStats : MonoBehaviour
     {
         if(burning.enemyParticles != null)
             burning.enemyParticles.GetComponent<ParticleSystem>().Stop();
-        burning = (0, 0, 0, null, null, null, false, null, 0);
+        burning = (0, 0, 0, null, null, null, null, 0);
     }
 
     #endregion

@@ -145,8 +145,6 @@ public class GameColor : ScriptableObject
                 powerScale = 0.8f;
         }
 
-        bool setPowerZero = false;
-
         /*
         if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) 
         {
@@ -167,7 +165,7 @@ public class GameColor : ScriptableObject
 
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         power = power * powerScale;
-        if(setPowerZero) power = 0;
+
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage);
 
         if (!delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
