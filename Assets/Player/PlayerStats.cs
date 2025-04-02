@@ -194,7 +194,7 @@ public class PlayerStats : MonoBehaviour
             if (damage > 0 && health > 0) onPlayerRealDamage?.Invoke(this, enemy);
             animator.SetTrigger("damaged");
         }
-        SetPlayerInvincible();
+        SetPlayerInvincibleHit();
         GetComponent<PlayerCombatSystem>().RemoveAttackRoot();
         GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
         if(health <= 0)
@@ -369,12 +369,23 @@ public class PlayerStats : MonoBehaviour
         invincibilityBonus += time;
     }
 
+    public void SetPlayerInvincibleHit()
+    {
+        SetPlayerInvincible(hitInvincibilityTime + invincibilityBonus);
+    }
+
+    public void SetPlayerInvincible(float time)
+    {
+        SetPlayerInvincible();
+        invincibilityTimer = time;
+    }
+
     public void SetPlayerInvincible()
     {
+        invincibilityTimer = 10f;
         //Physics2D.IgnoreLayerCollision(3,6);
         //Physics2D.IgnoreLayerCollision(3,13);
         Physics2D.IgnoreLayerCollision(3,2);
-        invincibilityTimer = hitInvincibilityTime + invincibilityBonus;
     }
 
     public void RemovePlayerInvincible()
