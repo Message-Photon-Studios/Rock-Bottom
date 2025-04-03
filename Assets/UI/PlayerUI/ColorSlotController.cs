@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 /// <summary>
 /// Script for handling all the UI features of the ColorSlotUI.
@@ -218,6 +216,11 @@ public class ColorSlotController : MonoBehaviour
         activeCoroutines[index] = StartCoroutine(fillSlotGradually(frameImage, slot));
     }
 
+    private void ColorUpdate(ColorSlot colorSlot)
+    {
+        ColorUpdate();
+    }
+
     private void ColorUpdate() {
 
         for (int i = 0; i < colorInventory.colorSlots.Count; i++)
@@ -394,7 +397,7 @@ public class ColorSlotController : MonoBehaviour
         {
             var cap = slotList[i].GetChild(0).GetChild(1).GetComponent<Image>();
             var charge = slotList[i].GetChild(2).GetChild(0).GetComponent<Image>();
-            if (colorSlots[i].charge != colorSlots[i].maxCapacity)
+            if (!colorInventory.IsSlotFull(colorSlots[i]))
             {
                 if (bottleFull[i])
                     bottleFull[i] = false;

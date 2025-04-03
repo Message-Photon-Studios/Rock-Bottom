@@ -66,6 +66,65 @@ public class GameColor : ScriptableObject
         
         return false;
     }
+    
+    /// <summary>
+    /// Returns true if this color and the other color shares at least one root color.
+    /// </summary>
+    /// <param name="otherColor"></param>
+    /// <returns></returns>
+    public bool SharesRootColor(GameColor otherColor)
+    {
+        foreach(GameColor rootColor in otherColor.rootColors)
+        {
+            if(ContainsRootColor(rootColor)) return true;
+        }
+
+        return false;
+    } 
+
+    /// <summary>
+    /// Returns a mixed color of all shared root colors between this color and the other color.
+    /// </summary>
+    /// <param name="otherColor"></param>
+    /// <returns></returns>
+    public GameColor SharedRootMix(GameColor otherColor)
+    {
+        if(!SharesRootColor(otherColor)) return null;
+
+        GameColor mix = null;
+        
+        foreach (GameColor rootColor in otherColor.rootColors)
+        {
+            if(ContainsRootColor(rootColor))
+            {
+                if(mix == null) mix = rootColor;
+                else mix = mix.MixColor(rootColor);
+            }
+        }
+
+        return mix;
+    }
+
+    /// <summary>
+    /// Returns the remaining color after you have removed the subtracting color from it.
+    /// </summary>
+    /// <param name="subtractingColor"></param>
+    /// <returns></returns>
+    public GameColor ColorSubtraction(GameColor subtractingColor)
+    {
+        if(!SharesRootColor(subtractingColor)) return this;
+
+        GameColor mix = Player.instance.colorInventory.GetEmptyBottleColor();
+        foreach (GameColor rootColor in rootColors)
+        {
+            if(!subtractingColor.ContainsRootColor(rootColor))
+            {
+                mix = mix.MixColor(rootColor);
+            }
+        }
+
+        return mix;
+    }
     public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
@@ -90,8 +149,8 @@ public class GameColor : ScriptableObject
             GameManager.instance.soundEffectManager.PlaySound(name);
 
         if (GameManager.instance.GetComponent<ColorLibrary>().IsComplemtarty(enemy.GetColor(), this)) extraDamage += playerStats.complimentaryDamage;
-        
-        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix && this.canColorEnemies)?this:MixColor(enemy.GetColor());
+
+        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix && this.canColorEnemies || name.Equals("Rainbow"))?this:MixColor(enemy.GetColor());
 
         bool delay = setToColor.name.Equals("Rainbow");
 

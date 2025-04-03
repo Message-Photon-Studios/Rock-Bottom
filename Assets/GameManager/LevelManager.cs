@@ -35,7 +35,6 @@ public class LevelManager : MonoBehaviour
     private HashSet<GameColor> spawnedColors = new HashSet<GameColor>();
 
     [Header("References")]
-    [SerializeField] UIController canvas;
     [SerializeField] GameObject backgroundMusic;
     
     [Header("Video on Death")]
@@ -60,15 +59,14 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         DataPersistenceManager.instance.Start();
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
         if (levelGenerator)
         {
             ItemSpellManager.instance.ClearPetrifiedPigmentList();
-            levelGenerator.init(canvas, true);
+            levelGenerator.init(Player.instance.playerUi, true);
         }
         else
         {
-            canvas.loaded = true;
+            Player.instance.playerUi.loaded = true;
             FinishedGeneration();
             GetComponent<ItemSpellManager>()?.SpawnItems();
         }
@@ -76,12 +74,8 @@ public class LevelManager : MonoBehaviour
     
     public void FinishedGeneration()
     {
-        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIController>();
-        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            obj.GetComponent<PlayerLevelMananger>().SetStartLevel(this);
-        }
-        StartCoroutine(canvas.FadeOutCoroutine(true));
+        Player.instance.SetStartLevel(this);
+        StartCoroutine(Player.instance.playerUi.FadeOutCoroutine(true));
         if(GameManager.instance != null)
             GameManager.instance.disablePausing = false;
 
@@ -97,20 +91,20 @@ public class LevelManager : MonoBehaviour
 
     public void EndLevel(string specialLevel)
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        Player player = Player.instance;
         if(!specialLevel.Equals("")) nextLevelName = specialLevel;
         if (!clearInventoryOnLevelEnd)
         {
             GameManager.instance.disablePausing = true;
             if (player) player.GetComponent<Rigidbody2D>().simulated = false;
             if(player) player.GetComponent<Rigidbody2D>().velocity= Vector3.zero;
-            player?.GetComponent<PlayerMovement>().movementRoot.SetTotalRoot("endLevel", true);
+            player.playerMovement.movementRoot.SetTotalRoot("endLevel", true);
         } else
         {
             player?.GetComponent<PlayerStats>()?.onPlayerDied?.Invoke();
         }
 
-        StartCoroutine(canvas.FadeOutCoroutine(false, EndLevelAsync));
+        StartCoroutine(player.playerUi.FadeOutCoroutine(false, EndLevelAsync));
 
 
     }
@@ -130,14 +124,14 @@ public class LevelManager : MonoBehaviour
             
         } else
         {
-            StartCoroutine(canvas.FadeOutCoroutine(false, PlayerDiedAsync));
+            StartCoroutine(Player.instance.playerUi.FadeOutCoroutine(false, PlayerDiedAsync));
         }
     }
 
     void DeathPlayerStopped(VideoPlayer vp)
     {   
         Time.timeScale = 1f;
-        StartCoroutine(canvas.FadeOutCoroutine(false, PlayerDiedAsync));
+        StartCoroutine(Player.instance.playerUi.FadeOutCoroutine(false, PlayerDiedAsync));
     }
 
     void StartDeathVideo ()

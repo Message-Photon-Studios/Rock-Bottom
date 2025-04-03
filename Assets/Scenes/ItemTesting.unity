@@ -747,7 +747,7 @@ PrefabInstance:
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: 3e199b294afd7074a91f43affd462b87, type: 2}
+      objectReference: {fileID: 11400000, guid: cdb93b804b621c447aa4ad3ebae8d204, type: 2}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: setByhand
       value: 1
@@ -1265,7 +1265,7 @@ PrefabInstance:
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: 6cd1e89681ac9d147a0963c57cfc4ca8, type: 2}
+      objectReference: {fileID: 11400000, guid: b506643e561ff784ca39a9ba6428d2f7, type: 2}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: setByhand
       value: 1
@@ -2425,7 +2425,7 @@ PrefabInstance:
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: 3e199b294afd7074a91f43affd462b87, type: 2}
+      objectReference: {fileID: 11400000, guid: 565065d0344e6524883671d23077b925, type: 2}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: setByhand
       value: 1
@@ -3061,18 +3061,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelGenerator: {fileID: 0}
   onDeathLevel: CaveTown
-  saveProgressionOnStart: 0
   nextLevelName: TheFirstCave
-  canvas: {fileID: 687063537}
   allowsClockTimer: 0
   addLevelClockTime: 0
   restartClockTimer: 0
+  saveProgressionOnStart: 0
   clearInventoryOnLevelEnd: 0
-  videoOnPlayerDeath: {fileID: 0}
-  videoObjecCanvas: {fileID: 0}
-  backgroundMusic: {fileID: 0}
   allowTips: 1
   isCaveTownLevel: 0
+  wellSpawnAmount: 2
+  spawnableColors: []
+  sameColorRerolls: 1
+  canvas: {fileID: 687063537}
+  backgroundMusic: {fileID: 0}
+  videoOnPlayerDeath: {fileID: 0}
+  videoObjecCanvas: {fileID: 0}
 --- !u!4 &677141304
 Transform:
   m_ObjectHideFlags: 0
@@ -3119,6 +3122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPop: 0
   stageCostMultiplier: 1
+  petrifiedPigmentDrops: 2
   levelSpells:
   - {fileID: -7692674297862362138, guid: e115a84ea227d044590791de70291cf4, type: 3}
   - {fileID: -7692674297862362138, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
@@ -3146,6 +3150,9 @@ MonoBehaviour:
   - {fileID: 768839632}
   - {fileID: 1420757822}
   - {fileID: 1511285175}
+  fillPlayerBottle: 0
+  fillColor: {fileID: 0}
+  unlockBottleRotation: 0
 --- !u!114 &687063537 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4327467504881031851, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
@@ -4484,7 +4491,7 @@ PrefabInstance:
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: 3e199b294afd7074a91f43affd462b87, type: 2}
+      objectReference: {fileID: 11400000, guid: 447786c7474987648943c9d3cc03b081, type: 2}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: setByhand
       value: 1
@@ -5426,7 +5433,7 @@ PrefabInstance:
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: 5a8b2ac2c6d17b340936941d8dd49cf7, type: 2}
+      objectReference: {fileID: 11400000, guid: b2eaf20b32f694e448034e18930adf0e, type: 2}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: setByhand
       value: 1
@@ -7679,7 +7686,7 @@ PrefabInstance:
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: be00533fbed581244ad7b7044489ad9d, type: 2}
+      objectReference: {fileID: 11400000, guid: 7ac45fc0038c7584db1c989a74d16009, type: 2}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: setByhand
       value: 1
@@ -7954,7 +7961,7 @@ PrefabInstance:
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: cdb93b804b621c447aa4ad3ebae8d204, type: 2}
+      objectReference: {fileID: 11400000, guid: 8a7f33fddf3593145ac93ceea11654d8, type: 2}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: setByhand
       value: 1
@@ -8699,7 +8706,7 @@ PrefabInstance:
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: 9d0bdb381e0f168469872a62cc0e5201, type: 2}
+      objectReference: {fileID: 11400000, guid: 7ac45fc0038c7584db1c989a74d16009, type: 2}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: setByhand
       value: 1
@@ -9707,7 +9714,7 @@ PrefabInstance:
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: 262ccc9807914984b8951d58b71a9ef2, type: 2}
+      objectReference: {fileID: 11400000, guid: 7f357089c0a8e154bbcf68c842f5ced7, type: 2}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: setByhand
       value: 1
@@ -10032,6 +10039,7 @@ MonoBehaviour:
   spawnCount: 0
   selectedNode: {x: 1, y: 1}
   isClosingRoom: 0
+  roomVariants: []
 --- !u!1 &457648504687148969
 GameObject:
   m_ObjectHideFlags: 0
