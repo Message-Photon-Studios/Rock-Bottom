@@ -22,7 +22,7 @@ public class YellowColorEffect : ColorEffect
             if(obj == null) continue;
             if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(range,2))
             {
-                AffectObject(obj, 0, enemyObj, ignoreImmunity);
+                AffectObject(obj, 0, enemyObj);
             }
         }
 
@@ -46,14 +46,14 @@ public class YellowColorEffect : ColorEffect
                  
                 if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(range-depth,2))
                 {
-                    AffectObject(obj, depth, affected[i], ignoreImmunity);
+                    AffectObject(obj, depth, affected[i]);
                 }
             }
 
         }
 
 
-        void AffectObject(GameObject obj, int depth, GameObject source, bool ignoreImmunity)
+        void AffectObject(GameObject obj, int depth, GameObject source)
         {
             if(affected.Contains(obj)) return;
             GameObject connector = GameObject.Instantiate(lightning, obj.transform.position, obj.transform.rotation);
@@ -69,7 +69,8 @@ public class YellowColorEffect : ColorEffect
             // Set enemy as parent of the particle system
             instantiatedParticles.transform.parent = enemyObj.transform;
             affected.Add(obj);
-            if (obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this && !obj.GetComponent<EnemyStats>().isColoredThisFrame && !ignoreImmunity) return;
+            //float scale = 1f;
+            //if (obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this && !obj.GetComponent<EnemyStats>().isColoredThisFrame && !ignoreImmunity) scale = .75f;
             Vector3 forceDir =  (enemyObj.transform.position - obj.transform.position);
             if(forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
             if (!obj.GetComponent<EnemyStats>().IsKnockbackImune())

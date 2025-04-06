@@ -13,9 +13,10 @@ public class ItemPickup : InteractionObject
 {
     [Header("Item settings")]
     [SerializeField] public SpawnPointChance spawnChance = SpawnPointChance.LowChance;
-    [SerializeField] bool needsPayment;
+    [SerializeField] public bool needsPayment;
     [SerializeField] ItemRarity dropPointRarity;
     [SerializeField] ItemCategory[] availableCategories;
+    [SerializeField] public bool allowsHealthItem = true;
     [SerializeField] public bool setByhand;
     [SerializeField] Item item;
     [SerializeField] EnemyStats spawnFromEnemy;
