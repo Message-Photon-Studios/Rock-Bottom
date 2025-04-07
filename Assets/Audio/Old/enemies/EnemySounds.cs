@@ -68,7 +68,7 @@ public class EnemySounds : MonoBehaviour
     }
     public void PlaySleeping()
     {
-        if (!sleeping.isPlaying)
+        if (!sleeping.isPlaying && !dying.isPlaying)
         {
             sleeping.Play();
         }
@@ -103,7 +103,6 @@ public class EnemySounds : MonoBehaviour
 
     public void PlayAttack()
     {
-
 
         attack.Stop();
 
