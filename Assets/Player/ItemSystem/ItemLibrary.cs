@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 public class ItemLibrary : MonoBehaviour{
 
     [SerializeField] SerializedDictionary<ItemRarity, SerializedDictionary<ItemRarity, float>> dropPointRarities;
+  
     private ItemCollection[,] itemMatrix = new ItemCollection[0,0];
     private Dictionary<string, Item> specialItems = new Dictionary<string, Item>();
 

@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
     float maxClockTime;
     public MaskLibrary maskLibrary;
     private PlayerStats player;
-    private UIController uiController;
     private LevelManager currentLevelManager;
     public UnityAction onLevelLoaded;
 
@@ -81,7 +80,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         unlockedSpells = new List<string>();
 
         maxClockTime = clockTime;
-        player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerStats>();
+        if(Player.instance) player = Player.instance.playerStats;
         if(player != null)
             player.onPlayerDied += OnPlayerDied;
         
@@ -95,18 +94,12 @@ public class GameManager : MonoBehaviour, IDataPersistence
         DataPersistenceManager.instance.SaveGame();
     }
 
-    public void SetUiController(UIController uiController)
-    {
-        this.uiController = uiController;
-        tipsManager.SetUi(uiController);
-    }
-
     public void SetLevelManager (LevelManager levelManager, float addClockTime, bool restartTimer) 
     {
         DataPersistenceManager.instance.SaveGame();
         DataPersistenceManager.instance.Start();
 
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        player = Player.instance.playerStats;
 
         currentLevelManager = levelManager;
         hunterTimer = 0f;
@@ -144,7 +137,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     #region MainMenu and Quit
     public void GoToMainMenu()
     {
-        StartCoroutine(uiController.FadeOutCoroutine(false, GoToMainMenuAsync));
+        StartCoroutine(Player.instance.playerUi.FadeOutCoroutine(false, GoToMainMenuAsync));
         Resume();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -286,7 +279,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public bool IsSpellSpawnable(ColorSpell spell)
     {
         bool ret = spawnableSpells.Contains(spell.name);
-        Debug.Log(spell.name + " is spawnable: " + ret);
+        //Debug.Log(spell.name + " is spawnable: " + ret);
 
         return ret;
     }

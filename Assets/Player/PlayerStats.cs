@@ -37,6 +37,8 @@ public class PlayerStats : MonoBehaviour
 
     public bool corrosiveColor = false;
 
+    private List<EnemyStats> RedList = new List<EnemyStats>();
+
     [SerializeField] PlayerSounds playerSounds;
 
     float secTimer = 1;
@@ -52,6 +54,10 @@ public class PlayerStats : MonoBehaviour
     /// This event fires when the shield takes damage. The float is the new shield.
     /// </summary>
     public UnityAction<float> onShieldChanged;
+
+    public UnityAction<float> onMaxShieldChanged;
+
+    public UnityAction<float> onMaxPermanentShieldChanged;
     
     /// <summary>
     /// This event fires when the players max health is set or changed. The float is the new max health
@@ -67,6 +73,11 @@ public class PlayerStats : MonoBehaviour
     /// This event fires when the player is damaged. The enemy stats is null when the player is damaged by non enemies.
     /// </summary>
     public UnityAction<PlayerStats, EnemyStats> onPlayerDamaged;
+
+    /// <summary>
+    /// This event fires when the player is damaged and loses HP. The enemy stats is null when the player is damaged by non enemies.
+    /// </summary>
+    public UnityAction<PlayerStats, EnemyStats> onPlayerRealDamage;
 
     private bool isDeathExecuted;
 
@@ -106,11 +117,13 @@ public class PlayerStats : MonoBehaviour
 
             if(shield > maxPermanetShield)
             {
+                Debug.Log(maxPermanetShield);
                 shield -= (shieldDecay<0)?0:shieldDecay;
                 shieldDecay += shieldDecayIncrease;
                 if(shield < maxPermanetShield) shield = maxPermanetShield;
                 onShieldChanged?.Invoke(shield);
             }
+            if (colorInventory.crackedUrn) colorInventory.DrainAllSlots(1);
         }
 
         if(invincibilityTimer >= 0)
@@ -150,6 +163,7 @@ public class PlayerStats : MonoBehaviour
             if (damage <= 0) damage = 1;
         }
 
+        DealRedListDamage(damage);
         shieldDecay = 0;
         if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
         {
@@ -176,11 +190,11 @@ public class PlayerStats : MonoBehaviour
                 shield = 0;
                 onShieldChanged?.Invoke(shield);
             }
-
             health -= damage;
+            if (damage > 0 && health > 0) onPlayerRealDamage?.Invoke(this, enemy);
             animator.SetTrigger("damaged");
         }
-        SetPlayerInvincible();
+        SetPlayerInvincibleHit();
         GetComponent<PlayerCombatSystem>().RemoveAttackRoot();
         GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
         if(health <= 0)
@@ -267,6 +281,18 @@ public class PlayerStats : MonoBehaviour
         onHealthChanged?.Invoke(health);
     }
 
+    public void AddMaxShield(int addMaxShield)
+    {
+        maxShield += addMaxShield;
+        onMaxShieldChanged?.Invoke(maxShield);
+    }
+
+    public void AddMaxPermanentShield(int addMaxPTHp)
+    {
+        maxPermanetShield += addMaxPTHp;
+        onMaxPermanentShieldChanged?.Invoke(maxPermanetShield);
+    }
+
     #endregion
 
     #region Shield
@@ -343,12 +369,23 @@ public class PlayerStats : MonoBehaviour
         invincibilityBonus += time;
     }
 
+    public void SetPlayerInvincibleHit()
+    {
+        SetPlayerInvincible(hitInvincibilityTime + invincibilityBonus);
+    }
+
+    public void SetPlayerInvincible(float time)
+    {
+        SetPlayerInvincible();
+        invincibilityTimer = time;
+    }
+
     public void SetPlayerInvincible()
     {
+        invincibilityTimer = 10f;
         //Physics2D.IgnoreLayerCollision(3,6);
         //Physics2D.IgnoreLayerCollision(3,13);
         Physics2D.IgnoreLayerCollision(3,2);
-        invincibilityTimer = hitInvincibilityTime + invincibilityBonus;
     }
 
     public void RemovePlayerInvincible()
@@ -358,6 +395,36 @@ public class PlayerStats : MonoBehaviour
         Physics2D.IgnoreLayerCollision(3,2, false);
 
         invincibilityTimer = 0;
+    }
+
+    #endregion
+
+    #region Red Damage Effect
+
+    public void AddEnemyToRedList(EnemyStats enemy)
+    {
+        if (!RedList.Contains(enemy))
+        {
+            RedList.Add(enemy);
+        }
+    }
+
+    public void RemoveEnemyFromRedList(EnemyStats enemy)
+    {
+        RedList.Remove(enemy);
+    }
+
+    public void DealRedListDamage(int damage)
+    {
+        foreach(EnemyStats enemy in RedList.ToArray())
+        {
+            if (enemy == null)
+            {
+                RedList.Remove(enemy);
+                continue;
+            }
+            enemy.DoRedDamage(damage);
+        }
     }
 
     #endregion

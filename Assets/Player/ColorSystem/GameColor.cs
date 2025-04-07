@@ -66,40 +66,106 @@ public class GameColor : ScriptableObject
         
         return false;
     }
+    
+    /// <summary>
+    /// Returns true if this color and the other color shares at least one root color.
+    /// </summary>
+    /// <param name="otherColor"></param>
+    /// <returns></returns>
+    public bool SharesRootColor(GameColor otherColor)
+    {
+        foreach(GameColor rootColor in otherColor.rootColors)
+        {
+            if(ContainsRootColor(rootColor)) return true;
+        }
+
+        return false;
+    } 
+
+    /// <summary>
+    /// Returns a mixed color of all shared root colors between this color and the other color.
+    /// </summary>
+    /// <param name="otherColor"></param>
+    /// <returns></returns>
+    public GameColor SharedRootMix(GameColor otherColor)
+    {
+        if(!SharesRootColor(otherColor)) return null;
+
+        GameColor mix = null;
+        
+        foreach (GameColor rootColor in otherColor.rootColors)
+        {
+            if(ContainsRootColor(rootColor))
+            {
+                if(mix == null) mix = rootColor;
+                else mix = mix.MixColor(rootColor);
+            }
+        }
+
+        return mix;
+    }
+
+    /// <summary>
+    /// Returns the remaining color after you have removed the subtracting color from it.
+    /// </summary>
+    /// <param name="subtractingColor"></param>
+    /// <returns></returns>
+    public GameColor ColorSubtraction(GameColor subtractingColor)
+    {
+        if(!SharesRootColor(subtractingColor)) return this;
+
+        GameColor mix = Player.instance.colorInventory.GetEmptyBottleColor();
+        foreach (GameColor rootColor in rootColors)
+        {
+            if(!subtractingColor.ContainsRootColor(rootColor))
+            {
+                mix = mix.MixColor(rootColor);
+            }
+        }
+
+        return mix;
+    }
     public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         PlayerStats playerStats = playerObj.GetComponent<PlayerStats>();
+        float powerScale = 1;
         
         if (enemy.GetColor() == this && !playerStats.corrosiveColor)
         {
-            enemy.DamageEnemy(0);
+            powerScale = .75f;
             GameManager.instance.tipsManager.DisplayTips("colorImmunity");
-            return;
         }
 
-        float powerDivide = 1;
-        if (playerStats.corrosiveColor && enemy.GetColor() != this) powerDivide = 1.333f;
-        bool setPowerZero = false;
+        if(playerStats.corrosiveColor)
+        {   
+            if(enemy.GetColor() == this)
+                powerScale = 1.3f;
+            else 
+                powerScale = 0.8f;
+        }
+
+        /*
         if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) 
         {
             GameManager.instance.tipsManager.DisplayTips("uncoloredDefense");
-            powerDivide = 2;
+            powerScale = 0.75f;
             GameManager.instance.soundEffectManager.PlaySound(name, .25f);
-        } else
-            GameManager.instance.soundEffectManager.PlaySound(name);
+        }*/
+        
+        GameManager.instance.soundEffectManager.PlaySound(name);
 
         if (GameManager.instance.GetComponent<ColorLibrary>().IsComplemtarty(enemy.GetColor(), this)) extraDamage += playerStats.complimentaryDamage;
-        
-        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix && this.canColorEnemies)?this:MixColor(enemy.GetColor());
+
+        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix && this.canColorEnemies || name.Equals("Rainbow"))?this:MixColor(enemy.GetColor());
 
         bool delay = setToColor.name.Equals("Rainbow");
 
         if (delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
 
         power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
-        power = power / powerDivide;
-        if(setPowerZero) power = 0;
+        power = power * powerScale;
+
         colorEffect.Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage);
 
         if (!delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);

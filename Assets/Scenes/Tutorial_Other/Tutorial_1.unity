@@ -18662,6 +18662,10 @@ PrefabInstance:
       propertyPath: spawnChance
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
+      propertyPath: allowsHealthItem
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2728463698928101730, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: m_Name
       value: ItemPickup (2)
@@ -18915,17 +18919,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 389905783}
   m_CullTransparentMesh: 1
---- !u!114 &392287931 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4327467504881031851, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
-  m_PrefabInstance: {fileID: 516781478}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516781479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2c7bb7186234c5478992296170ee376, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &393158354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19937,6 +19930,30 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6840163392644197070, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840163392644197070, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840163392644197070, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322732649275574600, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322732649275574600, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322732649275574600, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7471223423051761265, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -20474,7 +20491,9 @@ MonoBehaviour:
   clearInventoryOnLevelEnd: 0
   allowTips: 0
   isCaveTownLevel: 0
-  canvas: {fileID: 392287931}
+  wellSpawnAmount: 2
+  spawnableColors: []
+  sameColorRerolls: 1
   backgroundMusic: {fileID: 0}
   videoOnPlayerDeath: {fileID: 0}
   videoObjecCanvas: {fileID: 0}
@@ -20510,6 +20529,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPop: 0
   stageCostMultiplier: 1
+  healthItem: {fileID: 0}
+  healthItemAmount: 0
   petrifiedPigmentDrops: 2
   levelSpells:
   - {fileID: -7692674297862362138, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
@@ -22026,6 +22047,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: needsPayment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
+      propertyPath: allowsHealthItem
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2728463698928101730, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
