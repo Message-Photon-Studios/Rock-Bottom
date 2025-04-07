@@ -216,13 +216,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 3141353343972162449}
   walking: {fileID: 1518191341801480016}
+  walkingClips:
+  - {fileID: 8300000, guid: 1d9590b26fd6fe94ba2742a82880be6c, type: 3}
+  - {fileID: 8300000, guid: b25502c542b4eb74ea054bc8d3c3c795, type: 3}
+  - {fileID: 8300000, guid: ad4a606b0a6506648a9477cf85a712d3, type: 3}
+  - {fileID: 8300000, guid: e77952117269fcd4f9a4ae97498e7732, type: 3}
   running: {fileID: 1350625038525565224}
   sleeping: {fileID: 1700832972702976114}
   dying: {fileID: 1145041219672802652}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 2135897822167921047}
   spellHit: {fileID: 1058265439526655730}
+  attack: {fileID: 0}
 --- !u!1001 &4145299310675027222
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -478,6 +482,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7053075696140110955, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
+      propertyPath: m_Volume
+      value: 0.8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
 --- !u!82 &1058265439526655730 stripped
@@ -503,11 +511,6 @@ AudioSource:
 --- !u!82 &1700832972702976114 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 7163730101912361801, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
-  m_PrefabInstance: {fileID: 8426300879404651323}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &2135897822167921047 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 7589699801455829676, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
   m_PrefabInstance: {fileID: 8426300879404651323}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &5568817141545101553 stripped
