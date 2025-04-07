@@ -7,13 +7,15 @@ public class EnemySounds : MonoBehaviour
     public Animator enemy;
 
     public AudioSource walking;
+    [SerializeField] AudioClip[] walkingClips;
     public AudioSource running;
     public AudioSource sleeping;
     public AudioSource dying;
     public AudioSource takingDamage;
     public AudioSource jumping;
-    public AudioSource onHit;
     public AudioSource spellHit;
+
+    public AudioSource attack;
 
     private string walkingBool = "walk";
     private string walkingBool2 = "move";
@@ -60,14 +62,11 @@ public class EnemySounds : MonoBehaviour
 
     public void PlayWalking()
     {
-        walking.UnPause();
+        if(walkingClips.Length <= 0) return;
+        if(walking.isPlaying) walking.Pause();
+        walking.clip = walkingClips[Random.Range(0, walkingClips.Length)];
+        walking.Play();
     }
-
-    public void StopWalking()
-    {
-        walking.Pause();
-    }
-
     public void PlaySleeping()
     {
         if (!sleeping.isPlaying)
@@ -89,13 +88,6 @@ public class EnemySounds : MonoBehaviour
         }
     }
 
-
-    public void PlayOnHit()
-    {
-        onHit.pitch = Random.Range(0.8f, 1.5f);
-        onHit.Play();
-    }
-
     public void PlaySpellHit()
     {
         if (!spellHit.isPlaying)
@@ -109,5 +101,16 @@ public class EnemySounds : MonoBehaviour
         {
             dying.Play();
         }
+    }
+
+    public void PlayAttack()
+    {
+
+
+        attack.Pause();
+
+        attack.pitch = Random.Range(0.8f, 1.5f);
+        attack.Play();
+
     }
 }
