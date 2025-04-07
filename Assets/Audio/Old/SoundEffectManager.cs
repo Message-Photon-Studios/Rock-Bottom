@@ -16,11 +16,10 @@ public class SoundEffectManager : MonoBehaviour
 
         SoundEffect soundEffect = soundLibrary[key];
 
-        if(!soundEffect.audioSource.isPlaying)
-        {
-            soundEffect.audioSource.volume = soundEffect.maxVolume*strength;
-            soundEffect.audioSource.Play();
-        }
+        if(soundEffect.audioSource.isPlaying) soundEffect.audioSource.Stop();
+        soundEffect.audioSource.pitch = Random.Range(0.8f, 1.5f);
+        soundEffect.audioSource.volume = soundEffect.maxVolume*strength;
+        soundEffect.audioSource.Play();
     }
     public void PlaySound(string key)
     {

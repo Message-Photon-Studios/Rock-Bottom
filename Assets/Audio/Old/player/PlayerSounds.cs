@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class PlayerSounds : MonoBehaviour
 {
-    public Animator player;
+    [SerializeField] private Animator player;
 
-    public AudioSource walking;
-    public AudioSource jumping;
-    public AudioSource climbing;
-    public AudioSource sliding;
-    public AudioSource dying;
-    public AudioSource takingDamage;
-    [SerializeField] private AudioSource defaultAttack;
-    public AudioSource castingSpell;
+    [SerializeField] private AudioSource walking;
+    [SerializeField] private AudioSource jumping;
+    [SerializeField] private AudioSource climbing;
+    [SerializeField] private AudioSource sliding;
+    [SerializeField] private AudioSource dying;
+    [SerializeField] private AudioSource takingDamage;
+    [SerializeField] private AudioSource castingSpell;
 
     private string walkingBool = "walking";
     private string damageBool = "damaged";
@@ -111,22 +110,23 @@ public class PlayerSounds : MonoBehaviour
 
     public void PlayJump()
     {
+        if(jumping.isPlaying) jumping.Stop();
+        jumping.pitch = Random.Range(0.8f, 1.5f);
         jumping.Play();
     }
 
     public void PlayCastingSpell()
     {
+        if(castingSpell.isPlaying) castingSpell.Stop();
+        castingSpell.pitch = Random.Range(1.2f, 2.5f);
         castingSpell.Play();
-    }
-
-    public void PlayDefaultAttack()
-    {
-        defaultAttack.Play();
     }
     public void PlayTakingDamage()
     {
-        if (!takingDamage.isPlaying && !player.GetBool(dyingBool))
+        if (!player.GetBool(dyingBool))
         {
+            if(takingDamage.isPlaying) takingDamage.Stop();
+            takingDamage.pitch = Random.Range(0.8f, 1.5f);
             takingDamage.Play();
         }
     }
