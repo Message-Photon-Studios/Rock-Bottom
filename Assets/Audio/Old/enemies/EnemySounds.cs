@@ -11,7 +11,6 @@ public class EnemySounds : MonoBehaviour
     public AudioSource running;
     public AudioSource sleeping;
     public AudioSource dying;
-    public AudioSource takingDamage;
     public AudioSource jumping;
     public AudioSource spellHit;
 
@@ -82,23 +81,22 @@ public class EnemySounds : MonoBehaviour
 
     public void PlayJump()
     {
-        if (!jumping.isPlaying)
-        {
-            jumping.Play();
-        }
+        if (jumping.isPlaying) jumping.Stop();
+        jumping.pitch = Random.Range(0.8f, 1.5f);
+        jumping.Play();
     }
 
     public void PlaySpellHit()
     {
-        if (!spellHit.isPlaying)
-        {
-            spellHit.Play();
-        }
+        if(spellHit.isPlaying) spellHit.Stop();
+        spellHit.pitch = Random.Range(0.8f, 1.5f);
+        spellHit.Play();
     }
     public void PlayDeath()
     {
         if (!dying.isPlaying)
         {
+            dying.pitch = Random.Range(0.8f, 1.5f);
             dying.Play();
         }
     }
@@ -107,7 +105,7 @@ public class EnemySounds : MonoBehaviour
     {
 
 
-        attack.Pause();
+        attack.Stop();
 
         attack.pitch = Random.Range(0.8f, 1.5f);
         attack.Play();
