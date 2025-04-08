@@ -9270,7 +9270,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 106
-      m_TileSpriteIndex: 38
+      m_TileSpriteIndex: 71
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -14787,8 +14787,8 @@ Tilemap:
     m_Data: {fileID: -73677064, guid: 562593983336f8d458064430d2282d37, type: 3}
   - m_RefCount: 15
     m_Data: {fileID: -2043196534, guid: 562593983336f8d458064430d2282d37, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -1495221812, guid: 562593983336f8d458064430d2282d37, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 6
     m_Data: {fileID: 1558919088, guid: 562593983336f8d458064430d2282d37, type: 3}
   - m_RefCount: 0
@@ -14853,8 +14853,8 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: -1495221812, guid: 562593983336f8d458064430d2282d37, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -230036422, guid: 562593983336f8d458064430d2282d37, type: 3}
   - m_RefCount: 8
@@ -16111,17 +16111,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7744890911765842488, guid: c2970a8bee13b9749ab749da99f4f165, type: 3}
   m_PrefabInstance: {fileID: 7744890912050704387}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &392287931 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4327467504881031851, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
-  m_PrefabInstance: {fileID: 516781478}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516781479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2c7bb7186234c5478992296170ee376, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &396142687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16260,38 +16249,6 @@ PrefabInstance:
     - target: {fileID: 2907638193198340670, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
       propertyPath: CanSwap
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2907638193198340670, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
-      propertyPath: lockSwapping
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2907638193198340670, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
-      propertyPath: colorSlots.Array.data[0].charge
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2907638193198340670, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
-      propertyPath: colorSlots.Array.data[1].charge
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2907638193198340670, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
-      propertyPath: colorSlots.Array.data[2].charge
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2907638193198340670, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
-      propertyPath: colorSlots.Array.data[0].gameColor
-      value: 
-      objectReference: {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
-    - target: {fileID: 2907638193198340670, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
-      propertyPath: colorSlots.Array.data[1].gameColor
-      value: 
-      objectReference: {fileID: 11400000, guid: a5087b0e29c5b414795753d6fe24755a, type: 2}
-    - target: {fileID: 2907638193198340670, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
-      propertyPath: colorSlots.Array.data[2].gameColor
-      value: 
-      objectReference: {fileID: 11400000, guid: a43a3607f70897249a36fdff7162cc2a, type: 2}
-    - target: {fileID: 2907638193198340670, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
-      propertyPath: colorSlots.Array.data[3].colorSpell
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7401497038098640722, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
       propertyPath: gameManager
@@ -16833,8 +16790,32 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6840163392644197070, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840163392644197070, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840163392644197070, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7178126610311941863, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322732649275574600, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322732649275574600, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322732649275574600, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7471223423051761265, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
@@ -17155,7 +17136,9 @@ MonoBehaviour:
   clearInventoryOnLevelEnd: 0
   allowTips: 0
   isCaveTownLevel: 0
-  canvas: {fileID: 392287931}
+  wellSpawnAmount: 2
+  spawnableColors: []
+  sameColorRerolls: 1
   backgroundMusic: {fileID: 0}
   videoOnPlayerDeath: {fileID: 0}
   videoObjecCanvas: {fileID: 0}
@@ -17191,6 +17174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPop: 0
   stageCostMultiplier: 1
+  healthItem: {fileID: 0}
+  healthItemAmount: 0
   petrifiedPigmentDrops: 2
   levelSpells:
   - {fileID: -7692674297862362138, guid: cca545def1804c84ca260d3a5e9d7b2b, type: 3}
