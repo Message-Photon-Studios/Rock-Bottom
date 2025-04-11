@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
-  m_Name: Green Armour
+  m_Name: Rose Armour
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: e3f133e5c41455146b7784f0c866f30a, type: 3}
+  sprite: {fileID: 21300000, guid: 03bd8e7858c5ed24b8550b67d662c1f3, type: 3}
   itemName:
     m_TableReference:
-      m_TableCollectionName: GUID:c3959737cbc9d954c8102e47b143c14f
+      m_TableCollectionName: GUID:23bf0327218de4d4f9cb002da791cf05
     m_TableEntryReference:
-      m_KeyId: 3431731200
+      m_KeyId: 7121117184
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   description:
     m_TableReference:
-      m_TableCollectionName: GUID:c3959737cbc9d954c8102e47b143c14f
+      m_TableCollectionName: GUID:23bf0327218de4d4f9cb002da791cf05
     m_TableEntryReference:
-      m_KeyId: 6380326912
+      m_KeyId: 20698079232
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -34,6 +34,8 @@ MonoBehaviour:
   itemCost: 30
   effects:
   - rid: 1655388888735678468
+  - rid: 6916571442552242176
+  - rid: 6916571442552242177
   itemCategory: 2
   itemRarity: 0
   maxSpawn: 2
@@ -45,4 +47,16 @@ MonoBehaviour:
       data:
         color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
         allColor: 0
-        armour: 0.25
+        armour: 0.2
+    - rid: 6916571442552242176
+      type: {class: ColorArmour, ns: , asm: Assembly-CSharp}
+      data:
+        color: {fileID: 11400000, guid: a5087b0e29c5b414795753d6fe24755a, type: 2}
+        allColor: 0
+        armour: 0.2
+    - rid: 6916571442552242177
+      type: {class: ColorArmour, ns: , asm: Assembly-CSharp}
+      data:
+        color: {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
+        allColor: 0
+        armour: 0.2

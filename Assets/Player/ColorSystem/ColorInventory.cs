@@ -713,7 +713,7 @@ public class ColorInventory : MonoBehaviour
         foreach (ColorSlot slot in fillableSlots)
         {
             slot.AddCharge(amount);
-            GetComponent<PlayerStats>().AddShield(amount);
+            if(centrifuge) GetComponent<PlayerStats>().AddShield(amount);
         }
 
         onColorUpdated?.Invoke();
