@@ -25,7 +25,7 @@ public class TemporaryBandaid : CustomItem
     public override void Effect(PlayerStats player, EnemyStats hit)
     {
         Debug.Log("here");
-        player.AddShield(shield + player.itemVaribles[itemName] * shieldPerStack);
+        player.AddShield(shield + player.itemVaribles[itemName] * (shieldPerStack-1));
     }
 
     public override void RemoveEffect()
