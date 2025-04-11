@@ -148,7 +148,6 @@ public class GameColor : ScriptableObject
         /*
         if(enemy.GetColor() == null || enemy.GetColorAmmount() <= 0) 
         {
-            GameManager.instance.tipsManager.DisplayTips("uncoloredDefense");
             powerScale = 0.75f;
             GameManager.instance.soundEffectManager.PlaySound(name, .25f);
         }*/
