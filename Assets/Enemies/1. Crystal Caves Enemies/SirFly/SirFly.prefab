@@ -56,7 +56,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 50
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
-  colorAmmount: 6
+  colorAmmount: 3
   movementSpeed: 3500
   coinsDropped:
     min: 3
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2996a6f36971beb47b286e7fe6c4941b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spikesDamage: 20
+  spikesDamage: 15
   rangeTrigger:
     radius: 7.5
     direction: 90
@@ -232,13 +232,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 3442240939785713315}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 4002660373128886900}
   dying: {fileID: 3455065863661401946}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 4445869994806592401}
   spellHit: {fileID: 3366839001189557492}
+  attack: {fileID: 0}
 --- !u!1001 &1027369037415486832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -522,11 +522,6 @@ AudioSource:
 --- !u!82 &4002660373128886900 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 7163730101912361801, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
-  m_PrefabInstance: {fileID: 6117824489245073725}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &4445869994806592401 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 7589699801455829676, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
   m_PrefabInstance: {fileID: 6117824489245073725}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7880935803549670135 stripped

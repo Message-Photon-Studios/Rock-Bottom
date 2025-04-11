@@ -12,8 +12,9 @@ using TMPro;
 
 public class UIController : MonoBehaviour
 {
-    private ColorInventory colorInventory;
-    [SerializeField] List<GameObject> colorSlotContainers;
+    [SerializeField] List<GameObject> colorSlotContainersRotate;
+    
+    [SerializeField] List<GameObject> colorSlotContainersStuck;
     [SerializeField] Image fadeToBlackImg;
     [SerializeField] Image sylviaLoading;
 
@@ -54,19 +55,16 @@ public class UIController : MonoBehaviour
     public UnityAction<Sprite, String> inspired;
 
     //Reference to player movement to freeze the player.
-    private PlayerMovement playerMovement;
-
-    private void OnEnable() {
-        //StartCoroutine(FadeOutCoroutine(true));
-        colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
-        playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        colorInventory.onColorSlotsChanged += colorSlotUpdate;
+    void Start()
+    {
+        Player.instance.colorInventory.onColorSlotsChanged += colorSlotUpdate;
         colorSlotUpdate();
-
+        
         openPauseMenu.action.performed += OpenPauseMenu;
         openMap.action.performed += OpenMap;
         openInventory.action.performed += OpenInventory;
         closeTips.action.performed += CloseTips;
+
         lightbox.SetActive(false);
         pauseMenuContainer.SetActive(false);
         mapContainer.SetActive(false);
@@ -75,12 +73,10 @@ public class UIController : MonoBehaviour
 
         if(hideSlots.Length>0)
         foreach(GameObject slot in hideSlots) slot.SetActive(false);
-
-        GameManager.instance.SetUiController(this);
     }
 
-    private void OnDisable() {
-        colorInventory.onColorSlotsChanged -= colorSlotUpdate;
+    void OnDestroy(){
+        Player.instance.colorInventory.onColorSlotsChanged -= colorSlotUpdate;
         openPauseMenu.action.performed -= OpenPauseMenu;
         openMap.action.performed -= OpenMap;
         openInventory.action.performed -= OpenInventory;
@@ -94,12 +90,19 @@ public class UIController : MonoBehaviour
 
 
     private void colorSlotUpdate() {
-        foreach(GameObject colorSlotContainer in colorSlotContainers) {
+        foreach(GameObject colorSlotContainer in colorSlotContainersStuck) {
             colorSlotContainer.SetActive(false);
         }
 
-        var initialSlotCount = 3;
-        colorSlotContainers[colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
+        foreach (GameObject colorSlotContainer in colorSlotContainersRotate)
+        {
+            colorSlotContainer.SetActive(false);
+        }
+
+        var initialSlotCount = 2;
+        colorSlotContainersStuck[Player.instance.colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
+        colorSlotContainersRotate[Player.instance.colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
+        
         ColorSlotAmountChanged?.Invoke();
     }
 
@@ -118,7 +121,7 @@ public class UIController : MonoBehaviour
         anyMenuOpen = pauseMenuOpen;
         pauseMenuContainer.SetActive(pauseMenuOpen);
         lightbox.SetActive(pauseMenuOpen);
-        playerMovement.movementRoot.SetTotalRoot("menuOpen", pauseMenuOpen);
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("menuOpen", pauseMenuOpen);
         mapOpen = false;
         mapContainer.SetActive(mapOpen);
         inventoryOpen = false;
@@ -138,7 +141,7 @@ public class UIController : MonoBehaviour
         anyMenuOpen = settingsOpen;
         settingsContainer.SetActive(settingsOpen);
         lightbox.SetActive(settingsOpen);
-        playerMovement.movementRoot.SetTotalRoot("menuOpen", settingsOpen);
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("menuOpen", settingsOpen);
         pauseMenuOpen = false;
         pauseMenuContainer.SetActive(pauseMenuOpen);
         mapOpen = false;
@@ -168,7 +171,7 @@ public class UIController : MonoBehaviour
         anyMenuOpen = mapOpen;
         mapContainer.SetActive(mapOpen);
         lightbox.SetActive(mapOpen);
-        playerMovement.movementRoot.SetTotalRoot("menuOpen", mapOpen);
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("menuOpen", mapOpen);
         pauseMenuOpen = false;
         pauseMenuContainer.SetActive(pauseMenuOpen);
         inventoryOpen = false;
@@ -192,7 +195,7 @@ public class UIController : MonoBehaviour
         anyMenuOpen = inventoryOpen;
         inventoryContainer.SetActive(inventoryOpen);
         lightbox.SetActive(inventoryOpen);
-        playerMovement.movementRoot.SetTotalRoot("menuOpen", inventoryOpen);
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("menuOpen", inventoryOpen);
         pauseMenuOpen = false;
         pauseMenuContainer.SetActive(pauseMenuOpen);
         mapOpen = false;
@@ -237,8 +240,8 @@ public class UIController : MonoBehaviour
             while (!loadScreenFinished) 
                 yield return new WaitForEndOfFrame();
 
-            playerMovement.movementRoot.SetTotalRoot("loading", false);
-            playerMovement.GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
+            Player.instance.playerMovement.movementRoot.SetTotalRoot("loading", false);
+            Player.instance.playerMovement.GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
         }
 
         while ((fadeToBlackImg.color.a < 1 && !fadeIn) || (fadeToBlackImg.color.a > 0 && fadeIn))

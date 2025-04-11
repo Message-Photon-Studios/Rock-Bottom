@@ -16,42 +16,44 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: a4284127705ac754d8067a9340b31204, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 4299920853791408128
   m_TableData:
   - m_Id: 76123213824
     m_Localized: Close Tips
     m_Metadata:
       m_Items: []
   - m_Id: 1185143328768
-    m_Localized: "Each color has a power level that can be seen under the active
-      bottle and in the inventory. A colors power will affect its damage and the
-      efficiency of its other effects. \n\nThe power of a color can be changed by
-      several things, such as items and bottles."
+    m_Localized: 'Each spell you cast has a power level that affects its damage and
+      the efficiency of the color effects. The power of the spell is displayed under
+      the spell bottle and in the inventory.
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 1236594855936
     m_Localized: "Each bottle that is filled to the maximum will power up the color
-      it is filled with for all bottles. \n\nUsing color from the max filled bottles
-      will make them not filled to the maximum and therefore remove the buff. "
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1268345737216
-    m_Localized: An enemy with no color has significantly increased defenses towards
-      all spells.
+      it is filled with for all bottles.  \n"
     m_Metadata:
       m_Items: []
   - m_Id: 1288570671104
-    m_Localized: "\rEnemies are immune towards the color that they themself have.\r\n\r\nRemoving
-      or changing the color removes this immunity.\r\n"
+    m_Localized: 'Enemies take less damage from spells with the same color as them.
+
+'
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 4299920853791408128
   - m_Id: 1331147051008
     m_Localized: "Enemies colored to the rainbow color are unstable and will collapse
       after a few seconds. This deals damage to the enemy and removes their color.
-      \n\nIf a rainbow colored enemy dies then some of their color will be automatically
-      collected."
+      \n\nIf a rainbow colored enemy dies then  it will refill your bottles with
+      some color.\n"
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 4299920853791408128
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0010cc042c010000

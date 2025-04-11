@@ -17,31 +17,26 @@ public class TipsManager : MonoBehaviour, IDataPersistence
 
     [SerializeField] InputActionReference removeTooltipButton;
 
-    private GameObject gameTipsObj;
-    private TMP_Text gameTipsText;
-    private UIController uiController;
+
     Action<InputAction.CallbackContext> removeTooltip;
 
-    public void SetUi(UIController uiController)
+    void Start()
     {
         removeTooltip = (InputAction.CallbackContext ctx) => {CloseTips();};
-        this.uiController = uiController;
-        gameTipsObj = uiController.tipsPanel;
-        gameTipsText = gameTipsObj.GetComponentInChildren<TMP_Text>();
     }
 
     public void CloseTips()
     {
-        if(!gameTipsObj) return;
-        if(!gameTipsObj || !gameTipsObj.activeSelf) return;
-        gameTipsObj?.SetActive(false);
-        uiController.lightbox.SetActive(false);
+        if(!Player.instance) return;
+        if(!Player.instance.playerUi.tipsPanel.activeSelf) return;
+        Player.instance.playerUi.tipsPanel.SetActive(false);
+        Player.instance.playerUi.lightbox.SetActive(false);
         GameManager.instance.Resume();
     }
 
     public void DisplayTips(string tipsKey)
     {
-        if(!gameTipsObj) return;
+        if(!Player.instance) return;
         if(!GameManager.instance.allowsTips) return;
         if(currentTipsDictionary.ContainsKey(tipsKey)) 
         {
@@ -52,19 +47,19 @@ public class TipsManager : MonoBehaviour, IDataPersistence
 
             if(tipsObj.callsNeeded <= 0)
             {
-                gameTipsText.text = tipsObj.text.GetLocalizedString();
+                Player.instance.playerUi.tipsPanel.GetComponentInChildren<TMP_Text>().text = tipsObj.text.GetLocalizedString();
                 tipsObj.hasBeenDisplayed = true;
-                gameTipsObj.SetActive(true);
-                uiController.lightbox.SetActive(true);
+                Player.instance.playerUi.tipsPanel.SetActive(true);
+                Player.instance.playerUi.lightbox.SetActive(true);
                 GameManager.instance.Pause();
             }
         }
         else 
         {
-            gameTipsText.text = tipsKey;
+            Player.instance.playerUi.tipsPanel.GetComponentInChildren<TMP_Text>().text = tipsKey;
             currentTipsDictionary.Add(tipsKey, new Tips(true, tipsDictionary[tipsKey].text, 0));
-            uiController.lightbox.SetActive(true);
-            gameTipsObj.SetActive(true);
+            Player.instance.playerUi.lightbox.SetActive(true);
+            Player.instance.playerUi.tipsPanel.SetActive(true);
             GameManager.instance.Pause();
         }
     }

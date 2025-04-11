@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 /// <summary>
 /// Script for handling all the UI features of the ColorSlotUI.
@@ -89,6 +87,7 @@ public class ColorSlotController : MonoBehaviour
         //Init every color
         var materials = Resources.LoadAll<Material>("Bottles/Materials/Body");
         var capMaterials = Resources.LoadAll<Material>("Bottles/Materials/Cap");
+        var chargeMaterials = Resources.LoadAll<Material>("Bottles/Materials/Charge");
         for(int i = 0; i < slotList.Count; i++) {
             Image frameImage = slotList[i].GetChild(0).GetChild(0).GetComponent<Image>();
             frameImage.material = materials[i];
@@ -108,8 +107,10 @@ public class ColorSlotController : MonoBehaviour
             capEffect.gameObject.SetActive(false);
 
             Image chargeImage = slotList[i].GetChild(2).GetChild(0).GetComponent<Image>();
-            chargeImage.material = capMaterials[i];
-            chargeImage.material.SetColor("_Color", slot.gameColor != null ? slot.gameColor.colorMat.color : colorInventory.defaultColor.GetColor("_Color"));
+            chargeImage.material = chargeMaterials[i];
+            chargeImage.material.SetColor("_Color", slot.gameColor != null && slot.charge > 0 ? slot.gameColor.colorMat.color : colorInventory.GetEmptyBottleColor().plainColor);
+            chargeImage.material.SetColor("_PlainColor", slot.gameColor != null && slot.charge > 0 ? slot.gameColor.plainColor : colorInventory.GetEmptyBottleColor().plainColor);
+            chargeImage.material.SetFloat("_BloomPower", 0);
 
             activeCoroutines.Add(null);
         }
@@ -201,7 +202,9 @@ public class ColorSlotController : MonoBehaviour
         frameImage.material.SetColor("_Color", slot.gameColor != null ? slot.gameColor.plainColor : colorInventory.defaultColor.GetColor("_Color")); 
         capImage.material.SetColor("_Color", slot.gameColor != null ? slot.gameColor.colorMat.GetColor("_Color") : colorInventory.defaultColor.GetColor("_Color"));
         capImage.material.SetColor("_PlainColor", slot.gameColor != null ? slot.gameColor.plainColor : colorInventory.defaultColor.GetColor("_Color"));
-        chargeImage.material.SetColor("_Color", slot.gameColor != null ? slot.gameColor.colorMat.GetColor("_Color") : colorInventory.defaultColor.GetColor("_Color"));
+        
+        chargeImage.material.SetColor("_Color", slot.gameColor != null && slot.charge > 0 ? slot.gameColor.colorMat.GetColor("_Color") : colorInventory.GetEmptyBottleColor().plainColor);
+        chargeImage.material.SetColor("_PlainColor", slot.gameColor != null && slot.charge > 0 ? slot.gameColor.plainColor : colorInventory.GetEmptyBottleColor().plainColor);
 
         if (capImage.material.GetFloat("_Alpha") == 0f && slot.charge > 0)
             StartCoroutine(setActivateCap(capImage, slot, true));
@@ -211,6 +214,11 @@ public class ColorSlotController : MonoBehaviour
         if (activeCoroutines[index] != null)
             StopCoroutine(activeCoroutines[index]);
         activeCoroutines[index] = StartCoroutine(fillSlotGradually(frameImage, slot));
+    }
+
+    private void ColorUpdate(ColorSlot colorSlot)
+    {
+        ColorUpdate();
     }
 
     private void ColorUpdate() {
@@ -388,11 +396,13 @@ public class ColorSlotController : MonoBehaviour
         for (int i = 0; i < slotList.Count; i++)
         {
             var cap = slotList[i].GetChild(0).GetChild(1).GetComponent<Image>();
-            if (colorSlots[i].charge != colorSlots[i].maxCapacity)
+            var charge = slotList[i].GetChild(2).GetChild(0).GetComponent<Image>();
+            if (!colorInventory.IsSlotFull(colorSlots[i]))
             {
                 if (bottleFull[i])
                     bottleFull[i] = false;
                 cap.material.SetFloat("_BloomPower", 0);
+                charge.material.SetFloat("_BloomPower", 0);
             }
             else
             {
@@ -404,6 +414,7 @@ public class ColorSlotController : MonoBehaviour
                     bottleFull[i] = true;
                 }
                 cap.material.SetFloat("_BloomPower", sinewave);
+                charge.material.SetFloat("_BloomPower", sinewave);
             }
         }
 
