@@ -130,7 +130,6 @@ public class BossEnemyMain : Enemy
     }
     void SpawnDied(EnemyStats deadWisp)
     {
-        Debug.Log("test");
         deadWisp.onEnemyDeath -= SpawnDied;
         for (int i = 0; i < spawned.Count; i++)
         {

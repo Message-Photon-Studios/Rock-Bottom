@@ -13,8 +13,8 @@ public class Spikes : MonoBehaviour
     PlayerMovement playerMovement;
     void Start()
     {
-        playerStats = PlayerLevelMananger.instance.playerStats;
-        playerMovement = PlayerLevelMananger.instance.playerMovement;
+        playerStats = Player.instance.playerStats;
+        playerMovement = Player.instance.playerMovement;
     }
 
     void Update()

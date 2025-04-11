@@ -12,6 +12,7 @@ public class RedColorEffect : ColorEffect
     [SerializeField] float force;
     [SerializeField] GameObject orb;
     [SerializeField] float healingPercent;
+    [SerializeField] float time;
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
@@ -30,6 +31,8 @@ public class RedColorEffect : ColorEffect
         }
         float enemyHP = enemy.GetHealth() - Mathf.RoundToInt(damage * power);
         enemy.DamageEnemy(Mathf.RoundToInt(damage*power)+extraDamage);
+        enemy.ApplyRedEffect(time, power);
+
         //player.HealPlayer(Mathf.RoundToInt(healing*power));
         int healing = 0;
         if (enemyHP >= 0)

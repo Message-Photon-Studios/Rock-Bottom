@@ -4,25 +4,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using UnityEngine.Events;
+using System.Linq;
 
 /// <summary>
 /// This class handles the players attack actions and spawn the color spells
 /// </summary>
 public class PlayerCombatSystem : MonoBehaviour
 {
-    //[SerializeField] float defaultAttackDamage;
-    [SerializeField] float defaultAttackForce;
     public int rainbowComboDamage = 20;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
-    [SerializeField] PlayerDefaultAttack defaultAttackHitbox; //The object that controlls the default attack hitbox
-    [SerializeField] Vector2 defaultAttackOffset; //The offset that the default attack will be set to
-    [SerializeField] InputActionReference defaultAttackAction, specialAttackAction, verticalLookDir;
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
     [SerializeField] PlayerSounds playerSounds;
     [SerializeField] float bunnyCastTolerance;
-
     public int defaultAttackDamage = 0;
     private float bunnyCast = 0;
 
@@ -33,48 +28,373 @@ public class PlayerCombatSystem : MonoBehaviour
     public int maxCascadeDamage;
     private int bonusDamage;
     private int spellSorting = 0;
+    private int emergecyBonusDamageMin = 0;
+    private int emergecyBonusDamageMax = 0;
+    private int d6 = 0;
     private bool attacking;
     private Rigidbody2D body;
-
-    private bool defaultAirHit = false;
     private bool spellAirHit = false;
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
-    Action<InputAction.CallbackContext> specialAttackHandler;
-    Action<InputAction.CallbackContext> defaultAttackHandler;
 
 
-    #region Setup
+    public bool addColorMode {get; private set;} = false;
+    public ColorWell colorWell {get; private set;}
+    public bool pickUpSpellMode {get; private set;} = false;
+    public SpellPickup spellPickup {get; private set;}
+
+    public Action<bool, ColorSpell> onSpellPickupMode;
+    public Action<bool, GameColor> onColorPickupMode;
+
+    #region Setup & Update
     private void OnEnable() {
-
-        specialAttackHandler = (InputAction.CallbackContext ctx) => SpecialAttackAnimation();
-        defaultAttackHandler = (InputAction.CallbackContext ctx) => DefaultAttackAnimation();
         
         body = GetComponent<Rigidbody2D>();
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
-        specialAttackAction.action.performed += specialAttackHandler;
-        defaultAttackAction.action.performed += defaultAttackHandler;
-        defaultAttackHitbox.onDefaultHit += EnemyHitDefault;
     }
 
     private void Start()
     {
         GameManager.instance.onLevelLoaded += ResetSpellSortingCounter;
+        
+        Player.instance.attackAction += AttackAnimation;
     }
-
-
 
     private void OnDisable()
     {
-        specialAttackAction.action.performed -= specialAttackHandler;
-        defaultAttackAction.action.performed -= defaultAttackHandler;
-        defaultAttackHitbox.onDefaultHit -= EnemyHitDefault;
+        Player.instance.attackAction -= AttackAnimation;
+
         GameManager.instance.onLevelLoaded -= ResetSpellSortingCounter;
+    }
+
+    private void ResetSpellSortingCounter()
+    {
+        spellSorting = 0;
+    }
+
+    void Update()
+    {
+
+        if (bunnyCast > 0 && bunnyCast >= Time.fixedTime)
+        {
+            AttackAnimation(activeSpellSlot);
+        }
+    }
+
+    #endregion
+
+    #region Attacks
+    private GameObject currentSpell = null;
+    private int activeSpellSlot = -1;   
+    /// <summary>
+    /// Plays the animation for the special attack
+    /// </summary>
+    public void AttackAnimation(int slotIndex)
+    {
+        if(slotIndex >= colorInventory.colorSlots.Count) return;
+        
+        if(pickUpSpellMode)
+        {
+            spellPickup.PickedUp(slotIndex);
+            SpellPickup(false, null);
+            return;
+        }
+
+        if(addColorMode)
+        {
+            AddColorAnimation(slotIndex);
+            return;
+        }
+
+
+        if (Time.timeScale == 0) return;
+        if(!playerMovement.IsGrounded() && spellAirHit)
+        {
+            SetBunnySpell(slotIndex);
+            return;
+        }
+        currentSpell= colorInventory.GetColorSpell(slotIndex).gameObject;
+        if(currentSpell == null) return;
+        if(attacking)
+        {
+            SetBunnySpell(slotIndex);
+            return;
+        }
+        //if(!colorInventory.CheckActveColor()) return;
+        if (!colorInventory.IsSpellReady(colorInventory.GetSlot(slotIndex))) return;
+
+
+
+        if(playerMovement.IsGrappeling())
+        {
+            playerMovement.WallAttackLock();
+        }
+        
+        if(!playerMovement.IsGrounded()) 
+        {
+            spellAirHit = true;
+            if(!attackDoubleJumped) 
+            {
+                playerMovement.ResetDoubleJump();
+                attackDoubleJumped = true;
+            }
+        }
+        activeSpellSlot = slotIndex;
+        attacking = true;
+        playerMovement.inAttackAnimation = true;
+        string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
+        animator.SetTrigger(anim);
+        playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
+        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        playerSounds.PlayCastingSpell();
+        colorInventory.DisableRotation();
+        bunnyCast = -1;
+    }
+
+    /// <summary>
+    /// Handles the players special attack. Called by animation event
+    /// </summary>
+    private void SpellAttack()
+    {
+        if(activeSpellSlot < 0 || activeSpellSlot >= colorInventory.colorSlots.Count) return;
+
+        GameColor color = colorInventory.GetColorSlotColor(activeSpellSlot);
+        if(currentSpell == null || color == null) return;
+        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+currentSpell.transform.position.x) * playerMovement.lookDir, 
+                                        currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
+        GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
+        if(spell != null)
+        {
+            ColorSpell spellStats = spell.GetComponent<ColorSpell>();
+            spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(activeSpellSlot), gameObject, playerMovement.lookDir, GetExtraDamage());
+            colorInventory.UseColorSlot(colorInventory.colorSlots[activeSpellSlot]);
+            spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
+            if (!spellStats.spawnKey.Equals(""))onRecast?.Invoke(spellStats.spawnKey);
+            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, colorInventory.GetSlot(activeSpellSlot)); //When adding items to change the cooldown change it here! 
+            colorInventory.SetRandomBuff();
+            colorInventory.MixRandom(activeSpellSlot);
+        }
+        colorInventory.EnableRotation();
+        cascadeDamage++;
+        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
+        transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
+    }
+
+    public void PocketSpecialAttack(ColorSlot slot)
+    {
+        GameColor color = colorInventory.GetColorSlotColor(slot);
+        ColorSpell spell = slot.colorSpell;
+        if (spell == null || color == null) return;
+
+        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.transform.position.x) * playerMovement.lookDir,
+                                        spell.transform.position.y + spellSpawnPoint.localPosition.y);
+        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
+        if (spellSpawn != null)
+        {
+
+            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, playerMovement.lookDir, GetExtraDamage());
+            colorInventory.UseColorSlot(slot);
+            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
+            colorInventory.SetRandomBuff();
+            colorInventory.MixRandom(slot);
+        }
+        cascadeDamage++;
+        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
+
+        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z);
+    }
+
+    public void DashSpecialAttack(ColorSlot slot)
+    {
+        GameColor color = colorInventory.GetColorSlotColor(slot);
+        ColorSpell spell = slot.colorSpell;
+        if (spell == null || color == null) return;
+
+        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.transform.position.x) * playerMovement.lookDir,
+                                        spell.transform.position.y + spellSpawnPoint.localPosition.y);
+        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
+        if (spellSpawn != null)
+        {
+             spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, playerMovement.lookDir, GetExtraDamage());
+            colorInventory.UseColorSlot(slot);
+            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
+            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
+            colorInventory.SetRandomBuff();
+            colorInventory.MixRandom(slot);
+        }
+        cascadeDamage++;
+        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
+
+        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z);
+    }
+
+    public void DoubleJumpSpecialAttack(ColorSlot slot)
+    {
+        GameColor color = colorInventory.GetColorSlotColor(slot);
+        ColorSpell spell = slot.colorSpell;
+        if (spell == null || color == null) return;
+
+        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.transform.position.x) * playerMovement.lookDir,
+                                        spell.transform.position.y + spellSpawnPoint.localPosition.y);
+        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
+        if (spellSpawn != null)
+        {
+            int lookDir = playerMovement.lookDir;
+            if(Time.time - playerMovement.lastFlipTime < 0.2f) lookDir *=-1;
+
+            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, lookDir, GetExtraDamage());
+            colorInventory.UseColorSlot(slot);
+            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
+            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
+            colorInventory.SetRandomBuff();
+            colorInventory.MixRandom(slot);
+        }
+        cascadeDamage++;
+        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
+
+        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z);
+    }
+
+    public int GetExtraDamage()
+    {
+        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage + GetEmergencyDamage() + GetD6Damage(d6);
+    }
+
+    public void AddBonusDamage(int bonus)
+    {
+        bonusDamage += bonus;
+    }
+
+    public int GetEmergencyDamage()
+    {
+        int damage = 0;
+        float relativeHealth = (float) GetComponent<PlayerStats>().GetHealth() / (float) GetComponent<PlayerStats>().GetMaxHealth();
+        if (relativeHealth <= 0.5) damage += emergecyBonusDamageMin;
+        if (relativeHealth <= 0.25) damage += emergecyBonusDamageMax;
+        return damage;
+    }
+
+    public void AddEmergencyDamage(int min, int max)
+    {
+        emergecyBonusDamageMin += min;
+        emergecyBonusDamageMax += max;
+    }
+
+    public int GetD6Damage(int amount)
+    {
+        int damage = 0;
+        for (int i = 0; i < amount; i++)
+        {
+            damage += UnityEngine.Random.Range(1, 7);
+        }
+        return damage;
+    }
+
+    public void AddD6(int i)
+    {
+        d6 += i;
+    }
+
+    #endregion
+
+    #region Movement & root impacts
+    /// <summary>
+    /// Removes the attack root. Called by animation event
+    /// </summary>
+    public void RemoveAttackRoot()
+    {
+        attacking = false;
+        playerMovement.inAttackAnimation = false;
+        playerMovement.movementRoot.SetTotalRoot("attackRoot", false);
+    }
+
+    /// <summary>
+    /// Removes the player being locked in the air when attacking
+    /// </summary>
+    public void RemovePlayerAirlock()
+    {
+        body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    /// <summary>
+    /// Reset the combat system to be grounded
+    /// </summary>
+    public void SetPlayerGrounded()
+    {
+        spellAirHit = false;
+        attackDoubleJumped = false;
+    }
+
+    private void SetBunnySpell(int spellSlot)
+    {
+        if (bunnyCast > Time.fixedTime) return;
+        activeSpellSlot = spellSlot;
+        bunnyCast = Time.fixedTime + bunnyCastTolerance;
+    }
+
+    #endregion
+
+    #region Absorb Color & Pick up spell
+
+    public void SpellPickup (bool pickup, SpellPickup spellPickup)
+    {
+        pickUpSpellMode = pickup;
+        if(pickup)
+        {
+            this.spellPickup = spellPickup;
+            onSpellPickupMode?.Invoke(pickup, spellPickup.GetSpell());
+        } else
+        {
+            this.spellPickup = null;
+            onSpellPickupMode?.Invoke(pickup, null);
+        }
+
+        
+    }
+
+    public void EnableAbsorbColor(ColorWell colorWell)
+    {
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("colorWellActivation", true);
+        this.colorWell = colorWell;
+        addColorMode = true;
+        onColorPickupMode?.Invoke(true, colorWell.color);
+    }
+
+    public void MovedAwayFromWell(ColorWell movedAwayFrom)
+    {
+        if(colorWell == movedAwayFrom) colorWell = null;
+    }
+
+    private void AddColorAnimation (int slotIndex)
+    {
+        ColorSlot slot = colorInventory.GetSlot(slotIndex);
+        if(!addColorMode) return;
+        if(colorWell == null) return;
+        if(slot == null) return;
+        if(colorWell.GetColorAmount() == 0)
+        {
+            addColorMode = false;
+            if(colorInventory.GetColorSlotColor(slotIndex).SharesRootColor(colorWell.color)) colorInventory.DivideColor(slotIndex);
+            DeactivateAddColorMode();
+            return;
+        }
+        
+        colorWell.UseWellAnimation(slot);
+        
+        animator.SetTrigger("gainColor");
+    }
+
+    public void DeactivateAddColorMode()
+    {
+        addColorMode = false;
+        playerMovement.movementRoot.SetTotalRoot("colorWellActivation", false);
+        onColorPickupMode?.Invoke(false, null);
     }
     #endregion
 
-    #region Default Attack
+    #region Old Default Attack
 
+    /*
     /// <summary>
     /// Makes checks for and plays animation for default attack.
     /// </summary>
@@ -151,219 +471,6 @@ public class PlayerCombatSystem : MonoBehaviour
                 enemy.GetComponent<Rigidbody2D>().AddForce(playerMovement.lookDir * Vector2.right * defaultAttackForce);
         }
     }
-
+    */
     #endregion
-
-    #region Special Attack
-    private GameObject currentSpell = null;
-    /// <summary>
-    /// Plays the animation for the special attack
-    /// </summary>
-    public void SpecialAttackAnimation()
-    {
-        if (Time.timeScale == 0) return;
-        if(!playerMovement.IsGrounded() && spellAirHit)
-        {
-            SetBunnySpell();
-            return;
-        }
-        currentSpell= colorInventory.GetActiveColorSpell().gameObject;
-        if(currentSpell == null) return;
-        if(attacking)
-        {
-            SetBunnySpell();
-            return;
-        }
-        if(!colorInventory.CheckActveColor()) return;
-        if (!colorInventory.IsSpellReady()) return;
-
-
-
-        if(playerMovement.IsGrappeling())
-        {
-            playerMovement.WallAttackLock();
-        }
-        
-        if(!playerMovement.IsGrounded()) 
-        {
-            spellAirHit = true;
-            if(!attackDoubleJumped) 
-            {
-                playerMovement.ResetDoubleJump();
-                attackDoubleJumped = true;
-            }
-        }
-        attacking = true;
-        playerMovement.inAttackAnimation = true;
-        string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
-        animator.SetTrigger(anim);
-        playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
-        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
-        playerSounds.PlayCastingSpell();
-        colorInventory.DisableRotation();
-        bunnyCast = -1;
-    }
-
-    /// <summary>
-    /// Handles the players special attack. Called by animation event
-    /// </summary>
-    private void SpecialAttack()
-    {
-        GameColor color = colorInventory.CheckActveColor();
-        if(currentSpell == null || color == null) return;
-
-        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+currentSpell.transform.position.x) * playerMovement.lookDir, 
-                                        currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
-        GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
-        if(spell != null)
-        {
-            ColorSpell spellStats = spell.GetComponent<ColorSpell>();
-            spellStats.Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir, GetExtraDamage());
-            spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
-            if (!spellStats.spawnKey.Equals(""))onRecast?.Invoke(spellStats.spawnKey);
-            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown); //When adding items to change the cooldown change it here! 
-            colorInventory.SetRandomBuff();
-            colorInventory.MixRandom();
-        }
-        colorInventory.UseActiveColor();
-        colorInventory.EnableRotation();
-        cascadeDamage++;
-        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
-        transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
-    }
-
-    public void PocketSpecialAttack(ColorSlot slot)
-    {
-        GameColor color = colorInventory.CheckActveColor(slot);
-        ColorSpell spell = slot.colorSpell;
-        if (spell == null || color == null) return;
-
-        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.transform.position.x) * playerMovement.lookDir,
-                                        spell.transform.position.y + spellSpawnPoint.localPosition.y);
-        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
-        if (spellSpawn != null)
-        {
-
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir, GetExtraDamage());
-            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
-            colorInventory.SetRandomBuff();
-            colorInventory.MixRandom(slot);
-        }
-        colorInventory.UseActiveColor(slot);
-        cascadeDamage++;
-        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
-
-        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z);
-    }
-
-    public void DashSpecialAttack(ColorSlot slot)
-    {
-        GameColor color = colorInventory.CheckActveColor(slot);
-        ColorSpell spell = slot.colorSpell;
-        if (spell == null || color == null) return;
-
-        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.transform.position.x) * playerMovement.lookDir,
-                                        spell.transform.position.y + spellSpawnPoint.localPosition.y);
-        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
-        if (spellSpawn != null)
-        {
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, playerMovement.lookDir, GetExtraDamage());
-            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
-            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
-            colorInventory.SetRandomBuff();
-            colorInventory.MixRandom(slot);
-        }
-        colorInventory.UseActiveColor(slot);
-        cascadeDamage++;
-        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
-
-        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z);
-    }
-
-    public void DoubleJumpSpecialAttack(ColorSlot slot)
-    {
-        GameColor color = colorInventory.CheckActveColor(slot);
-        ColorSpell spell = slot.colorSpell;
-        if (spell == null || color == null) return;
-
-        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.transform.position.x) * playerMovement.lookDir,
-                                        spell.transform.position.y + spellSpawnPoint.localPosition.y);
-        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
-        if (spellSpawn != null)
-        {
-            int lookDir = playerMovement.lookDir;
-            if(Time.time - playerMovement.lastFlipTime < 0.2f) lookDir *=-1;
-
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(), gameObject, lookDir, GetExtraDamage());
-            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
-            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
-            colorInventory.SetRandomBuff();
-            colorInventory.MixRandom(slot);
-        }
-        colorInventory.UseActiveColor(slot);
-        cascadeDamage++;
-        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
-
-        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z);
-    }
-
-    public int GetExtraDamage()
-    {
-        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage;
-    }
-
-    public void AddBonusDamage(int bonus)
-    {
-        bonusDamage += bonus;
-    }
-
-    #endregion
-
-    /// <summary>
-    /// Removes the attack root. Called by animation event
-    /// </summary>
-    public void RemoveAttackRoot()
-    {
-        attacking = false;
-        playerMovement.inAttackAnimation = false;
-        playerMovement.movementRoot.SetTotalRoot("attackRoot", false);
-    }
-
-    /// <summary>
-    /// Removes the player being locked in the air when attacking
-    /// </summary>
-    public void RemovePlayerAirlock()
-    {
-        body.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-    }
-
-    /// <summary>
-    /// Reset the combat system to be grounded
-    /// </summary>
-    public void SetPlayerGrounded()
-    {
-        defaultAirHit = false;
-        spellAirHit = false;
-        attackDoubleJumped = false;
-    }
-
-    private void SetBunnySpell()
-    {
-        if (bunnyCast > Time.fixedTime) return;
-        bunnyCast = Time.fixedTime + bunnyCastTolerance;
-    }
-
-    private void ResetSpellSortingCounter()
-    {
-        spellSorting = 0;
-    }
-
-    void Update()
-    {
-
-        if (bunnyCast > 0 && bunnyCast >= Time.fixedTime)
-        {
-            SpecialAttackAnimation();
-        }
-    }
 }
