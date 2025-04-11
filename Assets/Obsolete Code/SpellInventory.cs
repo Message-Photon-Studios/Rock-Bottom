@@ -27,7 +27,7 @@ public class SpellInventory : MonoBehaviour
     /// <returns></returns>
     public GameObject GetColorSpell()
     {
-        GameColor color = colorInventory.CheckActiveColor();
+        GameColor color = colorInventory.CheckActveColor();
         if(color == null) return null;
         GameObject obj = colorSpellDict[color];
         return obj;

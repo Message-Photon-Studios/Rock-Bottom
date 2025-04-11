@@ -57,7 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 250
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
-  colorAmmount: 5
+  colorAmmount: 6
   movementSpeed: 1000
   coinsDropped:
     min: 8
@@ -86,6 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1907aacf681b39a4ab1febf640ebe590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCollisionForce: {x: 2000, y: 0.5}
   turnSpeed: 800
   passiveViewRange: 7
   aggressiveMaxDistance: 13
@@ -171,7 +172,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -602895935
-  m_SortingLayer: 9
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: -1977456123, guid: cdebf4e40ccc31f45a6460b385fd0cc8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -218,13 +219,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 5778462283322534050}
   walking: {fileID: 1038763221002455306}
-  walkingClips: []
   running: {fileID: 704176789322309490}
   sleeping: {fileID: 928108544778739240}
   dying: {fileID: 1486152358650319622}
+  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
+  onHit: {fileID: 495365854014760909}
   spellHit: {fileID: 1572998243057270952}
-  attack: {fileID: 0}
 --- !u!1 &8761492531095315263
 GameObject:
   m_ObjectHideFlags: 0
@@ -5293,6 +5294,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
+--- !u!82 &495365854014760909 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7589699801455829676, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
+  m_PrefabInstance: {fileID: 8037767958405629281}
+  m_PrefabAsset: {fileID: 0}
 --- !u!82 &704176789322309490 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 7371933339108334099, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}

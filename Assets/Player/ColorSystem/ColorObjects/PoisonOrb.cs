@@ -23,7 +23,7 @@ public class PoisonOrb : MonoBehaviour
         if(other != null && other.CompareTag("Enemy"))
         {
             EnemyStats stats = other.GetComponent<EnemyStats>();
-            if(stats)
+            if(stats && !(stats.GetColor() && stats.GetColor().name == "Green" && stats.GetColorAmmount() > 0))
             {
                 if(target == null) target = other.transform;
                 else if (transform && Vector2.Distance(transform.position, other.transform.position) < Vector2.Distance(transform.position, target.position))

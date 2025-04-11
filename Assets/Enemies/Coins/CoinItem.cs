@@ -53,7 +53,7 @@ public class CoinItem : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             float dis = Vector2.Distance(other.ClosestPoint(transform.position), transform.position);
-            //Debug.Log(dis + " " + trigger.radius);
+            Debug.Log(dis + " " + trigger.radius);
 
             if (dis <= collectDistance)
             {

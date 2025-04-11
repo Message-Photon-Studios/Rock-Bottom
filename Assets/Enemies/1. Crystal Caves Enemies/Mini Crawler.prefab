@@ -54,9 +54,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 40
+  health: 50
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
-  colorAmmount: 3
+  colorAmmount: 6
   movementSpeed: 384
   coinsDropped:
     min: 3
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff05b56a3ed20004b87f3c83123a640b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 15
   attackForce: 3000
   attackTrigger:
     radius: 0.6
@@ -105,15 +105,14 @@ MonoBehaviour:
     width: 360
     offset: {x: 0, y: 0}
     color: {r: 0.048508644, g: 1, b: 0, a: 1}
-  runSpeed: 12
-  jumpForce: 3000
-  checkJumpHight: 2
-  forwardJumpForce: 2000
-  smallJumpForce: 2500
-  smallJumpForward: 1500
+  runSpeed: 12.5
+  jumpForce: 6000
+  checkJumpHight: 2.5
+  forwardJumpForce: 5000
+  smallJumpForce: 3000
+  smallJumpForward: 2500
   jumpIdleTime: 2
   patrollIdleTime: 2
-  aggroResetTime: 2
 --- !u!50 &5913113476945127390
 Rigidbody2D:
   serializedVersion: 4
@@ -126,10 +125,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1.2
-  m_LinearDrag: 13
+  m_Mass: 2
+  m_LinearDrag: 9
   m_AngularDrag: 0.05
-  m_GravityScale: 12
+  m_GravityScale: 15
   m_Material: {fileID: 6200000, guid: b51b88b2aa1c7ce40a636c7c8484d4b9, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -237,13 +236,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 5913113476945127386}
   walking: {fileID: 4364659484482085440}
-  walkingClips: []
   running: {fileID: 4268763766447813688}
   sleeping: {fileID: 4474681121313207650}
   dying: {fileID: 2767409995354585164}
+  takingDamage: {fileID: 0}
   jumping: {fileID: 2269418823556220386}
+  onHit: {fileID: 3758231447331654791}
   spellHit: {fileID: 2822743874411277282}
-  attack: {fileID: 0}
 --- !u!114 &2324365029215784502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,6 +530,11 @@ AudioSource:
 --- !u!82 &2822743874411277282 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 8817919213562152393, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
+  m_PrefabInstance: {fileID: 6733985726394232363}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &3758231447331654791 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7589699801455829676, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
   m_PrefabInstance: {fileID: 6733985726394232363}
   m_PrefabAsset: {fileID: 0}
 --- !u!82 &4268763766447813688 stripped

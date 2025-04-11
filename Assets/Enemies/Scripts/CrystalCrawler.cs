@@ -21,7 +21,6 @@ public class CrystalCrawler : Enemy
     [SerializeField] float smallJumpForward;
     [SerializeField] float jumpIdleTime;
     [SerializeField] float patrollIdleTime;
-    [SerializeField] float aggroResetTime = 2f;
 
     private float legPos = .5f;
     protected override Node SetupTree()
@@ -35,7 +34,7 @@ public class CrystalCrawler : Enemy
                     
                     new Sequence(new List<Node>{
                         new Inverter(new CheckPlayerArea(stats, player, viewTrigger)),
-                        new Wait(aggroResetTime, .5f),
+                        new Wait(2f, 1f),
                         new SetParentVariable("prusuit", false, 4)
                     }),
 

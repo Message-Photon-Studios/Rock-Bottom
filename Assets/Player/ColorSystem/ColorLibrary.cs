@@ -8,7 +8,7 @@ public class ColorLibrary : MonoBehaviour
     [SerializeField] GameColor[] colors;
     [SerializeField] GameColor[] primaryColors;
     [SerializeField] GameColor[] secondaryColors;
-    [SerializeField] public GameColor rainbow;
+    [SerializeField] GameColor rainbow;
 
     public GameColor GetRandomColor()
     {

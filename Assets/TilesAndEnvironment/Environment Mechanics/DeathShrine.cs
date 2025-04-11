@@ -4,28 +4,52 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
-public class DeathShrine : InteractionObject
+public class DeathShrine : MonoBehaviour
 {
     [SerializeField] int healthCost = 0;
+    [SerializeField] InputActionReference buyAction;
     [SerializeField] ItemPickup itemPickup;
     [SerializeField] GameObject canvasObject;
+    Action<InputAction.CallbackContext> buy;
 
+    bool buyable = false;
 
     bool bought = false;
-
-
-    protected override void PlayerClose(bool isClose)
+    // Start is called before the first frame update
+    private void OnEnable()
     {
-        if(bought) return;
-
-        canvasObject.SetActive(isClose);
+        buy = (InputAction.CallbackContext ctx) => {Buy(); };
+        buyAction.action.performed += buy;
     }
 
-    protected override void PlayerInteract()
+    private void OnDisable()
     {
-        if(bought) return;
+        buyAction.action.performed -= buy;
+    }
 
-        Player.instance.playerStats.RemoveMaxHealth(healthCost);
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("Player") && !bought)
+        {
+            buyable = true;
+            canvasObject.SetActive(true);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.CompareTag("Player") && !bought)
+        {
+            buyable = false;
+            canvasObject.SetActive(false);
+        }
+    }
+
+    void Buy()
+    {
+        if(!buyable || bought) return;
+
+        PlayerLevelMananger.instance.playerStats.RemoveMaxHealth(healthCost);
         itemPickup.gameObject.SetActive(true);
         canvasObject.SetActive(false);
 

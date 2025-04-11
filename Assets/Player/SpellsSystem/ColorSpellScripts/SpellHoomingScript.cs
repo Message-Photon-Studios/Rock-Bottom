@@ -77,7 +77,7 @@ public class SpellHoomingScript : MonoBehaviour
         GameObject target = null;
         List<GameObject> inRange = new List<GameObject>();
         bool canSmartTarget = false;
-        PlayerStats playerStats = Player.instance.playerStats;
+        PlayerStats playerStats = PlayerLevelMananger.instance.playerStats;
         foreach (GameObject enemy in enemies)
         {
             float distance = (enemy.transform.position - transform.position).sqrMagnitude;
@@ -114,7 +114,7 @@ public class SpellHoomingScript : MonoBehaviour
     public GameObject SetSmart()
     {
         GameObject target = null;
-        PlayerStats playerStats = Player.instance.playerStats;
+        PlayerStats playerStats = PlayerLevelMananger.instance.playerStats;
         foreach (GameObject enemy in enemies)
         {
             float distance = (enemy.transform.position - transform.position).sqrMagnitude;

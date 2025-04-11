@@ -31,7 +31,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dash")]
     [SerializeField] float dashSpeed;
     [SerializeField] float dashDistance;
-    [SerializeField] float dashCooldown = 1f;
 
     /*
     * The jumpJetpack and the jumpFalloff does controll the extra force over time for the players jump that allows the player to controll the heigh of the jump.
@@ -39,6 +38,10 @@ public class PlayerMovement : MonoBehaviour
     * without increasing its duration. Increasing only the jumpJetpack will increase the power and the time of the jetpack while increasing only the 
     * jumpFalloff will decrease the time and the power of the jetpack. This does also work in reverse for decreasing variables.
     */
+
+    [Header("Input Actions")]
+    [SerializeField] InputActionReference walkAction;
+    [SerializeField] InputActionReference jumpAction, lookAction, verticalMoveAction, dashAction; //Input actiuons for controlling the movement and camera checks
 
     [Header("Camera controls")]
     [SerializeField] float aimFocusMaxX;
@@ -141,33 +144,28 @@ public class PlayerMovement : MonoBehaviour
         }
         originalFocusPointPos = new Vector3(focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
         movementRoot.SetTotalRoot("loading", true);
+        
+        jumpAction.action.started += Jump;
+        jumpAction.action.canceled += JumpCancel;
+        lookAction.action.started += CameraCheck;
+        lookAction.action.canceled += CheckCancel;
+        verticalMoveAction.action.performed += VerticalMove;
+        verticalMoveAction.action.canceled += CancelVerticalMove;
+        dashAction.action.performed += Dash;
     }
 
     private void OnDisable() {
-        Player player = Player.instance;
-
-        player.jumpAction -= Jump;
-        player.jumpCancelAction -= JumpCancel;
-        player.lookAction -= CameraCheck;
-        player.lookCancelAction -= CheckCancel;
-        player.verticalMoveAction -= VerticalMove;
-        player.verticalMoveCancelAction -= CancelVerticalMove;
-        player.dashAction -= Dash;
+        jumpAction.action.started -= Jump;
+        jumpAction.action.canceled -= JumpCancel;
+        lookAction.action.started -= CameraCheck;
+        lookAction.action.canceled -= CheckCancel;
+        verticalMoveAction.action.performed -= VerticalMove;
+        verticalMoveAction.action.canceled -= CancelVerticalMove;
+        dashAction.action.performed -= Dash;
     }
 
     void Start()
     {
-        Player player = Player.instance;
-
-        player.jumpAction += Jump;
-        player.jumpCancelAction += JumpCancel;
-        player.lookAction += CameraCheck;
-        player.lookCancelAction += CheckCancel;
-        player.verticalMoveAction += VerticalMove;
-        player.verticalMoveCancelAction += CancelVerticalMove;
-        player.dashAction += Dash;
-
-
         cameraFocus = GameObject.Find("CameraFocus").GetComponent<CameraFocus>();
         mainCamera = Camera.main.gameObject.GetComponent<CameraMovement>();
         focusPointNormalY = focusPoint.localPosition.y;
@@ -176,6 +174,11 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Jump
+
+    void Jump(InputAction.CallbackContext ctx)
+    {
+        Jump();
+    }
 
     /// <summary>
     /// Make the character jump or double jump
@@ -239,7 +242,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Cancels the jump
     /// </summary>
-    void JumpCancel()
+    void JumpCancel(InputAction.CallbackContext ctx)
     {
         jump = 0;
     }
@@ -255,13 +258,13 @@ public class PlayerMovement : MonoBehaviour
     #region Camera Check
     float checkDownTimer = 0;
 
-    void CameraCheck(float checkDir)
+    void CameraCheck(InputAction.CallbackContext ctx)
     {
-        if(checkDir < 0f)
+        if(lookAction.action.ReadValue<float>() < 0f)
         {
             CheckBelowStart();
         }
-        else if(checkDir > 0f)
+        else if(lookAction.action.ReadValue<float>() > 0f)
             CheckAboveStart();
     }
     void CheckBelowStart()
@@ -279,6 +282,11 @@ public class PlayerMovement : MonoBehaviour
         if(IsGrappeling() || !IsGrounded()) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkPointY, focusPoint.localPosition.z);
         isCheckingY = true;
+    }
+
+    void CheckCancel(InputAction.CallbackContext ctx)
+    {
+        CheckCancel();
     }
 
     void CheckCancel()
@@ -370,7 +378,7 @@ public class PlayerMovement : MonoBehaviour
     public bool StairCollision()
     {
 
-        if(Player.instance.verticalMoveDir <= 0 && walkDir != lookDir && !stairLeap) return false;
+        if(verticalMoveAction.action.ReadValue<float>() <= 0 && walkDir != lookDir && !stairLeap) return false;
         if(HitCeling()) return false;
         if(Physics2D.Raycast(transform.position + Vector3.down * playerCollider.size.y/2, Vector3.down, 2.1f, GameManager.instance.maskLibrary.onlyGround) || IsOnSolidGround()) return false;
         return  (Physics2D.Raycast((Vector2)transform.position+Vector2.down* (playerCollider.size.y/2+.02f) + playerCollider.offset, Vector2.right, .5f, GameManager.instance.maskLibrary.onlySolidGround()) && 
@@ -403,7 +411,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(inAttackAnimation) return;
 
-        walkDir = Player.instance.walkDir;
+        walkDir = walkAction.action.ReadValue<float>();
 
         if(movementRoot.totalRoot) walkDir = 0;
 
@@ -425,12 +433,12 @@ public class PlayerMovement : MonoBehaviour
         if(walkDir < 0 && lookDir > 0 ) Flip();
         else if(walkDir > 0 && lookDir < 0) Flip();
 
-        if(Player.instance.verticalMoveDir < 0f) DropDown();
+        if(verticalMoveAction.action.ReadValue<float>() < 0f) DropDown();
 
 
         if(wasClimbing)
         {
-            float lookWalk = Player.instance.verticalMoveDir;
+            float lookWalk = lookAction.action.ReadValue<float>();
             if(lookWalk > lookDir*walkDir) walkDir = lookWalk*lookDir;
         }
         movement = movementSpeed * walkDir;
@@ -583,7 +591,7 @@ public class PlayerMovement : MonoBehaviour
         {   
             playerFeet.SetActive(false);
             dashedDone = false;
-            float lookWalk = Player.instance.verticalMoveDir;
+            float lookWalk = verticalMoveAction.action.ReadValue<float>();
             if(lookWalk > lookDir*walkDir) walkDir = lookWalk*lookDir;
 
             climbTime += Time.fixedDeltaTime;
@@ -668,9 +676,9 @@ public class PlayerMovement : MonoBehaviour
     /// Starts the dash action if possible
     /// </summary>
     /// <param name="ctx"></param>
-    private void Dash()
+    private void Dash(InputAction.CallbackContext ctx)
     {
-        if(isDashing || dashedDone || movementRoot.rooted || Time.time - dashCdStart < dashCooldown) return;
+        if(isDashing || dashedDone || movementRoot.rooted || Time.time - dashCdStart < 0.5f) return;
         if(stairLeap) stairLeap = false;
         if(IsGrappeling())
         {
@@ -710,7 +718,6 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator.SetBool("dash", false);
         isDashing = false;
         playerStats.RemovePlayerInvincible();
-        playerStats.SetPlayerInvincible(.5f);
         dashCdStart = Time.time;
     }
 
@@ -725,7 +732,7 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator.SetBool("grapple", false);
         wallParticles.Stop();
         body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-        if(wallRight != spriteRenderer.flipX && walkDir != lookDir && Player.instance.verticalMoveDir <= 0) Flip();
+        if(wallRight != spriteRenderer.flipX && walkDir != lookDir && verticalMoveAction.action.ReadValue<float>() <= 0) Flip();
         beforeClimbLookDir = lookDir;
 
         //if(!HitCeling()) body.AddForce(Vector2.up*200f);
@@ -746,12 +753,12 @@ public class PlayerMovement : MonoBehaviour
         beforeClimbLookDir = lookDir;
     }
 
-    void VerticalMove()
+    void VerticalMove(InputAction.CallbackContext callbackContext)
     {
-      if(Player.instance.verticalMoveDir < 0f) DropDown();
+      if(verticalMoveAction.action.ReadValue<float>() < 0f) DropDown();
     }
 
-    void CancelVerticalMove()
+    void CancelVerticalMove(InputAction.CallbackContext callbackContext)
     {
 
     }
@@ -762,7 +769,6 @@ public class PlayerMovement : MonoBehaviour
 
     void DropDown()
     {
-        if(movementRoot.rooted) return;
         if(Mathf.Abs(body.velocity.x) < 10f)
             Physics2D.IgnoreLayerCollision(GameManager.instance.maskLibrary.playerFeetLayer, GameManager.instance.maskLibrary.platformLayer, true);
     }
@@ -779,6 +785,7 @@ public class PlayerMovement : MonoBehaviour
         //focusPoint.localPosition = new Vector3(-focusPoint.localPosition.x, focusPoint.localPosition.y, focusPoint.localPosition.z);
         if(IsGrounded())
             playerAnimator.SetTrigger("turn");
+        GetComponent<PlayerCombatSystem>().FlipDefaultAttack();
 
         lastFlipTime = Time.time; 
     }

@@ -81,8 +81,6 @@ public class CustomRoom : MonoBehaviour
     public Vector2 selectedNode;
     public bool isClosingRoom = false;
     
-    public CustomRoom[] roomVariants;
-    
 #if UNITY_EDITOR
     public void draw(Vector2 shift)
     {

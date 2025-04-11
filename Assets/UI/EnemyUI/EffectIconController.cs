@@ -59,11 +59,6 @@ public class EffectIconController : MonoBehaviour
             AddIcon(EffectIcon.Rainbow);
         else
             removeIcon(EffectIcon.Rainbow);
-        if (enemy.IsReded())
-            AddIcon(EffectIcon.Red);
-        else
-            removeIcon(EffectIcon.Red);
-
     }
 
     void AddIcon(EffectIcon icon)
@@ -115,6 +110,5 @@ enum EffectIcon
     Poison, 
     Burning,
     Frozen,
-    Rainbow,
-    Red
+    Rainbow
 }

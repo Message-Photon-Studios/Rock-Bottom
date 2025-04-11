@@ -91,7 +91,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack2"",
+                    ""name"": ""DefaultAttack"",
                     ""type"": ""Button"",
                     ""id"": ""376b0d1a-1f6d-4313-b0fc-8d7f3031f39d"",
                     ""expectedControlType"": ""Button"",
@@ -100,27 +100,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack1"",
+                    ""name"": ""SpecialAttack"",
                     ""type"": ""Button"",
                     ""id"": ""ba16ae19-c792-4e75-a54b-d1e20b66999e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Attack3"",
-                    ""type"": ""Button"",
-                    ""id"": ""b3a56f99-41ca-41f7-b6a2-e304001255fb"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Attack4"",
-                    ""type"": ""Button"",
-                    ""id"": ""44e18770-9df9-4357-8b7f-c57c90909de3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -145,36 +127,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""DivideColor1"",
+                    ""name"": ""DivideColor"",
                     ""type"": ""Button"",
                     ""id"": ""96a22342-4dc2-446a-a5bb-3d8484bec3fc"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""DivideColor2"",
-                    ""type"": ""Button"",
-                    ""id"": ""f5a9ed5b-d314-43cf-912c-eba98e7c0ad4"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""DivideColor3"",
-                    ""type"": ""Button"",
-                    ""id"": ""b4b30c80-9858-4725-9adf-f3ae7f6411dd"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""DivideColor4"",
-                    ""type"": ""Button"",
-                    ""id"": ""775a382d-9ce5-4083-a678-69badfffc638"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Hold(duration=0.8)"",
@@ -528,7 +483,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Attack2"",
+                    ""action"": ""DefaultAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -539,7 +494,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XboxController"",
-                    ""action"": ""Attack2"",
+                    ""action"": ""DefaultAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -550,7 +505,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PlayStation"",
-                    ""action"": ""Attack2"",
+                    ""action"": ""DefaultAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -561,7 +516,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""Attack2"",
+                    ""action"": ""DefaultAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -572,7 +527,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Attack1"",
+                    ""action"": ""SpecialAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -583,7 +538,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XboxController"",
-                    ""action"": ""Attack1"",
+                    ""action"": ""SpecialAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -594,7 +549,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PlayStation"",
-                    ""action"": ""Attack1"",
+                    ""action"": ""SpecialAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -605,7 +560,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""Attack1"",
+                    ""action"": ""SpecialAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -715,7 +670,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XboxController"",
-                    ""action"": ""DivideColor1"",
+                    ""action"": ""DivideColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -726,7 +681,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PlayStation"",
-                    ""action"": ""DivideColor1"",
+                    ""action"": ""DivideColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -737,7 +692,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""DivideColor1"",
+                    ""action"": ""DivideColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -748,7 +703,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DivideColor1"",
+                    ""action"": ""DivideColor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -883,204 +838,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1dbe3020-7820-44c6-9d1c-1f71ca23f007"",
-                    ""path"": ""<XInputController>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XboxController"",
-                    ""action"": ""Attack3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b177d042-cdc3-42e3-834d-b773419e4ef5"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse;Keyboard"",
-                    ""action"": ""Attack3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a19973ae-51d3-42ae-99dc-2977fee60f8c"",
-                    ""path"": ""<DualShockGamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""Attack3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""85ae0fc6-7b96-43ad-99c4-a436fd923c55"",
-                    ""path"": ""<XInputController>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XboxController"",
-                    ""action"": ""Attack4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""31b03eb9-1b8d-40eb-9aef-9746f433369b"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""Attack4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8765d2a2-3b0e-4cf0-a552-b300e503cf9a"",
-                    ""path"": ""<DualShockGamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""Attack4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""92bcfeb7-f6d3-4f4a-a236-d278535d4a64"",
-                    ""path"": ""<XInputController>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XboxController"",
-                    ""action"": ""DivideColor2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6f63792c-544f-4d42-b692-b0c061710375"",
-                    ""path"": ""<DualShockGamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""DivideColor2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a37a2076-a81f-4f62-839e-18935ed870de"",
-                    ""path"": ""<Keyboard>/l"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""DivideColor2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""76dfe1d2-0802-4f3b-8f5b-dcc56ce84cf7"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DivideColor2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1b77c0fb-f476-45fc-acf4-69cdf203296d"",
-                    ""path"": ""<XInputController>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XboxController"",
-                    ""action"": ""DivideColor3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d2cc2a65-4fe6-4956-99cf-4901206a1107"",
-                    ""path"": ""<DualShockGamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""DivideColor3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2378cc58-33aa-46ef-bb24-5799503e1488"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""DivideColor3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""06f5c0e7-1476-47ff-8fe5-2b8be371a0da"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DivideColor3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3923e7cf-bdda-4293-b550-5f7493503079"",
-                    ""path"": ""<XInputController>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XboxController"",
-                    ""action"": ""DivideColor4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""586236eb-2041-4eb2-bdc1-e6a4af5c5da3"",
-                    ""path"": ""<DualShockGamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""DivideColor4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""93cec63a-0296-4ad8-a098-5f67207eec76"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""DivideColor4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b94f951d-e9db-495b-bd5f-fee8863a32bc"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DivideColor4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1146,16 +903,11 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Map = m_Player.FindAction("Map", throwIfNotFound: true);
         m_Player_RotateColor = m_Player.FindAction("RotateColor", throwIfNotFound: true);
-        m_Player_Attack2 = m_Player.FindAction("Attack2", throwIfNotFound: true);
-        m_Player_Attack1 = m_Player.FindAction("Attack1", throwIfNotFound: true);
-        m_Player_Attack3 = m_Player.FindAction("Attack3", throwIfNotFound: true);
-        m_Player_Attack4 = m_Player.FindAction("Attack4", throwIfNotFound: true);
+        m_Player_DefaultAttack = m_Player.FindAction("DefaultAttack", throwIfNotFound: true);
+        m_Player_SpecialAttack = m_Player.FindAction("SpecialAttack", throwIfNotFound: true);
         m_Player_VerticalLook = m_Player.FindAction("VerticalLook", throwIfNotFound: true);
         m_Player_VerticalMovement = m_Player.FindAction("VerticalMovement", throwIfNotFound: true);
-        m_Player_DivideColor1 = m_Player.FindAction("DivideColor1", throwIfNotFound: true);
-        m_Player_DivideColor2 = m_Player.FindAction("DivideColor2", throwIfNotFound: true);
-        m_Player_DivideColor3 = m_Player.FindAction("DivideColor3", throwIfNotFound: true);
-        m_Player_DivideColor4 = m_Player.FindAction("DivideColor4", throwIfNotFound: true);
+        m_Player_DivideColor = m_Player.FindAction("DivideColor", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
     }
 
@@ -1223,16 +975,11 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Map;
     private readonly InputAction m_Player_RotateColor;
-    private readonly InputAction m_Player_Attack2;
-    private readonly InputAction m_Player_Attack1;
-    private readonly InputAction m_Player_Attack3;
-    private readonly InputAction m_Player_Attack4;
+    private readonly InputAction m_Player_DefaultAttack;
+    private readonly InputAction m_Player_SpecialAttack;
     private readonly InputAction m_Player_VerticalLook;
     private readonly InputAction m_Player_VerticalMovement;
-    private readonly InputAction m_Player_DivideColor1;
-    private readonly InputAction m_Player_DivideColor2;
-    private readonly InputAction m_Player_DivideColor3;
-    private readonly InputAction m_Player_DivideColor4;
+    private readonly InputAction m_Player_DivideColor;
     private readonly InputAction m_Player_Dash;
     public struct PlayerActions
     {
@@ -1245,16 +992,11 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Map => m_Wrapper.m_Player_Map;
         public InputAction @RotateColor => m_Wrapper.m_Player_RotateColor;
-        public InputAction @Attack2 => m_Wrapper.m_Player_Attack2;
-        public InputAction @Attack1 => m_Wrapper.m_Player_Attack1;
-        public InputAction @Attack3 => m_Wrapper.m_Player_Attack3;
-        public InputAction @Attack4 => m_Wrapper.m_Player_Attack4;
+        public InputAction @DefaultAttack => m_Wrapper.m_Player_DefaultAttack;
+        public InputAction @SpecialAttack => m_Wrapper.m_Player_SpecialAttack;
         public InputAction @VerticalLook => m_Wrapper.m_Player_VerticalLook;
         public InputAction @VerticalMovement => m_Wrapper.m_Player_VerticalMovement;
-        public InputAction @DivideColor1 => m_Wrapper.m_Player_DivideColor1;
-        public InputAction @DivideColor2 => m_Wrapper.m_Player_DivideColor2;
-        public InputAction @DivideColor3 => m_Wrapper.m_Player_DivideColor3;
-        public InputAction @DivideColor4 => m_Wrapper.m_Player_DivideColor4;
+        public InputAction @DivideColor => m_Wrapper.m_Player_DivideColor;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -1286,36 +1028,21 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RotateColor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
                 @RotateColor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
                 @RotateColor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
-                @Attack2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
-                @Attack2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
-                @Attack2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
-                @Attack1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack1;
-                @Attack1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack1;
-                @Attack1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack1;
-                @Attack3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack3;
-                @Attack3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack3;
-                @Attack3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack3;
-                @Attack4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack4;
-                @Attack4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack4;
-                @Attack4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack4;
+                @DefaultAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefaultAttack;
+                @DefaultAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefaultAttack;
+                @DefaultAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDefaultAttack;
+                @SpecialAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecialAttack;
                 @VerticalLook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalLook;
                 @VerticalLook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalLook;
                 @VerticalLook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalLook;
                 @VerticalMovement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalMovement;
                 @VerticalMovement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalMovement;
                 @VerticalMovement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVerticalMovement;
-                @DivideColor1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor1;
-                @DivideColor1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor1;
-                @DivideColor1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor1;
-                @DivideColor2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor2;
-                @DivideColor2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor2;
-                @DivideColor2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor2;
-                @DivideColor3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor3;
-                @DivideColor3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor3;
-                @DivideColor3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor3;
-                @DivideColor4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor4;
-                @DivideColor4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor4;
-                @DivideColor4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor4;
+                @DivideColor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor;
+                @DivideColor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor;
+                @DivideColor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDivideColor;
                 @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
@@ -1344,36 +1071,21 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RotateColor.started += instance.OnRotateColor;
                 @RotateColor.performed += instance.OnRotateColor;
                 @RotateColor.canceled += instance.OnRotateColor;
-                @Attack2.started += instance.OnAttack2;
-                @Attack2.performed += instance.OnAttack2;
-                @Attack2.canceled += instance.OnAttack2;
-                @Attack1.started += instance.OnAttack1;
-                @Attack1.performed += instance.OnAttack1;
-                @Attack1.canceled += instance.OnAttack1;
-                @Attack3.started += instance.OnAttack3;
-                @Attack3.performed += instance.OnAttack3;
-                @Attack3.canceled += instance.OnAttack3;
-                @Attack4.started += instance.OnAttack4;
-                @Attack4.performed += instance.OnAttack4;
-                @Attack4.canceled += instance.OnAttack4;
+                @DefaultAttack.started += instance.OnDefaultAttack;
+                @DefaultAttack.performed += instance.OnDefaultAttack;
+                @DefaultAttack.canceled += instance.OnDefaultAttack;
+                @SpecialAttack.started += instance.OnSpecialAttack;
+                @SpecialAttack.performed += instance.OnSpecialAttack;
+                @SpecialAttack.canceled += instance.OnSpecialAttack;
                 @VerticalLook.started += instance.OnVerticalLook;
                 @VerticalLook.performed += instance.OnVerticalLook;
                 @VerticalLook.canceled += instance.OnVerticalLook;
                 @VerticalMovement.started += instance.OnVerticalMovement;
                 @VerticalMovement.performed += instance.OnVerticalMovement;
                 @VerticalMovement.canceled += instance.OnVerticalMovement;
-                @DivideColor1.started += instance.OnDivideColor1;
-                @DivideColor1.performed += instance.OnDivideColor1;
-                @DivideColor1.canceled += instance.OnDivideColor1;
-                @DivideColor2.started += instance.OnDivideColor2;
-                @DivideColor2.performed += instance.OnDivideColor2;
-                @DivideColor2.canceled += instance.OnDivideColor2;
-                @DivideColor3.started += instance.OnDivideColor3;
-                @DivideColor3.performed += instance.OnDivideColor3;
-                @DivideColor3.canceled += instance.OnDivideColor3;
-                @DivideColor4.started += instance.OnDivideColor4;
-                @DivideColor4.performed += instance.OnDivideColor4;
-                @DivideColor4.canceled += instance.OnDivideColor4;
+                @DivideColor.started += instance.OnDivideColor;
+                @DivideColor.performed += instance.OnDivideColor;
+                @DivideColor.canceled += instance.OnDivideColor;
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
@@ -1426,16 +1138,11 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
         void OnRotateColor(InputAction.CallbackContext context);
-        void OnAttack2(InputAction.CallbackContext context);
-        void OnAttack1(InputAction.CallbackContext context);
-        void OnAttack3(InputAction.CallbackContext context);
-        void OnAttack4(InputAction.CallbackContext context);
+        void OnDefaultAttack(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
         void OnVerticalLook(InputAction.CallbackContext context);
         void OnVerticalMovement(InputAction.CallbackContext context);
-        void OnDivideColor1(InputAction.CallbackContext context);
-        void OnDivideColor2(InputAction.CallbackContext context);
-        void OnDivideColor3(InputAction.CallbackContext context);
-        void OnDivideColor4(InputAction.CallbackContext context);
+        void OnDivideColor(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
     }
 }

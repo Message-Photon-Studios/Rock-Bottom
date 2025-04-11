@@ -6,13 +6,15 @@ using UnityEngine;
 using System;
 using UnityEngine.Localization;
 
-public class HealingShrine : InteractionObject
+public class HealingShrine : MonoBehaviour
 {
     [SerializeField] int heal;
     [SerializeField] int baseCost;
     [SerializeField] int increaseCost;
-    [SerializeField] PickUpCanvasController pickUpController;
-    [SerializeField] LocalizedString healingShrineName;
+    [SerializeField] GameObject canvas;
+    [SerializeField] TMP_Text cost;
+    [SerializeField] TMP_Text description;
+    [SerializeField] InputActionReference buyAction;
     [SerializeField] List<LocalizedString> phrases;
     [SerializeField] LocalizedString healAmoutText;
     Animator animator;
@@ -23,55 +25,83 @@ public class HealingShrine : InteractionObject
 
     private ItemInventory inventory;
     private PlayerStats player;
+    private bool buyable = false;
     private int count = 0;
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         animator = GetComponent<Animator>();
+        cost.text = CalculatePrice().ToString();
+        description.text = phrases[0].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
     }
 
-    public int CalculatePrice()
+    private void OnEnable()
+    {
+        buy = (InputAction.CallbackContext ctx) => {Buy(); };
+        buyAction.action.performed += buy;
+    }
+
+    private void OnDisable()
+    {
+        buyAction.action.performed -= buy;
+    }
+
+    private void UpdateCost()
+    {
+        cost.text = CalculatePrice().ToString();
+        if (inventory.GetCoins() < CalculatePrice())
+        {
+            cost.color = Color.red;
+            buyable = false;
+        }
+        else
+        {
+            cost.color = Color.white;
+            buyable = true;
+        }
+        if (count >= phrases.Count) description.text = phrases[phrases.Count-1].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
+        else description.text = phrases[count].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
+        if (player.GetHealth() >= player.GetMaxHealth()) buyable = false;
+    }
+
+    private int CalculatePrice()
     {
         return Mathf.RoundToInt((baseCost + increaseCost * count) * ItemSpellManager.instance.stageCostMultiplier);
     }
 
-    protected override void PlayerClose(bool isClose)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if(isClose) pickUpController.SetHealthShrine(this);
-        else pickUpController.CloseUi();
+        if (other.CompareTag("Player"))
+        {
+            UpdateCost();
+            canvas.SetActive(true);
+        }
     }
 
-    protected override void PlayerInteract()
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (animator.GetBool("heal")) return;
-        if(Player.instance.playerStats.GetHealth() >= Player.instance.playerStats.GetMaxHealth()) return;
-        if(inventory.PayCost(CalculatePrice()))
+        if (other.CompareTag("Player"))
         {
-            player.HealPlayer(heal);
-            count++;
-            pickUpController.SetHealthShrine(this);
-            animator.SetBool("heal", true);
+            canvas.SetActive(false);
+            buyable = false;
         }
+    }
+
+    private void Buy()
+    {
+        if (!buyable) return;
+        if (animator.GetBool("heal")) return;
+        inventory.PayCost(CalculatePrice());
+        player.HealPlayer(heal);
+        count++;
+        UpdateCost();
+        animator.SetBool("heal", true);
     }
 
     protected void HealDone()
     {
         animator.SetBool("heal", false);
-    }
-
-    public string GetName()
-    {
-        return healingShrineName.GetLocalizedString();
-    }
-
-    public string GetDescription()
-    {
-        string ret = "";
-        if (count >= phrases.Count) ret = phrases[phrases.Count-1].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
-        else ret = phrases[count].GetLocalizedString() + "\n" + healAmoutText.GetLocalizedString();
-        return ret;
     }
 }

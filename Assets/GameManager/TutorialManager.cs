@@ -26,13 +26,13 @@ public class TutorialManager : MonoBehaviour
 
         if(fillPlayerBottle > 0)
         {
-            Player.instance.GetComponent<ColorInventory>().AddColor(fillColor, fillPlayerBottle, 0);
+            PlayerLevelMananger.instance.GetComponent<ColorInventory>().AddColor(fillColor, fillPlayerBottle);
         }
 
         if(unlockBottleRotation) 
         {   
-            Player.instance.GetComponent<ColorInventory>().lockSwapping = false;
-            Player.instance.playerUi.UnlockColorSlots();
+            PlayerLevelMananger.instance.GetComponent<ColorInventory>().lockSwapping = false;
+            PlayerLevelMananger.instance.playerUi.UnlockColorSlots();
         }
     }
 

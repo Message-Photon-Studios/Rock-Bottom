@@ -28,7 +28,7 @@ public class CheckTargetDistance : Node
         if(target != null && stats != null)
             state = (Vector2.Distance(target.transform.position, stats.GetPosition()) < distance)? NodeState.SUCCESS:NodeState.FAILURE;
 
-        //Debug.Log(state);
+        Debug.Log(state);
         return state;
     }
 }

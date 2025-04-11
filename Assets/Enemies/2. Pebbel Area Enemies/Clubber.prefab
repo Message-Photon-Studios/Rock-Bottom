@@ -725,6 +725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a0c24cb696b8d04aa3d83217cb4ebe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCollisionForce: {x: 1000, y: 5000}
   viewRange: 20
   chaseCooldown: 2
   runSpeedFactor: 18
@@ -852,13 +853,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 6567443812170086901}
   walking: {fileID: 3871341495663967343}
-  walkingClips: []
   running: {fileID: 3609094410025937431}
   sleeping: {fileID: 3977493194997410637}
   dying: {fileID: 3408229324630140515}
+  takingDamage: {fileID: 0}
   jumping: {fileID: 1609261008054442957}
+  onHit: {fileID: 4398976353382716072}
   spellHit: {fileID: 3316831444032959949}
-  attack: {fileID: 0}
 --- !u!61 &3093880215074115557
 BoxCollider2D:
   m_ObjectHideFlags: 0

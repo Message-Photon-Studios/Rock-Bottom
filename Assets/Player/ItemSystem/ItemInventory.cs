@@ -13,18 +13,34 @@ public class ItemInventory : MonoBehaviour
     [SerializeField] int coins;
     private int startCoins;
     [SerializeField] List<Item> items = new List<Item>();
+    [SerializeField] InputActionReference pickUpAction;
     [SerializeField] CoinPickupEffect coinPickupEffect;
     public float coinBoost {get; private set;} = 1;
     
+    private List<ItemPickup> pickUpItems = new List<ItemPickup>();
+
+    private List<ItemPickup> buyItems = new List<ItemPickup>();
+
+    private Inspired inspired;
+
     /// <summary>
     /// Is called whenever the player picks up an item. Sends the item picked up
     /// </summary>
     public UnityAction<Item> onItemPickedUpOrRemoved;
 
     /// <summary>
+    /// Is called whenever an item gets in or gets out of range of being picked up.
+    /// Sends a bool that indicates if the item got in ragne (bool == true) or the item got out of range (bool == false)
+    /// of being picked up.
+    /// </summary>
+    public UnityAction<bool> onItemInRange;
+
+    /// <summary>
     /// Is called whenever the players cois is changed. Sends an it which indicate the how much the players coins changed with.
     /// </summary>
     public UnityAction<int> onCoinsChanged;
+
+    Action<InputAction.CallbackContext> pickUp;
 
 
     void Awake()
@@ -36,10 +52,33 @@ public class ItemInventory : MonoBehaviour
     void Start()
     {
         startCoins = coins;
+        pickUp = (InputAction.CallbackContext ctx) => {
+            while(pickUpItems.Count > 0)
+            {
+                pickUpItems[0].PickedUp();
+            }
+
+            while (buyItems.Count > 0)
+            {
+                if(PayCost(buyItems[0].GetItemCost()))
+                {
+                    buyItems[0].PickedUp();
+                } else buyItems.RemoveAt(0);
+            }
+
+            if(inspired) 
+            {
+                if(GameManager.instance.TryRemovePetrifiedPigment(inspired.petrifiedPigmentCost))
+                    inspired.TriggerUnlock();
+            }
+        };
+
+        pickUpAction.action.performed += pickUp;
     }
 
     void OnDisable()
     {
+        pickUpAction.action.performed -= pickUp;
         GameManager.instance.onPrepareNewRun -= SetPermanentItems;
         GameManager.instance.onStartedNewRun -= LoadPermanentItems;
         GameManager.instance.onLoadedCaveTown -= LoadPermanentItems;
@@ -55,6 +94,60 @@ public class ItemInventory : MonoBehaviour
         item.EnableItem();
         onItemPickedUpOrRemoved?.Invoke(item);
     }
+
+    /// <summary>
+    /// Enables this item to be picked up whenever a pickup event happens
+    /// </summary>
+    /// <param name="item"></param>
+    public void EnablePickUp(ItemPickup item)
+    {
+        pickUpItems.Add(item);
+        onItemInRange?.Invoke(true);
+    }
+
+    /// <summary>
+    /// Disables this item from being picked up whenever a pickup event happens
+    /// </summary>
+    /// <param name="item"></param>
+    public void DisablePickUp (ItemPickup item) 
+    {
+        if(!pickUpItems.Contains(item)) return;
+        pickUpItems.Remove(item);    
+        onItemInRange?.Invoke(false);
+    }
+    
+    /// <summary>
+    /// Enabels an item to be bought
+    /// </summary>
+    /// <param name="item"></param>
+    public void EnableBuyItem(ItemPickup item)
+    {
+        buyItems.Add(item);
+        onItemInRange?.Invoke(true);
+    }
+
+    /// <summary>
+    /// Disables an item from being bought
+    /// </summary>
+    /// <param name="item"></param>
+    public void DisableBuyItem(ItemPickup item)
+    {
+        if(!buyItems.Contains(item)) return;
+        buyItems.Remove(item);
+        onItemInRange?.Invoke(false);
+    }
+
+    public void EnableInspired(Inspired inspired)
+    {
+        this.inspired = inspired;
+    }
+
+    public void DisableInspired()
+    {
+        this.inspired = null;
+    }
+
+
 
     /// <summary>
     /// Adds coins to the players inventory
@@ -113,20 +206,10 @@ public class ItemInventory : MonoBehaviour
     /// <returns></returns>
     public bool PayCost(int cost)
     {
-        if(!HasEnoughCoins(cost)) return false;
+        if(cost > coins) return false;
         coins -= cost;
         onCoinsChanged?.Invoke(-cost);
         return true;
-    }
-
-    /// <summary>
-    /// Returns true if the player has enough coins for the cost
-    /// </summary>
-    /// <param name="cost"></param>
-    /// <returns></returns>
-    public bool HasEnoughCoins(int cost)
-    {
-        return (coins >= cost);
     }
 
     /// <summary>

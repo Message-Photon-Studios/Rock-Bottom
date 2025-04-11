@@ -9,21 +9,25 @@ using System;
 /// Handles the item spawn points
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
-public class ItemPickup : InteractionObject
+public class ItemPickup : MonoBehaviour
 {
     [Header("Item settings")]
     [SerializeField] public SpawnPointChance spawnChance = SpawnPointChance.LowChance;
-    [SerializeField] public bool needsPayment;
+    [SerializeField] bool needsPayment;
     [SerializeField] ItemRarity dropPointRarity;
     [SerializeField] ItemCategory[] availableCategories;
-    [SerializeField] public bool allowsHealthItem = true;
     [SerializeField] public bool setByhand;
     [SerializeField] Item item;
     [SerializeField] EnemyStats spawnFromEnemy;
 
     [Header("Functional")]
-    [SerializeField] PickUpCanvasController pickUpController;
+    [SerializeField] GameObject canvas;
+    [SerializeField] GameObject costContainer;
+    [SerializeField] TMP_Text cost;
+    [SerializeField] TMP_Text nameText;
+    [SerializeField] TMP_Text descriptionText;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] GameObject collectObj, buyObj;
 
   
     ItemInventory inventory;
@@ -32,11 +36,9 @@ public class ItemPickup : InteractionObject
 
     int itemCost;
     
-    protected override void Start()
+    void Start()
     {
-        base.Start();
-
-        inventory = Player.instance.playerInventory;
+        inventory = PlayerLevelMananger.instance.playerInventory;
         if(spawnFromEnemy != null)
         {
             spawnFromEnemy.onEnemyDeath += SpawnFromEnemy;
@@ -83,30 +85,70 @@ public class ItemPickup : InteractionObject
 
         this.item = setItem;
         this.itemCost = Mathf.RoundToInt(itemCost*ItemSpellManager.instance.stageCostMultiplier);
+                
+        descriptionText.text = item.GetDesc();
+        nameText.text = item.GetName();
+        cost.text = this.itemCost.ToString();
 
         spriteRenderer.sprite = item.sprite;
+
+        canvas.SetActive(false);
         hoverCoroutine = StartCoroutine(hoverAnimation());
     }
 
-    protected override void PlayerClose(bool isClose)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        base.PlayerClose(isClose);
-
-        if(isClose)
+        if(other.CompareTag("Player"))
         {
-            pickUpController.SetItem(this);
-        } else pickUpController.CloseUi();
+            if(!needsPayment)
+            {
+                inventory.EnablePickUp(this);
+                costContainer.gameObject.SetActive(false);
+                collectObj.SetActive(true);
+                buyObj.SetActive(false);
+            } else
+            {
+                if(inventory.GetCoins() < this.itemCost)
+                {
+                    cost.color = Color.red;
+                } else
+                {
+                    cost.color = Color.white;
+                }
+
+                inventory.EnableBuyItem(this);
+                costContainer.gameObject.SetActive(true);
+                buyObj.SetActive(true);
+                collectObj.SetActive(false);
+            }
+
+            descriptionText.text = item.GetDesc();
+            nameText.text = item.GetName();
+            canvas.SetActive(true);
+        }
     }
 
-    protected override void PlayerInteract()
+    void OnTriggerExit2D(Collider2D other)
     {
-        if(!needsPayment || inventory.PayCost(itemCost))
+        if(other.CompareTag("Player"))
         {
-            pickUpController.CloseUi();
-            inventory.AddItem(item);
-            GameObject.Destroy(gameObject);
-            StopCoroutine(hoverCoroutine);
+            if(!needsPayment)
+                inventory.DisablePickUp(this);
+            else
+                inventory.DisableBuyItem(this);
+            canvas.SetActive(false);
+            costContainer.gameObject.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// Is called when this item is picked up
+    /// </summary>
+    public void PickedUp()
+    {
+        inventory.AddItem(item);
+        GameObject.Destroy(gameObject);
+        StopCoroutine(hoverCoroutine);
     }
 
     /// <summary>
@@ -118,16 +160,14 @@ public class ItemPickup : InteractionObject
         return item;
     }
 
-    public bool GetNeedsPayment()
-    {
-        return needsPayment;
-    }
-
+    /// <summary>
+    /// Returns the cost of this item
+    /// </summary>
+    /// <returns></returns>
     public int GetItemCost()
     {
         return itemCost;
     }
-
     private IEnumerator hoverAnimation()
     {
         while (true)

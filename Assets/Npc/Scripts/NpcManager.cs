@@ -155,10 +155,10 @@ public class NpcData
 
         if(regionalDefaultDialogues.ContainsKey(levelName))
         {
-            //Debug.Log("regional");
+            Debug.Log("regional");
             return regionalDefaultDialogues[levelName];
         }
-        //Debug.Log("default");
+        Debug.Log("default");
         return defaultDialogue;
     }
 

@@ -5,26 +5,30 @@ using TMPro;
 using System;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
-public class SpellPickup : InteractionObject
+public class SpellPickup : MonoBehaviour
 {
     [SerializeField] int inspirationRequired = 0;
     [SerializeField] float spawnChance = 1f;
     [SerializeField] bool needsPayment;
     [SerializeField] bool lockBottleAfterSwap = false;
     [SerializeField] ColorSpell colorSpell;
-    [SerializeField] PickUpCanvasController pickUpController;
+    [SerializeField] GameObject canvas;
+    [SerializeField] GameObject costContainer;
+    [SerializeField] TMP_Text cost;
+    [SerializeField] TMP_Text nameText;
+    [SerializeField] TMP_Text descriptionText;
+    [SerializeField] GameObject swapText, buyText;
     [SerializeField] Collider2D collider;
     Rigidbody2D body;
     SpriteRenderer spriteRenderer;
     ColorInventory inventory;
     ItemInventory itemInventory;
-    bool bought = false;
+    bool pickedup = false;
 
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-        foreach (Collider2D coll in Player.instance.gameObject.GetComponentsInChildren<Collider2D>())
+        foreach (Collider2D coll in GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Collider2D>())
         {
             Physics2D.IgnoreCollision(collider, coll);
         }
@@ -39,13 +43,18 @@ public class SpellPickup : InteractionObject
     /// <param name="setItem"></param>
     public void SetSpell(ColorSpell setSpell)
     {
-        if (colorSpell == null || bought) this.colorSpell = setSpell;
+        if (colorSpell == null || pickedup) this.colorSpell = setSpell;
+                
+        descriptionText.text = colorSpell.GetDesc();
+        nameText.text = colorSpell.GetName();
+        cost.text = colorSpell.spellCost.ToString();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = colorSpell.GetBottleSprite().smallSprite;
 
-        inventory = Player.instance.colorInventory;
-        itemInventory = Player.instance.playerInventory;
+        canvas.SetActive(false);
+        inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
+        itemInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
     }
     /// <summary>
     /// Randomly destroys the spawn point depending on the initial conditions
@@ -62,21 +71,54 @@ public class SpellPickup : InteractionObject
         }
     }
 
-    protected override void PlayerClose (bool isClose)
+    public void OnTriggerEnter2D(Collider2D other)
     {
-        if (inventory == null) inventory = Player.instance.GetComponent<ColorInventory>();
-        if(isClose)
+        if (inventory == null) inventory = PlayerLevelMananger.instance.GetComponent<ColorInventory>();
+        if(other.CompareTag("Player"))
         {
-            if(bought && lockBottleAfterSwap) return;
+            if(pickedup && lockBottleAfterSwap) return;
             if(inspirationRequired > GameManager.instance.GetInspiration())
             {
                 //TODO Add text about it being locked or something
                 return;
             }
+            
+            inventory.EnablePickUp(this);
+            if(needsPayment)
+            {
+                costContainer.gameObject.SetActive(true);
+                swapText.SetActive(false);
+                buyText.SetActive(true);
 
-            pickUpController.SetBottle(this);
-        } else pickUpController.CloseUi();
+                if(itemInventory.GetCoins() < colorSpell.spellCost)
+                {
+                    cost.color = Color.red;
+                } else
+                {
+                    cost.color = Color.white;
+                }
+                
+            } else
+            {
+                costContainer.gameObject.SetActive(false);
+                swapText.SetActive(true);
+                buyText.SetActive(false); 
+            }
 
+            descriptionText.text = colorSpell.GetDesc();
+            nameText.text = colorSpell.GetName();
+            canvas.SetActive(true);
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            inventory.DisablePickUp(this);
+            canvas.SetActive(false);
+            costContainer.gameObject.SetActive(false);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -85,33 +127,14 @@ public class SpellPickup : InteractionObject
         
     }
 
-    protected override void PlayerInteract()
-    {
-        if(needsPayment && !bought && !itemInventory.PayCost(colorSpell.spellCost)) return;
-
-        bought = true;
-        PlayerCombatSystem pcs = Player.instance.playerCombatSystem;
-        
-        if(!pcs.pickUpSpellMode)
-        {
-            pcs.SpellPickup(true, this);
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", true);
-        } else if(!lockBottleAfterSwap)
-        {
-            pcs.SpellPickup(false, null);
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", false);
-        }
-    }
-
     /// <summary>
     /// Is called when this color spell is picked up
     /// </summary>
-    public void PickedUp(int slotIndex)
+    public void PickedUp()
     {
-        Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", false);
-        bought = true;
-        ColorSpell tmp = inventory.GetColorSpell(slotIndex);
-        inventory.ChangeColorSpell(slotIndex, colorSpell);
+        pickedup = true;
+        ColorSpell tmp = inventory.GetActiveColorSpell();
+        inventory.ChangeActiveSlotColorSpell(colorSpell);
         needsPayment = false;
         SetSpell(tmp);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -121,10 +144,9 @@ public class SpellPickup : InteractionObject
         body.gravityScale = 2;
         if(lockBottleAfterSwap) 
         {
-            pickUpController.CloseUi();
-        } else 
-        {
-            pickUpController.SetBottle(this);
+            canvas.SetActive(false);
+            costContainer.gameObject.SetActive(false);
+            inventory.DisablePickUp(this);
         }
     }
 

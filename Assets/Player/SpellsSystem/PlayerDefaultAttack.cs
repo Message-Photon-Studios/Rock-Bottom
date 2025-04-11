@@ -46,7 +46,7 @@ public class PlayerDefaultAttack : MonoBehaviour
             
             if(target == null || 
                 (target.GetComponent<EnemyStats>().GetColor() == null && targetedEnemies[i].GetComponent<EnemyStats>().GetColor() != null) ||
-                (colorInventory.CheckActiveColor() != null && target.GetComponent<EnemyStats>().GetColor() != colorInventory.CheckActiveColor() && targetedEnemies[i].GetComponent<EnemyStats>().GetColor() == colorInventory.CheckActiveColor()))
+                (colorInventory.CheckActveColor() != null && target.GetComponent<EnemyStats>().GetColor() != colorInventory.CheckActveColor() && targetedEnemies[i].GetComponent<EnemyStats>().GetColor() == colorInventory.CheckActveColor()))
             {
                 target = targetedEnemies[i];
                 continue;

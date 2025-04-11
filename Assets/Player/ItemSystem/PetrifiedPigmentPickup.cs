@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PetrifiedPigmentPickup : InteractionObject
+public class PetrifiedPigmentPickup : MonoBehaviour
 {
     [SerializeField] string id;
     [SerializeField] Transform image;
@@ -24,16 +24,13 @@ public class PetrifiedPigmentPickup : InteractionObject
         gameObject.SetActive(false);
     }
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         hoverCoroutine = StartCoroutine(hoverAnimation());
     }
-
-    protected override void PlayerClose(bool isClose)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        base.PlayerClose(isClose);
-        if(isClose)
+        if(other.CompareTag("Player"))
         {
             GameManager.instance.PickedUpPetrifiedPigment(id);
             StopCoroutine(hoverCoroutine);
@@ -41,9 +38,6 @@ public class PetrifiedPigmentPickup : InteractionObject
         }
     }
 
-    protected override void PlayerInteract()
-    {
-    }
     private IEnumerator hoverAnimation()
     {
         while (true)

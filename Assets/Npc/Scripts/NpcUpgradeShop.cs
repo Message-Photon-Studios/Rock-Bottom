@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 
-public abstract class NpcUpgradeShop : InteractionObject, IDataPersistence
+public abstract class NpcUpgradeShop : MonoBehaviour, IDataPersistence
 {
     [SerializeField] int maxBuys;
     int buys;
@@ -15,25 +15,25 @@ public abstract class NpcUpgradeShop : InteractionObject, IDataPersistence
     [SerializeField] int costIncrease;
     [SerializeField] TMP_Text costText;
     [SerializeField] GameObject canvas;
+    [SerializeField] private InputActionReference interact;
 
 
 
     void OnEnable()
     {
+        interact.action.performed += ShopInteraction;
         if(deactivatedWhenMaxed && buys >= maxBuys) gameObject.SetActive(false);
     }
 
     void OnDisable()
     {
+        interact.action.performed -= ShopInteraction;
         canvas.SetActive(false);
     }
 
-    protected override void PlayerClose(bool isClose)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        base.PlayerClose(isClose);
-        
-        if(isClose) OpenShop();
-        else canvas.SetActive(false);
+        OpenShop();
     }
 
     void OpenShop()
@@ -65,7 +65,12 @@ public abstract class NpcUpgradeShop : InteractionObject, IDataPersistence
         buysText.text = buys + "/" + maxBuys;
     }
 
-    protected override void PlayerInteract()
+    void OnTriggerExit2D(Collider2D other) 
+    {
+        canvas.SetActive(false);
+    }
+
+    private void ShopInteraction(InputAction.CallbackContext ctx)
     {
         if(!canvas.activeSelf) return;
         if(buys >= maxBuys) return;
