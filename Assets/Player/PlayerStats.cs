@@ -95,13 +95,17 @@ public class PlayerStats : MonoBehaviour
     void OnEnable()
     {
         //TODO: Check so this doesnt cause a problem when changing scene.
+        colorArmour = new Dictionary<GameColor, float>();
+        itemVaribles = new Dictionary<string, int>();
+        colorInventory = GetComponent<ColorInventory>();
+    }
+
+    void Start()
+    {
         health += PermanentUpgradeManager.instance.upgrades.extraHealth;
         maxHealth = health;
         onMaxHealthChanged?.Invoke(maxHealth);
         onHealthChanged?.Invoke(health);
-        colorArmour = new Dictionary<GameColor, float>();
-        itemVaribles = new Dictionary<string, int>();
-        colorInventory = GetComponent<ColorInventory>();
     }
 
     #endregion

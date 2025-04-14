@@ -217,13 +217,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 3442240939785713315}
   walking: {fileID: 5155298856385209289}
+  walkingClips:
+  - {fileID: 8300000, guid: 1d9590b26fd6fe94ba2742a82880be6c, type: 3}
+  - {fileID: 8300000, guid: b25502c542b4eb74ea054bc8d3c3c795, type: 3}
+  - {fileID: 8300000, guid: ad4a606b0a6506648a9477cf85a712d3, type: 3}
+  - {fileID: 8300000, guid: e77952117269fcd4f9a4ae97498e7732, type: 3}
   running: {fileID: 4621991005248779697}
   sleeping: {fileID: 4972093382010369259}
   dying: {fileID: 6737102371810245061}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 5710218827689528590}
   spellHit: {fileID: 6644296861064161899}
+  attack: {fileID: 911835448882106534}
 --- !u!1001 &1027369037415486832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -423,6 +427,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
+--- !u!82 &911835448882106534 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3084331904744570628, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
+  m_PrefabInstance: {fileID: 2768238247293104034}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2293061920108909672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4159168462421179338, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
@@ -441,11 +450,6 @@ AudioSource:
 --- !u!82 &5155298856385209289 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 7053075696140110955, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
-  m_PrefabInstance: {fileID: 2768238247293104034}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &5710218827689528590 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 7589699801455829676, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
   m_PrefabInstance: {fileID: 2768238247293104034}
   m_PrefabAsset: {fileID: 0}
 --- !u!82 &6644296861064161899 stripped
