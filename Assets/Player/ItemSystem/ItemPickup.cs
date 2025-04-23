@@ -79,6 +79,11 @@ public class ItemPickup : InteractionObject
     /// <param name="setItem"></param>
     public void SetItem(Item setItem, int itemCost)
     {
+        if(ItemSpellManager.instance == null)
+        {
+            Debug.LogWarning("Item spell manager not initiated.");
+            return;
+        }
         ItemSpellManager.instance.AddSpawnedEffects(setItem);
 
         this.item = setItem;

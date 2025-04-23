@@ -74,8 +74,15 @@ public class LevelManager : MonoBehaviour
     
     public void FinishedGeneration()
     {
-        Player.instance.SetStartLevel(this);
-        StartCoroutine(Player.instance.playerUi.FadeOutCoroutine(true));
+        if(Player.instance == null)
+        {
+            Debug.LogWarning("Player not initiated.");
+        }
+        else
+        {
+            Player.instance.SetStartLevel(this);
+            StartCoroutine(Player.instance.playerUi.FadeOutCoroutine(true));
+        }
         if(GameManager.instance != null)
             GameManager.instance.disablePausing = false;
 

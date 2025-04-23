@@ -44,8 +44,14 @@ public class SpellPickup : InteractionObject
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = colorSpell.GetBottleSprite().smallSprite;
 
-        inventory = Player.instance.colorInventory;
-        itemInventory = Player.instance.playerInventory;
+        if(Player.instance == null)
+        {
+            Debug.LogWarning("Player not initiated");
+        } else
+        {
+            inventory = Player.instance.colorInventory;
+            itemInventory = Player.instance.playerInventory;
+        }
     }
     /// <summary>
     /// Randomly destroys the spawn point depending on the initial conditions
