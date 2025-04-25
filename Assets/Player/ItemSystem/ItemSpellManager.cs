@@ -167,7 +167,13 @@ public class ItemSpellManager : MonoBehaviour
                 continue;
             }
 
-            petrifiedPigments[pick].gameObject.SetActive(true);
+            if(petrifiedPigments[pick] != null) petrifiedPigments[pick].gameObject.SetActive(true);
+            else 
+            {
+                j++;
+                i--;
+                continue;
+            }
         }
     }
 
