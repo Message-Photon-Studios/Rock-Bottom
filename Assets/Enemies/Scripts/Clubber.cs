@@ -43,7 +43,8 @@ public class Clubber : Enemy
                 new CheckBool("attack", false),
                 new CheckBool("chase", true),
                 new CheckVelocity(body, 0, 5),
-                new Wait(.3f, .2f),
+                new CheckWall(stats, Vector2.right, legPos+0.5f, -.5f),
+                new Wait(.1f, 0.1f),
                 new EnemyJump(stats, body, jumpForce*1.5f, jumpForwardForce*1.5f)
             }),
             
@@ -54,7 +55,7 @@ public class Clubber : Enemy
                 new Selector(new List<Node>{
                     new Sequence(new List<Node>{
                         new CheckGrounded(stats, legPos, true),
-                        new Inverter(new CheckWall(stats, Vector2.right, 4f, .5f)),
+                        new Inverter(new CheckWall(stats, Vector2.right, legPos+1f, .5f)),
                         new EnemyJump(stats, body, jumpForce, jumpForwardForce)
                     }),
 
