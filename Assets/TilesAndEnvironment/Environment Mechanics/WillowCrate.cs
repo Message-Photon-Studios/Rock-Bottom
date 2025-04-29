@@ -1,0 +1,55 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Localization;
+
+[RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
+public class WillowCrate : InteractionObject
+{
+    [Header("Crate Variables")]
+    public SpawnPointChance spawnChance = SpawnPointChance.LowChance;
+    [SerializeField] ItemPickup itemPickup;
+    [SerializeField] ItemPickup keyPickup;
+    [SerializeField] float keyChance;
+    [SerializeField] float cost;
+
+    [Header("LocalizedStrings")]
+    [SerializeField] LocalizedString willowCrateName;
+    [SerializeField] LocalizedString willowCrateDesc;
+
+    [Header("UI")]
+    [SerializeField] PickUpCanvasController pickUpCanvas;
+
+    int actualCost = 0;
+
+    protected override void Start()
+    {
+        base.Start();
+        itemPickup.gameObject.SetActive(false);
+        keyPickup.gameObject.SetActive(false);
+        actualCost = (int)(cost * ItemSpellManager.instance.stageCostMultiplier);
+    }
+
+    protected override void PlayerInteract()
+    {
+        if(!Player.instance.playerInventory.PayCost(actualCost)) return;
+
+        float r = UnityEngine.Random.Range(0, 1f);
+        if(r < keyChance)
+        {
+            keyPickup.gameObject.SetActive(true);
+        } else
+        {
+            itemPickup.gameObject.SetActive(true);
+        }
+    }
+
+    protected override void PlayerClose(bool isClose)
+    {
+        base.PlayerClose(isClose);
+        if(isClose)
+        {
+            pickUpCanvas.SetCrate(willowCrateName.GetLocalizedString(), willowCrateDesc.GetLocalizedString(), actualCost);
+        }
+    }
+}
