@@ -19,6 +19,7 @@ public class WillowCrate : InteractionObject
 
     [Header("UI")]
     [SerializeField] PickUpCanvasController pickUpCanvas;
+    [SerializeField] GameObject sprite;
 
     int actualCost = 0;
 
@@ -42,6 +43,9 @@ public class WillowCrate : InteractionObject
         {
             itemPickup.gameObject.SetActive(true);
         }
+
+        sprite.SetActive(false);
+        pickUpCanvas.gameObject.SetActive(false);
     }
 
     protected override void PlayerClose(bool isClose)
@@ -50,6 +54,9 @@ public class WillowCrate : InteractionObject
         if(isClose)
         {
             pickUpCanvas.SetCrate(willowCrateName.GetLocalizedString(), willowCrateDesc.GetLocalizedString(), actualCost);
+        } else
+        {
+            pickUpCanvas.CloseUi();
         }
     }
 }
