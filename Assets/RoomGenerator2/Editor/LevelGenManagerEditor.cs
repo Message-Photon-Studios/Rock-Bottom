@@ -26,12 +26,12 @@ public class LevelGenManagerEditor : Editor
 
         if(GUILayout.Button("Test Scene"))
         {
-            int totalTries = 0;
-            int maxTries = 0;
-            int triesOver50 = 0;
-            int triesOver100 = 0;
-            int triesOver150 = 0;
-            int triesOver200 = 0;
+            float totalTries = 0;
+            float maxTries = 0;
+            float triesOver50 = 0;
+            float triesOver100 = 0;
+            float triesOver150 = 0;
+            float triesOver200 = 0;
             for (int i = 0; i < 100; i++)
             {
                 try
