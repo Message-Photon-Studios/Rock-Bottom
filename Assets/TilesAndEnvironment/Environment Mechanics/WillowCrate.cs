@@ -40,8 +40,8 @@ public class WillowCrate : InteractionObject
         if(unlocked) return;
         if(!Player.instance.playerInventory.PayCost(actualCost)) return;
 
-        float r = UnityEngine.Random.Range(0, 1f);
-        if(r < keyChance)
+        float r = UnityEngine.Random.Range(0, 100f)/100f;
+        if(r <= keyChance)
         {
             keyPickup.gameObject.SetActive(true);
         } else
