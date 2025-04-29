@@ -20,8 +20,10 @@ public class WillowCrate : InteractionObject
     [Header("UI")]
     [SerializeField] PickUpCanvasController pickUpCanvas;
     [SerializeField] GameObject sprite;
+    [SerializeField] GameObject mapIcon;
 
     int actualCost = 0;
+    bool unlocked = false;
 
     protected override void Start()
     {
@@ -29,10 +31,13 @@ public class WillowCrate : InteractionObject
         itemPickup.gameObject.SetActive(false);
         keyPickup.gameObject.SetActive(false);
         actualCost = (int)(cost * ItemSpellManager.instance.stageCostMultiplier);
+        mapIcon.SetActive(true);
+        unlocked = false;
     }
 
     protected override void PlayerInteract()
     {
+        if(unlocked) return;
         if(!Player.instance.playerInventory.PayCost(actualCost)) return;
 
         float r = UnityEngine.Random.Range(0, 1f);
@@ -46,11 +51,14 @@ public class WillowCrate : InteractionObject
 
         sprite.SetActive(false);
         pickUpCanvas.gameObject.SetActive(false);
+        mapIcon.SetActive(false);
+        unlocked = true;
     }
 
     protected override void PlayerClose(bool isClose)
     {
         base.PlayerClose(isClose);
+        if(unlocked) return;
         if(isClose)
         {
             pickUpCanvas.SetCrate(willowCrateName.GetLocalizedString(), willowCrateDesc.GetLocalizedString(), actualCost);
