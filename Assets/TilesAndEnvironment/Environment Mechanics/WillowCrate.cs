@@ -30,7 +30,7 @@ public class WillowCrate : InteractionObject
         base.Start();
         itemPickup.gameObject.SetActive(false);
         keyPickup.gameObject.SetActive(false);
-        actualCost = (int)(cost * ItemSpellManager.instance.stageCostMultiplier);
+        actualCost = (int)(cost * ItemSpellManager.instance.stageCostMultiplier * GameManager.instance.rerunNum);
         mapIcon.SetActive(true);
         unlocked = false;
     }

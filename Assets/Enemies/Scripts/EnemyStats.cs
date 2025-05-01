@@ -13,14 +13,16 @@ using static UnityEngine.ParticleSystem;
 /// </summary>
 [RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class EnemyStats : MonoBehaviour
-{
+{   
+    [Header("Base Stats")]
     [SerializeField] int health; //The health of the enemy
     [SerializeField] GameColor color; //The colorMat of the enemy
     [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy'
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
-
     private Collider2D myCollider;
+
+    [Header("Enemy Settings")]
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
     [SerializeField] private GameObject comboParticles;
 
@@ -68,6 +70,8 @@ public class EnemyStats : MonoBehaviour
 
     private float redTimer = 0;
     private float redPower = 0;
+
+    [HideInInspector] public float damageScaling;
 
     [HideInInspector] public float spawnPower = 1f;
 
@@ -177,6 +181,12 @@ public class EnemyStats : MonoBehaviour
         StopBurning();
         Material mat = GetComponent<SpriteRenderer>().material;
         mat.SetFloat("_takingDmg", 0);
+    }
+
+    public void ScaleEnemy(float scaling)
+    {
+        health = (int)(health*scaling);
+        damageScaling = scaling;
     }
 
     #endregion
@@ -636,7 +646,7 @@ public class EnemyStats : MonoBehaviour
         float poisonFactor = 1f;
         if(isPoisoned())
             poisonFactor = (1f-poisonDamageReduction);
-        return spawnPower * poisonFactor;
+        return spawnPower * poisonFactor * damageScaling;
     }
 
     /// <summary>

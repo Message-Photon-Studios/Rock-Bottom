@@ -27,6 +27,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] bool clearInventoryOnLevelEnd = false;
     [SerializeField] public bool allowTips = true;
     [SerializeField] public bool isCaveTownLevel = false;
+    [SerializeField] public bool rerunStart = false;
+    [SerializeField] public bool increaseLevelNum = true;
 
     [Header("Color Wells")]
     [SerializeField] int wellSpawnAmount = 2;
@@ -88,6 +90,8 @@ public class LevelManager : MonoBehaviour
 
         GameManager.instance?.SetLevelManager(this, addLevelClockTime, restartClockTimer);
         ProneColorWells();
+
+        GetEnemyManager().ScaleEnemyStats();
     }
 
     public IEnumerator EndLevelAsync()

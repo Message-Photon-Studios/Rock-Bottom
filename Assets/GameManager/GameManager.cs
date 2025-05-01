@@ -42,6 +42,9 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     private bool prepareStartRun = false;
 
+    public int levelNum {get; private set;} = 0;
+    public int rerunNum {get; private set;} = 1;
+
     /// <summary>
     /// Is called right before a new run is loaded. This is called when the player is exiting cave town.
     /// </summary>
@@ -91,11 +94,16 @@ public class GameManager : MonoBehaviour, IDataPersistence
         clockTime = maxClockTime;
         hunterTimer = 0;
         hunters = 0;
+        levelNum = 0;
+        rerunNum = 1;
         DataPersistenceManager.instance.SaveGame();
     }
 
     public void SetLevelManager (LevelManager levelManager, float addClockTime, bool restartTimer) 
     {
+        levelNum++;
+        if(levelManager.rerunStart && levelNum > 1) rerunNum++;
+
         DataPersistenceManager.instance.SaveGame();
         DataPersistenceManager.instance.Start();
 
@@ -130,6 +138,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     public void SetStartRun()
     {
+        levelNum = 0;
+        rerunNum = 1;
         prepareStartRun = true;
         onPrepareNewRun?.Invoke();
     }

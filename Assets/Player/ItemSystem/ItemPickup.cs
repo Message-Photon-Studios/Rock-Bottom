@@ -87,7 +87,7 @@ public class ItemPickup : InteractionObject
         ItemSpellManager.instance.AddSpawnedEffects(setItem);
 
         this.item = setItem;
-        this.itemCost = Mathf.RoundToInt(itemCost*ItemSpellManager.instance.stageCostMultiplier);
+        this.itemCost = Mathf.RoundToInt(itemCost*ItemSpellManager.instance.stageCostMultiplier*GameManager.instance.rerunNum);
 
         spriteRenderer.sprite = item.sprite;
         hoverCoroutine = StartCoroutine(hoverAnimation());
