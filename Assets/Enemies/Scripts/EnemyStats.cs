@@ -185,8 +185,8 @@ public class EnemyStats : MonoBehaviour
 
     public void ScaleEnemy(float scaling)
     {
-        health = (int)(health*scaling);
-        damageScaling = scaling;
+        health = (int)(health * scaling);
+        damageScaling = scaling * GameManager.instance.rerunNum;
     }
 
     #endregion

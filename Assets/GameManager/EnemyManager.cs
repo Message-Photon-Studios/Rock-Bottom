@@ -20,7 +20,7 @@ public class EnemyManager : MonoBehaviour
     {
         EnemyStats[] enemyStats = FindObjectsOfType<EnemyStats>(); 
         int levelNum = GameManager.instance.levelNum;
-        float scaling = GameManager.instance.rerunNum * enemyScaling * (levelNum-1)+1;
+        float scaling = enemyScaling * (levelNum-1)+1;
 
         foreach (EnemyStats enemy in enemyStats)
         {
