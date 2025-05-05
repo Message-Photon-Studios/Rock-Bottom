@@ -84,6 +84,12 @@ public class ItemPickup : InteractionObject
             Debug.LogWarning("Item spell manager not initiated.");
             return;
         }
+
+        if(!setItem.CanBeSpawned())
+        {
+            setItem = ItemSpellManager.instance.healthItem;
+        }
+
         ItemSpellManager.instance.AddSpawnedEffects(setItem);
 
         this.item = setItem;

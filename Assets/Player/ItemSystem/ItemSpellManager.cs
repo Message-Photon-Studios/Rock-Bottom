@@ -13,7 +13,7 @@ public class ItemSpellManager : MonoBehaviour
     [SerializeField] int itemPop;
     [SerializeField] public float stageCostMultiplier = 1;
     [SerializeField] int cratePop = 0;
-    [SerializeField] Item healthItem;
+    [SerializeField] public Item healthItem;
     [SerializeField] int healthItemAmount;
 
     [SerializeField] int petrifiedPigmentDrops = 2;
