@@ -27,6 +27,7 @@ public class ColorSpell : MonoBehaviour
     [SerializeField] public bool staggeredSpell;
 
     [SerializeField] public int storedSpells = 1;
+    [SerializeField] public int colorCost = 1;
 
     [SerializeField] public int maxSpawn = 0;
 

@@ -190,7 +190,7 @@ public class ColorInventory : MonoBehaviour
 
             if (Random.Range(0, 100) > blockDrainColor && !crackedUrn)
             {
-                int charge = slot.charge - 1;
+                int charge = slot.charge - slot.colorSpell.colorCost;
                 if (slot.gameColor.name == "Rainbow")
                     charge -= rainbowExtraDrain;
                 if(charge < 0) charge = 0;

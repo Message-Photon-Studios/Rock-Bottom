@@ -40,12 +40,18 @@ public class SpellTintedStoneManager : SpellImpact
 
     private void FixedUpdate()
     {
-        foreach (GameObject obj in subSpells)
+        foreach (GameObject obj in subSpells.ToArray())
         {
+            if (obj == null)
+            {
+                subSpells.Remove(obj);
+                continue;
+            }
             Transform anchor = anchorDictionary[obj];
             float speed = randomSpeeds[obj];
             obj.transform.position += ((anchor.position) - obj.transform.position).normalized * speed * Time.fixedDeltaTime * Vector3.Distance(anchor.position, obj.transform.position);
         }
+        if (subSpells.Count == 0) Destroy(gameObject);
     }
     public override void Impact(Collider2D other, Vector2 impactPoint)
     {
@@ -55,11 +61,11 @@ public class SpellTintedStoneManager : SpellImpact
             return;
         }
 
-
         Vector2 dir = other.transform.position - transform.position;
+        float dist = Vector2.Distance(other.transform.position, transform.position);
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, trigger.radius, layerMask);
-        if (hit.transform != other.transform) return;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, dist, layerMask);
+        if (hit) return;
 
         GameObject obj = subSpells[0];
         subSpells.RemoveAt(0);
