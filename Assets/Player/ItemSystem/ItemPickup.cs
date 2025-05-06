@@ -13,9 +13,10 @@ public class ItemPickup : InteractionObject
 {
     [Header("Item settings")]
     [SerializeField] public SpawnPointChance spawnChance = SpawnPointChance.LowChance;
-    [SerializeField] bool needsPayment;
+    [SerializeField] public bool needsPayment;
     [SerializeField] ItemRarity dropPointRarity;
     [SerializeField] ItemCategory[] availableCategories;
+    [SerializeField] public bool allowsHealthItem = true;
     [SerializeField] public bool setByhand;
     [SerializeField] Item item;
     [SerializeField] EnemyStats spawnFromEnemy;
@@ -78,6 +79,11 @@ public class ItemPickup : InteractionObject
     /// <param name="setItem"></param>
     public void SetItem(Item setItem, int itemCost)
     {
+        if(ItemSpellManager.instance == null)
+        {
+            Debug.LogWarning("Item spell manager not initiated.");
+            return;
+        }
         ItemSpellManager.instance.AddSpawnedEffects(setItem);
 
         this.item = setItem;

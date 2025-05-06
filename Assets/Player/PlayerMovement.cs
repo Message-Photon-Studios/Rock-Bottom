@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dash")]
     [SerializeField] float dashSpeed;
     [SerializeField] float dashDistance;
+    [SerializeField] float dashCooldown = 1f;
 
     /*
     * The jumpJetpack and the jumpFalloff does controll the extra force over time for the players jump that allows the player to controll the heigh of the jump.
@@ -669,7 +670,7 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="ctx"></param>
     private void Dash()
     {
-        if(isDashing || dashedDone || movementRoot.rooted || Time.time - dashCdStart < 0.5f) return;
+        if(isDashing || dashedDone || movementRoot.rooted || Time.time - dashCdStart < dashCooldown) return;
         if(stairLeap) stairLeap = false;
         if(IsGrappeling())
         {
@@ -709,6 +710,7 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator.SetBool("dash", false);
         isDashing = false;
         playerStats.RemovePlayerInvincible();
+        playerStats.SetPlayerInvincible(.5f);
         dashCdStart = Time.time;
     }
 

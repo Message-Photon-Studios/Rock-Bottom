@@ -13,6 +13,9 @@ public class ItemSpellManager : MonoBehaviour
     [SerializeField] int itemPop;
     [SerializeField] public float stageCostMultiplier = 1;
 
+    [SerializeField] Item healthItem;
+    [SerializeField] int healthItemAmount;
+
     [SerializeField] int petrifiedPigmentDrops = 2;
     [SerializeField] ColorSpell[] levelSpells;
 
@@ -97,7 +100,7 @@ public class ItemSpellManager : MonoBehaviour
 
 
         //Purge items until they reached the allowed item pop count.
-        while(highSpawnChance.Count + lowSpawnChance.Count > itemPop)
+        while(highSpawnChance.Count + lowSpawnChance.Count > itemPop + healthItemAmount)
         {
             if(lowSpawnChance.Count > 0)
             {
@@ -110,7 +113,38 @@ public class ItemSpellManager : MonoBehaviour
                 highSpawnChance[i].SetActive(false);
                 highSpawnChance.RemoveAt(i);
             }
-        }    
+        }
+
+
+        if(healthItem != null)
+        {
+            List<GameObject> spawnedItemPoints = new List<GameObject>();
+            spawnedItemPoints.AddRange(highSpawnChance);
+            spawnedItemPoints.AddRange(lowSpawnChance);
+        
+
+            int healthToSpawn = healthItemAmount;
+            while(spawnedItemPoints.Count > 0 && healthToSpawn > 0)
+            {
+                int r = UnityEngine.Random.Range(0, spawnedItemPoints.Count);
+                ItemPickup itemPickup = spawnedItemPoints[r].GetComponent<ItemPickup>();
+                if(itemPickup == null)
+                {
+                    Debug.LogWarning("Item " + spawnedItemPoints[r].name + " does not have ItemPickup component!");
+                    spawnedItemPoints.RemoveAt(r);
+                    continue;
+                }
+
+                spawnedItemPoints.RemoveAt(r);
+                if(itemPickup.allowsHealthItem && !itemPickup.setByhand)
+                {
+                    itemPickup.SetItem(healthItem, 0);
+                    itemPickup.setByhand = true;
+                    itemPickup.needsPayment = false;
+                    healthToSpawn --;
+                }
+            }
+        }
 
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("SpellItem"))
         {
@@ -133,7 +167,13 @@ public class ItemSpellManager : MonoBehaviour
                 continue;
             }
 
-            petrifiedPigments[pick].gameObject.SetActive(true);
+            if(petrifiedPigments[pick] != null) petrifiedPigments[pick].gameObject.SetActive(true);
+            else 
+            {
+                j++;
+                i--;
+                continue;
+            }
         }
     }
 

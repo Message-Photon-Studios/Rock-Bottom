@@ -25,7 +25,7 @@ public class FloorFlame : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy") && !burnQueue.Contains(collision.gameObject))
         {
             burnQueue.Add(collision.gameObject);
-            collision.gameObject.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles, false, burning.flames);
+            collision.gameObject.GetComponent<EnemyStats>()?.BurnDamage(burning.damage, burning.timer, burning.range, burning.particles, burning.floorParticles, burning.flames);
         }
     }
 

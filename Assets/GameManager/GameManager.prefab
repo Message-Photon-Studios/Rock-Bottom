@@ -53,6 +53,7 @@ MonoBehaviour:
   - SFXSound
   - PlayerSound
   - ColorSound
+  - EnemiesSound
 --- !u!1 &321048361883722677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1870,19 +1871,6 @@ MonoBehaviour:
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
-    - Key: uncoloredDefense
-      Value:
-        hasBeenDisplayed: 0
-        callsNeeded: 10
-        text:
-          m_TableReference:
-            m_TableCollectionName: GUID:a4284127705ac754d8067a9340b31204
-          m_TableEntryReference:
-            m_KeyId: 1268345737216
-            m_Key: 
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
     - Key: colorImmunity
       Value:
         hasBeenDisplayed: 0
@@ -2132,31 +2120,31 @@ MonoBehaviour:
     - Key: Yellow
       Value:
         audioSource: {fileID: 4895308357192290584}
-        maxVolume: 0.4
+        maxVolume: 0.1
     - Key: Red
       Value:
         audioSource: {fileID: 7581188904585604392}
-        maxVolume: 0.5
+        maxVolume: 0.2
     - Key: Rainbow
       Value:
         audioSource: {fileID: 6587479581049576109}
-        maxVolume: 0.5
+        maxVolume: 0.15
     - Key: Blue
       Value:
         audioSource: {fileID: 3442175502387246392}
-        maxVolume: 0.5
+        maxVolume: 0.15
     - Key: Green
       Value:
         audioSource: {fileID: 6832867010746159442}
-        maxVolume: 0.3
+        maxVolume: 0.1
     - Key: Orange
       Value:
         audioSource: {fileID: 5787750353671216461}
-        maxVolume: 0.4
+        maxVolume: 0.15
     - Key: Purple
       Value:
         audioSource: {fileID: 167709162901887020}
-        maxVolume: 0.5
+        maxVolume: 0.2
 --- !u!1 &7557040194653726028
 GameObject:
   m_ObjectHideFlags: 0

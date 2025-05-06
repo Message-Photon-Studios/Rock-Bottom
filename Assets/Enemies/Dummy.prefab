@@ -135,13 +135,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 5917460679946713259}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 3159090819187514941}
   dying: {fileID: 3722728819428299539}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 2443749322575865816}
   spellHit: {fileID: 3666629388019564733}
+  attack: {fileID: 0}
 --- !u!95 &5917460679946713259
 Animator:
   serializedVersion: 5
@@ -271,11 +271,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
---- !u!82 &2443749322575865816 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 7589699801455829676, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
-  m_PrefabInstance: {fileID: 5241616907523376500}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &3159090819187514941 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 7163730101912361801, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}

@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 4874330200776334801}
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
-  - component: {fileID: 5526896281579278936}
   m_Layer: 8
   m_Name: Color Bolt
   m_TagString: Spell
@@ -38,6 +37,7 @@ Transform:
   m_Children:
   - {fileID: 2645241902878360685}
   - {fileID: 7020532310094805848}
+  - {fileID: 3354475609956418594}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -215,6 +215,7 @@ MonoBehaviour:
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 1
   maxSpawn: 0
   spawnKey: 
@@ -224,7 +225,7 @@ MonoBehaviour:
   destroyOnCollission: 1
   impactOnEnemies: 1
   impactOnNonEnemies: 0
-  triggerOnlyOnce: 0
+  triggerOnlyOnce: 1
   triggerOnlyOncePerEnemy: 1
   attackAgainTimer: -1
   requirePlayerLOSonSpawn: 1
@@ -245,13 +246,45 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!70 &5526896281579278936
+--- !u!1 &7695216169340282102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3354475609956418594}
+  - component: {fileID: 1811507213521411113}
+  m_Layer: 12
+  m_Name: WallHitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3354475609956418594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7695216169340282102}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3321278458073070405}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &1811507213521411113
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
+  m_GameObject: {fileID: 7695216169340282102}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -323,10 +356,6 @@ PrefabInstance:
     - target: {fileID: 4720126064522339740, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: m_Name
       value: BallTray
-      objectReference: {fileID: 0}
-    - target: {fileID: 4720126064522339740, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: moveWithTransform
