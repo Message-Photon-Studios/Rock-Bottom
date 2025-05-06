@@ -7,7 +7,9 @@ public class SpellTintedStoneManager : SpellImpact
     [SerializeField] float floatingSpeed = 1;
     [SerializeField] float rngMin, rngMax;
     [SerializeField] float attackForce;
-    [SerializeField] string spellKey; 
+    [SerializeField] string spellKey;
+    [SerializeField] LayerMask layerMask;
+    [SerializeField] CircleCollider2D trigger;
     [SerializeField] GameObject[] spawnPrefabs;
     [SerializeField] Transform[] anchorPoints;
 
@@ -52,6 +54,13 @@ public class SpellTintedStoneManager : SpellImpact
             Destroy(gameObject);
             return;
         }
+
+
+        Vector2 dir = other.transform.position - transform.position;
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, trigger.radius, layerMask);
+        if (hit.transform != other.transform) return;
+
         GameObject obj = subSpells[0];
         subSpells.RemoveAt(0);
         if (obj == null) return;
