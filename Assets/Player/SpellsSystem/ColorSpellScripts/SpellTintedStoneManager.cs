@@ -77,7 +77,9 @@ public class SpellTintedStoneManager : SpellImpact
             foreach (GameObject obj in subSpells)
             {
                 obj.GetComponent<Rigidbody2D>().AddForce(new Vector2(spell.GetPlayerObj().GetComponent<PlayerMovement>().lookDir, Random.Range(-0.15f,0.01f)).normalized * attackForce);
-                Destroy(obj, 2);
+                obj.GetComponent<ColorSpell>().destroyOnAllImpact = true;
+                obj.GetComponent<ColorSpell>().impactOnNonEnemies = true;
+                Destroy(obj, 0.5f);
             }
             subSpells.Clear();
             Destroy(gameObject);

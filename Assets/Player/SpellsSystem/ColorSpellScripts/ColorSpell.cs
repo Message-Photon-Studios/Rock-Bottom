@@ -37,7 +37,7 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// The projectile will be destroyed on impact with any object
     /// </summary>
-    [SerializeField] protected bool destroyOnAllImpact;
+    [SerializeField] public bool destroyOnAllImpact;
 
     /// <summary>
     /// The projectile will be destroyed on impact with the enemy
@@ -54,7 +54,7 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// If true this spell will detect non-enemies as a hit
     /// </summary>
-    [SerializeField] protected bool impactOnNonEnemies = true;
+    [SerializeField] public bool impactOnNonEnemies = true;
     /// <summary>
     /// If true the spell will only trigger once.
     /// </summary>

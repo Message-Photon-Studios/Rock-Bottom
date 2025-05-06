@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 7523608084446904443}
   - component: {fileID: 1964999234224827742}
   - component: {fileID: 5495335195324019266}
-  - component: {fileID: -2572558181612711958}
+  - component: {fileID: 3597409979177653633}
   m_Layer: 8
   m_Name: Tinted Stones
   m_TagString: Spell
@@ -109,7 +109,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 6
 --- !u!114 &-7692674297862362138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   triggerOnlyOncePerEnemy: 0
   attackAgainTimer: 0.5
   requirePlayerLOSonSpawn: 0
-  lifeTime: 30
+  lifeTime: 15
   animationTrigger: raisedSpell
   onImpact:
   - {fileID: 7523608084446904443}
@@ -272,19 +272,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-2572558181612711958
-MonoBehaviour:
+--- !u!95 &3597409979177653633
+Animator:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf290b486d4794640ad769b34f368a88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnKey: tintedStones
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3b56e1887dd956d4c94b51b3325cc5f7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &4320228415829966562
 GameObject:
   m_ObjectHideFlags: 0
