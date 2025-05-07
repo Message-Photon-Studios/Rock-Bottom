@@ -8,8 +8,6 @@ public class SpellTintedStoneManager : SpellImpact
     [SerializeField] float rngMin, rngMax;
     [SerializeField] float attackForce;
     [SerializeField] string spellKey;
-    [SerializeField] LayerMask layerMask;
-    [SerializeField] CircleCollider2D trigger;
     [SerializeField] GameObject[] spawnPrefabs;
     [SerializeField] Transform[] anchorPoints;
 
@@ -64,7 +62,7 @@ public class SpellTintedStoneManager : SpellImpact
         Vector2 dir = other.transform.position - transform.position;
         float dist = Vector2.Distance(other.transform.position, transform.position);
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, dist, layerMask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, dist, GameManager.instance.maskLibrary.onlySolidGround());
         if (hit) return;
 
         GameObject obj = subSpells[0];
@@ -82,6 +80,15 @@ public class SpellTintedStoneManager : SpellImpact
         {
             foreach (GameObject obj in subSpells)
             {
+                Vector2 dir = obj.transform.position - transform.position;
+                float dist = Vector2.Distance(obj.transform.position, transform.position);
+
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, dist, GameManager.instance.maskLibrary.onlySolidGround());
+                if (hit)
+                {
+                    Destroy(obj);
+                    continue;
+                }
                 obj.GetComponent<Rigidbody2D>().AddForce(new Vector2(spell.GetPlayerObj().GetComponent<PlayerMovement>().lookDir, Random.Range(-0.15f,0.01f)).normalized * attackForce);
                 obj.GetComponent<ColorSpell>().destroyOnAllImpact = true;
                 obj.GetComponent<ColorSpell>().impactOnNonEnemies = true;

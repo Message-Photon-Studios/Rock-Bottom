@@ -946,6 +946,13 @@ public class ColorInventory : MonoBehaviour
         return colorSlots[index].colorSpell;
     }
 
+    public ColorSpell GetColorSpell(ColorSlot slot)
+    {
+        if (slot.colorSpell == null)
+            return defaultSpell;
+        return slot.colorSpell;
+    } 
+
     /// <summary>
     /// Changes the color spell of the specified slot
     /// </summary>
@@ -1070,7 +1077,8 @@ public class ColorInventory : MonoBehaviour
                 {
                     spellTracker.Add(spell.spawnKey, 0);
                 }
-                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell));
+                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell, CastType.EXTRA));
+                StartCoroutine(Player.instance.playerCombatSystem.ExtraSpell(slot, CastType.HURT));
             }
         }
         EnableRotation();
@@ -1092,15 +1100,15 @@ public class ColorInventory : MonoBehaviour
                 {
                     spellTracker.Add(spell.spawnKey, 0);
                 }
-                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell));
+                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell, CastType.HIT));
             }
         }
     }
 
-    public IEnumerator PocketSpecialAttack(string spell, int delay, ColorSlot slot, bool staggerd)
+    public IEnumerator PocketSpecialAttack(string spell, int delay, ColorSlot slot, bool staggerd, CastType castType)
     {
         yield return new WaitUntil(() => spellTracker[spell] < delay || delay == 0 || spell.Equals("") || !staggerd);
-        GetComponent<PlayerCombatSystem>().DashSpecialAttack(slot);
+        Player.instance.playerCombatSystem.SpellAttack(slot, castType);
     }
 
     public void DashSpells()
@@ -1119,19 +1127,19 @@ public class ColorInventory : MonoBehaviour
                 {
                     spellTracker.Add(spell.spawnKey, 0);
                 }
-                StartCoroutine(DashSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell));
+                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell, CastType.DASH));
             }
         }
         EnableRotation();
 
     }
-
+    /*
     public IEnumerator DashSpecialAttack(string spell, int delay, ColorSlot slot, bool staggerd)
     {
         yield return new WaitUntil(() => spellTracker[spell] < delay || delay == 0 || spell.Equals("") || !staggerd);
         GetComponent<PlayerCombatSystem>().DashSpecialAttack(slot);
     }
-
+    */
     public void DoubleJumpSpells()
     {
         foreach (ColorSlot slot in colorSlots)
@@ -1148,18 +1156,18 @@ public class ColorInventory : MonoBehaviour
                 {
                     spellTracker.Add(spell.spawnKey, 0);
                 }
-                StartCoroutine(DoubleJumpSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell));
+                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell, CastType.JUMP));
             }
         }
         EnableRotation();
     }
-
+    /*
     public IEnumerator DoubleJumpSpecialAttack(string spell, int delay, ColorSlot slot, bool staggerd)
     {
         yield return new WaitUntil(() => spellTracker[spell] < delay || delay == 0 || spell.Equals("") || !staggerd);
         GetComponent<PlayerCombatSystem>().DashSpecialAttack(slot);
     }
-
+    */
     public void QuedSpells(string spell)
     {
         if (spellTracker.ContainsKey(spell))
