@@ -18,6 +18,7 @@ public class EnemyManager : MonoBehaviour
     
     public void ScaleEnemyStats()
     {
+        if(!GameManager.instance) return;
         EnemyStats[] enemyStats = FindObjectsOfType<EnemyStats>(); 
         int levelNum = GameManager.instance.levelNum;
         float scaling = enemyScaling * (levelNum-1)+1;
