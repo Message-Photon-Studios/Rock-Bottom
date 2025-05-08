@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         if (currentLevelManager && currentLevelManager.allowsClockTimer)
         {
-            clockTime -= Time.deltaTime;
+            clockTime -= Time.deltaTime*rerunNum;
 
             if (clockTime <= 0)
             {
