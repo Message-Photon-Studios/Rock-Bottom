@@ -34,6 +34,13 @@ public class EnemyHpController : MonoBehaviour
             rectTransform.sizeDelta = new Vector2(healthBarBaseSize + healthBarScale*enemy.GetHealth(), rectTransform.sizeDelta.y);
     }
 
+    void OnDestroy()
+    {
+        enemy.onHealthChanged -=  HpChanged;
+        enemy.onEnemyDeath -= EnemyDied;
+        enemy.onMaxHealthChanged -= MaxHealthChanged;
+    }
+
     /// <summary>
     /// When hp is changed, update slider;
     /// </summary>
