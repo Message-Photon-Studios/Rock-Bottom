@@ -112,8 +112,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
         currentLevelManager = levelManager;
         hunterTimer = 0f;
         hunters = 0;
-        if(!restartTimer)
-            clockTime = addClockTime + ((clockTime < 0)?0:clockTime);
+        if(!restartTimer || rerunNum > 1)
+            clockTime = addClockTime/rerunNum + ((clockTime < 0)?0:clockTime);
         else
             clockTime = maxClockTime;
 
@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         if (currentLevelManager && currentLevelManager.allowsClockTimer)
         {
-            clockTime -= Time.deltaTime*rerunNum;
+            clockTime -= Time.deltaTime;
 
             if (clockTime <= 0)
             {
