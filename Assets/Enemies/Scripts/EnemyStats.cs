@@ -71,7 +71,7 @@ public class EnemyStats : MonoBehaviour
     private float redTimer = 0;
     private float redPower = 0;
 
-    [HideInInspector] public float damageScaling;
+    [HideInInspector] public float damageScaling = 1f;
 
     [HideInInspector] public float spawnPower = 1f;
 
@@ -112,6 +112,7 @@ public class EnemyStats : MonoBehaviour
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         normalAnimationSpeed = animator.speed;
+        damageScaling = 1f;
     }
 
     void Start()
