@@ -10,15 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3321278458073070405}
   - component: {fileID: 3321278458073070400}
-  - component: {fileID: 3293947447571823584}
-  - component: {fileID: -2812139904606595728}
-  - component: {fileID: 3321278458073070407}
+  - component: {fileID: 3321278458073070462}
   - component: {fileID: 4874330200776334801}
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
-  - component: {fileID: 7939297641866764751}
+  - component: {fileID: 5526896281579278936}
   m_Layer: 8
-  m_Name: Painted Blade
+  m_Name: Tinted Stone Destroy
   m_TagString: Spell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +34,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3033471370556282935}
+  - {fileID: 6870229472796562339}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -60,8 +58,8 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 6
---- !u!58 &3293947447571823584
+  m_Constraints: 0
+--- !u!58 &3321278458073070462
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,40 +72,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -1}
+  m_Offset: {x: 0.48, y: 0}
   serializedVersion: 2
-  m_Radius: 1.55
---- !u!70 &-2812139904606595728
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 2, y: 0}
-  m_Size: {x: 3.32, y: 5}
-  m_Direction: 0
---- !u!114 &3321278458073070407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0900cb19f680a734ba6a9d1fcb2ffcdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forcePerspectivePlayer: 1
-  triggerImpactSpells: 1
-  onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
+  m_Radius: 0.56
 --- !u!212 &4874330200776334801
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -149,12 +116,12 @@ SpriteRenderer:
   m_SortingLayerID: -615436619
   m_SortingLayer: 11
   m_SortingOrder: 0
-  m_Sprite: {fileID: -996088377, guid: dab4ddbe0a2bd1243b8310bca4499210, type: 3}
+  m_Sprite: {fileID: -1659822063, guid: 1fec91b330e409f4fad1af5a266514b2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6, y: 1.8}
+  m_Size: {x: 1.57, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -170,7 +137,7 @@ Animator:
   m_GameObject: {fileID: 3321278458073070463}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 34398910b368d364480d9a86b515f074, type: 2}
+  m_Controller: {fileID: 9100000, guid: 172625484428eab43ad71f1b1447a3cf, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -194,75 +161,76 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bottleName:
     m_TableReference:
-      m_TableCollectionName: GUID:b0ba66eaa2a546042a2702e4175bbe50
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 4320923648
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   description:
     m_TableReference:
-      m_TableCollectionName: GUID:b0ba66eaa2a546042a2702e4175bbe50
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 7324045312
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  spellCost: 20
-  powerScale: 0.8
-  coolDown: 3
+  spellCost: 40
+  powerScale: -0.8
+  coolDown: 0.1
   castWhenDamaged: 0
   castOnSpellImpact: 0
-  castOnDash: 1
+  castOnDash: 0
   castOnDoubleJump: 0
-  staggeredSpell: 1
-  storedSpells: 2
-  colorCost: 1
-  maxSpawn: -1
-  spawnKey: Blade
+  staggeredSpell: 0
+  storedSpells: 1
+  maxSpawn: 0
+  spawnKey: 
   ignoreLookDir: 0
   destroyOnAllImpact: 0
   destroyOnEnemyHit: 0
   destroyOnCollission: 0
   impactOnEnemies: 1
-  impactOnNonEnemies: 1
+  impactOnNonEnemies: 0
   triggerOnlyOnce: 0
   triggerOnlyOncePerEnemy: 0
-  attackAgainTimer: -1
+  attackAgainTimer: 1.5
   requirePlayerLOSonSpawn: 0
-  lifeTime: 0.4
-  animationTrigger: swipeSpell
-  onImpact:
-  - {fileID: 3321278458073070407}
+  lifeTime: 0.3
+  animationTrigger: handSpell
+  onImpact: []
   spellSprite:
-    bigSprite: {fileID: 21300000, guid: a0905968bf1048b48a4d7decb1c10c48, type: 3}
-    bigSpriteMask: {fileID: 21300000, guid: 2150b93e7990fc948bcfe9d35cf904fc, type: 3}
-    bigSpriteCapMask: {fileID: 21300000, guid: 8936a3685127ac94d86ca435a478484e, type: 3}
-    mediumSprite: {fileID: 21300000, guid: 82b3725a81e41bd47aa56fa7ee1e367e, type: 3}
-    mediumSpriteMask: {fileID: 21300000, guid: 75760cb6c37bd5e47b97cceb7a313311, type: 3}
-    mediumSpriteCapMask: {fileID: 21300000, guid: 11b4448e9de4ece439a7c116c58cd00e, type: 3}
-    smallSprite: {fileID: 21300000, guid: 6b3d2c8d7f0bc7d45bd71728ac9cf316, type: 3}
-    smallSpriteMask: {fileID: 21300000, guid: f2e5010ada927924f9632ef6bbf95f83, type: 3}
-    smallSpriteCapMask: {fileID: 21300000, guid: 16c8706a787e7664786199a20684504e, type: 3}
+    bigSprite: {fileID: 21300000, guid: a91eb75871ab80e47b9521f2c3bdc1fd, type: 3}
+    bigSpriteMask: {fileID: 21300000, guid: e3c018f35de5c2546b1558e08df0b010, type: 3}
+    bigSpriteCapMask: {fileID: 21300000, guid: e3a9c4ee3da5fb84f84fd33271261bfc, type: 3}
+    mediumSprite: {fileID: 21300000, guid: 68be518fb3bde7d489692719838492a9, type: 3}
+    mediumSpriteMask: {fileID: 21300000, guid: 4743301885a1f5745a23ec10159feefe, type: 3}
+    mediumSpriteCapMask: {fileID: 21300000, guid: e4d19cae8cc79344f85c944e55b0abb7, type: 3}
+    smallSprite: {fileID: 21300000, guid: 0e4410dc1c8445849863eb9a57105ac2, type: 3}
+    smallSpriteMask: {fileID: 21300000, guid: c0da91dbb370a2a4eae7a5661573c13d, type: 3}
+    smallSpriteCapMask: {fileID: 21300000, guid: 6e26f46f0d2fe6840a3e2d330dbce090, type: 3}
   references:
     version: 2
     RefIds: []
---- !u!114 &7939297641866764751
-MonoBehaviour:
+--- !u!70 &5526896281579278936
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e0f513657fe3949b61516c4d8749c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offsetSpell: 0
---- !u!1001 &1007130421494915340
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.3, y: 0}
+  m_Size: {x: 0.3, y: 0.4}
+  m_Direction: 1
+--- !u!1001 &8697841375084276376
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -279,11 +247,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2874147498126129467, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.696
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2874147498126129467, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.252
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2874147498126129467, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
       propertyPath: m_LocalPosition.z
@@ -317,10 +285,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2874147498126129468, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
+      propertyPath: m_Intensity
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874147498126129468, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
---- !u!4 &3033471370556282935 stripped
+--- !u!4 &6870229472796562339 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2874147498126129467, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
-  m_PrefabInstance: {fileID: 1007130421494915340}
+  m_PrefabInstance: {fileID: 8697841375084276376}
   m_PrefabAsset: {fileID: 0}

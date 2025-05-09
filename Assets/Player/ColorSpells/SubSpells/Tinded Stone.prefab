@@ -15,13 +15,10 @@ GameObject:
   - component: {fileID: 4874330200776334801}
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
-  - component: {fileID: 1609077829872420345}
-  - component: {fileID: 6978534892282143140}
-  - component: {fileID: 6125480898092892914}
   - component: {fileID: 6883552883466820374}
   - component: {fileID: 7986234649800853829}
   m_Layer: 8
-  m_Name: Spore
+  m_Name: Tinded Stone
   m_TagString: Spell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0.71, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -57,9 +54,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1
+  m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: -0.05
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -137,7 +134,7 @@ SpriteRenderer:
   m_SortingLayerID: -615436619
   m_SortingLayer: 11
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d3f0b921fa0b0bd418da648a4353afd0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 55b72f50ad143e94f944b8538a160e58, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -207,10 +204,9 @@ MonoBehaviour:
   castOnDoubleJump: 0
   staggeredSpell: 0
   storedSpells: 1
-  colorCost: 1
   maxSpawn: 0
   spawnKey: 
-  ignoreLookDir: 0
+  ignoreLookDir: 1
   destroyOnAllImpact: 0
   destroyOnEnemyHit: 1
   destroyOnCollission: 0
@@ -220,7 +216,7 @@ MonoBehaviour:
   triggerOnlyOncePerEnemy: 0
   attackAgainTimer: -1
   requirePlayerLOSonSpawn: 0
-  lifeTime: 8
+  lifeTime: 25
   animationTrigger: raisedSpell
   onImpact:
   - {fileID: 3321278458073070407}
@@ -237,49 +233,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!114 &1609077829872420345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e912482988b69644a9711556680c97e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 5
-  speed: 200
-  spawnTargetDelay: 0
-  settings: 1
---- !u!114 &6978534892282143140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2f5146cb47d5dc49ac6960695b3ce8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delay: 1
---- !u!114 &6125480898092892914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa85a9b2bdfcad843aa407e333f693a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnForceMin: {x: 200, y: 25}
-  spawnForceMax: {x: -200, y: -50}
 --- !u!114 &6883552883466820374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,7 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPrefabs:
-  - {fileID: 3321278458073070463, guid: f601773ad2e08304da916d6e3071977e, type: 3}
+  - {fileID: 3321278458073070463, guid: 1b5ad43f9c5cf0b46be1ec223925c0cd, type: 3}
 --- !u!114 &7986234649800853829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,11 +422,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: ColorModule.enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: ShapeModule.radius.value
-      value: 0.16
+      value: 0.22
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: ShapeModule.radius.spread
@@ -497,7 +450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: InitialModule.startSize.minScalar
@@ -509,7 +462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: InitialModule.startSize.minMaxState
@@ -517,7 +470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: InitialModule.gravityModifier.scalar
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: InitialModule.startSizeY.minMaxState
@@ -533,7 +486,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 57b2328bb82453344aaee19ec8fd2c47, type: 3}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.atime0
-      value: 30647
+      value: 49344
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key1.a
@@ -561,11 +514,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[0].value
-      value: 0.3085823
+      value: 0.48525238
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].value
-      value: 0
+      value: 0.24417877
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[0].inSlope
@@ -573,7 +526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].inSlope
-      value: -4.9715166
+      value: -0.20675053
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[0].inWeight
@@ -585,11 +538,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].inWeight
-      value: 0.055684447
+      value: 0.6731359
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].outSlope
-      value: -4.9715166
+      value: -0.20675053
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[0].outWeight
