@@ -80,6 +80,7 @@ public class EnemyStats : MonoBehaviour
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
     public UnityAction<float> onHealthChanged;
+    public UnityAction<float, float> onMaxHealthChanged;
     public UnityAction<float, Vector2> onDamageTaken;
     public UnityAction<GameColor> onColorChanged;
 
@@ -187,7 +188,7 @@ public class EnemyStats : MonoBehaviour
     {
         health = (int)(health * scaling * Mathf.Pow(1.1f, GameManager.instance.rerunNum-1));
         damageScaling = scaling * GameManager.instance.rerunNum;
-        onHealthChanged?.Invoke(health);
+        onMaxHealthChanged?.Invoke(health, health);
     }
 
     #endregion

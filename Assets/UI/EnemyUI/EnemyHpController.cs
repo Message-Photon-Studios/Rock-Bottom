@@ -20,7 +20,7 @@ public class EnemyHpController : MonoBehaviour
         gameObject.SetActive(true);
         enemy.onHealthChanged +=  HpChanged;
         enemy.onEnemyDeath += EnemyDied;
-        
+        enemy.onMaxHealthChanged += MaxHealthChanged;
         var sliders = GetComponents<Slider>();
 
         healthSlider.maxValue = enemy.GetHealth();
@@ -42,6 +42,19 @@ public class EnemyHpController : MonoBehaviour
         healthSlider.value = newHp;
         healthSlider.gameObject.SetActive(true);
         healthSubSlider.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Updates when the enemy's max health changes
+    /// </summary>
+    /// <param name="maxHealth"></param>
+    /// <param name="newHp"></param>
+    private void MaxHealthChanged(float maxHealth, float newHp)
+    {
+        healthSlider.maxValue = maxHealth;
+        healthSubSlider.maxValue = maxHealth;
+        healthSlider.value = newHp;
+        healthSubSlider.value = newHp;
     }
 
     private void Update()
