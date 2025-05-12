@@ -38292,6 +38292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057fd27788c34f44a93ceef2d2e77b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyScaling: 0.1
   spawnableColors:
   - {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
   - {fileID: 11400000, guid: a43a3607f70897249a36fdff7162cc2a, type: 2}
@@ -38318,6 +38319,8 @@ MonoBehaviour:
   clearInventoryOnLevelEnd: 1
   allowTips: 0
   isCaveTownLevel: 0
+  rerunStart: 0
+  increaseLevelNum: 1
   wellSpawnAmount: 2
   spawnableColors: []
   sameColorRerolls: 1
@@ -38356,6 +38359,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPop: 0
   stageCostMultiplier: 1
+  cratePop: 0
   healthItem: {fileID: 0}
   healthItemAmount: 0
   petrifiedPigmentDrops: 2
@@ -68575,10 +68579,6 @@ PrefabInstance:
     - target: {fileID: 3004094830190583857, guid: dab1a1b8d4ec3574589c8c93b365f0ba, type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 3004094830190583859, guid: dab1a1b8d4ec3574589c8c93b365f0ba, type: 3}
-      propertyPath: orthographic size
-      value: 5.4
       objectReference: {fileID: 0}
     - target: {fileID: 3004094830190583860, guid: dab1a1b8d4ec3574589c8c93b365f0ba, type: 3}
       propertyPath: m_RootOrder
