@@ -72,6 +72,12 @@ public class PickUpCanvasController : MonoBehaviour
 
         SetCollect(spellPickup.GetSpell().GetName(), spellPickup.GetSpell().GetDesc());
     }
+
+    public void SetCrate(string name, string desc, int cost)
+    {
+        bool canBuy =  Player.instance.playerInventory.HasEnoughCoins(cost);
+        SetBuy(name, desc, cost, canBuy);
+    }
     
     private void SetReturnColor(string objName, string objDesc)
     {

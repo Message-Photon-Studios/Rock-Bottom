@@ -13,14 +13,16 @@ using static UnityEngine.ParticleSystem;
 /// </summary>
 [RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class EnemyStats : MonoBehaviour
-{
+{   
+    [Header("Base Stats")]
     [SerializeField] int health; //The health of the enemy
     [SerializeField] GameColor color; //The colorMat of the enemy
     [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy'
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
-
     private Collider2D myCollider;
+
+    [Header("Enemy Settings")]
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
     [SerializeField] private GameObject comboParticles;
 
@@ -69,6 +71,8 @@ public class EnemyStats : MonoBehaviour
     private float redTimer = 0;
     private float redPower = 0;
 
+    [HideInInspector] public float damageScaling = 1f;
+
     [HideInInspector] public float spawnPower = 1f;
 
     private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, GameObject enemyParticles, int flames) burning;
@@ -76,6 +80,7 @@ public class EnemyStats : MonoBehaviour
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
     public UnityAction<float> onHealthChanged;
+    public UnityAction<float, float> onMaxHealthChanged;
     public UnityAction<float, Vector2> onDamageTaken;
     public UnityAction<GameColor> onColorChanged;
 
@@ -107,6 +112,7 @@ public class EnemyStats : MonoBehaviour
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         normalAnimationSpeed = animator.speed;
+        damageScaling = 1f;
     }
 
     void Start()
@@ -177,6 +183,13 @@ public class EnemyStats : MonoBehaviour
         StopBurning();
         Material mat = GetComponent<SpriteRenderer>().material;
         mat.SetFloat("_takingDmg", 0);
+    }
+
+    public void ScaleEnemy(float scaling)
+    {
+        health = (int)(health * scaling * Mathf.Pow(1.1f, GameManager.instance.rerunNum-1));
+        damageScaling = scaling * GameManager.instance.rerunNum;
+        onMaxHealthChanged?.Invoke(health, health);
     }
 
     #endregion
@@ -636,7 +649,7 @@ public class EnemyStats : MonoBehaviour
         float poisonFactor = 1f;
         if(isPoisoned())
             poisonFactor = (1f-poisonDamageReduction);
-        return spawnPower * poisonFactor;
+        return spawnPower * poisonFactor * damageScaling;
     }
 
     /// <summary>

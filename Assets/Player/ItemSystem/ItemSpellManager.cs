@@ -12,8 +12,8 @@ public class ItemSpellManager : MonoBehaviour
     public static ItemSpellManager instance;
     [SerializeField] int itemPop;
     [SerializeField] public float stageCostMultiplier = 1;
-
-    [SerializeField] Item healthItem;
+    [SerializeField] int cratePop = 0;
+    [SerializeField] public Item healthItem;
     [SerializeField] int healthItemAmount;
 
     [SerializeField] int petrifiedPigmentDrops = 2;
@@ -174,6 +174,45 @@ public class ItemSpellManager : MonoBehaviour
                 i--;
                 continue;
             }
+        }
+
+        List<WillowCrate> crates = new List<WillowCrate>();
+        crates.AddRange(FindObjectsOfType<WillowCrate>());
+        List<WillowCrate> highChanceCrate = new List<WillowCrate>();
+        List<WillowCrate> lowChanceCrate = new List<WillowCrate>();
+
+        for(int i = 0; i < crates.Count; i++)
+        {
+            if(crates[i].spawnChance == SpawnPointChance.Guaranteed)
+            {
+                continue;
+            }
+
+            crates[i].gameObject.SetActive(false);
+
+            if(crates[i].spawnChance == SpawnPointChance.HighChance)
+            {
+                highChanceCrate.Add(crates[i]);
+                continue;
+            }
+
+            lowChanceCrate.Add(crates[i]);
+        }
+
+       while(cratePop > 0 && highChanceCrate.Count > 0)
+        {
+            int r = UnityEngine.Random.Range(0, highChanceCrate.Count);
+            highChanceCrate[r].gameObject.SetActive(true);
+            highChanceCrate.RemoveAt(r);
+            cratePop --;
+        }
+
+        while(cratePop > 0 && lowChanceCrate.Count > 0)
+        {
+            int r = UnityEngine.Random.Range(0, lowChanceCrate.Count);
+            lowChanceCrate[r].gameObject.SetActive(true);
+            lowChanceCrate.RemoveAt(r);
+            cratePop--;
         }
     }
 
