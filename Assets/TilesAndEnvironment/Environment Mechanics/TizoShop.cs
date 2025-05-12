@@ -152,11 +152,14 @@ public class TizoShop : MonoBehaviour
             module.gameObject.SetActive(false);
         }
 
+        int m = 0;
         for (int i = 0; i < trades.Count; i++)
         {
+            if(m > tizoTradeModules.Length) break;
             if(trades[i] == null) continue;
-            tizoTradeModules[i].SetTradeModule(trades[i], i, this);
-            tizoTradeModules[i].gameObject.SetActive(true);
+            tizoTradeModules[m].SetTradeModule(trades[i], i, this);
+            tizoTradeModules[m].gameObject.SetActive(true);
+            m++;
         }
     }
 

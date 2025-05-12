@@ -19,7 +19,7 @@ public class TizoTradeModule : MonoBehaviour
         if(tizoShop.TryTrade(tradeIndex)) 
         {
             hasBought = true;
-            gameObject.SetActive(false);
+            GetComponent<Button>().interactable = false;
         }
     }
 
