@@ -440,7 +440,7 @@ public class PlayerStats : MonoBehaviour
         if(color == null) return 0;
         float armour = defaultArmour;
         if (colorArmour.ContainsKey(color)) armour += colorArmour[color];
-        if (color != null && colorInventory.CheckIfActiveColorMatches(color)) armour += adaptiveArmourBonus;
+        //if (color != null && colorInventory.CheckIfActiveColorMatches(color)) armour += adaptiveArmourBonus;
         if (armour > .9f)
         {
             return .9f;

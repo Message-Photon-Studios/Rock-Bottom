@@ -35,7 +35,7 @@ public class HealingShrine : InteractionObject
 
     public int CalculatePrice()
     {
-        return Mathf.RoundToInt((baseCost + increaseCost * count) * ItemSpellManager.instance.stageCostMultiplier);
+        return Mathf.RoundToInt((baseCost + increaseCost * count) * ItemSpellManager.instance.stageCostMultiplier * GameManager.instance.rerunNum);
     }
 
     protected override void PlayerClose(bool isClose)
