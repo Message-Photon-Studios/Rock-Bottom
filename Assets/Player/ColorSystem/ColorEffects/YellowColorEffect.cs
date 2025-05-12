@@ -6,6 +6,7 @@ using UnityEngine;
 public class YellowColorEffect : ColorEffect
 {
     [SerializeField] float effectRange;
+    [SerializeField] float effectRangePowerBonus;
     [SerializeField] float force;
     [SerializeField] int maxBounces;
     [SerializeField] GameObject lightning;
@@ -17,12 +18,15 @@ public class YellowColorEffect : ColorEffect
         List<GameObject> affected = new List<GameObject>();
         List<GameObject> inRange = new List<GameObject>();
 
-        float range = effectRange + EffectFunction(power);
+        float range = effectRange + EffectFunction(power) * effectRangePowerBonus;
+        int frame = Time.frameCount;
 
         foreach (GameObject obj in objs)
         {
-            if (Vector3.Distance(obj.transform.position, enemyObj.transform.position) <= effectRange) inRange.Add(obj);
+            if (Vector3.Distance(obj.transform.position, enemyObj.transform.position) <= range) inRange.Add(obj);
         }
+
+        enemyObj.GetComponent<EnemyStats>().QueueLightning(frame, CalculateDamage(enemyObj), 0, power, lightning);
 
         SortDistanceFromTarget sorter = new SortDistanceFromTarget();
         sorter.SetTarget(enemyObj);
@@ -44,69 +48,22 @@ public class YellowColorEffect : ColorEffect
             return closest;
         }
 
-        
-        /*
-        float range = effectRange*EffectFunction(power);
-
-        foreach (GameObject obj in objs)
-        {
-            if(obj == null) continue;
-            if((obj.transform.position - enemyObj.transform.position).sqrMagnitude < Mathf.Pow(effectRange,2))
-            {
-                AffectObject(obj, 0, enemyObj);
-            }
-        }
-
-        int depth = 1;
-        int with = affected.Count;
-
-        for (int i = 0; i < affected.Count; i++)
-        {
-            if(i == with)
-            {
-                depth ++;
-                with = affected.Count;
-            }
-            if (depth > maxBounces) return;
-            if (range <= depth) return;
-
-            foreach (GameObject obj in objs)
-            {
-                if(obj == null) continue;
-                if(affected[i] == null) continue;
-                 
-                if((obj.transform.position - affected[i].transform.position).sqrMagnitude < Mathf.Pow(range-depth,2))
-                {
-                    AffectObject(obj, depth, affected[i]);
-                }
-            }
-
-        } */
-
         void AffectObject2(GameObject obj, GameObject source)
         {
             if (affected.Contains(obj)) return;
-            GameObject connector = GameObject.Instantiate(lightning, obj.transform.position, obj.transform.rotation);
-            connector.GetComponent<LineRenderer>().SetPosition(0, source.transform.position);
-            connector.GetComponent<LineRenderer>().SetPosition(1, obj.transform.position);
-            connector.GetComponent<LightningAnimator>().SetSource(source);
-            connector.GetComponent<LightningAnimator>().SetTarget(obj);
-            connector.GetComponent<LightningAnimator>().SetWidth(power);
-            Destroy(connector, 0.5f);
 
-            GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
-            Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration * 2);
-            instantiatedParticles.GetComponent<ParticleSystem>().Play();
-            // Set enemy as parent of the particle system
-            instantiatedParticles.transform.parent = enemyObj.transform;
+            obj.GetComponent<EnemyStats>().QueueLightning(frame, CalculateDamage(obj), source.GetComponent<EnemyStats>().GetLightningDelay(frame) + 0.2f, power, lightning);
+            source.GetComponent<EnemyStats>().AddLightningTarget(frame, obj);
+
             affected.Add(obj);
-            //float scale = 1f;
-            //if (obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this && !obj.GetComponent<EnemyStats>().isColoredThisFrame && !ignoreImmunity) scale = .75f;
-            Vector3 forceDir = (enemyObj.transform.position - obj.transform.position);
-            if (forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
-            if (!obj.GetComponent<EnemyStats>().IsKnockbackImune())
-                obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir * force);
-            obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(((damage * power) + extraDamage) * ((effectRange - Vector3.Distance(obj.transform.position, enemyObj.transform.position)) / effectRange)));
+        }
+
+        int CalculateDamage(GameObject target)
+        {
+            float rangeScaling = (Vector3.Distance(target.transform.position, enemyObj.transform.position) / range);
+            float rangeDamageScale = 1 - rangeScaling * 0.6f;
+            float floatDamage = ((damage * power) + extraDamage) * rangeDamageScale;
+            return Math.Max(Mathf.RoundToInt(floatDamage), 1);
         }
 
         /*
@@ -134,8 +91,36 @@ public class YellowColorEffect : ColorEffect
                 obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir*force);
             obj.GetComponent<EnemyStats>().DamageEnemy(Mathf.RoundToInt(damage*power-depth*5)+extraDamage);
         }
+
+
+
+        void AffectObject2(GameObject obj, GameObject source)
+        {
+            if (affected.Contains(obj)) return;
+            GameObject connector = GameObject.Instantiate(lightning, obj.transform.position, obj.transform.rotation);
+            connector.GetComponent<LineRenderer>().SetPosition(0, source.transform.position);
+            connector.GetComponent<LineRenderer>().SetPosition(1, obj.transform.position);
+            connector.GetComponent<LightningAnimator>().SetSource(source);
+            connector.GetComponent<LightningAnimator>().SetTarget(obj);
+            connector.GetComponent<LightningAnimator>().SetWidth(power);
+            Destroy(connector, 0.5f);
+
+            GameObject instantiatedParticles = GameObject.Instantiate(particles, obj.transform.position, obj.transform.rotation);
+            Destroy(instantiatedParticles, instantiatedParticles.GetComponent<ParticleSystem>().main.duration * 2);
+            instantiatedParticles.GetComponent<ParticleSystem>().Play();
+            // Set enemy as parent of the particle system
+            instantiatedParticles.transform.parent = enemyObj.transform;
+            affected.Add(obj);
+            //float scale = 1f;
+            //if (obj.GetComponent<EnemyStats>().GetColor()?.GetColorEffect() == this && !obj.GetComponent<EnemyStats>().isColoredThisFrame && !ignoreImmunity) scale = .75f;
+            Vector3 forceDir = (enemyObj.transform.position - obj.transform.position);
+            if (forceDir.sqrMagnitude > 1f) forceDir = forceDir.normalized;
+            if (!obj.GetComponent<EnemyStats>().IsKnockbackImune())
+                obj?.GetComponent<Rigidbody2D>()?.AddForce(forceDir * force);
+            obj.GetComponent<EnemyStats>().DamageEnemy(CalculateDamage(obj));
+        }
         */
-        
+
     }
 }
 
