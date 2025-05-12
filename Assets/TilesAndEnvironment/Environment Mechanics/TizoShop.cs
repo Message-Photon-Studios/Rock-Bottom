@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 using UnityEngine.UI;
 
 public class TizoShop : MonoBehaviour
@@ -10,7 +11,8 @@ public class TizoShop : MonoBehaviour
     [Header("Ui")]
     [SerializeField] GameObject canvas;
     [SerializeField] TizoTradeModule[] tizoTradeModules;
-    [SerializeField] EventSystem eventSystem;
+    [SerializeField] Image[] inventoryItemImages;
+    [SerializeField] GameObject[] infoCards;
 
     [Header("Shop Settings")]
     [SerializeField] int commonTradeAmount = 5;
@@ -41,11 +43,14 @@ public class TizoShop : MonoBehaviour
         {
             shopOpen = true;
             Player.instance.playerMovement.movementRoot.SetTotalRoot("tizoShop", true);
+            UpdateUi();
             canvas.SetActive(true);
             FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
             tizoTradeModules[0].GetComponent<Selectable>().Select();
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+
+            UpdateInfoCards(trades[0]);
         } else if (shopOpen && !openShop)
         {
             shopOpen = false;
@@ -163,6 +168,52 @@ public class TizoShop : MonoBehaviour
         }
     }
 
+    void UpdateUi()
+    {
+        foreach (Image itemImage in inventoryItemImages)
+        {
+            itemImage.gameObject.SetActive(false);
+        }
+
+        List<Item> inventoryItems = Player.instance.playerInventory.getItems();
+
+        for (int i = 0; i < inventoryItems.Count && i < inventoryItemImages.Length; i++)
+        {
+            inventoryItemImages[i].sprite = inventoryItems[i].sprite;
+            inventoryItemImages[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void UpdateInfoCards(TizoTrade trade)
+    {
+        foreach (GameObject obj in infoCards)
+        {
+            obj.SetActive(false);
+        }
+
+        int c = 0;
+
+        for (int i = 0; i < trade.getItems.Length && c < infoCards.Length; i++)
+        {
+            infoCards[c].GetComponentInChildren<Image>().sprite = trade.getItems[i].sprite;
+            infoCards[c].GetComponentsInChildren<TMP_Text>()[0].text = trade.getItems[i].GetName();
+            infoCards[c].GetComponentsInChildren<TMP_Text>()[1].text = trade.getItems[i].GetDesc();
+            infoCards[c].SetActive(true);
+            c++;
+        }
+
+        for (int i = 0; i < trade.costItems.Length && c < infoCards.Length; i++)
+        {
+            infoCards[c].GetComponentInChildren<Image>().sprite = trade.costItems[i].sprite;
+            infoCards[c].GetComponentsInChildren<TMP_Text>()[0].text = trade.costItems[i].GetName();
+            infoCards[c].GetComponentsInChildren<TMP_Text>()[1].text = trade.costItems[i].GetDesc();
+            infoCards[c].SetActive(true);
+            c++;
+        }
+    }
+
+    #endregion
+
     public bool TryTrade(int tradeIndex)
     {
         if(tradeIndex > trades.Count || tradeIndex < 0)
@@ -174,12 +225,12 @@ public class TizoShop : MonoBehaviour
         TizoTrade trade = trades[tradeIndex];
         for (int i = 0; i < trade.costItems.Length; i++)
         {
-            if(!Player.instance.playerInventory.HasItemWithName(trade.costItems[i].GetName())) return false;
+            if(!Player.instance.playerInventory.HasItemWithName(trade.costItems[i].name)) return false;
         }
 
         for (int i = 0; i < trade.costItems.Length; i++)
         {
-            Player.instance.playerInventory.RemoveItemWithName(trade.costItems[i].GetName());
+            Player.instance.playerInventory.RemoveItemWithName(trade.costItems[i].name);
         }
 
         for (int i = 0; i < trade.getItems.Length; i++)
@@ -188,12 +239,14 @@ public class TizoShop : MonoBehaviour
             //TODO we need to check so that we can actually add all the items (so that we don't get too many)
         }
 
+        UpdateUi();
+
         return true;
     }
 
 
 
-    #endregion
+
 }
 
 [System.Serializable]

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TizoTradeModule : MonoBehaviour
+public class TizoTradeModule : MonoBehaviour, ISelectHandler
 {
     [SerializeField] Image[] costImages;
     [SerializeField] Image[] getImages;
@@ -50,5 +52,10 @@ public class TizoTradeModule : MonoBehaviour
             getImages[i].sprite = tizoTrade.getItems[i].sprite;
             getImages[i].gameObject.SetActive(true);
         }
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        tizoShop.UpdateInfoCards(tizoTrade);
     }
 }
