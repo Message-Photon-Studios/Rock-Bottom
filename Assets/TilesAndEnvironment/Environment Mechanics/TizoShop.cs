@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor.ShaderGraph.Serialization;
 
 public class TizoShop : MonoBehaviour
 {   
@@ -51,6 +52,7 @@ public class TizoShop : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
 
             UpdateInfoCards(trades[0]);
+            GameManager.instance.Pause();
         } else if (shopOpen && !openShop)
         {
             shopOpen = false;
@@ -58,6 +60,7 @@ public class TizoShop : MonoBehaviour
             canvas.SetActive(false);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            GameManager.instance.Resume();
         }
     }
 
@@ -100,7 +103,13 @@ public class TizoShop : MonoBehaviour
 
     TizoTrade CreateTrade(TizoTradeBlueprint blueprint, ItemRarity rarity)
     {
-        List<Item> acceptedCostItems = GetAcceptedCostItems(blueprint.costRarity.ToList(), blueprint.costCategory.ToList());
+        Item[] getItems = new Item[blueprint.getAmount];
+        for (int i = 0; i < blueprint.getAmount; i++)
+        {
+            getItems[i] = GetTradeItem(blueprint.getRarity[Random.Range(0, blueprint.getRarity.Length)], blueprint.getCategory);
+        }
+
+        List<Item> acceptedCostItems = GetAcceptedCostItems(blueprint.costRarity.ToList(), blueprint.costCategory.ToList(), getItems.ToList());
 
         Item[] costItems = new Item[blueprint.costAmount];
         for (int i = 0; i < blueprint.costAmount; i++)
@@ -109,21 +118,16 @@ public class TizoShop : MonoBehaviour
             if(costItems[i] == null) return null; 
         }
 
-        Item[] getItems = new Item[blueprint.getAmount];
-        for (int i = 0; i < blueprint.getAmount; i++)
-        {
-            getItems[i] = GetTradeItem(blueprint.getRarity[Random.Range(0, blueprint.getRarity.Length)], blueprint.getCategory);
-        }
-
         return new TizoTrade(rarity, costItems, getItems);
     }
 
-    List<Item> GetAcceptedCostItems(List<ItemRarity> rarity, List<ItemCategory>category)
+    List<Item> GetAcceptedCostItems(List<ItemRarity> rarity, List<ItemCategory>category, List<Item> excludeItems)
     {
         List<Item> acceptedCostItems = new List<Item>();
         for (int i = 0; i < availableCostItems.Count; i++)
         {
             if(acceptedCostItems.Contains(availableCostItems[i])) continue;
+            if(excludeItems.Contains(availableCostItems[i])) continue;
             if(!rarity.Contains(availableCostItems[i].itemRarity)) continue;
             if(!category.Contains(availableCostItems[i].itemCategory)) continue;
             acceptedCostItems.Add(availableCostItems[i]);
@@ -166,6 +170,16 @@ public class TizoShop : MonoBehaviour
             tizoTradeModules[m].gameObject.SetActive(true);
             m++;
         }
+        m--;
+
+        Navigation nav = tizoTradeModules[0].GetComponent<Selectable>().navigation;
+        Navigation nav2 = tizoTradeModules[m].GetComponent<Selectable>().navigation;
+        
+        nav.selectOnUp = tizoTradeModules[m].GetComponent<Selectable>();
+        nav2.selectOnDown = tizoTradeModules[0].GetComponent<Selectable>();
+
+        tizoTradeModules[0].GetComponent<Selectable>().navigation = nav;
+        tizoTradeModules[m].GetComponent<Selectable>().navigation = nav2;
     }
 
     void UpdateUi()
@@ -240,6 +254,32 @@ public class TizoShop : MonoBehaviour
         }
 
         UpdateUi();
+
+        FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
+
+        TizoTradeModule nextTrade = null;
+
+        for (int i = 1; i < tizoTradeModules.Length && i < trades.Count; i++)
+        {   
+            TizoTradeModule module = tizoTradeModules[(tradeIndex+i)%((trades.Count < tizoTradeModules.Length)?trades.Count:tizoTradeModules.Length)];
+            if(module.hasBought) continue;
+            nextTrade = module;
+            break;
+        }
+        
+        if(nextTrade) 
+        {
+            Navigation nav = tizoTradeModules[tradeIndex].GetComponent<Selectable>().navigation.selectOnUp.navigation;
+            nav.selectOnDown = nextTrade.GetComponent<Selectable>();
+            Navigation nav2 =  nextTrade.GetComponent<Selectable>().navigation;
+            nav2.selectOnUp = tizoTradeModules[tradeIndex].GetComponent<Selectable>().navigation.selectOnUp;
+
+            tizoTradeModules[tradeIndex].GetComponent<Selectable>().navigation.selectOnUp.navigation = nav;
+            nextTrade.GetComponent<Selectable>().navigation = nav2;
+
+            nextTrade.GetComponent<Selectable>().Select();
+        }
+        else ShopInteract(false);
 
         return true;
     }

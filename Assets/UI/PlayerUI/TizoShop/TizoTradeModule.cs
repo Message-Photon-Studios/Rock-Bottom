@@ -14,7 +14,7 @@ public class TizoTradeModule : MonoBehaviour, ISelectHandler
     int tradeIndex;
     TizoTrade tizoTrade;
     TizoShop tizoShop;
-    bool hasBought = false;
+    public bool hasBought {get; private set;} = false;
     public void TryTrade()
     {
         if(hasBought) return;
