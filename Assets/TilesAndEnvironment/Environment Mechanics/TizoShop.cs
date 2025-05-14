@@ -47,7 +47,13 @@ public class TizoShop : MonoBehaviour
             UpdateUi();
             canvas.SetActive(true);
             FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
-            tizoTradeModules[0].GetComponent<Selectable>().Select();
+
+            for (int i = 0; i < trades.Count && i < tizoTradeModules.Length; i++)
+            {
+                if(tizoTradeModules[i].hasBought) continue;
+                tizoTradeModules[i].GetComponent<Selectable>().Select();
+                break;
+            }
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
@@ -87,17 +93,20 @@ public class TizoShop : MonoBehaviour
     {
         for (int i = 0; i < commonTradeAmount; i++)
         {
-            trades.Add(CreateTrade(commonTradeBlueprints[Random.Range(0, commonTradeBlueprints.Length)], ItemRarity.Common));
+            TizoTrade trade = CreateTrade(commonTradeBlueprints[Random.Range(0, commonTradeBlueprints.Length)], ItemRarity.Common);
+            if(trade != null) trades.Add(trade);
         }
 
         for (int i = 0; i < rareTradeAmount; i++)
         {
-            trades.Add(CreateTrade(rareTradeBlueprints[Random.Range(0, rareTradeBlueprints.Length)], ItemRarity.Rare));
+            TizoTrade trade = CreateTrade(rareTradeBlueprints[Random.Range(0, rareTradeBlueprints.Length)], ItemRarity.Rare);
+            if(trade != null) trades.Add(trade);
         }
 
         for (int i = 0; i < mysticTradeAmount; i++)
         {
-            trades.Add(CreateTrade(mysticTradeBlueprints[Random.Range(0, mysticTradeBlueprints.Length)], ItemRarity.Mythic));
+            TizoTrade trade = CreateTrade(mysticTradeBlueprints[Random.Range(0, mysticTradeBlueprints.Length)], ItemRarity.Mythic);
+            if(trade != null) trades.Add(trade);
         }
     }
 
@@ -261,7 +270,9 @@ public class TizoShop : MonoBehaviour
 
         for (int i = 1; i < tizoTradeModules.Length && i < trades.Count; i++)
         {   
-            TizoTradeModule module = tizoTradeModules[(tradeIndex+i)%((trades.Count < tizoTradeModules.Length)?trades.Count:tizoTradeModules.Length)];
+            int indx = (tradeIndex+i)%((trades.Count < tizoTradeModules.Length)?trades.Count:tizoTradeModules.Length);
+            Debug.Log("Next trade index; tradeIndex = " + tradeIndex + ", i = " + i + ", tradeCount = " + trades.Count +  ", % = " + ((trades.Count < tizoTradeModules.Length)?trades.Count:tizoTradeModules.Length) + ", indx = " + indx);
+            TizoTradeModule module = tizoTradeModules[indx];
             if(module.hasBought) continue;
             nextTrade = module;
             break;
