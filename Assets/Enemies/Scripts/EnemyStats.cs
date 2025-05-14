@@ -13,14 +13,16 @@ using static UnityEngine.ParticleSystem;
 /// </summary>
 [RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class EnemyStats : MonoBehaviour
-{
+{   
+    [Header("Base Stats")]
     [SerializeField] int health; //The health of the enemy
     [SerializeField] GameColor color; //The colorMat of the enemy
     [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy'
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
-
     private Collider2D myCollider;
+
+    [Header("Enemy Settings")]
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
     [SerializeField] private GameObject comboParticles;
 
@@ -69,13 +71,16 @@ public class EnemyStats : MonoBehaviour
     private float redTimer = 0;
     private float redPower = 0;
 
+    [HideInInspector] public float damageScaling = 1f;
+
     [HideInInspector] public float spawnPower = 1f;
 
-    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, bool mustBurn, GameObject enemyParticles, int flames) burning;
+    private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, GameObject enemyParticles, int flames) burning;
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
     public UnityAction<float> onHealthChanged;
+    public UnityAction<float, float> onMaxHealthChanged;
     public UnityAction<float, Vector2> onDamageTaken;
     public UnityAction<GameColor> onColorChanged;
 
@@ -107,6 +112,7 @@ public class EnemyStats : MonoBehaviour
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         normalAnimationSpeed = animator.speed;
+        damageScaling = 1f;
     }
 
     void Start()
@@ -179,6 +185,13 @@ public class EnemyStats : MonoBehaviour
         mat.SetFloat("_takingDmg", 0);
     }
 
+    public void ScaleEnemy(float scaling)
+    {
+        health = (int)(health * scaling * Mathf.Pow(1.1f, GameManager.instance.rerunNum-1));
+        damageScaling = scaling * GameManager.instance.rerunNum;
+        onMaxHealthChanged?.Invoke(health, health);
+    }
+
     #endregion
 
     #region Update
@@ -249,7 +262,7 @@ public class EnemyStats : MonoBehaviour
 
             if(burning.damage > 0 && burning.timer > 0)
             {
-                if (burning.mustBurn || playerStats.corrosiveColor || GetColor() == null || !GetColor().name.Equals("Orange")) DamageEnemy(burning.damage);
+                DamageEnemy(burning.damage);
                 //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
                 //else DamageEnemy(0);
                 float timer = burning.timer;
@@ -275,7 +288,7 @@ public class EnemyStats : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, obj.transform.position);
                     if(dist < burning.range)
                     {
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer+2, burning.range, burning.particles, burning.floorParticles, false, burning.flames);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer+2, burning.range, burning.particles, burning.floorParticles, burning.flames);
                     }
                 }
             }
@@ -476,7 +489,7 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     /// <param name="range"></param>
     /// <param name="burnParticles"></param>
-    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles, bool mustBurn, int flames)
+    public void BurnDamage(int damage, float timer, float range, GameObject burnParticles, GameObject floorParticles, int flames)
     {
         if(timer <= 0) return;
         if(damage <= 0) return;
@@ -494,7 +507,7 @@ public class EnemyStats : MonoBehaviour
         main.duration = timer;
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
 
-        burning = (damage, timer, range, burnParticles, objs, floorParticles, mustBurn, instantiatedParticles, flames);
+        burning = (damage, timer, range, burnParticles, objs, floorParticles, instantiatedParticles, flames);
         // Set enemy as parent of the particle system
         instantiatedParticles.transform.parent = gameObject.transform;
 
@@ -515,7 +528,7 @@ public class EnemyStats : MonoBehaviour
     {
         if(burning.enemyParticles != null)
             burning.enemyParticles.GetComponent<ParticleSystem>().Stop();
-        burning = (0, 0, 0, null, null, null, false, null, 0);
+        burning = (0, 0, 0, null, null, null, null, 0);
     }
 
     #endregion
@@ -636,7 +649,7 @@ public class EnemyStats : MonoBehaviour
         float poisonFactor = 1f;
         if(isPoisoned())
             poisonFactor = (1f-poisonDamageReduction);
-        return spawnPower * poisonFactor;
+        return spawnPower * poisonFactor * damageScaling;
     }
 
     /// <summary>

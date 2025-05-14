@@ -95,13 +95,17 @@ public class PlayerStats : MonoBehaviour
     void OnEnable()
     {
         //TODO: Check so this doesnt cause a problem when changing scene.
+        colorArmour = new Dictionary<GameColor, float>();
+        itemVaribles = new Dictionary<string, int>();
+        colorInventory = GetComponent<ColorInventory>();
+    }
+
+    void Start()
+    {
         health += PermanentUpgradeManager.instance.upgrades.extraHealth;
         maxHealth = health;
         onMaxHealthChanged?.Invoke(maxHealth);
         onHealthChanged?.Invoke(health);
-        colorArmour = new Dictionary<GameColor, float>();
-        itemVaribles = new Dictionary<string, int>();
-        colorInventory = GetComponent<ColorInventory>();
     }
 
     #endregion
@@ -194,7 +198,7 @@ public class PlayerStats : MonoBehaviour
             if (damage > 0 && health > 0) onPlayerRealDamage?.Invoke(this, enemy);
             animator.SetTrigger("damaged");
         }
-        SetPlayerInvincible();
+        SetPlayerInvincibleHit();
         GetComponent<PlayerCombatSystem>().RemoveAttackRoot();
         GetComponent<PlayerCombatSystem>().RemovePlayerAirlock();
         if(health <= 0)
@@ -369,12 +373,23 @@ public class PlayerStats : MonoBehaviour
         invincibilityBonus += time;
     }
 
+    public void SetPlayerInvincibleHit()
+    {
+        SetPlayerInvincible(hitInvincibilityTime + invincibilityBonus);
+    }
+
+    public void SetPlayerInvincible(float time)
+    {
+        SetPlayerInvincible();
+        invincibilityTimer = time;
+    }
+
     public void SetPlayerInvincible()
     {
+        invincibilityTimer = 10f;
         //Physics2D.IgnoreLayerCollision(3,6);
         //Physics2D.IgnoreLayerCollision(3,13);
         Physics2D.IgnoreLayerCollision(3,2);
-        invincibilityTimer = hitInvincibilityTime + invincibilityBonus;
     }
 
     public void RemovePlayerInvincible()
@@ -425,7 +440,7 @@ public class PlayerStats : MonoBehaviour
         if(color == null) return 0;
         float armour = defaultArmour;
         if (colorArmour.ContainsKey(color)) armour += colorArmour[color];
-        if (color != null && colorInventory.CheckIfActiveColorMatches(color)) armour += adaptiveArmourBonus;
+        //if (color != null && colorInventory.CheckIfActiveColorMatches(color)) armour += adaptiveArmourBonus;
         if (armour > .9f)
         {
             return .9f;

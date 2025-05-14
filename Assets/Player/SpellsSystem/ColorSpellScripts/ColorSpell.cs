@@ -27,6 +27,7 @@ public class ColorSpell : MonoBehaviour
     [SerializeField] public bool staggeredSpell;
 
     [SerializeField] public int storedSpells = 1;
+    [SerializeField] public int colorCost = 1;
 
     [SerializeField] public int maxSpawn = 0;
 
@@ -37,7 +38,7 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// The projectile will be destroyed on impact with any object
     /// </summary>
-    [SerializeField] protected bool destroyOnAllImpact;
+    [SerializeField] public bool destroyOnAllImpact;
 
     /// <summary>
     /// The projectile will be destroyed on impact with the enemy
@@ -54,7 +55,7 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// If true this spell will detect non-enemies as a hit
     /// </summary>
-    [SerializeField] protected bool impactOnNonEnemies = true;
+    [SerializeField] public bool impactOnNonEnemies = true;
     /// <summary>
     /// If true the spell will only trigger once.
     /// </summary>

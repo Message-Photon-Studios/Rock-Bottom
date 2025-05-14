@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 170
+  health: 160
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
   colorAmmount: 6
   movementSpeed: 260
@@ -72,6 +72,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1459781731267820079}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1462253517624165458
 MonoBehaviour:
@@ -105,14 +106,15 @@ MonoBehaviour:
     width: 360
     offset: {x: 0, y: 0}
     color: {r: 0.048508644, g: 1, b: 0, a: 1}
-  runSpeed: 25
-  jumpForce: 6200
-  checkJumpHight: 3
-  forwardJumpForce: 5200
-  smallJumpForce: 3100
-  smallJumpForward: 2600
+  runSpeed: 22
+  jumpForce: 4000
+  checkJumpHight: 2.5
+  forwardJumpForce: 3000
+  smallJumpForce: 2000
+  smallJumpForward: 1500
   jumpIdleTime: 2
   patrollIdleTime: 2
+  aggroResetTime: 8
 --- !u!50 &1462253517624165469
 Rigidbody2D:
   serializedVersion: 4
@@ -125,10 +127,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
-  m_LinearDrag: 9
+  m_Mass: 1.5
+  m_LinearDrag: 12
   m_AngularDrag: 0.05
-  m_GravityScale: 15
+  m_GravityScale: 12
   m_Material: {fileID: 6200000, guid: b51b88b2aa1c7ce40a636c7c8484d4b9, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -236,13 +238,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1462253517624165465}
   walking: {fileID: 8851556917730230723}
+  walkingClips: []
   running: {fileID: 9041218918626121659}
   sleeping: {fileID: 8672855871944611553}
   dying: {fileID: 6927308123192941519}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 6430004292199458401}
-  onHit: {fileID: 8242296664242106116}
   spellHit: {fileID: 7019150471828850785}
+  attack: {fileID: 0}
 --- !u!114 &7351179844019891637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,11 +483,6 @@ AudioSource:
 --- !u!82 &7019150471828850785 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 8817919213562152393, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
-  m_PrefabInstance: {fileID: 1960898605345213864}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &8242296664242106116 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 7589699801455829676, guid: abb0c708f99c36d4396a51e824c4408d, type: 3}
   m_PrefabInstance: {fileID: 1960898605345213864}
   m_PrefabAsset: {fileID: 0}
 --- !u!82 &8672855871944611553 stripped

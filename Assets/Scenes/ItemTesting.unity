@@ -2785,7 +2785,7 @@ PrefabInstance:
     - target: {fileID: -3310821586388306937, guid: 9d0cc49d1b89c0a49817f3844b358676, type: 3}
       propertyPath: colorSpell
       value: 
-      objectReference: {fileID: -7692674297862362138, guid: 9248b96bff3de5c45a5c96f86432a0f2, type: 3}
+      objectReference: {fileID: -7692674297862362138, guid: ceb57f664518fbb4fabf4671a87205da, type: 3}
     - target: {fileID: 1114419157917583853, guid: 9d0cc49d1b89c0a49817f3844b358676, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -3069,6 +3069,8 @@ MonoBehaviour:
   clearInventoryOnLevelEnd: 0
   allowTips: 1
   isCaveTownLevel: 0
+  rerunStart: 0
+  increaseLevelNum: 1
   wellSpawnAmount: 2
   spawnableColors: []
   sameColorRerolls: 1
@@ -3104,6 +3106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057fd27788c34f44a93ceef2d2e77b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyScaling: 0.1
   spawnableColors:
   - {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
   - {fileID: 11400000, guid: a43a3607f70897249a36fdff7162cc2a, type: 2}
@@ -3122,6 +3125,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPop: 0
   stageCostMultiplier: 1
+  cratePop: 0
+  healthItem: {fileID: 0}
+  healthItemAmount: 0
   petrifiedPigmentDrops: 2
   levelSpells:
   - {fileID: -7692674297862362138, guid: e115a84ea227d044590791de70291cf4, type: 3}
@@ -4247,7 +4253,7 @@ PrefabInstance:
     - target: {fileID: -3310821586388306937, guid: 9d0cc49d1b89c0a49817f3844b358676, type: 3}
       propertyPath: colorSpell
       value: 
-      objectReference: {fileID: -7692674297862362138, guid: 9248b96bff3de5c45a5c96f86432a0f2, type: 3}
+      objectReference: {fileID: -7692674297862362138, guid: cf6b3a2cfc7faec41933d2267b226a61, type: 3}
     - target: {fileID: 1114419157917583853, guid: 9d0cc49d1b89c0a49817f3844b358676, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -7299,7 +7305,7 @@ PrefabInstance:
     - target: {fileID: -3310821586388306937, guid: 9d0cc49d1b89c0a49817f3844b358676, type: 3}
       propertyPath: colorSpell
       value: 
-      objectReference: {fileID: -7692674297862362138, guid: 9248b96bff3de5c45a5c96f86432a0f2, type: 3}
+      objectReference: {fileID: -7692674297862362138, guid: ecda5f5278ae77a4ba9dc72760ae1362, type: 3}
     - target: {fileID: 1114419157917583853, guid: 9d0cc49d1b89c0a49817f3844b358676, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -9952,94 +9958,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 344458253456349855, guid: 48ad1e78325be764689b793671ec15b1, type: 3}
   m_PrefabInstance: {fileID: 2108279142}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &163596443735203565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7813915537406405908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fb699c52d2704445b3b9c577e844aee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  repeatable: 0
-  roomRegionColor: 1
-  allowGreenClosingRooms: 1
-  roomNodes:
-    m_keys:
-    - {x: 0, y: 0}
-    - {x: 1, y: 0}
-    - {x: 2, y: 0}
-    - {x: 0, y: -1}
-    - {x: 1, y: -1}
-    - {x: 2, y: -1}
-    - {x: 0, y: 1}
-    - {x: 1, y: 1}
-    - {x: 2, y: 1}
-    - {x: 1, y: 2}
-    - {x: 1, y: 3}
-    - {x: 1, y: 4}
-    - {x: 3, y: -1}
-    - {x: 4, y: -1}
-    - {x: 5, y: -1}
-    - {x: 5, y: 0}
-    - {x: 4, y: 0}
-    - {x: 6, y: 0}
-    - {x: 7, y: 0}
-    - {x: 7, y: 1}
-    - {x: 7, y: 2}
-    - {x: 6, y: 2}
-    - {x: 5, y: 2}
-    - {x: 5, y: 3}
-    - {x: 6, y: 3}
-    - {x: 7, y: 3}
-    - {x: 7, y: 4}
-    - {x: 6, y: 4}
-    - {x: 5, y: 4}
-    - {x: 1, y: 5}
-    - {x: 1, y: 6}
-    - {x: 1, y: 7}
-    m_values:
-    - doors: 00010101
-    - doors: 01010101
-    - doors: 01010001
-    - doors: 00000101
-    - doors: 01000101
-    - doors: 01000101
-    - doors: 00010100
-    - doors: 01010101
-    - doors: 01010000
-    - doors: 00010001
-    - doors: 00010001
-    - doors: 00010001
-    - doors: 01000100
-    - doors: 01000101
-    - doors: 01000001
-    - doors: 01010100
-    - doors: 00010100
-    - doors: 01000100
-    - doors: 01000001
-    - doors: 00010001
-    - doors: 01010001
-    - doors: 01000100
-    - doors: 00000101
-    - doors: 00010100
-    - doors: 01000100
-    - doors: 01010001
-    - doors: 01010000
-    - doors: 01000100
-    - doors: 00000100
-    - doors: 00010001
-    - doors: 00010001
-    - doors: 00010000
-  displayMode: 0
-  maxSpawns: -1
-  spawnCount: 0
-  selectedNode: {x: 1, y: 1}
-  isClosingRoom: 0
-  roomVariants: []
 --- !u!1 &457648504687148969
 GameObject:
   m_ObjectHideFlags: 0
@@ -367695,7 +367613,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2967420108176226118}
-  - component: {fileID: 163596443735203565}
   m_Layer: 0
   m_Name: Room
   m_TagString: Untagged

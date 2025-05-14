@@ -278,7 +278,7 @@ public class ColorSlotsController_Stuck : MonoBehaviour
         {
             var cap = slotList[i].GetChild(0).GetChild(1).GetComponent<Image>();
             var charge = slotList[i].GetChild(2).GetChild(0).GetComponent<Image>();
-            if (colorSlots[i].charge != colorSlots[i].maxCapacity)
+            if (!colorInventory.IsSlotFull(colorSlots[i]))
             {
                 if (bottleFull[i])
                     bottleFull[i] = false;
