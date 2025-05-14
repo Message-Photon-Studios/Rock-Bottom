@@ -205,6 +205,11 @@ public class TizoShop : MonoBehaviour
             inventoryItemImages[i].sprite = inventoryItems[i].sprite;
             inventoryItemImages[i].gameObject.SetActive(true);
         }
+
+        for (int i = 0; i < trades.Count && i < tizoTradeModules.Length; i++)
+        {
+            tizoTradeModules[i].UpdateUi();
+        }
     }
 
     public void UpdateInfoCards(TizoTrade trade)
@@ -271,7 +276,6 @@ public class TizoShop : MonoBehaviour
         for (int i = 1; i < tizoTradeModules.Length && i < trades.Count; i++)
         {   
             int indx = (tradeIndex+i)%((trades.Count < tizoTradeModules.Length)?trades.Count:tizoTradeModules.Length);
-            Debug.Log("Next trade index; tradeIndex = " + tradeIndex + ", i = " + i + ", tradeCount = " + trades.Count +  ", % = " + ((trades.Count < tizoTradeModules.Length)?trades.Count:tizoTradeModules.Length) + ", indx = " + indx);
             TizoTradeModule module = tizoTradeModules[indx];
             if(module.hasBought) continue;
             nextTrade = module;
