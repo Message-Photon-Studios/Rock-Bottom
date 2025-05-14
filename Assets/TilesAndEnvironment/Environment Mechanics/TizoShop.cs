@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
 using UnityEditor.ShaderGraph.Serialization;
+using UnityEngine.InputSystem;
 
 public class TizoShop : MonoBehaviour
 {   
@@ -52,6 +53,7 @@ public class TizoShop : MonoBehaviour
             {
                 if(tizoTradeModules[i].hasBought) continue;
                 tizoTradeModules[i].GetComponent<Selectable>().Select();
+                Mouse.current.WarpCursorPosition(tizoTradeModules[i].transform.position);
                 break;
             }
             Cursor.visible = true;
