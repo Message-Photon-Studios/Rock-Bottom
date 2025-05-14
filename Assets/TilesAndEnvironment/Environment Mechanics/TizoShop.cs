@@ -49,17 +49,22 @@ public class TizoShop : MonoBehaviour
             canvas.SetActive(true);
             FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
 
+            foreach (GameObject infoCard in infoCards)
+            {
+                infoCard.SetActive(false);
+            }
+
             for (int i = 0; i < trades.Count && i < tizoTradeModules.Length; i++)
             {
                 if(tizoTradeModules[i].hasBought) continue;
                 tizoTradeModules[i].GetComponent<Selectable>().Select();
+                UpdateInfoCards(trades[i]);
                 Mouse.current.WarpCursorPosition(tizoTradeModules[i].transform.position);
                 break;
             }
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
-            UpdateInfoCards(trades[0]);
             GameManager.instance.Pause();
         } else if (shopOpen && !openShop)
         {
@@ -172,6 +177,8 @@ public class TizoShop : MonoBehaviour
             module.gameObject.SetActive(false);
         }
 
+        if(trades.Count <= 0) return;
+
         int m = 0;
         for (int i = 0; i < trades.Count; i++)
         {
@@ -182,7 +189,7 @@ public class TizoShop : MonoBehaviour
             m++;
         }
         m--;
-
+        
         Navigation nav = tizoTradeModules[0].GetComponent<Selectable>().navigation;
         Navigation nav2 = tizoTradeModules[m].GetComponent<Selectable>().navigation;
         

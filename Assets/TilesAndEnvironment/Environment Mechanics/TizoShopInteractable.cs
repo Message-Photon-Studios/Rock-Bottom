@@ -10,15 +10,19 @@ public class TizoShopInteractable : InteractionObject
     [SerializeField] LocalizedString desc;
     [SerializeField] PickUpCanvasController pickUpCanvas;
     [SerializeField] TizoShop tizoShop;
+    [SerializeField] GameObject mapIcon;
+
+    protected override void Start()
+    {
+        base.Start();
+        mapIcon.SetActive(true);
+    }
     protected override void PlayerClose(bool isClose)
     {
         base.PlayerClose(isClose);
 
-        /*
         if(isClose) pickUpCanvas.SetCollect(title.GetLocalizedString(), desc.GetLocalizedString());
         else pickUpCanvas.CloseUi();
-        */
-
         if(!isClose) tizoShop.ShopInteract(false);
     }
 
