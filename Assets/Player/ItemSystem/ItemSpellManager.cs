@@ -21,16 +21,19 @@ public class ItemSpellManager : MonoBehaviour
 
     private Dictionary<Type, List<ItemEffect>> itemEffectsInLevel = new Dictionary<Type, List<ItemEffect>>();
 
+    private Dictionary<Item, int> itemsInLevel = new Dictionary<Item, int>();
+
     private List<PetrifiedPigmentPickup> petrifiedPigments = new List<PetrifiedPigmentPickup>(0);
 
     void Awake()
     {
-        if(instance != null)
+        if (instance != null)
         {
             Debug.LogError("Two ItemSpellManagers exist in this scene!!!");
         }
         instance = this;
         itemEffectsInLevel = new Dictionary<Type, List<ItemEffect>>();
+        itemsInLevel = new Dictionary<Item, int>();
     }
 
     /// <summary>
@@ -49,22 +52,26 @@ public class ItemSpellManager : MonoBehaviour
         return new List<T>();
     }
 
-    public void AddSpawnedEffects(Item item)
+    public void AddSpawnedItem(Item item)
     {
         List<ItemEffect> effects = item.effects;
 
         foreach (ItemEffect effect in effects)
         {
-            if(itemEffectsInLevel.ContainsKey(effect.GetType()))
+            if (itemEffectsInLevel.ContainsKey(effect.GetType()))
             {
                 itemEffectsInLevel[effect.GetType()].Add(effect);
-            } else
+            }
+            else
             {
                 List<ItemEffect> newList = new List<ItemEffect>();
                 newList.Add(effect);
                 itemEffectsInLevel.Add(effect.GetType(), newList);
             }
         }
+
+        if (itemsInLevel.ContainsKey(item)) itemsInLevel[item]++;
+        else itemsInLevel.Add(item, 1);
     }
 
     public void SpawnItems()
@@ -220,6 +227,17 @@ public class ItemSpellManager : MonoBehaviour
         {
             tizoShop.LevelLoaded();
         }
+    }
+
+    /// <summary>
+    /// Returns how many of an item that is spawned in the level so far.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public int GetItemsSpawned(Item item)
+    {
+        if (!itemsInLevel.ContainsKey(item)) return 0;
+        return itemsInLevel[item];
     }
 
     public void AddPetrifiedPigment(PetrifiedPigmentPickup petrifiedPigmentPickup)

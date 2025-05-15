@@ -92,7 +92,7 @@ public class ItemPickup : InteractionObject
             setItem = ItemSpellManager.instance.healthItem;
         }
 
-        ItemSpellManager.instance.AddSpawnedEffects(setItem);
+        ItemSpellManager.instance.AddSpawnedItem(setItem);
 
         this.item = setItem;
         this.itemCost = Mathf.RoundToInt(itemCost*ItemSpellManager.instance.stageCostMultiplier*GameManager.instance.rerunNum);

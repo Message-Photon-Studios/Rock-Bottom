@@ -32,7 +32,6 @@ public class TizoShop : MonoBehaviour
 
     List<Item> availableCostItems = new List<Item>();
 
-
     bool shopOpen = false;
 
     #region Setup
@@ -102,8 +101,6 @@ public class TizoShop : MonoBehaviour
         {
             if(itemPickup.enableTizoTrade && itemPickup.GetItem() != null) availableCostItems.Add(itemPickup.GetItem()); 
         }
-
-        //TODO add so that the trades can be from items found in level as well
     }
 
     void SetTrades()
@@ -145,6 +142,11 @@ public class TizoShop : MonoBehaviour
             if(costItems[i] == null) return null; 
         }
 
+        for (int i = 0; i < getItems.Length; i++)
+        {
+            ItemSpellManager.instance.AddSpawnedItem(getItems[i]);
+        }
+        
         return new TizoTrade(rarity, costItems, getItems);
     }
 
