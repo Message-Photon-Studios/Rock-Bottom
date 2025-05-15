@@ -5,8 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 
 public class TizoShop : MonoBehaviour
 {   
@@ -15,6 +15,8 @@ public class TizoShop : MonoBehaviour
     [SerializeField] TizoTradeModule[] tizoTradeModules;
     [SerializeField] Image[] inventoryItemImages;
     [SerializeField] GameObject[] infoCards;
+    [SerializeField] GameObject infoSeparator;
+    [SerializeField] LocalizedString missingString;
 
     [Header("Shop Settings")]
     [SerializeField] int commonTradeAmount = 5;
@@ -131,6 +133,7 @@ public class TizoShop : MonoBehaviour
         for (int i = 0; i < blueprint.getAmount; i++)
         {
             getItems[i] = GetTradeItem(blueprint.getRarity[Random.Range(0, blueprint.getRarity.Length)], blueprint.getCategory);
+            if (getItems[i] == null) return null;
         }
 
         List<Item> acceptedCostItems = GetAcceptedCostItems(blueprint.costRarity.ToList(), blueprint.costCategory.ToList(), getItems.ToList());
@@ -243,15 +246,27 @@ public class TizoShop : MonoBehaviour
             infoCards[c].GetComponentInChildren<Image>().sprite = trade.getItems[i].sprite;
             infoCards[c].GetComponentsInChildren<TMP_Text>()[0].text = trade.getItems[i].GetName();
             infoCards[c].GetComponentsInChildren<TMP_Text>()[1].text = trade.getItems[i].GetDesc();
+            infoCards[c].GetComponentsInChildren<TMP_Text>()[0].color = Color.white;
             infoCards[c].SetActive(true);
             c++;
         }
+
+        infoSeparator.transform.SetSiblingIndex(trade.getItems.Length+1);
 
         for (int i = 0; i < trade.costItems.Length && c < infoCards.Length; i++)
         {
             infoCards[c].GetComponentInChildren<Image>().sprite = trade.costItems[i].sprite;
             infoCards[c].GetComponentsInChildren<TMP_Text>()[0].text = trade.costItems[i].GetName();
             infoCards[c].GetComponentsInChildren<TMP_Text>()[1].text = trade.costItems[i].GetDesc();
+            if (!Player.instance.playerInventory.HasItemWithName(trade.costItems[i].name))
+            {
+                infoCards[c].GetComponentsInChildren<TMP_Text>()[0].text += " " + missingString.GetLocalizedString();
+                infoCards[c].GetComponentsInChildren<TMP_Text>()[0].color = Color.red;
+            }
+            else
+            {
+                infoCards[c].GetComponentsInChildren<TMP_Text>()[0].color = Color.white;
+            }
             infoCards[c].SetActive(true);
             c++;
         }
