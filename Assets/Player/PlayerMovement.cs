@@ -351,6 +351,8 @@ public class PlayerMovement : MonoBehaviour
     public bool IsGrappeling()
     {
         if(walkDir != lookDir && walkDir != 0) return false;
+        if (playerStats.isDead) return false;
+        if (Player.instance.verticalMoveDir < 0f) return false;
 
         RaycastHit2D startHitR =  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 2.1f, GameManager.instance.maskLibrary.onlyGround);
         RaycastHit2D startHitL = Physics2D.Raycast(transform.position+Vector3.left* playerCollider.size.x/2, Vector2.down, 2.1f, GameManager.instance.maskLibrary.onlyGround);
@@ -373,7 +375,9 @@ public class PlayerMovement : MonoBehaviour
     {
 
         if(Player.instance.verticalMoveDir <= 0 && walkDir != lookDir && !stairLeap) return false;
-        if(HitCeling()) return false;
+        if (playerStats.isDead) return false;
+        if (Player.instance.verticalMoveDir < 0f) return false;
+        if (HitCeling()) return false;
         if(Physics2D.Raycast(transform.position + Vector3.down * playerCollider.size.y/2, Vector3.down, 2.1f, GameManager.instance.maskLibrary.onlyGround) || IsOnSolidGround()) return false;
         return  (Physics2D.Raycast((Vector2)transform.position+Vector2.down* (playerCollider.size.y/2+.02f) + playerCollider.offset, Vector2.right, .5f, GameManager.instance.maskLibrary.onlySolidGround()) && 
                 !Physics2D.Raycast(transform.position, Vector2.right, .5f, GameManager.instance.maskLibrary.onlySolidGround()) && walkDir != -1) ||
