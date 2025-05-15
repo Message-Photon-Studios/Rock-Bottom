@@ -187,7 +187,7 @@ public class EnemyStats : MonoBehaviour
 
     public void ScaleEnemy(float scaling)
     {
-        health = (int)(health * scaling * Mathf.Pow(1.1f, GameManager.instance.rerunNum-1));
+        health = (int)(health * scaling * Mathf.Pow(1.3f, GameManager.instance.rerunNum-1));
         damageScaling = scaling * GameManager.instance.rerunNum;
         onMaxHealthChanged?.Invoke(health, health);
     }
