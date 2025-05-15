@@ -82,7 +82,10 @@ public class TizoShop : MonoBehaviour
         shopOpen = false;
         canvas.SetActive(false);
         trades = new List<TizoTrade>();
-
+    }
+    
+    public void LevelLoaded()
+    {
         SetAvailableCostItems();
         SetTrades();
         SetupUi();
@@ -92,6 +95,11 @@ public class TizoShop : MonoBehaviour
     {
         availableCostItems = new List<Item>();
         availableCostItems.AddRange(Player.instance.playerInventory.getItems());
+
+        foreach (ItemPickup itemPickup in FindObjectsOfType<ItemPickup>())
+        {
+            if(itemPickup.enableTizoTrade && itemPickup.GetItem() != null) availableCostItems.Add(itemPickup.GetItem()); 
+        }
 
         //TODO add so that the trades can be from items found in level as well
     }

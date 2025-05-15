@@ -21,6 +21,8 @@ public class ItemPickup : InteractionObject
     [SerializeField] Item item;
     [SerializeField] EnemyStats spawnFromEnemy;
 
+    [SerializeField] public bool enableTizoTrade = true;
+
     [Header("Functional")]
     [SerializeField] PickUpCanvasController pickUpController;
     [SerializeField] SpriteRenderer spriteRenderer;

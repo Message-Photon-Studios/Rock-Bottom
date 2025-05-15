@@ -214,6 +214,12 @@ public class ItemSpellManager : MonoBehaviour
             lowChanceCrate.RemoveAt(r);
             cratePop--;
         }
+
+        
+        foreach (TizoShop tizoShop in FindObjectsOfType<TizoShop>())
+        {
+            tizoShop.LevelLoaded();
+        }
     }
 
     public void AddPetrifiedPigment(PetrifiedPigmentPickup petrifiedPigmentPickup)
