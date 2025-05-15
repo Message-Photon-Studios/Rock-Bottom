@@ -12,6 +12,7 @@ public class ColorSpellImpact : SpellImpact
     /// </summary>
     [SerializeField] protected bool forcePerspectivePlayer;
     [SerializeField] protected bool triggerImpactSpells;
+    [SerializeField] bool requiresEnemyLOS = true;
     [SerializeField] public ParticleSystem onImpactParticles;
 
     static public UnityAction onSpellImpact;
@@ -20,19 +21,22 @@ public class ColorSpellImpact : SpellImpact
     {
         if(other.CompareTag("Enemy"))
         {
-            float collisionCheckDeadZone = .75f;
-            if(Vector2.Distance(other.transform.position, transform.position) > collisionCheckDeadZone)
+            if (requiresEnemyLOS)
             {
-                Vector2 spellPos = transform.position;
-                Vector2 enemyPos = other.transform.position;
-                Vector2 rayCastOrigin = spellPos + ((enemyPos-spellPos).normalized *collisionCheckDeadZone);
-                Vector2 rayCastDirection = enemyPos-rayCastOrigin;
-                float rayCastDistance = Vector2.Distance(enemyPos,rayCastOrigin);
-
-                RaycastHit2D test = Physics2D.Raycast(rayCastOrigin, rayCastDirection, rayCastDistance, GameManager.instance.maskLibrary.onlyGround);
-                if(test.collider != null) 
+                float collisionCheckDeadZone = .75f;
+                if (Vector2.Distance(other.transform.position, transform.position) > collisionCheckDeadZone)
                 {
-                    return;
+                    Vector2 spellPos = transform.position;
+                    Vector2 enemyPos = other.transform.position;
+                    Vector2 rayCastOrigin = spellPos + ((enemyPos - spellPos).normalized * collisionCheckDeadZone);
+                    Vector2 rayCastDirection = enemyPos - rayCastOrigin;
+                    float rayCastDistance = Vector2.Distance(enemyPos, rayCastOrigin);
+
+                    RaycastHit2D test = Physics2D.Raycast(rayCastOrigin, rayCastDirection, rayCastDistance, GameManager.instance.maskLibrary.onlyGround);
+                    if (test.collider != null)
+                    {
+                        return;
+                    }
                 }
             }
 
