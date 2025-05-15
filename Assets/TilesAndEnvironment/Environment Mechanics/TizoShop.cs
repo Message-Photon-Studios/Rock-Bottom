@@ -24,6 +24,7 @@ public class TizoShop : MonoBehaviour
     [SerializeField] int mysticTradeAmount = 1;
 
     [Header("Trade Blueprints")]
+    [SerializeField] TizoTradeBlueprint[] guaranteedBlueprints;
     [SerializeField] TizoTradeBlueprint[] commonTradeBlueprints;
     [SerializeField] TizoTradeBlueprint[] rareTradeBlueprints;
     [SerializeField] TizoTradeBlueprint[] mysticTradeBlueprints;
@@ -105,10 +106,15 @@ public class TizoShop : MonoBehaviour
 
     void SetTrades()
     {
+        for (int i = 0; i < guaranteedBlueprints.Length; i++)
+        {
+            TizoTrade trade = CreateTrade(guaranteedBlueprints[i], ItemRarity.Common);
+            if (trade != null) trades.Add(trade);
+        }
         for (int i = 0; i < commonTradeAmount; i++)
         {
             TizoTrade trade = CreateTrade(commonTradeBlueprints[Random.Range(0, commonTradeBlueprints.Length)], ItemRarity.Common);
-            if(trade != null) trades.Add(trade);
+            if (trade != null) trades.Add(trade);
         }
 
         for (int i = 0; i < rareTradeAmount; i++)
@@ -126,8 +132,11 @@ public class TizoShop : MonoBehaviour
 
     TizoTrade CreateTrade(TizoTradeBlueprint blueprint, ItemRarity rarity)
     {
-        Item[] getItems = new Item[blueprint.getAmount];
-        for (int i = 0; i < blueprint.getAmount; i++)
+        Item[] getItems = new Item[blueprint.getAmount + blueprint.guaranteedItems.Length];
+
+        blueprint.guaranteedItems.CopyTo(getItems, 0);
+
+        for (int i = blueprint.guaranteedItems.Length; i < getItems.Length; i++)
         {
             getItems[i] = GetTradeItem(blueprint.getRarity[Random.Range(0, blueprint.getRarity.Length)], blueprint.getCategory);
             if (getItems[i] == null) return null;
@@ -332,10 +341,6 @@ public class TizoShop : MonoBehaviour
 
         return true;
     }
-
-
-
-
 }
 
 [System.Serializable]
@@ -345,8 +350,9 @@ class TizoTradeBlueprint
     public ItemCategory[] costCategory;
     public int costAmount;
     public ItemRarity[] getRarity;
-    public ItemCategory[] getCategory; 
+    public ItemCategory[] getCategory;
     public int getAmount;
+    public Item[] guaranteedItems;
 }
 
 public class TizoTrade
