@@ -49,9 +49,9 @@ public class CameraMovement : MonoBehaviour
         if (Math.Floor(ratio) > 0)
             ratio /= Math.Floor(ratio);
         ratio *= 100;
-        
-        var pixelPerfectCamera = GetComponent<PixelPerfectCamera>();
-        pixelPerfectCamera.assetsPPU = (int)Math.Floor(ratio);
+
+        //var pixelPerfectCamera = GetComponent<PixelPerfectCamera>();
+        //pixelPerfectCamera.assetsPPU = (int)Math.Floor(ratio);
         vignette = GetComponentInChildren<Volume>().profile.components[1] as Vignette;
         setIntenseVingette(false);
     }
@@ -67,13 +67,14 @@ public class CameraMovement : MonoBehaviour
         focusPoint.GetComponent<CameraFocus>().SetStartLevel();
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
 
         Vector3 movePos = transform.position;
         Vector3 moveVerticalPos = transform.position;
-        moveVerticalPos = Vector3.Slerp(transform.position, focusPoint.position, ((focusPoint.position.y > transform.position.y)? verticalSpeedUp:verticalSpeedDown)*Time.fixedDeltaTime);
-        movePos = Vector3.Slerp(transform.position, focusPoint.position, speed*Time.fixedDeltaTime);
-            
+        moveVerticalPos = Vector3.Slerp(transform.position, focusPoint.position, ((focusPoint.position.y > transform.position.y) ? verticalSpeedUp : verticalSpeedDown) * Time.fixedDeltaTime);
+        movePos = Vector3.Slerp(transform.position, focusPoint.position, speed * Time.fixedDeltaTime);
+
 
         transform.position = new Vector3(movePos.x, moveVerticalPos.y, transform.position.z);
 
@@ -92,7 +93,7 @@ public class CameraMovement : MonoBehaviour
         {
             timer += Time.fixedDeltaTime;
             vignette.smoothness.value = vignetteCritSmoothness + beatCurve.Evaluate(timer) * 0.2f;
-            if (timer >= 1) 
+            if (timer >= 1)
                 timer = 0;
         }
     }
@@ -123,5 +124,30 @@ public class CameraMovement : MonoBehaviour
     public void TeleportCamarera(Vector2 toPosition)
     {
         transform.position = new Vector3(toPosition.x, toPosition.y, transform.position.z);
+    }
+
+    public void ZoomCamera(float zoomScale)
+    {
+        Camera camera = GetComponent<Camera>();
+        camera.orthographicSize /= zoomScale;
+    }
+
+    public void ZoomCamera(float zoomScale, float timeDuration)
+    {
+        StartCoroutine(SlowZoom(zoomScale, timeDuration));
+    }
+
+    IEnumerator SlowZoom(float zoomScale, float timeDuration)
+    {
+        Camera camera = GetComponent<Camera>();
+        float zoomDestination = camera.orthographicSize / zoomScale;
+        float zoomDistance = zoomDestination - camera.orthographicSize;
+        float zoomTimer = 0f;
+        while (zoomTimer < timeDuration)
+        {
+            camera.orthographicSize += zoomDistance * Time.deltaTime / timeDuration;
+            zoomTimer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
     }
 }

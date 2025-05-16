@@ -1,5 +1,53 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2153182503270999306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2207394218939396614}
+  - component: {fileID: 6589872853437216163}
+  m_Layer: 12
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2207394218939396614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2153182503270999306}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3321278458073070405}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &6589872853437216163
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2153182503270999306}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.3
 --- !u!1 &3321278458073070463
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,6 +88,7 @@ Transform:
   m_Children:
   - {fileID: 2645241902878360685}
   - {fileID: 9083258191953051966}
+  - {fileID: 2207394218939396614}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -58,7 +107,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: -0.75
+  m_GravityScale: -0.15
   m_Material: {fileID: 6200000, guid: 67851d4e98be7524d9c3dbb30fde3346, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -92,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1dd204a55e67044e8c4b75a10622fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnForce: {x: 100, y: -50}
+  spawnForce: {x: 300, y: -50}
 --- !u!114 &3321278458073070407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 0
   triggerImpactSpells: 1
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -211,18 +261,20 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   spellCost: 20
-  powerScale: 0.75
-  coolDown: 2
+  powerScale: 0.4
+  coolDown: 3
   castWhenDamaged: 0
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 1
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0
-  destroyOnAllImpact: 1
-  destroyOnEnemyHit: 1
+  destroyOnAllImpact: 0
+  destroyOnEnemyHit: 0
   destroyOnCollission: 0
   impactOnEnemies: 1
   impactOnNonEnemies: 0
@@ -256,7 +308,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -293,8 +345,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnOneInstantly: 0
-  spawnDelay: 0.1
-  spawnAmount: 3
+  spawnDelay: 0.3
+  spawnAmount: 4
   spawnPrefabs:
   - {fileID: 3321278458073070463, guid: 4d46b3332c0e72b43814b9b141ecca3c, type: 3}
 --- !u!1001 &3068050921329342166
