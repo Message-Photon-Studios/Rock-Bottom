@@ -243,7 +243,7 @@ public class ColorSpell : MonoBehaviour
     {
         if (destroyOnCollission)
         {
-            Impact(other.collider, GetComponent<Collider2D>().ClosestPoint(other.transform.position));
+            Impact(other.collider, other.GetContact(0).point);
             Destroy(gameObject);
             return;
         }
