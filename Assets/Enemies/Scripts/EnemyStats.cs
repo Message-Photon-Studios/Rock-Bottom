@@ -76,6 +76,9 @@ public class EnemyStats : MonoBehaviour
     [HideInInspector] public float spawnPower = 1f;
 
     private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, GameObject enemyParticles, int flames) burning;
+
+    private Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)> lightningQueue = new Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)>();
+
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -525,8 +528,65 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
+    #region Ligtning damage
+
+    public void QueueLightning(int frame, int damage, float delay, float power, GameObject lightningObj)
+    {
+        if (lightningQueue.ContainsKey(frame))
+        {
+            lightningQueue[frame] = (Math.Max(damage, lightningQueue[frame].damage), Math.Min(delay, lightningQueue[frame].delay), lightningQueue[frame].power, lightningQueue[frame].queuedStrikes);
+        }
+        else
+        {
+            lightningQueue.Add(frame, (damage, delay, power, new List<GameObject>()));
+            StartCoroutine(ApplyLightning(frame, lightningObj));
+        }
+    }
+
+    private IEnumerator ApplyLightning(int frame, GameObject lightningObj)
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(lightningQueue[frame].delay);
+        foreach (GameObject target in lightningQueue[frame].queuedStrikes)
+        {
+            GameObject connector = GameObject.Instantiate(lightningObj, transform.position, transform.rotation);
+            connector.GetComponent<LineRenderer>().SetPosition(0, target.transform.position);
+            connector.GetComponent<LineRenderer>().SetPosition(1, transform.position);
+            connector.GetComponent<LightningAnimator>().SetSource(target);
+            connector.GetComponent<LightningAnimator>().SetTarget(gameObject);
+            connector.GetComponent<LightningAnimator>().SetWidth(lightningQueue[frame].power);
+            Destroy(connector, 0.5f);
+
+            target.GetComponent<EnemyStats>().DealLightningDamage(frame);
+        }
+        lightningQueue.Remove(frame);
+    }
+
+    public void DealLightningDamage(int frame)
+    {
+        if (!lightningQueue.ContainsKey(frame)) return;
+        if (lightningQueue[frame].damage <= 0) return;
+        DamageEnemy(lightningQueue[frame].damage);
+        lightningQueue[frame] = (0, lightningQueue[frame].delay, lightningQueue[frame].power, lightningQueue[frame].queuedStrikes);
+    }
+
+    public float GetLightningDelay(int frame)
+    {
+        if (!lightningQueue.ContainsKey(frame)) return 0;
+        return lightningQueue[frame].delay;
+    }
+
+    public void AddLightningTarget(int frame, GameObject target)
+    {
+        if (!lightningQueue.ContainsKey(frame)) return;
+        List<GameObject> newQueue = lightningQueue[frame].queuedStrikes;
+        newQueue.Add(target);
+    }
+
+    #endregion
+
     #region Enemy Color
-    
+
     /// <summary>
     /// Return what colorMat this enemy has and how much, then remove the colorMat form the enemy.
     /// </summary>
