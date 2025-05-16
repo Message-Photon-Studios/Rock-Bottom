@@ -91,7 +91,7 @@ public class ItemLibrary : MonoBehaviour{
     
     public Item GetItem(ItemCategory itemCategory, ItemRarity itemRarity, string itemName)
     {
-        if(itemCategory == ItemCategory.Special)
+        if(itemCategory == ItemCategory._Special)
         {
             return specialItems[itemName];
         }
@@ -219,7 +219,7 @@ public enum ItemCategory
     Damage,
     Survival,
     Utility,
-    Special
+    _Special
 }
 
 /// <summary>

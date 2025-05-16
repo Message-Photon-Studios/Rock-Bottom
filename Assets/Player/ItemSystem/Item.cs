@@ -85,7 +85,7 @@ public class Item : ScriptableObject
     //Ensures that the item category and item rarity variables are always set correctly, dependent on what folder the item is in.
     private void OnValidate() 
     {
-        if(itemCategory == ItemCategory.Special) return;
+        if(itemCategory == ItemCategory._Special) return;
         string currentPath = AssetDatabase.GetAssetPath(this);
         string[] splitString = currentPath.Split('/');
         
