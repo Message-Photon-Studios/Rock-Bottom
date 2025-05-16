@@ -98,9 +98,6 @@ public class EnemyStats : MonoBehaviour
     private bool dealingRainbowDamage = false;
     public static bool chaoticMixer = false;
     ColorLibrary colorLibrary;
-    GameObject player;
-    PlayerStats playerStats;
-    PlayerCombatSystem playerCombat;
     Light2D enemyLight;
 
     Rigidbody2D body;
@@ -144,12 +141,7 @@ public class EnemyStats : MonoBehaviour
         enemySounds = GetComponent<EnemySounds>();
         onColorChanged?.Invoke(color);
         if (deathTimer > 0) hasDeathTimer = true;
-        player = GameObject.FindGameObjectWithTag("Player");
-        if(player != null)
-        {
-            playerStats = player.GetComponent<PlayerStats>();
-            playerCombat = player.GetComponent<PlayerCombatSystem>();
-        } else 
+        if(Player.instance == null)
         {
             this.enabled = false;
         }
@@ -203,7 +195,7 @@ public class EnemyStats : MonoBehaviour
         {
             if(color != null && color.name == "Rainbow")
             {
-                int rainbowDamage = (int)(playerCombat.rainbowComboDamage*playerStats.colorRainbowMaxedPower);
+                int rainbowDamage = (int)(Player.instance.playerCombatSystem.rainbowComboDamage*Player.instance.playerStats.colorRainbowMaxedPower);
 
                 if(rainbowDamage >= health)
                 {
@@ -255,7 +247,7 @@ public class EnemyStats : MonoBehaviour
                 redTimer--;
                 if(redTimer <= 0)
                 {
-                    playerStats.RemoveEnemyFromRedList(this);
+                    Player.instance.playerStats.RemoveEnemyFromRedList(this);
                     redPower = 0;
                 }
             }
@@ -328,18 +320,18 @@ public class EnemyStats : MonoBehaviour
         } 
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
-        int rainbowDmg = (int)(playerCombat.rainbowComboDamage * playerStats.colorRainbowMaxedPower);
+        int rainbowDmg = (int)(Player.instance.playerCombatSystem.rainbowComboDamage * Player.instance.playerStats.colorRainbowMaxedPower);
         if (currentCoroutine != null)
             StopCoroutine(currentCoroutine);
         if (health <= 0) KillEnemy();
         else if ((health - rainbowDmg <= 0 && IsRaibowed() && !dealingRainbowDamage)) DealRainbowDamage(rainbowDmg);
-        else currentCoroutine = StartCoroutine(dmgResponse());
+        else if(gameObject.activeSelf) currentCoroutine = StartCoroutine(dmgResponse());
     }
 
     public IEnumerator ChaothicMixer()
     {
         yield return new WaitForSeconds(0.1f);
-        colorLibrary.GetRandomPrimaryColor().MixThisColorOntoEnemy(this, playerStats);
+        colorLibrary.GetRandomPrimaryColor().MixThisColorOntoEnemy(this, Player.instance.playerStats);
     }
 
     public IEnumerator dmgResponse()
@@ -576,7 +568,7 @@ public class EnemyStats : MonoBehaviour
     {
         if (IsRaibowed())
         {
-            DealRainbowDamage((int)(playerCombat.rainbowComboDamage * playerStats.colorRainbowMaxedPower));
+            DealRainbowDamage((int)(Player.instance.playerCombatSystem.rainbowComboDamage * Player.instance.playerStats.colorRainbowMaxedPower));
             if (health <= 0) return;
         }
         this.color = color;
@@ -853,7 +845,7 @@ public class EnemyStats : MonoBehaviour
         {
             redTimer = timer;
             redPower = power;
-            playerStats.AddEnemyToRedList(this);
+            Player.instance.playerStats.AddEnemyToRedList(this);
         }
     }
 

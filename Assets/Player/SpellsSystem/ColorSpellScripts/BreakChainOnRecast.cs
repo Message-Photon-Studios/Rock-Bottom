@@ -25,7 +25,11 @@ public class BreakChainOnRecast : MonoBehaviour
     {
         if (key.Equals(spellKey))
         {
-            if (chain == null) this.enabled = false;
+            if (chain == null)
+            {
+                this.enabled = false;
+                return;
+            }
             chain.enabled = true;
             chain.breakForce = 0;
             this.enabled = false;
