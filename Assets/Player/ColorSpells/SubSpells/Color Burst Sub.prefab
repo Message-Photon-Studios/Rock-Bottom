@@ -93,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 0
   triggerImpactSpells: 1
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -178,16 +179,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Summons a floating bubble that bursts into four smaller bubbles with
-    25% power each.
-
-    Power: 75% + 4 x 25%'
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 40
   powerScale: 0
   coolDown: 2
   castWhenDamaged: 0
   castOnSpellImpact: 0
+  castOnDash: 0
+  castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 1
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0
@@ -215,6 +234,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 12e2ec0b9b281b243bd3a990c05a089d, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: db228589e35ee364eb56ea4a51b08650, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: ca3917dacf1a31c4aa189227a71b4fff, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!58 &7683476481911508829
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -258,8 +280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa85a9b2bdfcad843aa407e333f693a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnForceMin: {x: 100, y: -150}
-  spawnForceMax: {x: 400, y: 0}
+  spawnForceMin: {x: -50, y: -50}
+  spawnForceMax: {x: 50, y: 0}
 --- !u!1001 &3068050921329342166
 PrefabInstance:
   m_ObjectHideFlags: 0
