@@ -266,6 +266,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void CheckBelowStart()
     {
+        if(movementRoot.totalRoot) return;
         checkDownTimer = .2f;
         if(focusPoint == null && movementRoot.totalRoot) return;
         if(IsGrappeling() || !IsGrounded() || IsOnPlatform()) return;
@@ -275,6 +276,7 @@ public class PlayerMovement : MonoBehaviour
 
     void CheckAboveStart()
     {
+        if(movementRoot.totalRoot) return;
         if(focusPoint == null && movementRoot.totalRoot) return;
         if(IsGrappeling() || !IsGrounded()) return;
         focusPoint.localPosition = new Vector3(focusPoint.localPosition.x, checkPointY, focusPoint.localPosition.z);

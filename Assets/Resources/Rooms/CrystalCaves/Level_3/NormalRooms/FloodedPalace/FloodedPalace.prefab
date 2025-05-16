@@ -9644,7 +9644,6 @@ Transform:
   m_Children:
   - {fileID: 4837540639144030680}
   - {fileID: 6796943565635471160}
-  - {fileID: 6459782045709142042}
   - {fileID: 7281248073856083735}
   m_Father: {fileID: 1110097504496171644}
   m_RootOrder: 4
@@ -9686,6 +9685,7 @@ Transform:
   - {fileID: 4322941211136872052}
   - {fileID: 5275907458485458002}
   - {fileID: 4320482766911921536}
+  - {fileID: 6294888531532620094}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9746,7 +9746,7 @@ MonoBehaviour:
   displayMode: 0
   maxSpawns: -1
   spawnCount: 1
-  selectedNode: {x: -1, y: 1}
+  selectedNode: {x: 0, y: 4}
   isClosingRoom: 0
   roomVariants:
   - {fileID: -6625770280257989673, guid: 454b083448056d44eadb68a261b26266, type: 3}
@@ -18606,24 +18606,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6873972980437366780, guid: 3393973e854416a46bcd01328779667b, type: 3}
   m_PrefabInstance: {fileID: 5629895602007735368}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &6256335349226783223
+--- !u!1001 &6353692409632647379
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 6243581379927389324}
+    m_TransformParent: {fileID: 1110097504496171644}
     m_Modifications:
     - target: {fileID: 1114419157917583853, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1114419157917583853, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.41
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 1114419157917583853, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.34
+      value: 30.43
       objectReference: {fileID: 0}
     - target: {fileID: 1114419157917583853, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18661,16 +18661,24 @@ PrefabInstance:
       propertyPath: spawnChance
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
+      propertyPath: enableTizoTrade
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1772271130020501051, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
+      propertyPath: allowsHealthItem
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2728463698928101730, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: m_Name
       value: ItemPickup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
---- !u!4 &6459782045709142042 stripped
+--- !u!4 &6294888531532620094 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1114419157917583853, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
-  m_PrefabInstance: {fileID: 6256335349226783223}
+  m_PrefabInstance: {fileID: 6353692409632647379}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6974078030913345345
 PrefabInstance:
@@ -18841,7 +18849,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1114419157917583853, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1114419157917583853, guid: 774b22031281e3441a3f4b3e64c02970, type: 3}
       propertyPath: m_LocalPosition.x

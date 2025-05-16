@@ -21,6 +21,8 @@ public class ItemPickup : InteractionObject
     [SerializeField] Item item;
     [SerializeField] EnemyStats spawnFromEnemy;
 
+    [SerializeField] public bool enableTizoTrade = true;
+
     [Header("Functional")]
     [SerializeField] PickUpCanvasController pickUpController;
     [SerializeField] SpriteRenderer spriteRenderer;
@@ -90,7 +92,7 @@ public class ItemPickup : InteractionObject
             setItem = ItemSpellManager.instance.healthItem;
         }
 
-        ItemSpellManager.instance.AddSpawnedEffects(setItem);
+        ItemSpellManager.instance.AddSpawnedItem(setItem);
 
         this.item = setItem;
         this.itemCost = Mathf.RoundToInt(itemCost*ItemSpellManager.instance.stageCostMultiplier*GameManager.instance.rerunNum);
