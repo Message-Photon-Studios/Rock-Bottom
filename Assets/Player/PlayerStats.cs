@@ -403,14 +403,14 @@ public class PlayerStats : MonoBehaviour
         invincibilityTimer = 10f;
         //Physics2D.IgnoreLayerCollision(3,6);
         //Physics2D.IgnoreLayerCollision(3,13);
-        Physics2D.IgnoreLayerCollision(3,2);
+        //Physics2D.IgnoreLayerCollision(3,2);
     }
 
     public void RemovePlayerInvincible()
     {
         //Physics2D.IgnoreLayerCollision(3,6, false);
         //Physics2D.IgnoreLayerCollision(3,13, false);
-        Physics2D.IgnoreLayerCollision(3,2, false);
+        //Physics2D.IgnoreLayerCollision(3,2, false);
 
         invincibilityTimer = 0;
     }
