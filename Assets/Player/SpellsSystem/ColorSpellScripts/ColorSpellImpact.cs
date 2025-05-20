@@ -50,11 +50,14 @@ public class ColorSpellImpact : SpellImpact
             }
         }
 
+        if(onImpactParticles != null)
+        {
         var instantiatedParticles = GameObject.Instantiate(onImpactParticles, impactPoint, transform.rotation);
         // Change the particle color to the color of the spell
         var main = instantiatedParticles.main;
         main.startColor = spell.GetColor().plainColor;
         instantiatedParticles.Play();
         Destroy(instantiatedParticles.gameObject, instantiatedParticles.main.duration * 2);
+        }
     }
 }
