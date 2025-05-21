@@ -34,20 +34,18 @@ MonoBehaviour:
   itemCost: 60
   effects:
   - rid: 7456394610235932673
-  - rid: 7456394610235932674
+  - rid: 251207005336240136
   itemCategory: 0
   itemRarity: 2
   maxSpawn: 1
   references:
     version: 2
     RefIds:
+    - rid: 251207005336240136
+      type: {class: ColorMaxBonus, ns: , asm: Assembly-CSharp}
+      data:
+        buff: 0.2
     - rid: 7456394610235932673
       type: {class: PlayerStatsBools, ns: , asm: Assembly-CSharp}
       data:
         corrosiveColor: 1
-    - rid: 7456394610235932674
-      type: {class: ColorBuffItem, ns: , asm: Assembly-CSharp}
-      data:
-        color: {fileID: 0}
-        allColors: 1
-        power: 0.3

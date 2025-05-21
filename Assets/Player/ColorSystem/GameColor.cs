@@ -125,7 +125,7 @@ public class GameColor : ScriptableObject
 
         return mix;
     }
-    public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
+    public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float bottlePower, bool forcePerspectivePlayer, int extraDamage)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         PlayerStats playerStats = playerObj.GetComponent<PlayerStats>();
@@ -140,9 +140,9 @@ public class GameColor : ScriptableObject
         if(playerStats.corrosiveColor)
         {   
             if(enemy.GetColor() == this)
-                powerScale = 1.3f;
+                powerScale = 1.5f;
             else 
-                powerScale = 0.8f;
+                powerScale = 0.75f;
         }
 
         /*
@@ -162,10 +162,10 @@ public class GameColor : ScriptableObject
 
         if (delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
 
-        power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
-        power = power * powerScale;
+        bottlePower += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
+        bottlePower = bottlePower * powerScale;
 
-        colorEffect.Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage);
+        colorEffect.Apply(enemyObj, impactPoint, playerObj, bottlePower, forcePerspectivePlayer, extraDamage);
 
         if (!delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
 
