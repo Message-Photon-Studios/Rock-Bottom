@@ -76,6 +76,9 @@ public class EnemyStats : MonoBehaviour
     [HideInInspector] public float spawnPower = 1f;
 
     private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, GameObject enemyParticles, int flames) burning;
+
+    private Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)> lightningQueue = new Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)>();
+
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -98,9 +101,6 @@ public class EnemyStats : MonoBehaviour
     private bool dealingRainbowDamage = false;
     public static bool chaoticMixer = false;
     ColorLibrary colorLibrary;
-    GameObject player;
-    PlayerStats playerStats;
-    PlayerCombatSystem playerCombat;
     Light2D enemyLight;
 
     Rigidbody2D body;
@@ -144,12 +144,7 @@ public class EnemyStats : MonoBehaviour
         enemySounds = GetComponent<EnemySounds>();
         onColorChanged?.Invoke(color);
         if (deathTimer > 0) hasDeathTimer = true;
-        player = GameObject.FindGameObjectWithTag("Player");
-        if(player != null)
-        {
-            playerStats = player.GetComponent<PlayerStats>();
-            playerCombat = player.GetComponent<PlayerCombatSystem>();
-        } else 
+        if(Player.instance == null)
         {
             this.enabled = false;
         }
@@ -187,7 +182,7 @@ public class EnemyStats : MonoBehaviour
 
     public void ScaleEnemy(float scaling)
     {
-        health = (int)(health * scaling * Mathf.Pow(1.1f, GameManager.instance.rerunNum-1));
+        health = (int)(health * scaling * Mathf.Pow(1.3f, GameManager.instance.rerunNum-1));
         damageScaling = scaling * GameManager.instance.rerunNum;
         onMaxHealthChanged?.Invoke(health, health);
     }
@@ -203,7 +198,7 @@ public class EnemyStats : MonoBehaviour
         {
             if(color != null && color.name == "Rainbow")
             {
-                int rainbowDamage = (int)(playerCombat.rainbowComboDamage*playerStats.colorRainbowMaxedPower);
+                int rainbowDamage = (int)(Player.instance.playerCombatSystem.rainbowComboDamage*Player.instance.playerStats.colorRainbowMaxedPower);
 
                 if(rainbowDamage >= health)
                 {
@@ -255,7 +250,7 @@ public class EnemyStats : MonoBehaviour
                 redTimer--;
                 if(redTimer <= 0)
                 {
-                    playerStats.RemoveEnemyFromRedList(this);
+                    Player.instance.playerStats.RemoveEnemyFromRedList(this);
                     redPower = 0;
                 }
             }
@@ -328,18 +323,18 @@ public class EnemyStats : MonoBehaviour
         } 
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
-        int rainbowDmg = (int)(playerCombat.rainbowComboDamage * playerStats.colorRainbowMaxedPower);
+        int rainbowDmg = (int)(Player.instance.playerCombatSystem.rainbowComboDamage * Player.instance.playerStats.colorRainbowMaxedPower);
         if (currentCoroutine != null)
             StopCoroutine(currentCoroutine);
         if (health <= 0) KillEnemy();
         else if ((health - rainbowDmg <= 0 && IsRaibowed() && !dealingRainbowDamage)) DealRainbowDamage(rainbowDmg);
-        else currentCoroutine = StartCoroutine(dmgResponse());
+        else if(gameObject.activeSelf) currentCoroutine = StartCoroutine(dmgResponse());
     }
 
     public IEnumerator ChaothicMixer()
     {
         yield return new WaitForSeconds(0.1f);
-        colorLibrary.GetRandomPrimaryColor().MixThisColorOntoEnemy(this, playerStats);
+        colorLibrary.GetRandomPrimaryColor().MixThisColorOntoEnemy(this, Player.instance.playerStats);
     }
 
     public IEnumerator dmgResponse()
@@ -533,8 +528,65 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
+    #region Ligtning damage
+
+    public void QueueLightning(int frame, int damage, float delay, float power, GameObject lightningObj)
+    {
+        if (lightningQueue.ContainsKey(frame))
+        {
+            lightningQueue[frame] = (Math.Max(damage, lightningQueue[frame].damage), Math.Min(delay, lightningQueue[frame].delay), lightningQueue[frame].power, lightningQueue[frame].queuedStrikes);
+        }
+        else
+        {
+            lightningQueue.Add(frame, (damage, delay, power, new List<GameObject>()));
+            StartCoroutine(ApplyLightning(frame, lightningObj));
+        }
+    }
+
+    private IEnumerator ApplyLightning(int frame, GameObject lightningObj)
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(lightningQueue[frame].delay);
+        foreach (GameObject target in lightningQueue[frame].queuedStrikes)
+        {
+            GameObject connector = GameObject.Instantiate(lightningObj, transform.position, transform.rotation);
+            connector.GetComponent<LineRenderer>().SetPosition(0, target.transform.position);
+            connector.GetComponent<LineRenderer>().SetPosition(1, transform.position);
+            connector.GetComponent<LightningAnimator>().SetSource(target);
+            connector.GetComponent<LightningAnimator>().SetTarget(gameObject);
+            connector.GetComponent<LightningAnimator>().SetWidth(lightningQueue[frame].power);
+            Destroy(connector, 0.5f);
+
+            target.GetComponent<EnemyStats>().DealLightningDamage(frame);
+        }
+        lightningQueue.Remove(frame);
+    }
+
+    public void DealLightningDamage(int frame)
+    {
+        if (!lightningQueue.ContainsKey(frame)) return;
+        if (lightningQueue[frame].damage <= 0) return;
+        DamageEnemy(lightningQueue[frame].damage);
+        lightningQueue[frame] = (0, lightningQueue[frame].delay, lightningQueue[frame].power, lightningQueue[frame].queuedStrikes);
+    }
+
+    public float GetLightningDelay(int frame)
+    {
+        if (!lightningQueue.ContainsKey(frame)) return 0;
+        return lightningQueue[frame].delay;
+    }
+
+    public void AddLightningTarget(int frame, GameObject target)
+    {
+        if (!lightningQueue.ContainsKey(frame)) return;
+        List<GameObject> newQueue = lightningQueue[frame].queuedStrikes;
+        newQueue.Add(target);
+    }
+
+    #endregion
+
     #region Enemy Color
-    
+
     /// <summary>
     /// Return what colorMat this enemy has and how much, then remove the colorMat form the enemy.
     /// </summary>
@@ -576,7 +628,7 @@ public class EnemyStats : MonoBehaviour
     {
         if (IsRaibowed())
         {
-            DealRainbowDamage((int)(playerCombat.rainbowComboDamage * playerStats.colorRainbowMaxedPower));
+            DealRainbowDamage((int)(Player.instance.playerCombatSystem.rainbowComboDamage * Player.instance.playerStats.colorRainbowMaxedPower));
             if (health <= 0) return;
         }
         this.color = color;
@@ -774,14 +826,14 @@ public class EnemyStats : MonoBehaviour
             instantiatedParticles.transform.parent = transform;
             sleepParticles = instantiatedParticles;
         }
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        /* GameObject player = Player.instance.gameObject;
         if(player)
         {
             foreach (Collider2D collider in GetComponents<Collider2D>())
             {
-                Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>());
+                Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>(), true);
             }
-        }
+        }*/
         animator.SetBool("sleep", true);
         onEnemySlept?.Invoke();
     }
@@ -808,14 +860,14 @@ public class EnemyStats : MonoBehaviour
     {
         enemySleep = false;
         sleepTimer = 0;
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+       /*GameObject player = Player.instance.gameObject;
         if(player)
         {
             foreach (Collider2D collider in GetComponents<Collider2D>())
             {
                 Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>(), false);
             }
-        }
+        }*/
     }
 
     /// <summary>
@@ -853,7 +905,7 @@ public class EnemyStats : MonoBehaviour
         {
             redTimer = timer;
             redPower = power;
-            playerStats.AddEnemyToRedList(this);
+            Player.instance.playerStats.AddEnemyToRedList(this);
         }
     }
 

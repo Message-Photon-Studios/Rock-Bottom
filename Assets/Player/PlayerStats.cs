@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -86,6 +87,8 @@ public class PlayerStats : MonoBehaviour
     private float defaultArmour = 0f;
     private float invincibilityBonus = 0f;
 
+    public bool isDead { get; private set; } = false;
+
     #region Setup
     public void Setup(LevelManager levelManager)
     {
@@ -106,6 +109,7 @@ public class PlayerStats : MonoBehaviour
         maxHealth = health;
         onMaxHealthChanged?.Invoke(maxHealth);
         onHealthChanged?.Invoke(health);
+        isDead = false;
     }
 
     #endregion
@@ -334,9 +338,19 @@ public class PlayerStats : MonoBehaviour
 
     private void PlayerReachZeroHp()
     {
-        animator.SetBool("dead", true);
-        movement.movementRoot.SetTotalRoot("dead", true);
+        isDead = true;
         invincibilityTimer = 3f;
+        movement.movementRoot.SetTotalRoot("dead", true);
+        StartCoroutine(DeathPause());
+    }
+
+    IEnumerator DeathPause()
+    {
+        CameraMovement cameraMovement = FindObjectOfType<CameraMovement>();
+        cameraMovement.TeleportCamarera(transform.position);
+        cameraMovement.ZoomCamera(1.8f, .2f);
+        yield return new WaitForSeconds(.5f);
+        animator.SetBool("dead", true);
         playerSounds.PlayDeath();
     }
 
@@ -389,14 +403,14 @@ public class PlayerStats : MonoBehaviour
         invincibilityTimer = 10f;
         //Physics2D.IgnoreLayerCollision(3,6);
         //Physics2D.IgnoreLayerCollision(3,13);
-        Physics2D.IgnoreLayerCollision(3,2);
+        //Physics2D.IgnoreLayerCollision(3,2);
     }
 
     public void RemovePlayerInvincible()
     {
         //Physics2D.IgnoreLayerCollision(3,6, false);
         //Physics2D.IgnoreLayerCollision(3,13, false);
-        Physics2D.IgnoreLayerCollision(3,2, false);
+        //Physics2D.IgnoreLayerCollision(3,2, false);
 
         invincibilityTimer = 0;
     }

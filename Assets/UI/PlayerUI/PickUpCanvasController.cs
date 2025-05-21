@@ -86,14 +86,14 @@ public class PickUpCanvasController : MonoBehaviour
         SetTexts(objName, objDesc, "", returnColorString);
     }
 
-    private void SetCollect(string objName, string objDesc)
+    public void SetCollect(string objName, string objDesc)
     {
         costText.gameObject.SetActive(false);
         string collectString = collectLocalString.GetLocalizedString();
         SetTexts(objName, objDesc, "", collectString);
     }
 
-    private void SetBuy(string objName, string objDesc, int cost, bool canBuy)
+    public void SetBuy(string objName, string objDesc, int cost, bool canBuy)
     {
         string costString = costLocalString.GetLocalizedString() + " " + cost;
         string buyString = buyLocalString.GetLocalizedString();

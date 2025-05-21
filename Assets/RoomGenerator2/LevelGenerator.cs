@@ -305,6 +305,8 @@ public class LevelGenerator
 
     public bool instantiated = false;
 
+    private int fillMarginSize = 8;
+
     public int tries = 0;
     public void generate(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin, int maxTries)
     {
@@ -463,12 +465,12 @@ public class LevelGenerator
 
     private void instantiateFillRow(float x, IReadOnlyList<GameObject> fillRooms, float minY, float maxY)
     {
-        for (var y = minY - 2; y < maxY + 2; y++)
+        for (var y = minY - fillMarginSize; y < maxY + fillMarginSize; y++)
         {
             // If there already is a node, continue
             if (graph.nodes.ContainsKey(new Vector2(x, y))) continue;
 
-            if (!graph.checkExistNear(new Vector2(x, y), 2)) continue;
+            if (!graph.checkExistNear(new Vector2(x, y), fillMarginSize)) continue;
 
             //Pick a random fillRoom and instantiate it
             var fillRoom = fillRooms[Random.Range(0, fillRooms.Count - 1)];
@@ -495,7 +497,7 @@ public class LevelGenerator
         var (min, max) = getDungeonSize();
         var fillRooms = Resources.LoadAll<GameObject>(areaPath + "/filledRooms");
 
-        for (float x = min.x - 2; x < max.x + 2; x++)
+        for (float x = min.x - fillMarginSize; x < max.x + fillMarginSize; x++)
         {
             instantiateFillRow(x, fillRooms, min.y, max.y);
             yield return null;
@@ -804,7 +806,7 @@ public class LevelGenerator
         var (min, max) = getDungeonSize();
         var fillRooms = Resources.LoadAll<GameObject>(areaPath + "/filledRooms");
 
-        for (float x = min.x - 2; x < max.x + 2; x++)
+        for (float x = min.x - fillMarginSize; x < max.x + fillMarginSize; x++)
         {
             instantiateFillRow(x, fillRooms, min.y, max.y);
         }
