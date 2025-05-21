@@ -21,7 +21,7 @@ public class ColorSpellImpact : SpellImpact
     {
         if(other.CompareTag("Enemy"))
         {
-            if (requiresEnemyLOS)
+            if (requiresEnemyLOS && other.gameObject.layer != GameManager.instance.maskLibrary.ghostEnemies)
             {
                 float collisionCheckDeadZone = .75f;
                 if (Vector2.Distance(other.transform.position, transform.position) > collisionCheckDeadZone)
