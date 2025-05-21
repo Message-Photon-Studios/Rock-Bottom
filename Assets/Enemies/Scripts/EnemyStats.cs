@@ -54,6 +54,7 @@ public class EnemyStats : MonoBehaviour
     private float sleepPowerBonus = 0f; //The extra damage dealt to a slept enemy
     [SerializeField] float sleepCooldown = 5f;
     float sleepCooldownTimer = 0f;
+    float drowsyPower;
     GameObject sleepParticles;
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
@@ -370,7 +371,7 @@ public class EnemyStats : MonoBehaviour
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, 5);
-        SleepEnemy(10, 1, null);
+        //SleepEnemy(10, 1, null);
         int drainAmount = 0;
         if(color != null && color.name.Equals("Rainbow") && colorOrbPrefab != null && colorAmmount-drainAmount > 0)
         {
@@ -807,11 +808,14 @@ public class EnemyStats : MonoBehaviour
     /// Sets the enemy to asleep for the specified time
     /// </summary>
     /// <param name="timer"></param>
-    public void SleepEnemy(float timer, float sleepPower, GameObject particles)
+    public void SleepEnemy(float timer, float sleepPower, float drowsyPower,  GameObject particles)
     {
         if(sleepCooldownTimer > 0) return;
-        if(sleepTimer <= 0)
+        if(sleepTimer <= 0 || sleepPowerBonus < sleepPower)
             sleepPowerBonus = sleepPower;
+
+        if (sleepTimer <= 0 || this.drowsyPower < drowsyPower)
+            this.drowsyPower = drowsyPower;
 
         sleepTimer = timer;
         lastSleep = Time.time;
@@ -850,7 +854,7 @@ public class EnemyStats : MonoBehaviour
             sleepParticles.GetComponent<ParticleSystem>().Stop();
             GameObject.Destroy(sleepParticles, 1f);
         }
-        sleepCooldownTimer = sleepCooldown;
+        sleepCooldownTimer = sleepCooldown * (drowsyPower<1f?drowsyPower:1f);
     }
 
     /// <summary>
