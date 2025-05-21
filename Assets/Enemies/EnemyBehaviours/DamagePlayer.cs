@@ -22,8 +22,11 @@ public class DamagePlayer : Node
     }
     public override NodeState Evaluate()
     {
-        player.DamagePlayer(stats.GetScaledDamage(damage), stats);
-        state = NodeState.SUCCESS;
+        if (!stats.IsAsleep() && !stats.IsDead())
+        {
+            player.DamagePlayer(stats.GetScaledDamage(damage), stats);
+            state = NodeState.SUCCESS;
+        } else state = NodeState.FAILURE;
         return state;
     }
 }

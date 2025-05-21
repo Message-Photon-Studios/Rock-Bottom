@@ -45,7 +45,7 @@ public class NormalAttack : Node
         }
 
         var test = GetData(attackName);
-        if(test != null && (bool) test && !player.IsInvincible())
+        if(test != null && (bool) test && !player.IsInvincible() && !stats.IsAsleep() && !stats.IsDead())
         {
             player.DamagePlayer(stats.GetScaledDamage(damage), stats);
             player.GetComponent<Rigidbody2D>().AddForce(((Vector2)player.transform.position + Vector2.up * 0.5f - attackTrigger.offset - stats.GetPosition()).normalized * force);
