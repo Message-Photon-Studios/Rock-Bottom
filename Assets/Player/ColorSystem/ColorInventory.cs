@@ -56,6 +56,9 @@ public class ColorInventory : MonoBehaviour
     public bool routedSheild = false;
     public bool shatteredPrism = false;
     public bool centrifuge = false;
+    public bool enemyDontMix = false;
+    public bool enemyGiveColorOnChange = false;
+    public bool enemyGiveColorOnSame = false;
     private float rngMax = 0;
     private float rngMin = 0;
     private float rngBuff = 0;

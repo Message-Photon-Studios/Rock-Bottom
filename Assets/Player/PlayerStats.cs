@@ -32,8 +32,6 @@ public class PlayerStats : MonoBehaviour
     int shield = 0;
     int shieldDecay = -1;
 
-    public int chanceThatEnemyDontMix = 0;
-
     public int complimentaryDamage = 0;
 
     public bool corrosiveColor = false;
