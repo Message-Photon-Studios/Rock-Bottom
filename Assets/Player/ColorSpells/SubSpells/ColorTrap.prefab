@@ -62,7 +62,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 4
 --- !u!58 &3321278458073070462
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -118,7 +118,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: -744073905, guid: cdb98049467e4da46a7a8262f9917092, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -163,13 +163,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 0
   powerScale: 0
   coolDown: 1
   castWhenDamaged: 0
   castOnSpellImpact: 0
+  castOnDash: 0
+  castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 1
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0
@@ -196,6 +217,9 @@ MonoBehaviour:
     smallSprite: {fileID: 0}
     smallSpriteMask: {fileID: 0}
     smallSpriteCapMask: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &816937159620727808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 0
   triggerImpactSpells: 0
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!58 &1163189697346373350
 CircleCollider2D:
@@ -255,8 +280,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 3.4, y: 2}
+  m_Offset: {x: 0, y: 0.15}
+  m_Size: {x: 3, y: 1.7}
   m_Direction: 1
 --- !u!1 &5302223586745146273
 GameObject:
@@ -304,7 +329,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.48}
-  m_Size: {x: 0.4, y: 0.8}
+  m_Size: {x: 0.1, y: 0.8}
   m_Direction: 0
 --- !u!1001 &1001541891878294197
 PrefabInstance:

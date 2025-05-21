@@ -77,7 +77,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.7}
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.2
 --- !u!212 &4874330200776334801
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -117,7 +117,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: 762165020, guid: 668f574b8938e32409217139fc71f6fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -189,6 +189,7 @@ MonoBehaviour:
   castOnDoubleJump: 0
   staggeredSpell: 0
   storedSpells: 2
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0
@@ -262,6 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 0
   triggerImpactSpells: 0
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!114 &2146103257369105666
 MonoBehaviour:

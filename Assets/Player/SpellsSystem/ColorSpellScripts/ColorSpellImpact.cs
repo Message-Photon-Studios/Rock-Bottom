@@ -21,7 +21,7 @@ public class ColorSpellImpact : SpellImpact
     {
         if(other.CompareTag("Enemy"))
         {
-            if (requiresEnemyLOS)
+            if (requiresEnemyLOS && other.gameObject.layer != GameManager.instance.maskLibrary.ghostEnemies)
             {
                 float collisionCheckDeadZone = .75f;
                 if (Vector2.Distance(other.transform.position, transform.position) > collisionCheckDeadZone)
@@ -50,11 +50,14 @@ public class ColorSpellImpact : SpellImpact
             }
         }
 
+        if(onImpactParticles != null)
+        {
         var instantiatedParticles = GameObject.Instantiate(onImpactParticles, impactPoint, transform.rotation);
         // Change the particle color to the color of the spell
         var main = instantiatedParticles.main;
         main.startColor = spell.GetColor().plainColor;
         instantiatedParticles.Play();
         Destroy(instantiatedParticles.gameObject, instantiatedParticles.main.duration * 2);
+        }
     }
 }

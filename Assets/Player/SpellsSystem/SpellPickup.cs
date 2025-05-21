@@ -13,7 +13,6 @@ public class SpellPickup : InteractionObject
     [SerializeField] bool lockBottleAfterSwap = false;
     [SerializeField] ColorSpell colorSpell;
     [SerializeField] PickUpCanvasController pickUpController;
-    [SerializeField] Collider2D collider;
     Rigidbody2D body;
     SpriteRenderer spriteRenderer;
     ColorInventory inventory;
@@ -24,10 +23,6 @@ public class SpellPickup : InteractionObject
     protected override void Start()
     {
         base.Start();
-        foreach (Collider2D coll in Player.instance.gameObject.GetComponentsInChildren<Collider2D>())
-        {
-            Physics2D.IgnoreCollision(collider, coll);
-        }
         //Physics2D.IgnoreCollision(collider, GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>());
 
         body = GetComponent<Rigidbody2D>();

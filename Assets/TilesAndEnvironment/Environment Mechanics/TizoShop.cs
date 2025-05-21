@@ -135,11 +135,22 @@ public class TizoShop : MonoBehaviour
         Item[] getItems = new Item[blueprint.getAmount + blueprint.guaranteedItems.Length];
 
         blueprint.guaranteedItems.CopyTo(getItems, 0);
-
+        int failedTries = 0;
         for (int i = blueprint.guaranteedItems.Length; i < getItems.Length; i++)
         {
-            getItems[i] = GetTradeItem(blueprint.getRarity[Random.Range(0, blueprint.getRarity.Length)], blueprint.getCategory);
-            if (getItems[i] == null) return null;
+            Item getItem = GetTradeItem(blueprint.getRarity[Random.Range(0, blueprint.getRarity.Length)], blueprint.getCategory);
+            if (getItem == null || getItems.Contains(getItem))
+            {
+                if (failedTries > 20)
+                {
+                    return null;
+                }
+                failedTries++;
+                i--;
+                continue;
+            }
+
+            else getItems[i] = getItem;
         }
 
         List<Item> acceptedCostItems = GetAcceptedCostItems(blueprint.costRarity.ToList(), blueprint.costCategory.ToList(), getItems.ToList());

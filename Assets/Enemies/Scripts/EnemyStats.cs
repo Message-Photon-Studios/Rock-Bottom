@@ -826,14 +826,14 @@ public class EnemyStats : MonoBehaviour
             instantiatedParticles.transform.parent = transform;
             sleepParticles = instantiatedParticles;
         }
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        /* GameObject player = Player.instance.gameObject;
         if(player)
         {
             foreach (Collider2D collider in GetComponents<Collider2D>())
             {
-                Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>());
+                Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>(), true);
             }
-        }
+        }*/
         animator.SetBool("sleep", true);
         onEnemySlept?.Invoke();
     }
@@ -860,14 +860,14 @@ public class EnemyStats : MonoBehaviour
     {
         enemySleep = false;
         sleepTimer = 0;
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+       /*GameObject player = Player.instance.gameObject;
         if(player)
         {
             foreach (Collider2D collider in GetComponents<Collider2D>())
             {
                 Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>(), false);
             }
-        }
+        }*/
     }
 
     /// <summary>
