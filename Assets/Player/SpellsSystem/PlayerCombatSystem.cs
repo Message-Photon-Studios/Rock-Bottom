@@ -33,7 +33,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private int d6 = 0;
     private bool attacking;
     private Rigidbody2D body;
-    private bool spellAirHit = false;
+    //private bool spellAirHit = false; // This bool checks so that only one spell can be cast in the air.
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
 
@@ -108,11 +108,11 @@ public class PlayerCombatSystem : MonoBehaviour
 
 
         if (Time.timeScale == 0) return;
-        if(!playerMovement.IsGrounded() && spellAirHit)
+        /*if(!playerMovement.IsGrounded() && spellAirHit)
         {
             SetBunnySpell(slotIndex);
             return;
-        }
+        }*/
         currentSpell= colorInventory.GetColorSpell(slotIndex).gameObject;
         if(currentSpell == null) return;
         if(attacking)
@@ -132,7 +132,7 @@ public class PlayerCombatSystem : MonoBehaviour
         
         if(!playerMovement.IsGrounded()) 
         {
-            spellAirHit = true;
+            //spellAirHit = true;
             if(!attackDoubleJumped) 
             {
                 playerMovement.ResetDoubleJump();
@@ -264,7 +264,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     public void SetPlayerGrounded()
     {
-        spellAirHit = false;
+        //spellAirHit = false;
         attackDoubleJumped = false;
     }
 
