@@ -106,6 +106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 1
   triggerImpactSpells: 1
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -226,7 +227,7 @@ MonoBehaviour:
   destroyOnEnemyHit: 0
   destroyOnCollission: 0
   impactOnEnemies: 1
-  impactOnNonEnemies: 1
+  impactOnNonEnemies: 0
   triggerOnlyOnce: 0
   triggerOnlyOncePerEnemy: 1
   attackAgainTimer: -1

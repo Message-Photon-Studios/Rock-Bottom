@@ -45,8 +45,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.4, y: 1}
+  m_Offset: {x: 0, y: -0.25}
+  m_Size: {x: 0.25, y: 0.5}
   m_Direction: 0
 --- !u!1 &3321278458073070463
 GameObject:
@@ -142,7 +142,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 0
   triggerImpactSpells: 1
-  onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
+  requiresEnemyLOS: 1
+  onImpactParticles: {fileID: 0}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -181,8 +182,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayerID: 1207758425
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -704651931, guid: 4af188699f9c12e40a1cc8bdb2a266ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -246,7 +247,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   spellCost: 10
-  powerScale: 0
+  powerScale: 1
   coolDown: 0
   castWhenDamaged: 0
   castOnSpellImpact: 0

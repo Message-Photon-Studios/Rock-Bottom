@@ -33,14 +33,23 @@ MonoBehaviour:
     m_LocalVariables: []
   itemCost: 30
   effects:
-  - rid: 7456394610235932672
+  - rid: 251207005336240142
   itemCategory: 3
   itemRarity: 0
   maxSpawn: 1
   references:
     version: 2
     RefIds:
-    - rid: 7456394610235932672
-      type: {class: EnemyDontMixItem, ns: , asm: Assembly-CSharp}
+    - rid: 251207005336240142
+      type: {class: ColorInventoryBools, ns: , asm: Assembly-CSharp}
       data:
-        addedChance: 100
+        dontMixColor: 0
+        crackedUrn: 0
+        chaosBottle: 0
+        routedSheild: 0
+        chaoticMixer: 0
+        shatteredPrism: 0
+        centrifuge: 0
+        enemyDontMix: 1
+        enemyGiveColorOnChange: 0
+        enemyGiveColorOnSame: 1
