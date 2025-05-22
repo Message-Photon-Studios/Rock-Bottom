@@ -109,6 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 1
   triggerImpactSpells: 1
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -149,7 +150,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: -1114698942, guid: 7409f3211c789bc4090ea82d283c8781, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -174,17 +175,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Summons a spike that will rotate around the player.
-
-    Power: 120%'
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 40
-  powerScale: 0
+  powerScale: 1
   coolDown: 0.1
   castWhenDamaged: 0
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 1
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0
@@ -212,6 +230,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 9418f67dea6464a45aa35a84e848fa33, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: 86bea8269d37aa0479d68b91c0031005, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 4f48403ea640c0442b983d164c84a579, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &5242649665175928134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,7 +399,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: -1114698942, guid: 7409f3211c789bc4090ea82d283c8781, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -108,7 +108,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 0
   triggerImpactSpells: 1
-  onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
+  requiresEnemyLOS: 1
+  onImpactParticles: {fileID: 0}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -148,7 +149,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2688d2b8582583043b264319a157a241, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -218,7 +219,9 @@ MonoBehaviour:
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 2
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0

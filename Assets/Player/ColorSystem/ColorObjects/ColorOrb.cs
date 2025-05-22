@@ -11,7 +11,7 @@ public class ColorOrb : MonoBehaviour
     private Rigidbody2D body;
     private ParticleSystem particle;
     private int colorAmount;
-    private GameColor color;
+    [SerializeField] private GameColor color;
     
     // Start is called before the first frame update
     void Init()
@@ -20,8 +20,8 @@ public class ColorOrb : MonoBehaviour
         particle = GetComponent<ParticleSystem>();
         Vector2 direction = ((transform.position - player.transform.position) *Vector2.one).normalized;
         body.AddForce((new Vector2(Random.Range(-1f,1f), Random.Range(-1f, 1f)) + direction).normalized * launchSpeed);
-        if (colorAmount >= 4) particle.startSize = 0.2f;
-        else if (colorAmount >= 2) particle.startSize= 0.1f;
+        if (colorAmount >= 4) particle.startSize = 0.25f;
+        else if (colorAmount >= 2) particle.startSize= 0.15f;
         var pfxMain = particle.main;
         pfxMain.startColor = new ParticleSystem.MinMaxGradient(color.plainColor);
     }
@@ -35,9 +35,8 @@ public class ColorOrb : MonoBehaviour
         speed += speed*acceleration*Time.fixedDeltaTime; 
     }
 
-    public void SetTarget(GameObject player, int colorAmount, GameColor gameColor)
+    public void SetTarget(GameObject player, int colorAmount)
     {
-        this.color = gameColor;
         this.player = player;
         this.colorAmount = colorAmount;
         Init();

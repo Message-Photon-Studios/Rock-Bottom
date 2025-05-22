@@ -16,7 +16,7 @@ public class PurpleColorEffect : ColorEffect
         if(enemy != null) 
         {
             if(extraDamage > 0) enemy.DamageEnemy(extraDamage);
-            enemy.SleepEnemy(sleepTime * EffectFunction(power), sleepDamageBonus * power, particles);
+            enemy.SleepEnemy(sleepTime * EffectFunction(power), sleepDamageBonus * power, EffectFunction(power), particles);
         }
     }
 }

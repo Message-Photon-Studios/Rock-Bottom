@@ -54,6 +54,7 @@ public class EnemyStats : MonoBehaviour
     private float sleepPowerBonus = 0f; //The extra damage dealt to a slept enemy
     [SerializeField] float sleepCooldown = 5f;
     float sleepCooldownTimer = 0f;
+    float drowsyPower;
     GameObject sleepParticles;
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
@@ -365,21 +366,15 @@ public class EnemyStats : MonoBehaviour
         enemySounds?.PlayDeath();
         //TODO
         if (animator.GetBool("dead")) return;
-        Debug.Log(gameObject.name + " died");
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, 5);
-        SleepEnemy(10, 1, null);
+        //SleepEnemy(10, 1, null);
         int drainAmount = 0;
-        if(color != null && color.name.Equals("Rainbow") && colorOrbPrefab != null && colorAmmount-drainAmount > 0)
+        if (color != null && color.name.Equals("Rainbow") && colorAmmount - drainAmount > 0)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if(player != null)
-            {
-                GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;  
-                orb.GetComponent<ColorOrb>().SetTarget(player, colorAmmount - drainAmount, color);
-            }
+            SpawnRainbowOrb(colorAmmount - drainAmount);
         }
         onEnemyDeath?.Invoke(this);
     }
@@ -418,7 +413,7 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
-    #region Rainbow damage
+    #region Rainbow
 
     private void DealRainbowDamage(int rainbowDamage)
     {
@@ -441,8 +436,19 @@ public class EnemyStats : MonoBehaviour
         return color != null && colorAmmount > 0 && color.name == "Rainbow";
     }
 
+    public void SpawnRainbowOrb(int orbColorAmount)
+    {
+        if (!colorOrbPrefab) return;
+        GameObject player = Player.instance.gameObject;
+        if(player != null)
+        {
+            GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;  
+            orb.GetComponent<ColorOrb>().SetTarget(player, orbColorAmount);
+        }
+    }
+
     #endregion
-    
+
     #region Poison damage
     /// <summary>
     /// Adds a damage over time effect to the enemy
@@ -452,10 +458,10 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     public void PoisonDamage(int damage, float damageReduction, float timer, GameObject poisonOrbPrefab)
     {
-        if(poisonTimer > 0)
+        if (poisonTimer > 0)
         {
-            if(damage > poisonDamageToTake) poisonDamageToTake = damage;
-            if(damageReduction > poisonDamageReduction) poisonDamageReduction = damageReduction;
+            if (damage > poisonDamageToTake) poisonDamageToTake = damage;
+            if (damageReduction > poisonDamageReduction) poisonDamageReduction = damageReduction;
             poisonTimer += timer;
             this.poisonOrbPrefab = poisonOrbPrefab;
         } else
@@ -650,6 +656,24 @@ public class EnemyStats : MonoBehaviour
         isColoredThisFrame = true;
     }
 
+    /// <summary>
+    /// Returns the color that the enemy should be set to when colored by player
+    /// </summary>
+    /// <param name="colorToMix"></param>
+    /// <returns></returns>
+    public GameColor GetPlayerMixColor(GameColor colorToMix)
+    {
+        GameColor colorToSet = (Player.instance.colorInventory.enemyDontMix || colorToMix.name.Equals("Rainbow")) ? colorToMix : colorToMix.MixColor(GetColor());
+        return colorToSet;
+    }
+
+    public void SetPlayerColor(GameColor color, int addAmount)
+    {
+
+        if (Player.instance.colorInventory.enemyGiveColorOnChange && GetColor() != color) SpawnRainbowOrb(1);
+        if (Player.instance.colorInventory.enemyGiveColorOnSame && GetColor() == color) SpawnRainbowOrb(1);
+        SetColor(color, GetColorAmmount() + addAmount);
+    }
     public void SetColor(GameColor color, int ammount)
     {
         SetColor(color);
@@ -807,11 +831,14 @@ public class EnemyStats : MonoBehaviour
     /// Sets the enemy to asleep for the specified time
     /// </summary>
     /// <param name="timer"></param>
-    public void SleepEnemy(float timer, float sleepPower, GameObject particles)
+    public void SleepEnemy(float timer, float sleepPower, float drowsyPower,  GameObject particles)
     {
         if(sleepCooldownTimer > 0) return;
-        if(sleepTimer <= 0)
+        if(sleepTimer <= 0 || sleepPowerBonus < sleepPower)
             sleepPowerBonus = sleepPower;
+
+        if (sleepTimer <= 0 || this.drowsyPower < drowsyPower)
+            this.drowsyPower = drowsyPower;
 
         sleepTimer = timer;
         lastSleep = Time.time;
@@ -850,7 +877,7 @@ public class EnemyStats : MonoBehaviour
             sleepParticles.GetComponent<ParticleSystem>().Stop();
             GameObject.Destroy(sleepParticles, 1f);
         }
-        sleepCooldownTimer = sleepCooldown;
+        sleepCooldownTimer = sleepCooldown * (drowsyPower<1f?drowsyPower:1f);
     }
 
     /// <summary>

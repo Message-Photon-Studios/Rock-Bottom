@@ -51,21 +51,19 @@ public class StatsController : MonoBehaviour
     /// </summary>
     private void UpdateColorNumbers() {
         for(int i = 0; i < 7; i++) {
-            float number = 100*(1 + colorInventory.GetColorBuff(colors[i]))-100;
+            float number = 100*colorInventory.GetColorBuff(colors[i]);
             number = Mathf.Round(number);
-            string plus = "+";
-            if (number < 0)
+            if (number < 100)
             {
-                plus = "";
                 colorNumbers[i].color = new Color(1,0.5f,0.5f,1);
-            } else if (number > 0)
+            } else if (number > 100)
             {
                 colorNumbers[i].color = new Color(0.5f, 1, 0.5f, 1);
             } else
             {
                 colorNumbers[i].color = Color.white;
             }
-            colorNumbers[i].text = plus + (int) number + "%";
+            colorNumbers[i].text = (int) number + "%";
         }
     }
 }

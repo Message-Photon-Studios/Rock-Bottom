@@ -11,6 +11,9 @@ public class ColorInventoryBools : ItemEffect
     [SerializeField] bool chaoticMixer;
     [SerializeField] bool shatteredPrism;
     [SerializeField] bool centrifuge;
+    [SerializeField] bool enemyDontMix;
+    [SerializeField] bool enemyGiveColorOnChange;
+    [SerializeField] bool enemyGiveColorOnSame;
     public override void ActivateEffect()
     {
         ColorInventory colorInv = GetPlayer().GetComponent<ColorInventory>();
@@ -21,6 +24,9 @@ public class ColorInventoryBools : ItemEffect
         if (chaoticMixer) EnemyStats.chaoticMixer = true;
         if (shatteredPrism) colorInv.shatteredPrism = true;
         if (centrifuge) colorInv.centrifuge = true;
+        if (enemyDontMix) colorInv.enemyDontMix = true;
+        if (enemyGiveColorOnChange) colorInv.enemyGiveColorOnChange = true;
+        if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = true;
 
     }
 
@@ -34,6 +40,9 @@ public class ColorInventoryBools : ItemEffect
         if (chaoticMixer) EnemyStats.chaoticMixer = false;
         if (shatteredPrism) colorInv.shatteredPrism = false;
         if (centrifuge) colorInv.centrifuge = false;
+        if (enemyDontMix) colorInv.enemyDontMix = false;
+        if (enemyGiveColorOnChange) colorInv.enemyGiveColorOnChange = false;
+        if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = false;
     }
 
 }

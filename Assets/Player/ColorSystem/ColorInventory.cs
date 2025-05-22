@@ -56,6 +56,9 @@ public class ColorInventory : MonoBehaviour
     public bool routedSheild = false;
     public bool shatteredPrism = false;
     public bool centrifuge = false;
+    public bool enemyDontMix = false;
+    public bool enemyGiveColorOnChange = false;
+    public bool enemyGiveColorOnSame = false;
     private float rngMax = 0;
     private float rngMin = 0;
     private float rngBuff = 0;
@@ -472,9 +475,9 @@ public class ColorInventory : MonoBehaviour
     /// <returns></returns>
     public float GetColorBuff(GameColor color)
     {
-        if (color == null) return 0;
-        if(color == emptyBottleColor) return 0;
-        float buff = 0;
+        if (color == null) return 1;
+        if(color == emptyBottleColor) return 1;
+        float buff = 1;
         foreach (ColorSlot slot in colorSlots)
         {
             if((slot.gameColor == color || balanceColors) && IsSlotFull(slot)) 
@@ -551,10 +554,15 @@ public class ColorInventory : MonoBehaviour
         return GetSlotBuff(GetSlot(slotIndex));
     }
 
+    /// <summary>
+    /// Returns slot specific buffs such as concentrated color.
+    /// </summary>
+    /// <param name="slot"></param>
+    /// <returns></returns>
     public float GetSlotBuff(ColorSlot slot)
     {
         float buff = 0;
-        float relativeCharge = (float) slot.charge / (float) slot.maxCapacity;
+        float relativeCharge = (float)slot.charge / (float)slot.maxCapacity;
         Debug.Log("max: " + slot.maxCapacity + " charge: " + slot.charge + " " + relativeCharge);
         if (relativeCharge <= 0.75 && slot.gameColor != null) buff += concentratedSmallBuff;
         if (relativeCharge <= 0.50 && slot.gameColor != null) buff += concentratedMidBuff;
@@ -1049,7 +1057,7 @@ public class ColorInventory : MonoBehaviour
         {
             if (slot.gameColor == color && IsSlotFull(slot))
             {
-                if (Random.Range(0, 100) > blockDrainColor) slot.SetCharge((int) (slot.charge * routedSheildCost));
+                if (Random.Range(0, 100) > blockDrainColor) slot.SetCharge((int) (slot.charge * (1 - routedSheildCost)));
                 return true;
             }
         }
@@ -1205,11 +1213,13 @@ public class ColorSlot
     public void SetCharge(int set)
     {
         charge = set;
-        if(charge > maxCapacity)
+        if (charge > maxCapacity)
         {
             charge = maxCapacity;
             GameManager.instance.tipsManager.DisplayTips("filledBottle");
         }
+
+        Player.instance.colorInventory.onColorUpdated?.Invoke();
     }
 
     public void AddCharge(int addCharge)
