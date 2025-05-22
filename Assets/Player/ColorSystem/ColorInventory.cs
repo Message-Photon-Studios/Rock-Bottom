@@ -1057,7 +1057,7 @@ public class ColorInventory : MonoBehaviour
         {
             if (slot.gameColor == color && IsSlotFull(slot))
             {
-                if (Random.Range(0, 100) > blockDrainColor) slot.SetCharge((int) (slot.charge * routedSheildCost));
+                if (Random.Range(0, 100) > blockDrainColor) slot.SetCharge((int) (slot.charge * (1 - routedSheildCost)));
                 return true;
             }
         }
@@ -1213,11 +1213,13 @@ public class ColorSlot
     public void SetCharge(int set)
     {
         charge = set;
-        if(charge > maxCapacity)
+        if (charge > maxCapacity)
         {
             charge = maxCapacity;
             GameManager.instance.tipsManager.DisplayTips("filledBottle");
         }
+
+        Player.instance.colorInventory.onColorUpdated?.Invoke();
     }
 
     public void AddCharge(int addCharge)
