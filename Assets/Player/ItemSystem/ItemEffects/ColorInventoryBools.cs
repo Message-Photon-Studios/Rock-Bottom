@@ -14,6 +14,7 @@ public class ColorInventoryBools : ItemEffect
     [SerializeField] bool enemyDontMix;
     [SerializeField] bool enemyGiveColorOnChange;
     [SerializeField] bool enemyGiveColorOnSame;
+    [SerializeField] bool doubleExtraDamage;
     public override void ActivateEffect()
     {
         ColorInventory colorInv = GetPlayer().GetComponent<ColorInventory>();
@@ -27,6 +28,7 @@ public class ColorInventoryBools : ItemEffect
         if (enemyDontMix) colorInv.enemyDontMix = true;
         if (enemyGiveColorOnChange) colorInv.enemyGiveColorOnChange = true;
         if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = true;
+        if (doubleExtraDamage) colorInv.doubleExtraDamage = true;
 
     }
 
@@ -43,6 +45,7 @@ public class ColorInventoryBools : ItemEffect
         if (enemyDontMix) colorInv.enemyDontMix = false;
         if (enemyGiveColorOnChange) colorInv.enemyGiveColorOnChange = false;
         if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = false;
+        if (doubleExtraDamage) colorInv.doubleExtraDamage = false;
     }
 
 }

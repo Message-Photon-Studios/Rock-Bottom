@@ -165,6 +165,7 @@ public class GameColor : ScriptableObject
         colorPower += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         colorPower = colorPower * powerScale;
 
+        if (Player.instance.colorInventory.doubleExtraDamage) extraDamage *= 2;
         colorEffect.Apply(enemyObj, impactPoint, playerObj, colorPower, forcePerspectivePlayer, extraDamage);
 
         if (!delay && canColorEnemies) enemy.SetPlayerColor(setToColor, 1);
