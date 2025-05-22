@@ -14,7 +14,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] int health = 100;
     [SerializeField] int maxShield = 50;
     [SerializeField] int maxPermanetShield = 20;
-    [SerializeField] int shieldDecayIncrease = 1;
+    [SerializeField] float shieldDecayIncrease = 1;
     [SerializeField] float hitInvincibilityTime;
     [SerializeField] LevelManager levelManager;
     [SerializeField] Animator animator;
@@ -30,7 +30,7 @@ public class PlayerStats : MonoBehaviour
     public float colorRainbowMaxedPower = 1;
     
     int shield = 0;
-    int shieldDecay = -1;
+    float shieldDecay = -1;
 
     public int complimentaryDamage = 0;
 
@@ -124,7 +124,7 @@ public class PlayerStats : MonoBehaviour
             if(shield > maxPermanetShield)
             {
                 Debug.Log(maxPermanetShield);
-                shield -= (shieldDecay<0)?0:shieldDecay;
+                shield -= Mathf.RoundToInt((shieldDecay<0)?0:shieldDecay);
                 shieldDecay += shieldDecayIncrease;
                 if(shield < maxPermanetShield) shield = maxPermanetShield;
                 onShieldChanged?.Invoke(shield);
