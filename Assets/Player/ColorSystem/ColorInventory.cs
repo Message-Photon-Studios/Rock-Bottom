@@ -60,6 +60,7 @@ public class ColorInventory : MonoBehaviour
     public bool enemyGiveColorOnChange = false;
     public bool enemyGiveColorOnSame = false;
     public bool doubleExtraDamage = false;
+    public bool greatBrushFirstHit = false;
     private float rngMax = 0;
     private float rngMin = 0;
     private float rngBuff = 0;

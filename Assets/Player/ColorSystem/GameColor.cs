@@ -166,6 +166,17 @@ public class GameColor : ScriptableObject
         colorPower = colorPower * powerScale;
 
         if (Player.instance.colorInventory.doubleExtraDamage) extraDamage *= 2;
+        if (Player.instance.colorInventory.greatBrushFirstHit)
+        {
+            if (enemy.GetHealth() / (float)enemy.GetMaxHealth() > .9f)
+            {
+                extraDamage += 15;
+            }
+
+            extraDamage = Mathf.RoundToInt(extraDamage * colorPower);
+        } 
+
+
         colorEffect.Apply(enemyObj, impactPoint, playerObj, colorPower, forcePerspectivePlayer, extraDamage);
 
         if (!delay && canColorEnemies) enemy.SetPlayerColor(setToColor, 1);

@@ -15,6 +15,7 @@ public class ColorInventoryBools : ItemEffect
     [SerializeField] bool enemyGiveColorOnChange;
     [SerializeField] bool enemyGiveColorOnSame;
     [SerializeField] bool doubleExtraDamage;
+    [SerializeField] bool greatBrushFirstHit;
     public override void ActivateEffect()
     {
         ColorInventory colorInv = GetPlayer().GetComponent<ColorInventory>();
@@ -29,6 +30,7 @@ public class ColorInventoryBools : ItemEffect
         if (enemyGiveColorOnChange) colorInv.enemyGiveColorOnChange = true;
         if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = true;
         if (doubleExtraDamage) colorInv.doubleExtraDamage = true;
+        if (greatBrushFirstHit) colorInv.greatBrushFirstHit = true;
 
     }
 
@@ -46,6 +48,7 @@ public class ColorInventoryBools : ItemEffect
         if (enemyGiveColorOnChange) colorInv.enemyGiveColorOnChange = false;
         if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = false;
         if (doubleExtraDamage) colorInv.doubleExtraDamage = false;
+        if (greatBrushFirstHit) colorInv.greatBrushFirstHit = true;
     }
 
 }
