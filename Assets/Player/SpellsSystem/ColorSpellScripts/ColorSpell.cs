@@ -111,13 +111,13 @@ public class ColorSpell : MonoBehaviour
     /// Needs to be called after the spell is instantiated
     /// </summary>
     /// <param name="gameColor">The color effect of the spell</param>
-    /// <param name="power">The total power of the spell</param>
+    /// <param name="colorPower">The total power of the spell</param>
     /// <param name="player">The player object</param>
     /// <param name="lookDir">The direction the spell should face horizontally</param>
-    public void Initi(GameColor gameColor, float power, GameObject player, int lookDir, int extraDamage)
+    public void Initi(GameColor gameColor, float colorPower, GameObject player, int lookDir, int extraDamage)
     {
         this.gameColor = gameColor;
-        this.power = power+powerScale;
+        this.power = colorPower*powerScale;
         this.player = player;
         this.lookDir = lookDir;
         this.extraDamage = extraDamage;
