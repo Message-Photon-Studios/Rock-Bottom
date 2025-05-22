@@ -150,7 +150,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""id"": ""96a22342-4dc2-446a-a5bb-3d8484bec3fc"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=4)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -159,7 +159,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""id"": ""f5a9ed5b-d314-43cf-912c-eba98e7c0ad4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=4)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -168,7 +168,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""id"": ""b4b30c80-9858-4725-9adf-f3ae7f6411dd"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=4)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -177,7 +177,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""id"": ""775a382d-9ce5-4083-a678-69badfffc638"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=4)"",
                     ""initialStateCheck"": false
                 },
                 {
