@@ -384,9 +384,10 @@ public class EnemyStats : MonoBehaviour
         Destroy(gameObject, 5);
         //SleepEnemy(10, 1, null);
         int drainAmount = 0;
-        if (color != null && color.name.Equals("Rainbow") && colorAmmount - drainAmount > 0)
+        int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+        if (IsRaibowed() && giveColor > 0)
         {
-            SpawnRainbowOrb(colorAmmount - drainAmount);
+            SpawnRainbowOrb(giveColor);
         }
         onEnemyDeath?.Invoke(this);
     }
