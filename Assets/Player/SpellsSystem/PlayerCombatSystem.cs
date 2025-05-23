@@ -205,7 +205,7 @@ public class PlayerCombatSystem : MonoBehaviour
     public int GetExtraDamage(GameColor color)
     {
         int addDamage = 0;
-        if (color == colorInventory.defaultColor) addDamage += greyExtraDamage;
+        if (color == colorInventory.GetEmptyBottleColor()) addDamage += greyExtraDamage;
         return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage + GetEmergencyDamage() + GetD6Damage(d6) + addDamage;
     }
 

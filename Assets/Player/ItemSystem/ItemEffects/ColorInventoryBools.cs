@@ -19,6 +19,7 @@ public class ColorInventoryBools : ItemEffect
     [SerializeField] bool greatBrushFirstHit;
     [SerializeField] bool paintersKnife;
     [SerializeField] bool colorVarnish;
+    [SerializeField] int rainbowComboExtraColor;
     public override void ActivateEffect()
     {
         ColorInventory colorInv = GetPlayer().GetComponent<ColorInventory>();
@@ -36,7 +37,7 @@ public class ColorInventoryBools : ItemEffect
         if (greatBrushFirstHit) colorInv.greatBrushFirstHit = true;
         if (paintersKnife) colorInv.paintersKnife = true;
         if (colorVarnish) colorInv.colorVarnish = true;
-
+        if (rainbowComboExtraColor != 0) colorInv.rainbowComboExtraColor += rainbowComboExtraColor;
     }
 
     public override void DisableEffect()
@@ -56,6 +57,7 @@ public class ColorInventoryBools : ItemEffect
         if (greatBrushFirstHit) colorInv.greatBrushFirstHit = false;
         if (paintersKnife) colorInv.paintersKnife = false;
         if (colorVarnish) colorInv.colorVarnish = false;
+        if (rainbowComboExtraColor != 0) colorInv.rainbowComboExtraColor -= rainbowComboExtraColor;
     }
 
 }
