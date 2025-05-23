@@ -493,6 +493,7 @@ public class ColorInventory : MonoBehaviour
 
         if (balanceColors)
         {
+            buff += 6; //Add base power for the other 6 bottles.
             foreach (KeyValuePair<GameColor, float> entry in colorBuffs)
             {
                 buff += entry.Value;
