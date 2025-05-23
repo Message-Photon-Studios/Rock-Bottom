@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 public class ColorInventoryBools : ItemEffect
@@ -16,6 +17,8 @@ public class ColorInventoryBools : ItemEffect
     [SerializeField] bool enemyGiveColorOnSame;
     [SerializeField] bool doubleExtraDamage;
     [SerializeField] bool greatBrushFirstHit;
+    [SerializeField] bool paintersKnife;
+    [SerializeField] bool colorVarnish;
     public override void ActivateEffect()
     {
         ColorInventory colorInv = GetPlayer().GetComponent<ColorInventory>();
@@ -31,6 +34,8 @@ public class ColorInventoryBools : ItemEffect
         if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = true;
         if (doubleExtraDamage) colorInv.doubleExtraDamage = true;
         if (greatBrushFirstHit) colorInv.greatBrushFirstHit = true;
+        if (paintersKnife) colorInv.paintersKnife = true;
+        if (colorVarnish) colorInv.colorVarnish = true;
 
     }
 
@@ -48,7 +53,9 @@ public class ColorInventoryBools : ItemEffect
         if (enemyGiveColorOnChange) colorInv.enemyGiveColorOnChange = false;
         if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = false;
         if (doubleExtraDamage) colorInv.doubleExtraDamage = false;
-        if (greatBrushFirstHit) colorInv.greatBrushFirstHit = true;
+        if (greatBrushFirstHit) colorInv.greatBrushFirstHit = false;
+        if (paintersKnife) colorInv.paintersKnife = false;
+        if (colorVarnish) colorInv.colorVarnish = false;
     }
 
 }

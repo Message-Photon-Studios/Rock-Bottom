@@ -34,8 +34,8 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private bool setColorByHand;
 
     [SerializeField] private float deathTimer = 0;
-    
-
+    private float armour = 0f;
+    private float paintersKnifeArmourReduction = 0f;
     private bool hasDeathTimer = false;
 
     /// <summary>
@@ -320,12 +320,20 @@ public class EnemyStats : MonoBehaviour
     {
         //if (enemySleep) WakeEnemyAnimation();
 
-        health -= damage;
+        damage = Mathf.RoundToInt(damage * (1f - armour + paintersKnifeArmourReduction));
 
+        health -= damage;
+        
         if (chaoticMixer && damage > 0)
         {
             StartCoroutine(ChaothicMixer());
-        } 
+        }
+
+        if (Player.instance.colorInventory.paintersKnife && paintersKnifeArmourReduction < .5f)
+        {
+            paintersKnifeArmourReduction += 0.05f;
+        }
+
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
         int rainbowDmg = (int)(Player.instance.playerCombatSystem.rainbowComboDamage * Player.instance.playerStats.colorRainbowMaxedPower);

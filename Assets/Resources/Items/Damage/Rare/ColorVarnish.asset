@@ -10,37 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
-  m_Name: DualBrush
+  m_Name: ColorVarnish
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 3490e709fa46641458dc86cbb9eb479b, type: 3}
+  sprite: {fileID: 21300000, guid: d3d459b9364b32044a55abfc86bd7ee3, type: 3}
   itemName:
     m_TableReference:
-      m_TableCollectionName: GUID:2d170c7eaefe51f4a901b3839f62b6b2
+      m_TableCollectionName: GUID:d90cb4bc34e0e634b8fed8db86d463a6
     m_TableEntryReference:
-      m_KeyId: 139464970240
+      m_KeyId: 6304206848
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   description:
     m_TableReference:
-      m_TableCollectionName: GUID:2d170c7eaefe51f4a901b3839f62b6b2
+      m_TableCollectionName: GUID:d90cb4bc34e0e634b8fed8db86d463a6
     m_TableEntryReference:
-      m_KeyId: 162193903616
+      m_KeyId: 20459982848
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  itemCost: 60
+  itemCost: 45
   effects:
-  - rid: 251207028294549510
+  - rid: 251207051087970312
   itemCategory: 1
-  itemRarity: 2
+  itemRarity: 1
   maxSpawn: 1
   references:
     version: 2
     RefIds:
-    - rid: 251207028294549510
+    - rid: 251207051087970312
       type: {class: ColorInventoryBools, ns: , asm: Assembly-CSharp}
       data:
         dontMixColor: 0
@@ -53,4 +53,7 @@ MonoBehaviour:
         enemyDontMix: 0
         enemyGiveColorOnChange: 0
         enemyGiveColorOnSame: 0
-        doubleExtraDamage: 1
+        doubleExtraDamage: 0
+        greatBrushFirstHit: 0
+        paintersKnife: 0
+        colorVarnish: 1

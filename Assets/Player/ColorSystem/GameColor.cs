@@ -165,7 +165,16 @@ public class GameColor : ScriptableObject
         colorPower += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         colorPower = colorPower * powerScale;
 
-        if (Player.instance.colorInventory.doubleExtraDamage) extraDamage *= 2;
+
+
+
+        if (Player.instance.colorInventory.colorVarnish && setToColor != this)
+        {
+            int colorDamage = enemy.GetColorAmmount();
+            if (colorDamage > 20) colorDamage = 20;
+            extraDamage += colorDamage;
+        }
+
         if (Player.instance.colorInventory.greatBrushFirstHit)
         {
             if (enemy.GetHealth() / (float)enemy.GetMaxHealth() > .9f)
@@ -174,8 +183,8 @@ public class GameColor : ScriptableObject
             }
 
             extraDamage = Mathf.RoundToInt(extraDamage * colorPower);
-        } 
-
+        }
+        if (Player.instance.colorInventory.doubleExtraDamage) extraDamage *= 2;
 
         colorEffect.Apply(enemyObj, impactPoint, playerObj, colorPower, forcePerspectivePlayer, extraDamage);
 

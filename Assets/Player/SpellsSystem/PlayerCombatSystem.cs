@@ -18,7 +18,7 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] PlayerSounds playerSounds;
     [SerializeField] float bunnyCastTolerance;
-    public int defaultAttackDamage = 0;
+    public int greyExtraDamage = 0;
     private float bunnyCast = 0;
 
     /// <summary>
@@ -26,6 +26,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private int cascadeDamage = 0;
     public int maxCascadeDamage;
+    private string lastSpellCast = "";
     private int bonusDamage;
     private int spellSorting = 0;
     private int emergecyBonusDamageMin = 0;
@@ -165,6 +166,9 @@ public class PlayerCombatSystem : MonoBehaviour
         ColorSpell spell = colorInventory.GetColorSpell(slot);
         if (spell == null || color == null) return;
 
+        if (!spell.name.Equals(lastSpellCast)) cascadeDamage = 0;
+        lastSpellCast = spell.name;
+
         Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.gameObject.transform.position.x) * playerMovement.lookDir,
                                         spell.gameObject.transform.position.y + spellSpawnPoint.localPosition.y); //Creates spawn point for the spell
 
@@ -176,7 +180,7 @@ public class PlayerCombatSystem : MonoBehaviour
             if (castType == CastType.JUMP) if (Time.time - playerMovement.lastFlipTime < 0.2f) lookDir *= -1;
             
             ColorSpell spellStats = spellSpawn.GetComponent<ColorSpell>();
-            spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, lookDir, GetExtraDamage()); //Sets all the stats for the spell
+            spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, lookDir, GetExtraDamage(color)); //Sets all the stats for the spell
             if (castType != CastType.EXTRA) colorInventory.UseColorSlot(slot); //Consumes the color after the spell has been spawned.
             spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++; //Makes sure that the spells arent Z fighting. 
             if (!spellStats.spawnKey.Equals("")) onRecast?.Invoke(spellStats.spawnKey); //Triggers all spells that have some recast behaviour. EX Flail's chain breaks
@@ -198,9 +202,11 @@ public class PlayerCombatSystem : MonoBehaviour
         SpellAttack(slot, castType);
     }
 
-    public int GetExtraDamage()
+    public int GetExtraDamage(GameColor color)
     {
-        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage + GetEmergencyDamage() + GetD6Damage(d6);
+        int addDamage = 0;
+        if (color == colorInventory.defaultColor) addDamage += greyExtraDamage;
+        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage + GetEmergencyDamage() + GetD6Damage(d6) + addDamage;
     }
 
     public void AddBonusDamage(int bonus)

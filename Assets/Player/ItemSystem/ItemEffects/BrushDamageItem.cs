@@ -8,15 +8,15 @@ using UnityEngine;
 [System.Serializable]
 public class BrushDamageItem : ItemEffect
 {
-    [Header("Brush Deals Damage")]
-    [SerializeField] int brushDamage;
+    [Header("Grey Extra Damage")]
+    [SerializeField] int greyExtraDamage;
     public override void ActivateEffect()
     {
-        GetPlayer().GetComponent<PlayerCombatSystem>().defaultAttackDamage += brushDamage;
+        GetPlayer().GetComponent<PlayerCombatSystem>().greyExtraDamage += greyExtraDamage;
     }
 
     public override void DisableEffect()
     {
-        GetPlayer().GetComponent<PlayerCombatSystem>().defaultAttackDamage -= brushDamage;
+        GetPlayer().GetComponent<PlayerCombatSystem>().greyExtraDamage -= greyExtraDamage;
     }
 }
