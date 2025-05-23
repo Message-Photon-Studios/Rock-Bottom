@@ -63,6 +63,7 @@ public class ColorInventory : MonoBehaviour
     public bool greatBrushFirstHit = false;
     public bool paintersKnife = false;
     public bool colorVarnish = false;
+    public int rainbowComboExtraColor = 0;
     private float rngMax = 0;
     private float rngMin = 0;
     private float rngBuff = 0;
