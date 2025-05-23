@@ -59,6 +59,11 @@ public class ColorInventory : MonoBehaviour
     public bool enemyDontMix = false;
     public bool enemyGiveColorOnChange = false;
     public bool enemyGiveColorOnSame = false;
+    public bool doubleExtraDamage = false;
+    public bool greatBrushFirstHit = false;
+    public bool paintersKnife = false;
+    public bool colorVarnish = false;
+    public int rainbowComboExtraColor = 0;
     private float rngMax = 0;
     private float rngMin = 0;
     private float rngBuff = 0;
@@ -488,6 +493,7 @@ public class ColorInventory : MonoBehaviour
 
         if (balanceColors)
         {
+            buff += 6; //Add base power for the other 6 bottles.
             foreach (KeyValuePair<GameColor, float> entry in colorBuffs)
             {
                 buff += entry.Value;
@@ -680,35 +686,13 @@ public class ColorInventory : MonoBehaviour
 
     public void AddColorOrbColor(GameColor gameColor, int amount)
     {
-        int rootAmount = amount/gameColor.rootColors.Length;
-        int existingRootAmount = 0;
-        foreach(GameColor rootColor in gameColor.rootColors)
-        {
-            for(int i = 0; i < colorSlots.Count; i++)
-            {
-                int check = (activeSlot+i)%colorSlots.Count;
-                if(colorSlots[check].gameColor != null && colorSlots[check].charge > 0 && colorSlots[check].gameColor.ContainsRootColor(rootColor) && !colorSlots[check].IsFilledMax())
-                {
-                    existingRootAmount++;
-                    break;
-                }
-            }
-        }
-
-        if(existingRootAmount <= 0)
-        {
-            return;
-        }
-
-        amount -= (rootAmount * (gameColor.rootColors.Length - existingRootAmount));
-
         HashSet<ColorSlot> fillableSlots = new HashSet<ColorSlot>();
         foreach(GameColor rootColor in gameColor.rootColors)
         {
             for (int i = 0; i < colorSlots.Count; i++)
             {
                 int check = (activeSlot+i)%colorSlots.Count;
-                if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0) continue;
+                if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0 || colorSlots[check].gameColor == GetEmptyBottleColor()) continue;
                 if(colorSlots[check].gameColor.ContainsRootColor(rootColor) && colorSlots[check].gameColor)
                 {
                     if(!fillableSlots.Contains(colorSlots[check]) && !colorSlots[check].IsFilledMax()) fillableSlots.Add(colorSlots[check]);
@@ -716,13 +700,32 @@ public class ColorInventory : MonoBehaviour
             }
         }
 
-        amount = amount/fillableSlots.Count;
-        if(amount < 1) amount = 1;
+        if (fillableSlots.Count <= 0) return;
+
+        int ammountRest = amount % fillableSlots.Count;
+        amount = (amount - ammountRest) / fillableSlots.Count;
+        if (amount > 0 && amount < 1) amount = 1;
+        if (amount < 0) amount = 0;
+        int indexer = 0;
+        
         foreach (ColorSlot slot in fillableSlots)
         {
-            slot.AddCharge(amount);
-            if(centrifuge) GetComponent<PlayerStats>().AddShield(amount);
+            if (UnityEngine.Random.Range(0f, 1f) <= 1f / (fillableSlots.Count-indexer))
+            {
+                slot.AddCharge(amount + ammountRest);
+                if (centrifuge) GetComponent<PlayerStats>().AddShield(amount + ammountRest);
+                ammountRest = 0;
+            }
+            else
+            {
+                slot.AddCharge(amount);
+                if (centrifuge) GetComponent<PlayerStats>().AddShield(amount);
+            }
+
+            indexer++;
         }
+
+        
 
         onColorUpdated?.Invoke();
     }

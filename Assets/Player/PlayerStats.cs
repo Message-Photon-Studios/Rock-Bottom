@@ -85,6 +85,8 @@ public class PlayerStats : MonoBehaviour
     private float defaultArmour = 0f;
     private float invincibilityBonus = 0f;
 
+    private const string lifelineName = "Lifeline";
+
     public bool isDead { get; private set; } = false;
 
     #region Setup
@@ -336,6 +338,14 @@ public class PlayerStats : MonoBehaviour
 
     private void PlayerReachZeroHp()
     {
+        if (Player.instance.playerInventory.HasItemWithName(lifelineName))
+        {
+            Player.instance.playerInventory.RemoveItemWithName(lifelineName);
+            health = 0;
+            HealPlayer(10);
+            return;
+        }
+
         isDead = true;
         invincibilityTimer = 3f;
         movement.movementRoot.SetTotalRoot("dead", true);

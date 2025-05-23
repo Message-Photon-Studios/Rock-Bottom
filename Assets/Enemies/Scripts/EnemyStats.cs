@@ -22,6 +22,8 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
     private Collider2D myCollider;
 
+    int maxHealth;
+
     [Header("Enemy Settings")]
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
     [SerializeField] private GameObject comboParticles;
@@ -32,8 +34,8 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private bool setColorByHand;
 
     [SerializeField] private float deathTimer = 0;
-    
-
+    private float armour = 0f;
+    private float paintersKnifeArmourReduction = 0f;
     private bool hasDeathTimer = false;
 
     /// <summary>
@@ -114,6 +116,7 @@ public class EnemyStats : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         normalAnimationSpeed = animator.speed;
         damageScaling = 1f;
+        maxHealth = health;
     }
 
     void Start()
@@ -184,6 +187,7 @@ public class EnemyStats : MonoBehaviour
     public void ScaleEnemy(float scaling)
     {
         health = (int)(health * scaling * Mathf.Pow(1.3f, GameManager.instance.rerunNum-1));
+        maxHealth = health;
         damageScaling = scaling * GameManager.instance.rerunNum;
         onMaxHealthChanged?.Invoke(health, health);
     }
@@ -316,12 +320,20 @@ public class EnemyStats : MonoBehaviour
     {
         //if (enemySleep) WakeEnemyAnimation();
 
-        health -= damage;
+        damage = Mathf.RoundToInt(damage * (1f - armour + paintersKnifeArmourReduction));
 
+        health -= damage;
+        
         if (chaoticMixer && damage > 0)
         {
             StartCoroutine(ChaothicMixer());
-        } 
+        }
+
+        if (Player.instance.colorInventory.paintersKnife && paintersKnifeArmourReduction < .5f)
+        {
+            paintersKnifeArmourReduction += 0.05f;
+        }
+
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
         int rainbowDmg = (int)(Player.instance.playerCombatSystem.rainbowComboDamage * Player.instance.playerStats.colorRainbowMaxedPower);
@@ -372,16 +384,12 @@ public class EnemyStats : MonoBehaviour
         Destroy(gameObject, 5);
         //SleepEnemy(10, 1, null);
         int drainAmount = 0;
-        if (color != null && color.name.Equals("Rainbow") && colorAmmount - drainAmount > 0)
+        int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+        if (IsRaibowed() && giveColor > 0)
         {
-            SpawnRainbowOrb(colorAmmount - drainAmount);
+            SpawnRainbowOrb(giveColor);
         }
         onEnemyDeath?.Invoke(this);
-    }
-
-    public bool IsDead()
-    {
-        return enemyDead;
     }
 
     public void DropCoins()
@@ -396,20 +404,33 @@ public class EnemyStats : MonoBehaviour
     {
         Destroy(gameObject);
     }
+    #endregion
+
+    #region Health and status effects
 
     /// <summary>
     /// Returns the enemys current health
     /// </summary>
     /// <returns></returns>
-    public float GetHealth()
+    public int GetHealth()
     {
         return health;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
     }
 
     public bool isFrozen()
     {
         return movementSpeedTimer > 0;
     }
+    public bool IsDead()
+    {
+        return enemyDead;
+    }
+
 
     #endregion
 
@@ -725,7 +746,10 @@ public class EnemyStats : MonoBehaviour
         float poisonFactor = 1f;
         if(isPoisoned())
             poisonFactor = (1f-poisonDamageReduction);
-        return spawnPower * poisonFactor * damageScaling;
+
+        float blodiedFactor = 1f;
+        if (Player.instance.colorInventory.greatBrushFirstHit && GetHealth() / (float)GetMaxHealth() < .5f) blodiedFactor = 1.2f;
+        return spawnPower * poisonFactor * damageScaling * blodiedFactor;
     }
 
     /// <summary>
