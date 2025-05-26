@@ -27,7 +27,8 @@ public class PlayerStats : MonoBehaviour
 
     public float colorNearbyRange = 0;
     public int chanceToColorNearby = 0;
-    public float colorRainbowMaxedPower = 1;
+    public int rainbowedDamage = 0;
+    public float rainbowExecutePercentage = .2f;
     
     int shield = 0;
     float shieldDecay = -1;
