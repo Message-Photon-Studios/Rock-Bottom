@@ -5,9 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Localization;
 
-public class PickUpCanvasController : MonoBehaviour
+public class PickUpCanvasController : AbsUIMenu
 {
-    [SerializeField] GameObject mainObj;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text shortDescText;
     [SerializeField] TMP_Text costText;
@@ -22,13 +21,8 @@ public class PickUpCanvasController : MonoBehaviour
 
     void Start()
     {
-        mainObj.SetActive(false);
+        mainObjMenu.SetActive(false);
         normalBuyColor = costText.color;
-    }
-
-    public void CloseUi()
-    {
-        mainObj.SetActive(false);
     }
 
     public void SetHealthShrine(HealingShrine healingShrine)
@@ -113,6 +107,7 @@ public class PickUpCanvasController : MonoBehaviour
         collectText.gameObject.SetActive(true);
         interactButtonPrompt.gameObject.SetActive(true);
 
-        mainObj.SetActive(true);
+        mainObjMenu.SetActive(true);
+        UIMaster.instance.MenuOpened(this);
     }
 }

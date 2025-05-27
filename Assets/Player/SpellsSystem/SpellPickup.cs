@@ -76,7 +76,7 @@ public class SpellPickup : InteractionObject
             }
 
             pickUpController.SetBottle(this);
-        } else pickUpController.CloseUi();
+        } else pickUpController.CloseMenu();
 
     }
 
@@ -122,7 +122,7 @@ public class SpellPickup : InteractionObject
         body.gravityScale = 2;
         if(lockBottleAfterSwap) 
         {
-            pickUpController.CloseUi();
+            pickUpController.CloseMenu();
         } else 
         {
             pickUpController.SetBottle(this);

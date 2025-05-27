@@ -133,7 +133,7 @@ public class ColorWell : InteractionObject
             pickUpCanvasController.SetColorShrine(this);
         } else
         {
-            pickUpCanvasController.CloseUi();
+            pickUpCanvasController.CloseMenu();
             colorIconImage.color = iconShadedColor;
             if(wellUsed) colorIconImage.gameObject.SetActive(false);
             Player.instance.playerCombatSystem.DeactivateAddColorMode();
