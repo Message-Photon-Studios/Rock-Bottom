@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class AbsUIMenu : MonoBehaviour
+public abstract class UIMenu : MonoBehaviour
 {
     [SerializeField] public GameObject mainObjMenu;
     public void CloseMenu()

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Localization;
 
-public class PickUpCanvasController : AbsUIMenu
+public class PickUpCanvasController : UIMenu
 {
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text shortDescText;

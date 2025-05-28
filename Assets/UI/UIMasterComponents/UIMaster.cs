@@ -5,7 +5,7 @@ using UnityEngine;
 public class UIMaster : MonoBehaviour
 {
     public static UIMaster instance;
-    public AbsUIMenu currentlyOpen = null;
+    public UIMenu currentlyOpen = null;
     void Awake()
     {
         if (instance == null)
@@ -19,8 +19,9 @@ public class UIMaster : MonoBehaviour
         }
     }
 
-    public void MenuOpened(AbsUIMenu menu)
+    public void MenuOpened(UIMenu menu)
     {
+        Debug.Log("Menu opened");
         if (currentlyOpen == menu)
         {
             menu.CloseMenu();
@@ -37,8 +38,9 @@ public class UIMaster : MonoBehaviour
         }
     }
 
-    public void MenuClosed(AbsUIMenu menu)
+    public void MenuClosed(UIMenu menu)
     {
+        Debug.Log("Menu opened");
         if (currentlyOpen == menu)
         {
             currentlyOpen = null;
