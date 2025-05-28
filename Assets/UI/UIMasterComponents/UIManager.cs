@@ -2,26 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIMaster : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    public static UIMaster instance;
+    public static UIManager instance;
     public UIMenu currentlyOpen = null;
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            enabled = false;
         }
     }
 
     public void MenuOpened(UIMenu menu)
     {
-        Debug.Log("Menu opened");
         if (currentlyOpen == menu)
         {
             menu.CloseMenu();
@@ -40,7 +38,6 @@ public class UIMaster : MonoBehaviour
 
     public void MenuClosed(UIMenu menu)
     {
-        Debug.Log("Menu opened");
         if (currentlyOpen == menu)
         {
             currentlyOpen = null;

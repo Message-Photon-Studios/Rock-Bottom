@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class UIMenu : MonoBehaviour
+public class UIMenu : MonoBehaviour
 {
-    [SerializeField] public GameObject mainObjMenu;
+    [SerializeField] public GameObject mainComponent;
     public void CloseMenu()
     {
-        UIMaster.instance.MenuClosed(this);
-        mainObjMenu.SetActive(false);
+        if (mainComponent == null)
+        {
+            Debug.LogWarning("UIMenu missing main component: " + transform.parent.name);
+            return;
+        }
+        UIManager.instance.MenuClosed(this);
+        
+        mainComponent.SetActive(false);
     }
 
     public void OpenMenu()
     {
-        UIMaster.instance.MenuOpened(this);
-        mainObjMenu.SetActive(true);
+        UIManager.instance.MenuOpened(this);
+        mainComponent.SetActive(true);
     }
 }

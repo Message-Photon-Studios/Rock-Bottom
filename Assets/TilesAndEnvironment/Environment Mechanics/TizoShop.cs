@@ -8,10 +8,9 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 
-public class TizoShop : MonoBehaviour
+public class TizoShop : UIMenu
 {   
     [Header("Ui")]
-    [SerializeField] GameObject canvas;
     [SerializeField] TizoTradeModule[] tizoTradeModules;
     [SerializeField] Image[] inventoryItemImages;
     [SerializeField] GameObject[] infoCards;
@@ -48,7 +47,7 @@ public class TizoShop : MonoBehaviour
             shopOpen = true;
             Player.instance.playerMovement.movementRoot.SetTotalRoot("tizoShop", true);
             UpdateUi();
-            canvas.SetActive(true);
+            OpenMenu();
             FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
 
             foreach (GameObject infoCard in infoCards)
@@ -72,7 +71,7 @@ public class TizoShop : MonoBehaviour
         {
             shopOpen = false;
             Player.instance.playerMovement.movementRoot.SetTotalRoot("tizoShop", false);
-            canvas.SetActive(false);
+            CloseMenu();
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             GameManager.instance.Resume();
@@ -82,7 +81,7 @@ public class TizoShop : MonoBehaviour
     void Start()
     {
         shopOpen = false;
-        canvas.SetActive(false);
+        CloseMenu();
         trades = new List<TizoTrade>();
     }
     

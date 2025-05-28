@@ -8,7 +8,7 @@ public class DeathShrine : InteractionObject
 {
     [SerializeField] int healthCost = 0;
     [SerializeField] ItemPickup itemPickup;
-    [SerializeField] UIMenu canvasObject;
+    [SerializeField] UIMenu infoBox;
 
 
     bool bought = false;
@@ -20,11 +20,11 @@ public class DeathShrine : InteractionObject
 
         if (isClose)
         {
-            canvasObject.OpenMenu();
+            infoBox.OpenMenu();
         }
         else
         {
-            canvasObject.CloseMenu();
+            infoBox.CloseMenu();
         }
     }
 
@@ -34,7 +34,7 @@ public class DeathShrine : InteractionObject
 
         Player.instance.playerStats.RemoveMaxHealth(healthCost);
         itemPickup.gameObject.SetActive(true);
-        canvasObject.CloseMenu();
+        infoBox.CloseMenu();
 
         bought = true;
     }

@@ -21,7 +21,7 @@ public class PickUpCanvasController : UIMenu
 
     void Start()
     {
-        mainObjMenu.SetActive(false);
+        CloseMenu();
         normalBuyColor = costText.color;
     }
 
@@ -107,7 +107,6 @@ public class PickUpCanvasController : UIMenu
         collectText.gameObject.SetActive(true);
         interactButtonPrompt.gameObject.SetActive(true);
 
-        mainObjMenu.SetActive(true);
-        UIMaster.instance.MenuOpened(this);
+        OpenMenu();
     }
 }

@@ -7802,7 +7802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e27c5a1a363eaf74dac543dd5933e09a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 8307926091592101609}
+  mainComponent: {fileID: 8307926091592101609}
   tizoTradeModules:
   - {fileID: 3152894430648353733}
   - {fileID: 5046899477556111422}
@@ -7929,6 +7929,7 @@ MonoBehaviour:
   commonTradeAmount: 5
   rareTradeAmount: 3
   mysticTradeAmount: 1
+  guaranteedBlueprints: []
   commonTradeBlueprints:
   - costRarity: 0000000001000000
     costCategory: 010000000200000003000000
@@ -7936,18 +7937,21 @@ MonoBehaviour:
     getRarity: 00000000
     getCategory: 00000000010000000200000003000000
     getAmount: 1
+    guaranteedItems: []
   - costRarity: 00000000
     costCategory: 010000000200000003000000
     costAmount: 2
     getRarity: 00000000
     getCategory: 00000000010000000200000003000000
     getAmount: 1
+    guaranteedItems: []
   - costRarity: 0000000001000000
     costCategory: 00000000
     costAmount: 1
     getRarity: 00000000
     getCategory: 010000000200000003000000
     getAmount: 2
+    guaranteedItems: []
   rareTradeBlueprints:
   - costRarity: 0000000001000000
     costCategory: 00000000
@@ -7955,30 +7959,35 @@ MonoBehaviour:
     getRarity: 00000000
     getCategory: 00000000
     getAmount: 1
+    guaranteedItems: []
   - costRarity: 0000000001000000
     costCategory: 010000000200000003000000
     costAmount: 2
     getRarity: 01000000
     getCategory: 00000000010000000200000003000000
     getAmount: 1
+    guaranteedItems: []
   - costRarity: 00000000
     costCategory: 010000000200000003000000
     costAmount: 3
     getRarity: 01000000
     getCategory: 00000000010000000200000003000000
     getAmount: 1
+    guaranteedItems: []
   - costRarity: 0000000001000000
     costCategory: 010000000200000003000000
     costAmount: 2
     getRarity: 00000000
     getCategory: 00000000
     getAmount: 1
+    guaranteedItems: []
   - costRarity: 0000000001000000
     costCategory: 010000000200000003000000
     costAmount: 3
     getRarity: 00000000
     getCategory: 00000000010000000200000003000000
     getAmount: 2
+    guaranteedItems: []
   mysticTradeBlueprints:
   - costRarity: 02000000
     costCategory: 00000000010000000200000003000000
@@ -7986,18 +7995,21 @@ MonoBehaviour:
     getRarity: 02000000
     getCategory: 00000000010000000200000003000000
     getAmount: 1
+    guaranteedItems: []
   - costRarity: 0000000001000000
     costCategory: 00000000010000000200000003000000
     costAmount: 4
     getRarity: 02000000
     getCategory: 00000000010000000200000003000000
     getAmount: 1
+    guaranteedItems: []
   - costRarity: 02000000
     costCategory: 00000000010000000200000003000000
     costAmount: 1
     getRarity: 0000000001000000
     getCategory: 00000000010000000200000003000000
     getAmount: 3
+    guaranteedItems: []
   references:
     version: 2
     RefIds: []
@@ -12412,6 +12424,10 @@ PrefabInstance:
     - target: {fileID: 6523147781103385690, guid: ca2e80c1e223bcf47bf65faa88078fa5, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299997829957041105, guid: ca2e80c1e223bcf47bf65faa88078fa5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca2e80c1e223bcf47bf65faa88078fa5, type: 3}
