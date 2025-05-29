@@ -14,7 +14,7 @@ public class UIMenu : MonoBehaviour
             return;
         }
         UIManager.instance.MenuClosed(this);
-        
+        BeforeClosing();
         mainComponent.SetActive(false);
     }
 
@@ -23,4 +23,7 @@ public class UIMenu : MonoBehaviour
         UIManager.instance.MenuOpened(this);
         mainComponent.SetActive(true);
     }
+
+    protected virtual void BeforeClosing()
+    {}
 }

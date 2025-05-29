@@ -69,13 +69,18 @@ public class TizoShop : UIMenu
             GameManager.instance.Pause();
         } else if (shopOpen && !openShop)
         {
-            shopOpen = false;
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("tizoShop", false);
+            BeforeClosing();
             CloseMenu();
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            GameManager.instance.Resume();
         }
+    }
+
+    protected override void BeforeClosing()
+    {
+        shopOpen = false;
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("tizoShop", false);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        GameManager.instance.Resume();
     }
 
     void Start()
