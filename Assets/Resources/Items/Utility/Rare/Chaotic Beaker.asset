@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff04d270692645468f7bbf12f973753, type: 3}
+  m_Name: Chaotic Beaker
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 130ff6ea6d61b024394ff2ee7a17cd80, type: 3}
+  itemName:
+    m_TableReference:
+      m_TableCollectionName: GUID:b42dd4c19cb36944cb58d22543c8ce34
+    m_TableEntryReference:
+      m_KeyId: 3930853376
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:b42dd4c19cb36944cb58d22543c8ce34
+    m_TableEntryReference:
+      m_KeyId: 6350966784
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  itemCost: 45
+  effects:
+  - rid: 7456394559367938049
+  itemCategory: 3
+  itemRarity: 1
+  maxSpawn: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 7456394559367938049
+      type: {class: ColorInventoryBools, ns: , asm: Assembly-CSharp}
+      data:
+        dontMixColor: 0
+        autoRotate: 0
+        chaosBottle: 1
+        routedSheild: 0
+        chaoticMixer: 0
