@@ -54,6 +54,7 @@ public class ButtonPromptManager : MonoBehaviour
 
     private void CheckInputType(InputAction.CallbackContext ctx)
     {
+        if(playerInput == null) playerInput = FindObjectOfType<PlayerInput>();
         string inputType = playerInput.currentControlScheme;
 
         if (!currentMap.Equals(inputType))
