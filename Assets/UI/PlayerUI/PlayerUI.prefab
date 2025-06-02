@@ -932,7 +932,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4470945941623654776}
+      - m_Target: {fileID: 636044336984137308}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
@@ -1784,6 +1784,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1622469025903706376}
   - component: {fileID: 1622469025903706378}
+  - component: {fileID: 636044336984137308}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -1820,6 +1821,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1622469025903706377}
   m_CullTransparentMesh: 1
+--- !u!114 &636044336984137308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622469025903706377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba09cb1e3d1041dda402f9224b90c18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainComponent: {fileID: 3763371293221563608}
+  eventSystem: {fileID: 758204730742252188}
+  resumeButton: {fileID: 1622469027543427806}
+  uiController: {fileID: 4327467504881031851}
 --- !u!1 &1622469026395780375
 GameObject:
   m_ObjectHideFlags: 0
@@ -2295,7 +2312,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4470945941623654776}
+      - m_Target: {fileID: 636044336984137308}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: ResumeButton
         m_Mode: 1
@@ -4899,7 +4916,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4470945941623654776}
+      - m_Target: {fileID: 636044336984137308}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: GoToMainMenu
         m_Mode: 1
@@ -4998,14 +5015,13 @@ GameObject:
   - component: {fileID: 4339321502498122874}
   - component: {fileID: 2884065263580309207}
   - component: {fileID: 7138046059951062010}
-  - component: {fileID: 4470945941623654776}
   m_Layer: 5
   m_Name: PauseMenuContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4339321502498122874
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5013,7 +5029,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3763371293221563608}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5073,21 +5089,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4470945941623654776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3763371293221563608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bba09cb1e3d1041dda402f9224b90c18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventSystem: {fileID: 758204730742252188}
-  resumeButton: {fileID: 1622469027543427806}
-  uiController: {fileID: 4327467504881031851}
 --- !u!1 &3773080903704952162
 GameObject:
   m_ObjectHideFlags: 0
@@ -5478,7 +5479,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4470945941623654776}
+      - m_Target: {fileID: 636044336984137308}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: OpenSettings
         m_Mode: 1
@@ -7398,6 +7399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8829730263616068806}
   - component: {fileID: 8250186116241941908}
+  - component: {fileID: 4035731731157288502}
   m_Layer: 0
   m_Name: Inventory
   m_TagString: Untagged
@@ -7457,6 +7459,19 @@ MonoBehaviour:
   descriptionFontSize: 24
   eventSystem: {fileID: 758204730742252188}
   excessItemsCounter: {fileID: 8212724955828539915}
+--- !u!114 &4035731731157288502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6049644298222777582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd79713c54024545aca13069a4490c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainComponent: {fileID: 6444713895006733558}
 --- !u!1 &6186968781868845097
 GameObject:
   m_ObjectHideFlags: 0
@@ -8523,7 +8538,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4470945941623654776}
+      - m_Target: {fileID: 636044336984137308}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: OpenMap
         m_Mode: 1
@@ -9547,6 +9562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2963951173483856808}
+  - component: {fileID: 5420911581473831873}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -9575,6 +9591,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -128, y: -72}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5420911581473831873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7528054217529449723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd79713c54024545aca13069a4490c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainComponent: {fileID: 7050331720566273239}
 --- !u!1 &7575402937564345594
 GameObject:
   m_ObjectHideFlags: 0
@@ -9798,14 +9827,10 @@ MonoBehaviour:
   tipsPanel: {fileID: 1774150549679122297}
   loaded: 0
   lightbox: {fileID: 5240279103055004770}
-  pauseMenuContainer: {fileID: 3763371293221563608}
-  settingsContainer: {fileID: 1291233091008916142}
-  mapContainer: {fileID: 7050331720566273239}
-  inventoryContainer: {fileID: 6444713895006733558}
-  openPauseMenu: {fileID: 425318427900767816, guid: fd04459890e791843a48243064f9151b, type: 3}
-  openMap: {fileID: -9189985484616426647, guid: fd04459890e791843a48243064f9151b, type: 3}
-  openInventory: {fileID: -3112959694430139555, guid: fd04459890e791843a48243064f9151b, type: 3}
-  closeTips: {fileID: -4679931084075046408, guid: fd04459890e791843a48243064f9151b, type: 3}
+  pauseMenu: {fileID: 636044336984137308}
+  settings: {fileID: 6646258479524696789}
+  map: {fileID: 5420911581473831873}
+  inventory: {fileID: 4035731731157288502}
   hideSlots: []
 --- !u!114 &8691176937124433124
 MonoBehaviour:
@@ -11548,7 +11573,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4470945941623654776}
+      - m_Target: {fileID: 636044336984137308}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: OpenInventory
         m_Mode: 1
@@ -12587,6 +12612,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1905754977137966822}
     m_Modifications:
+    - target: {fileID: 2528721337929625791, guid: 89c43d6c89bf9934480a410a445dee4d, type: 3}
+      propertyPath: mainComponent
+      value: 
+      objectReference: {fileID: 1291233091008916142}
     - target: {fileID: 5965328767003029450, guid: 89c43d6c89bf9934480a410a445dee4d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -12687,3 +12716,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5965328767003029450, guid: 89c43d6c89bf9934480a410a445dee4d, type: 3}
   m_PrefabInstance: {fileID: 9163578906987569770}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6646258479524696789 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2528721337929625791, guid: 89c43d6c89bf9934480a410a445dee4d, type: 3}
+  m_PrefabInstance: {fileID: 9163578906987569770}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a594e5aa00b8643aa1b84342d6b5c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

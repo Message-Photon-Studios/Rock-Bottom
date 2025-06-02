@@ -8,28 +8,32 @@ using AYellowpaper.SerializedCollections;
 using Unity.VisualScripting;
 using System.Linq;
 using UnityEngine.Localization;
-public class TipsManager : MonoBehaviour, IDataPersistence
+public class TipsManager : UIMenu, IDataPersistence
 {
     [SerializeField] SerializedDictionary<string, Tips> tipsDictionary;
     private SerializedDictionary<string, Tips> currentTipsDictionary;
 
     [SerializeField] LocalizedString[] loadingTips;
 
-    [SerializeField] InputActionReference removeTooltipButton;
-
-
     Action<InputAction.CallbackContext> removeTooltip;
 
     void Start()
     {
-        removeTooltip = (InputAction.CallbackContext ctx) => {CloseTips();};
+        removeTooltip = (InputAction.CallbackContext ctx) => { CloseTips(); };
+        Player.instance.interactAction += BeforeClosing;
+        mainComponent = Player.instance.playerUi.tipsPanel;
+    }
+
+    void OnDestroy()
+    {
+        Player.instance.interactAction -= BeforeClosing;
     }
 
     public void CloseTips()
     {
-        if(!Player.instance) return;
-        if(!Player.instance.playerUi.tipsPanel.activeSelf) return;
-        Player.instance.playerUi.tipsPanel.SetActive(false);
+        if (!Player.instance) return;
+        if (!mainComponent.activeSelf) return;
+        CloseMenu();
         Player.instance.playerUi.lightbox.SetActive(false);
         GameManager.instance.Resume();
     }
@@ -47,22 +51,28 @@ public class TipsManager : MonoBehaviour, IDataPersistence
 
             if(tipsObj.callsNeeded <= 0)
             {
-                Player.instance.playerUi.tipsPanel.GetComponentInChildren<TMP_Text>().text = tipsObj.text.GetLocalizedString();
+                mainComponent.GetComponentInChildren<TMP_Text>().text = tipsObj.text.GetLocalizedString();
                 tipsObj.hasBeenDisplayed = true;
-                Player.instance.playerUi.tipsPanel.SetActive(true);
+                OpenMenu();
                 Player.instance.playerUi.lightbox.SetActive(true);
                 GameManager.instance.Pause();
             }
         }
         else 
         {
-            Player.instance.playerUi.tipsPanel.GetComponentInChildren<TMP_Text>().text = tipsKey;
+            mainComponent.GetComponentInChildren<TMP_Text>().text = tipsKey;
             currentTipsDictionary.Add(tipsKey, new Tips(true, tipsDictionary[tipsKey].text, 0));
             Player.instance.playerUi.lightbox.SetActive(true);
-            Player.instance.playerUi.tipsPanel.SetActive(true);
+            OpenMenu();
             GameManager.instance.Pause();
         }
     }
+
+    protected override void BeforeClosing()
+    {
+        CloseTips();
+    }
+
     private void ResetTipsDictionary()
     {
         currentTipsDictionary = new SerializedDictionary<string, Tips>();

@@ -13,17 +13,21 @@ public class UIMenu : MonoBehaviour
             Debug.LogWarning("UIMenu missing main component: " + transform.parent.name);
             return;
         }
-        UIManager.instance.MenuClosed(this);
-        BeforeClosing();
         mainComponent.SetActive(false);
+        BeforeClosing();
+        UIManager.instance.MenuClosed(this);
     }
 
     public void OpenMenu()
     {
-        UIManager.instance.MenuOpened(this);
+        BeforeOpening();
         mainComponent.SetActive(true);
+        UIManager.instance.MenuOpened(this);
     }
 
     protected virtual void BeforeClosing()
+    {}
+
+    protected virtual void BeforeOpening()
     {}
 }

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : BigMenu
 {
     [SerializeField] EventSystem eventSystem;
 
@@ -14,25 +14,26 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] UIController uiController;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         eventSystem.SetSelectedGameObject(null);
         resumeButton.GetComponent<Selectable>().Select();
     }
 
     public void ResumeButton(){
-        uiController.OpenPauseMenu();
+        CloseMenu();
     }
 
     public void OpenMap() {
-        uiController.OpenMap();
+        uiController.map.OpenMenu();
     }
 
     public void OpenInventory() {
-        uiController.OpenInventory();
+        uiController.inventory.OpenMenu();
     }
 
     public void OpenSettings() {
-        uiController.OpenSettings();
+        uiController.settings.OpenMenu();
     }
 
     public void GoToMainMenu()

@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     public UIMenu currentlyOpen = null;
+    [SerializeField] InputActionReference escapeHatchInput;
     void Awake()
     {
         if (instance == null)
@@ -16,6 +20,7 @@ public class UIManager : MonoBehaviour
         {
             enabled = false;
         }
+        escapeHatchInput.action.performed += EscapeHatch;
     }
 
     public void MenuOpened(UIMenu menu)
@@ -42,5 +47,25 @@ public class UIManager : MonoBehaviour
         {
             currentlyOpen = null;
         }
+    }
+
+    private void EscapeHatch(InputAction.CallbackContext ctx)
+    {
+        EscapeHatch();
+    }
+    private void EscapeHatch()
+    {
+        if (currentlyOpen == null)
+        {
+            if (Player.instance != null)
+            {
+                Player.instance.playerUi.pauseMenu.OpenMenu();
+            }
+        }
+        else
+        {
+            currentlyOpen.CloseMenu();
+        }
+        
     }
 }
