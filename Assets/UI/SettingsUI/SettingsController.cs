@@ -29,7 +29,7 @@ public class SettingsController : UIMenu
         screenSizeText.text = screenSizeSlider.value.ToString("F1");
     }
 
-    protected override void BeforeClosing()
+    protected override void AfterClosing()
     {
         if (Player.instance != null)
         {
