@@ -6,7 +6,7 @@ using TMPro;
 using System.Linq;
 using Steamworks;
 
-public class CombineToSlotsController : MonoBehaviour
+public class CombineToSlotsController : UIMenu
 {
     [SerializeField] TMP_Text focusText;
     [SerializeField] Image focusImage;
@@ -16,10 +16,9 @@ public class CombineToSlotsController : MonoBehaviour
     [SerializeField] Image[] mixIcons;
     [SerializeField] float openYpos;
     [SerializeField] RectTransform slotsParent;
-    [SerializeField] GameObject uiObj;
 
     private Vector3 startingPos;
-    
+
     void Start()
     {
         startingPos = slotsParent.position;
@@ -36,13 +35,13 @@ public class CombineToSlotsController : MonoBehaviour
 
     public void AddColor(bool pickup, GameColor colorToAdd)
     {
-        if(!pickup)
+        if (!pickup)
         {
             CloseUi();
             return;
         }
 
-        if(Player.instance.playerCombatSystem.colorWell.GetColorAmount() <= 0 || Player.instance.playerCombatSystem.colorWell.color == null)
+        if (Player.instance.playerCombatSystem.colorWell.GetColorAmount() <= 0 || Player.instance.playerCombatSystem.colorWell.color == null)
         {
             DivideColorShrine(colorToAdd);
             return;
@@ -53,7 +52,7 @@ public class CombineToSlotsController : MonoBehaviour
         for (int i = 0; i < slotCount && i < colorPickupArrows.Length && i < mixIcons.Length; i++)
         {
             GameColor mixColor = Player.instance.colorInventory.GetColorSlotColor(i).MixColor(colorToAdd);
-           // arrows[i].GetComponent<Image>().color = mixColor.plainColor;
+            // arrows[i].GetComponent<Image>().color = mixColor.plainColor;
             colorPickupArrows[i].transform.GetChild(0).GetComponent<Image>().color = colorToAdd.plainColor;
             mixIcons[i].sprite = mixColor.colorIcon;
             mixIcons[i].gameObject.SetActive(true);
@@ -70,7 +69,7 @@ public class CombineToSlotsController : MonoBehaviour
 
         for (int i = 0; i < slotCount && i < divideColorArrows.Length && i < mixIcons.Length; i++)
         {
-            if(Player.instance.colorInventory.GetColorSlotColor(i) == null || !Player.instance.colorInventory.GetColorSlotColor(i).SharesRootColor(colorToShrine)) 
+            if (Player.instance.colorInventory.GetColorSlotColor(i) == null || !Player.instance.colorInventory.GetColorSlotColor(i).SharesRootColor(colorToShrine))
             {
                 colorPickupArrows[i].SetActive(false);
                 continue;
@@ -87,7 +86,7 @@ public class CombineToSlotsController : MonoBehaviour
 
     public void AddBottle(bool pickup, ColorSpell spellToAdd)
     {
-        if(!pickup)
+        if (!pickup)
         {
             CloseUi();
             return;
@@ -103,18 +102,18 @@ public class CombineToSlotsController : MonoBehaviour
         OpenUi(spellToAdd.bottleName.GetLocalizedString(), spellToAdd.GetBottleSprite().smallSprite, slotCount);
     }
 
-    private void OpenUi (string text, Sprite sprite, int slotCount)
+    private void OpenUi(string text, Sprite sprite, int slotCount)
     {
         focusText.text = text;
         focusImage.sprite = sprite;
-        
+
         //slotsParent.position = startingPos + Vector3.up*openYpos;
-        uiObj.SetActive(true);
+        OpenMenu();
     }
 
     public void CloseUi()
     {
-        uiObj.SetActive(false);
+        CloseMenu();
         foreach (GameObject obj in colorPickupArrows)
         {
             obj.transform.GetChild(0).GetComponent<Image>().color = new Color(0, 0, 0, 0);
@@ -138,5 +137,10 @@ public class CombineToSlotsController : MonoBehaviour
             icon.gameObject.SetActive(false);
         }
         //slotsParent.position = startingPos;
+    }
+
+    protected override void BeforeClosing()
+    {
+        if(Player.instance.playerCombatSystem.addColorMode) Player.instance.playerCombatSystem.DeactivateAddColorMode();
     }
 }
