@@ -52,9 +52,14 @@ public class ButtonPromptManager : MonoBehaviour
         return currentMap;
     }
 
+    public bool IsOnController()
+    {
+        return (!currentMap.Equals("Keyboard") || !currentMap.Equals("KeyboardMouse"));
+    }
+
     private void CheckInputType(InputAction.CallbackContext ctx)
     {
-        if(playerInput == null) playerInput = FindObjectOfType<PlayerInput>();
+        if (playerInput == null) playerInput = FindObjectOfType<PlayerInput>();
         string inputType = playerInput.currentControlScheme;
 
         if (!currentMap.Equals(inputType))
