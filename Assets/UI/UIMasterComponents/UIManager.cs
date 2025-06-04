@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
     public UIMenu currentlyOpen = null;
     [SerializeField] InputActionReference escapeHatch;
+    [SerializeField] InputActionReference controllerBack;
     void Awake()
     {
         if (instance == null)
@@ -21,11 +22,13 @@ public class UIManager : MonoBehaviour
             enabled = false;
         }
         escapeHatch.action.performed += EscapeHatch;
+        controllerBack.action.performed += ControllerBack;
     }
 
     void OnDestroy()
     {
         escapeHatch.action.performed -= EscapeHatch;
+        controllerBack.action.performed -= ControllerBack;
     }
 
     public void MenuOpened(UIMenu menu)
@@ -58,21 +61,37 @@ public class UIManager : MonoBehaviour
     {
         EscapeHatch();
     }
-    private void EscapeHatch() {
-        if (currentlyOpen == null) {
-            if (Player.instance != null) {
+    private void EscapeHatch()
+    {
+        if (currentlyOpen == null)
+        {
+            if (Player.instance != null)
+            {
                 Player.instance.playerUi.pauseMenu.OpenMenu();
             }
-        } else if (Player.instance != null) {
-            if (Player.instance.playerUi.settings.mainComponent.activeSelf) {
+        }
+        else if (Player.instance != null)
+        {
+            if (Player.instance.playerUi.settings.mainComponent.activeSelf)
+            {
                 Player.instance.playerUi.pauseMenu.OpenMenu();
             }
-            else {
+            else
+            {
                 currentlyOpen.CloseMenu();
             }
         }
-        else {
+        else
+        {
             currentlyOpen.CloseMenu();
-        }  
+        }
+    }
+
+    private void ControllerBack(InputAction.CallbackContext ctx)
+    {
+        if (currentlyOpen.IsBigMenu())
+        {
+            EscapeHatch();
+        }
     }
 }

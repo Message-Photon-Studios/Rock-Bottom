@@ -188,6 +188,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ControllerBack"",
+                    ""type"": ""Button"",
+                    ""id"": ""0347771a-fa35-4b2f-bfcc-71d1ca824a27"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1081,6 +1090,28 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""DivideColor4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9755d2ca-9740-4861-b0e8-40dae4dfd82f"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController"",
+                    ""action"": ""ControllerBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""725cf336-897b-44bd-bd8c-4f3f62bc27a1"",
+                    ""path"": ""<DualShockGamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation"",
+                    ""action"": ""ControllerBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1157,6 +1188,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_DivideColor3 = m_Player.FindAction("DivideColor3", throwIfNotFound: true);
         m_Player_DivideColor4 = m_Player.FindAction("DivideColor4", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_ControllerBack = m_Player.FindAction("ControllerBack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1234,6 +1266,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DivideColor3;
     private readonly InputAction m_Player_DivideColor4;
     private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_ControllerBack;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -1256,6 +1289,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @DivideColor3 => m_Wrapper.m_Player_DivideColor3;
         public InputAction @DivideColor4 => m_Wrapper.m_Player_DivideColor4;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @ControllerBack => m_Wrapper.m_Player_ControllerBack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1319,6 +1353,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @ControllerBack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnControllerBack;
+                @ControllerBack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnControllerBack;
+                @ControllerBack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnControllerBack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1377,6 +1414,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @ControllerBack.started += instance.OnControllerBack;
+                @ControllerBack.performed += instance.OnControllerBack;
+                @ControllerBack.canceled += instance.OnControllerBack;
             }
         }
     }
@@ -1437,5 +1477,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnDivideColor3(InputAction.CallbackContext context);
         void OnDivideColor4(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnControllerBack(InputAction.CallbackContext context);
     }
 }
