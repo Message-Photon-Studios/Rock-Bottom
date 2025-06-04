@@ -24,14 +24,11 @@ public class UIMenu : MonoBehaviour
         BeforeOpening();
         mainComponent.SetActive(true);
         UIManager.instance.MenuOpened(this);
+        AfterOpening();
     }
 
-    protected virtual void BeforeClosing()
-    { }
-
-    protected virtual void BeforeOpening()
-    { }
-
-    protected virtual void AfterClosing()
-    { }
+    protected virtual void BeforeClosing(){}
+    protected virtual void BeforeOpening(){}
+    protected virtual void AfterClosing(){}
+    protected virtual void AfterOpening(){}
 }

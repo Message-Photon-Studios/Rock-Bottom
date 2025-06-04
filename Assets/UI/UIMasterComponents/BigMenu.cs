@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BigMenu : UIMenu
 {
-    protected override void BeforeClosing()
+    protected override void AfterClosing()
     {
         GameManager.instance.Resume();
         if (Player.instance)
@@ -14,7 +14,7 @@ public class BigMenu : UIMenu
         }
     }
 
-    protected override void BeforeOpening()
+    protected override void AfterOpening()
     {
         GameManager.instance.Pause();
         if (Player.instance)

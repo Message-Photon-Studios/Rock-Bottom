@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class SettingsController : UIMenu
+public class SettingsController : BigMenu
 {
     [SerializeField] MainMenuController controller;
     [SerializeField] Slider screenSizeSlider;
