@@ -5,14 +5,14 @@ using UnityEngine;
 public class RainbowMaxedBuff : ItemEffect
 {
     [Header("Rainbow Combo Damage")]
-    [SerializeField] float power;
+    [SerializeField] int damage;
     public override void ActivateEffect()
     {
-        GetPlayer().GetComponent<PlayerStats>().colorRainbowMaxedPower += power;
+        GetPlayer().GetComponent<PlayerStats>().rainbowedDamage += damage;
     }
 
     public override void DisableEffect()
     {
-        GetPlayer().GetComponent<PlayerStats>().colorRainbowMaxedPower -= power;
+        GetPlayer().GetComponent<PlayerStats>().rainbowedDamage -= damage;
     }
 }
