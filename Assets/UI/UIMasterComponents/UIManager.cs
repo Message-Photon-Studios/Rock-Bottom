@@ -58,17 +58,20 @@ public class UIManager : MonoBehaviour
     {
         EscapeHatch();
     }
-    private void EscapeHatch()
-    {
-        if (currentlyOpen == null)
-        {
-            if (Player.instance != null)
-            {
+    private void EscapeHatch() {
+        if (currentlyOpen == null) {
+            if (Player.instance != null) {
                 Player.instance.playerUi.pauseMenu.OpenMenu();
             }
+        } else if (Player.instance != null) {
+            if (Player.instance.playerUi.settings.mainComponent.activeSelf) {
+                Player.instance.playerUi.pauseMenu.OpenMenu();
+            }
+            else {
+                currentlyOpen.CloseMenu();
+            }
         }
-        else
-        {
+        else {
             currentlyOpen.CloseMenu();
         }  
     }

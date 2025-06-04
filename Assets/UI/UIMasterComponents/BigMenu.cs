@@ -16,11 +16,14 @@ public class BigMenu : UIMenu
 
     protected override void AfterOpening()
     {
-        GameManager.instance.Pause();
-        if (Player.instance)
+        if (UIManager.instance.currentlyOpen != null)
         {
-            Player.instance.playerUi.lightbox.SetActive(true);
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("bigMenuOpen", true);
+            GameManager.instance.Pause();
+            if (Player.instance)
+            {
+                Player.instance.playerUi.lightbox.SetActive(true);
+                Player.instance.playerMovement.movementRoot.SetTotalRoot("bigMenuOpen", true);
+            }
         }
     }
 

@@ -28,12 +28,4 @@ public class SettingsController : BigMenu
         SettingsManager.instance.SetCameraSize(screenSizeSlider.value);
         screenSizeText.text = screenSizeSlider.value.ToString("F1");
     }
-
-    protected override void AfterClosing()
-    {
-        if (Player.instance != null)
-        {
-            Player.instance.playerUi.pauseMenu.OpenMenu();
-        }
-    }
 }
