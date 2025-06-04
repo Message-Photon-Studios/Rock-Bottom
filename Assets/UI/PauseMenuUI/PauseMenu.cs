@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Handles the logic of the pause menu.
+/// </summary>
 public class PauseMenu : BigMenu
 {
     [SerializeField] EventSystem eventSystem;
@@ -20,19 +23,23 @@ public class PauseMenu : BigMenu
         resumeButton.GetComponent<Selectable>().Select();
     }
 
-    public void ResumeButton(){
+    public void ResumeButton()
+    {
         CloseMenu();
     }
 
-    public void OpenMap() {
+    public void OpenMap()
+    {
         uiController.map.OpenMenu();
     }
 
-    public void OpenInventory() {
+    public void OpenInventory()
+    {
         uiController.inventory.OpenMenu();
     }
 
-    public void OpenSettings() {
+    public void OpenSettings()
+    {
         uiController.settings.OpenMenu();
     }
 

@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A big menu will pause the game and root the player as well as turning on a lightbox.
+/// It does this after opening or closing the menu. 
+/// </summary>
 public class BigMenu : UIMenu
 {
     protected override void AfterClosing()
