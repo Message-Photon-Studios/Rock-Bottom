@@ -27,6 +27,11 @@ public class UIMenu : MonoBehaviour
         AfterOpening();
     }
 
+    public virtual bool IsBigMenu()
+    {
+        return false;
+    }
+
     protected virtual void BeforeClosing(){}
     protected virtual void BeforeOpening(){}
     protected virtual void AfterClosing(){}

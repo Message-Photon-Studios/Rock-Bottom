@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     public UIMenu currentlyOpen = null;
-    [SerializeField] InputActionReference escapeHatchInput;
+    [SerializeField] InputActionReference escapeHatch;
     void Awake()
     {
         if (instance == null)
@@ -20,7 +20,12 @@ public class UIManager : MonoBehaviour
         {
             enabled = false;
         }
-        escapeHatchInput.action.performed += EscapeHatch;
+        escapeHatch.action.performed += EscapeHatch;
+    }
+
+    void OnDestroy()
+    {
+        escapeHatch.action.performed -= EscapeHatch;
     }
 
     public void MenuOpened(UIMenu menu)
@@ -65,7 +70,6 @@ public class UIManager : MonoBehaviour
         else
         {
             currentlyOpen.CloseMenu();
-        }
-        
+        }  
     }
 }

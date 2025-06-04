@@ -23,4 +23,9 @@ public class BigMenu : UIMenu
             Player.instance.playerMovement.movementRoot.SetTotalRoot("bigMenuOpen", true);
         }
     }
+
+    public override bool IsBigMenu()
+    {
+        return true;
+    }
 }
