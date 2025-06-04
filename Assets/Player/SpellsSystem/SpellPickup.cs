@@ -98,7 +98,9 @@ public class SpellPickup : InteractionObject
             pcs.SpellPickup(true, this);
         } else if(!lockBottleAfterSwap)
         {
-            pcs.SpellPickup(false, null);
+            if (pcs.spellPickup == this) {
+                pcs.SpellPickup(false, null);
+            }
         }
     }
 

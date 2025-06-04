@@ -144,6 +144,7 @@ public class CombineToSlotsController : UIMenu
     protected override void BeforeClosing()
     {
         if (Player.instance.playerCombatSystem.addColorMode) Player.instance.playerCombatSystem.DeactivateAddColorMode();
+        if (Player.instance.playerCombatSystem.pickUpSpellMode) Player.instance.playerCombatSystem.SpellPickup(false, null);
         Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUp", false);
     }
 }
