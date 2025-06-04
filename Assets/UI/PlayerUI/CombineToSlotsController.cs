@@ -108,11 +108,13 @@ public class CombineToSlotsController : UIMenu
         focusImage.sprite = sprite;
 
         //slotsParent.position = startingPos + Vector3.up*openYpos;
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUp", true);
         OpenMenu();
     }
 
     public void CloseUi()
     {
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUp", false);
         CloseMenu();
         foreach (GameObject obj in colorPickupArrows)
         {
@@ -141,6 +143,7 @@ public class CombineToSlotsController : UIMenu
 
     protected override void BeforeClosing()
     {
-        if(Player.instance.playerCombatSystem.addColorMode) Player.instance.playerCombatSystem.DeactivateAddColorMode();
+        if (Player.instance.playerCombatSystem.addColorMode) Player.instance.playerCombatSystem.DeactivateAddColorMode();
+        Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUp", false);
     }
 }

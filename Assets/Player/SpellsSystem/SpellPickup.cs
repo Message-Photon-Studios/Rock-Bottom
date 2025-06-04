@@ -96,11 +96,9 @@ public class SpellPickup : InteractionObject
         if(!pcs.pickUpSpellMode)
         {
             pcs.SpellPickup(true, this);
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", true);
         } else if(!lockBottleAfterSwap)
         {
             pcs.SpellPickup(false, null);
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", false);
         }
     }
 
@@ -109,7 +107,6 @@ public class SpellPickup : InteractionObject
     /// </summary>
     public void PickedUp(int slotIndex)
     {
-        Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", false);
         bought = true;
         ColorSpell tmp = inventory.GetColorSpell(slotIndex);
         inventory.ChangeColorSpell(slotIndex, colorSpell);
