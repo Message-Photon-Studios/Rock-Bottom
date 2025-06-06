@@ -36,6 +36,11 @@ public class UIMenu : MonoBehaviour
     /// </summary>
     public void OpenMenu()
     {
+        if (mainComponent == null)
+        {
+            Debug.LogWarning("UIMenu missing main component: " + transform.parent.name);
+            return;
+        }
         BeforeOpening();
         mainComponent.SetActive(true);
         UIManager.instance.MenuOpened(this);

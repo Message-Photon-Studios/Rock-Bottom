@@ -21,7 +21,10 @@ public class PickUpCanvasController : UIMenu
 
     void Start()
     {
-        CloseMenu();
+        if (mainComponent)
+        {
+            CloseMenu();
+        }
         normalBuyColor = costText.color;
     }
 
