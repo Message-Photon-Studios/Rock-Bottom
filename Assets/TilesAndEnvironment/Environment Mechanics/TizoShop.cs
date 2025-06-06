@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 
-public class TizoShop : UIMenu
+public class TizoShop : BigMenu
 {   
     [Header("Ui")]
     [SerializeField] TizoTradeModule[] tizoTradeModules;

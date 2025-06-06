@@ -52,7 +52,10 @@ public class Inspired : InteractionObject
         costText.text = costString.GetLocalizedString() + petrifiedPigmentCost;
         descriptionText.text = unlockSpell.description.GetLocalizedString();
         headerText.text = unlockString.GetLocalizedString() + unlockSpell.GetName();
-        ui.CloseMenu();
+        if (ui)
+        {
+            ui.CloseMenu();
+        }
     }
 
     void OnEnable()

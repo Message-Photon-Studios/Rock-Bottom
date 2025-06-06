@@ -21,12 +21,22 @@ public class TipsManager : UIMenu, IDataPersistence
     {
         removeTooltip = (InputAction.CallbackContext ctx) => { CloseTips(); };
         Player.instance.interactAction += BeforeClosing;
-        mainComponent = Player.instance.playerUi.tipsPanel;
+        GameManager.instance.onLevelLoaded += FetchComponent;
+        FetchComponent();
     }
 
     void OnDestroy()
     {
         Player.instance.interactAction -= BeforeClosing;
+        GameManager.instance.onLevelLoaded -= FetchComponent;
+    }
+
+    private void FetchComponent()
+    {
+        if (Player.instance.playerUi.tipsPanel)
+        {
+            mainComponent = Player.instance.playerUi.tipsPanel;
+        }
     }
 
     public void CloseTips()
