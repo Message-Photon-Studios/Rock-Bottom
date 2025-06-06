@@ -158,15 +158,10 @@ public class GameColor : ScriptableObject
 
         GameColor setToColor = enemy.GetPlayerMixColor(this);
 
-        bool delay = setToColor.name.Equals("Rainbow");
-
-        if (delay && canColorEnemies) enemy.SetPlayerColor(setToColor, 1);
+        if (canColorEnemies) enemy.SetPlayerColor(setToColor, 1);
 
         colorPower += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         colorPower = colorPower * powerScale;
-
-
-
 
         if (Player.instance.colorInventory.colorVarnish && setToColor != this)
         {
@@ -187,8 +182,6 @@ public class GameColor : ScriptableObject
         if (Player.instance.colorInventory.doubleExtraDamage) extraDamage *= 2;
 
         colorEffect.Apply(enemyObj, impactPoint, playerObj, colorPower, forcePerspectivePlayer, extraDamage);
-
-        if (!delay && canColorEnemies) enemy.SetPlayerColor(setToColor, 1);
 
         if (!canColorEnemies) return;
         

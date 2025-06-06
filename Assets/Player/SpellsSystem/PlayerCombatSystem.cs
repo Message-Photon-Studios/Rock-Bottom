@@ -11,7 +11,6 @@ using System.Linq;
 /// </summary>
 public class PlayerCombatSystem : MonoBehaviour
 {
-    public int rainbowComboDamage = 20;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
