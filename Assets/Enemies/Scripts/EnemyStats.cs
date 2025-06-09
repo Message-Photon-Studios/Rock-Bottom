@@ -27,6 +27,7 @@ public class EnemyStats : MonoBehaviour
     [Header("Enemy Settings")]
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
     [SerializeField] private GameObject comboParticles;
+    [SerializeField] private GameObject deathParticles;
 
     [SerializeField] private bool knockbackImune = false;
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
@@ -358,13 +359,13 @@ public class EnemyStats : MonoBehaviour
     {
         if (IsRaibowed()) diedRainbowed = true;
         if (isPoisoned())
-            {
-                GameObject orb = GameObject.Instantiate(poisonOrbPrefab, transform.position, Quaternion.identity) as GameObject;
-                orb.GetComponent<PoisonOrb>().SetupOrb(poisonDamageToTake, poisonDamageReduction, poisonTimer, poisonOrbPrefab);
-                poisonTimer = 0;
-                poisonDamageToTake = 0;
-                poisonDamageReduction = 0;
-            }
+        {
+            GameObject orb = GameObject.Instantiate(poisonOrbPrefab, transform.position, Quaternion.identity) as GameObject;
+            orb.GetComponent<PoisonOrb>().SetupOrb(poisonDamageToTake, poisonDamageReduction, poisonTimer, poisonOrbPrefab);
+            poisonTimer = 0;
+            poisonDamageToTake = 0;
+            poisonDamageReduction = 0;
+        }
         GetComponent<Rigidbody2D>().drag = normalMovementDrag;
         animator.speed = normalAnimationSpeed;
         enemyDead = true;
@@ -385,6 +386,14 @@ public class EnemyStats : MonoBehaviour
             SpawnRainbowOrb(giveColor);
         }
 
+        if (deathParticles != null)
+        {
+            GameObject deathP = Instantiate(deathParticles, transform.position, transform.rotation);
+            var main = deathP.GetComponent<ParticleSystem>().main;
+            main.startColor = GetColor() ? GetColor().plainColor : Color.grey;
+            deathP.GetComponent<ParticleSystem>().Play();
+            Destroy(deathP, 4f);
+        }
         onEnemyDeath?.Invoke(this);
     }
 
