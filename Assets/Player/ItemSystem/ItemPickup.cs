@@ -43,7 +43,7 @@ public class ItemPickup : InteractionObject
         {
             spawnFromEnemy.onEnemyDeath += SpawnFromEnemy;
         } 
-        else if(setByhand)
+        else if(setByhand && item != null)
         {
             SetItem(item, item.itemCost);
         } else
