@@ -392,7 +392,6 @@ public class EnemyStats : MonoBehaviour
             var main = deathP.GetComponent<ParticleSystem>().main;
             main.startColor = GetColor() ? GetColor().plainColor : Color.grey;
             deathP.GetComponent<ParticleSystem>().Play();
-            Destroy(deathP, 4f);
         }
         onEnemyDeath?.Invoke(this);
     }
