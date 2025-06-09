@@ -19,7 +19,7 @@ public class TilemapMask : MonoBehaviour
         {
             for (int i = 0; i < maskParentsObj.Length; i++)
             {
-                if(maskParentsObj[i] != null)
+                if (maskParentsObj[i] != null)
                     DestroyImmediate(maskParentsObj[i]);
             }
         }
@@ -56,6 +56,10 @@ public class TilemapMask : MonoBehaviour
                 }
             }
         }
+
+        #if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+        #endif
     }
 }
 
