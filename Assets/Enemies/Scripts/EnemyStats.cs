@@ -664,6 +664,12 @@ public class EnemyStats : MonoBehaviour
         isColoredThisFrame = true;
     }
 
+    public void SetColorByHand(GameColor color)
+    {
+        SetColor(color);
+        setColorByHand = true;
+    }
+
     /// <summary>
     /// Returns the color that the enemy should be set to when colored by player
     /// </summary>

@@ -28,7 +28,7 @@ public class GameData
     public GameData (string saveFileVersion)
     {
         this.saveFileVersion = saveFileVersion;
-        startScene = "Tutorial_0";
+        startScene = "Tutorial";
         unlockedColorSpells = new string[0];
         petrifiedPigment = 0;
         inspirationPoints = 0;
