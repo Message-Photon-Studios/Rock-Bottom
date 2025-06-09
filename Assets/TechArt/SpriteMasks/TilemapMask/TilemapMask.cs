@@ -30,7 +30,7 @@ public class TilemapMask : MonoBehaviour
         {
             Tilemap tilemap = tilemaps[i];
 
-            if (tilemap.GetComponent<TilemapRenderer>().sortingLayerName != "Default" && tilemap.GetComponent<TilemapRenderer>().sortingLayerName != "Front Decoration") continue;
+            if (tilemap.GetComponent<TilemapRenderer>().sortingLayerName != "Default" && tilemap.GetComponent<TilemapRenderer>().sortingLayerName != "Front Decoration" && tilemap.GetComponent<TilemapRenderer>().sortingLayerName != "Ground") continue;
 
             Vector3Int startCoord = tilemap.origin;
             Vector3Int size = tilemap.size;
