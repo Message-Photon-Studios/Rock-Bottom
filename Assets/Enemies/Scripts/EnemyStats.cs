@@ -328,6 +328,8 @@ public class EnemyStats : MonoBehaviour
             paintersKnifeArmourReduction += 0.05f;
         }
 
+        StartCoroutine(DamageFlash());
+        
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
         if (currentCoroutine != null)
@@ -335,6 +337,15 @@ public class EnemyStats : MonoBehaviour
         if (health <= 0) KillEnemy();
         else if (IsRaibowed() && health <= (maxHealth * Player.instance.stats.rainbowExecutePercentage)) DealRainbowDamage(health+1);
         else if (gameObject.activeSelf) currentCoroutine = StartCoroutine(dmgResponse());
+    }
+
+    private IEnumerator DamageFlash()
+    {
+        Color hurtColor = (GetColor() != null)? GetColor().plainColor : Color.grey;
+        if (hurtColor.Equals(Color.white)) hurtColor = Color.grey;
+        GetComponent<SpriteRenderer>().color = hurtColor;
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     public IEnumerator ChaothicMixer()
