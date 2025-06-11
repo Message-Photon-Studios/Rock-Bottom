@@ -25,7 +25,7 @@ public class TextDisplay : InteractionObject
         else
         {
             textNum = -1;
-            canvasController.CloseUi();
+            canvasController.CloseMenu();
         }
     }
 
@@ -34,7 +34,7 @@ public class TextDisplay : InteractionObject
         textNum++;
         if (textNum >= descriptionString.Length)
         {
-            canvasController.CloseUi();
+            canvasController.CloseMenu();
             textNum = -1;
         }
         else

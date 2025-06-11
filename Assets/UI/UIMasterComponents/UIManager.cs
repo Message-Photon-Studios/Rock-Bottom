@@ -110,7 +110,7 @@ public class UIManager : MonoBehaviour
     /// <param name="ctx"></param>
     private void ControllerBack(InputAction.CallbackContext ctx)
     {
-        if (currentlyOpen.IsBigMenu())
+        if (currentlyOpen && currentlyOpen.IsBigMenu())
         {
             EscapeHatch();
         }
