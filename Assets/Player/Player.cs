@@ -14,10 +14,12 @@ public class Player : MonoBehaviour
 
     [Header("Control Inputs")]
     [SerializeField] InputActionReference   interactInput;
-    [SerializeField] InputActionReference   attack1Input, attack2Input, attack3Input, attack4Input,
+    [SerializeField]
+    InputActionReference attack1Input, attack2Input, attack3Input, attack4Input,
                                             removeColorInput1, removeColorInput2, removeColorInput3, removeColorInput4,
                                             rotateColorInput,
-                                            walkInput, jumpInput, verticalMoveInput, dashInput, lookInput;
+                                            walkInput, jumpInput, verticalMoveInput, dashInput, lookInput,
+                                            mapInput, inventoryInput;
 
 
     [Header("Load with player")]
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour
     public Action<float> lookAction;
     public Action lookCancelAction; 
     public Action verticalMoveAction, verticalMoveCancelAction;
+    public Action mapAction, inventoryAction;
 
     public float walkDir = 0;
     public float verticalMoveDir = 0;
@@ -53,6 +56,8 @@ public class Player : MonoBehaviour
     private void SetupInputs ()
     {
         interactInput.action.performed += (InputAction.CallbackContext ctx) => interactAction?.Invoke();
+        mapInput.action.performed += (InputAction.CallbackContext ctx) => mapAction?.Invoke();
+        inventoryInput.action.performed += (InputAction.CallbackContext ctx) => inventoryAction?.Invoke();
         
         attack1Input.action.performed += (InputAction.CallbackContext ctx) => attackAction?.Invoke(0);
         attack2Input.action.performed += (InputAction.CallbackContext ctx) => attackAction?.Invoke(1);
@@ -88,6 +93,8 @@ public class Player : MonoBehaviour
     public void RemoveActionListeners()
     {
         interactInput.action.performed -= (InputAction.CallbackContext ctx) => interactAction?.Invoke();
+        mapInput.action.performed -= (InputAction.CallbackContext ctx) => mapAction?.Invoke();
+        inventoryInput.action.performed -= (InputAction.CallbackContext ctx) => inventoryAction?.Invoke();
         
         attack1Input.action.performed -= (InputAction.CallbackContext ctx) => attackAction?.Invoke(0);
         attack2Input.action.performed -= (InputAction.CallbackContext ctx) => attackAction?.Invoke(1);

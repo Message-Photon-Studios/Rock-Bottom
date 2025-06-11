@@ -76,7 +76,7 @@ public class SpellPickup : InteractionObject
             }
 
             pickUpController.SetBottle(this);
-        } else pickUpController.CloseUi();
+        } else pickUpController.CloseMenu();
 
     }
 
@@ -96,11 +96,11 @@ public class SpellPickup : InteractionObject
         if(!pcs.pickUpSpellMode)
         {
             pcs.SpellPickup(true, this);
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", true);
         } else if(!lockBottleAfterSwap)
         {
-            pcs.SpellPickup(false, null);
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", false);
+            if (pcs.spellPickup == this) {
+                pcs.SpellPickup(false, null);
+            }
         }
     }
 
@@ -109,7 +109,6 @@ public class SpellPickup : InteractionObject
     /// </summary>
     public void PickedUp(int slotIndex)
     {
-        Player.instance.playerMovement.movementRoot.SetTotalRoot("pickUpSpell", false);
         bought = true;
         ColorSpell tmp = inventory.GetColorSpell(slotIndex);
         inventory.ChangeColorSpell(slotIndex, colorSpell);
@@ -122,7 +121,7 @@ public class SpellPickup : InteractionObject
         body.gravityScale = 2;
         if(lockBottleAfterSwap) 
         {
-            pickUpController.CloseUi();
+            pickUpController.CloseMenu();
         } else 
         {
             pickUpController.SetBottle(this);

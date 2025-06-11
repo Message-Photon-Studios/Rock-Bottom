@@ -71716,15 +71716,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2618340561598630056, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2618340561598630056, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2618340561598630056, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2705617595509956397, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
       propertyPath: m_AnchorMax.x
@@ -81988,7 +81988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7231226161982647637, guid: 1869f86a7751f7c4b95e33ac48e1978f, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7231226161982647637, guid: 1869f86a7751f7c4b95e33ac48e1978f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -82039,6 +82039,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: d679cca1d406e9f45b0bfe1da7155928, type: 2}
     - target: {fileID: 8744807770503761750, guid: 1869f86a7751f7c4b95e33ac48e1978f, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 2084105528}
+    - target: {fileID: 8744807770503761750, guid: 1869f86a7751f7c4b95e33ac48e1978f, type: 3}
       propertyPath: costText
       value: 
       objectReference: {fileID: 2084105521}
@@ -82058,6 +82062,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2084105528 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3977119941204821411, guid: 1869f86a7751f7c4b95e33ac48e1978f, type: 3}
+  m_PrefabInstance: {fileID: 2084105519}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e52f19081aac7249acdfb6abf89ec12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &2090597618 stripped
@@ -82563,11 +82578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &853008501981146161 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2316086435036925255, guid: 08bc11ff40d770543bf290cf7358dfc9, type: 3}
-  m_PrefabInstance: {fileID: 853008501981146158}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &853008501981146162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82587,7 +82597,7 @@ MonoBehaviour:
   cost: 5
   costIncrease: 1
   costText: {fileID: 853008501981146160}
-  canvas: {fileID: 853008501981146161}
+  canvas: {fileID: 853008501981146176}
   healthIncrease: 10
 --- !u!95 &853008501981146171
 Animator:
@@ -82609,6 +82619,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &853008501981146176 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2916349676857738694, guid: 08bc11ff40d770543bf290cf7358dfc9, type: 3}
+  m_PrefabInstance: {fileID: 853008501981146158}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853008501981146159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e52f19081aac7249acdfb6abf89ec12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!483693784 &2270637448208716082
 TilemapRenderer:
   m_ObjectHideFlags: 0

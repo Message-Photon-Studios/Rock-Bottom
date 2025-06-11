@@ -1754,6 +1754,7 @@ GameObject:
   - component: {fileID: 4351019461878009442}
   - component: {fileID: 7366352065056492609}
   - component: {fileID: 5058077073313717140}
+  - component: {fileID: 3304198604496691133}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -1846,6 +1847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875cc3f2e2ccb2f4d897fecb8507387a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainComponent: {fileID: 0}
   tipsDictionary:
     _serializedList:
     - Key: colorPower
@@ -1997,7 +1999,6 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  removeTooltipButton: {fileID: -4679931084075046408, guid: fd04459890e791843a48243064f9151b, type: 3}
   references:
     version: 2
     RefIds: []
@@ -2098,6 +2099,21 @@ MonoBehaviour:
   - {fileID: 7816966763905407227, guid: fd04459890e791843a48243064f9151b, type: 3}
   - {fileID: -5664506344742684639, guid: fd04459890e791843a48243064f9151b, type: 3}
   - {fileID: 2156130203312526529, guid: fd04459890e791843a48243064f9151b, type: 3}
+--- !u!114 &3304198604496691133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6749319306640925491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfc68a5569e3e064c85f830acb2f34b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentlyOpen: {fileID: 0}
+  escapeHatch: {fileID: 425318427900767816, guid: fd04459890e791843a48243064f9151b, type: 3}
+  controllerBack: {fileID: 7953598145553123608, guid: fd04459890e791843a48243064f9151b, type: 3}
 --- !u!1 &7038129132029276527
 GameObject:
   m_ObjectHideFlags: 0

@@ -64,7 +64,7 @@ public class WillowCrate : InteractionObject
             pickUpCanvas.SetCrate(willowCrateName.GetLocalizedString(), willowCrateDesc.GetLocalizedString(), actualCost);
         } else
         {
-            pickUpCanvas.CloseUi();
+            pickUpCanvas.CloseMenu();
         }
     }
 }

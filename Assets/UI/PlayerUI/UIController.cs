@@ -29,27 +29,15 @@ public class UIController : MonoBehaviour
     [SerializeField] public GameObject lightbox;
 
     //Containers for the various menus.
-    [SerializeField] GameObject pauseMenuContainer;
-    [SerializeField] GameObject settingsContainer;
-    [SerializeField] GameObject mapContainer;
-    [SerializeField] GameObject inventoryContainer;
-
-    //Bools for tracking which menu is open.
-    private bool anyMenuOpen = false;
-    private bool pauseMenuOpen = false;
-    private bool settingsOpen = false;
-    private bool mapOpen = false;
-    private bool inventoryOpen = false;
+    [SerializeField] public BigMenu pauseMenu;
+    [SerializeField] public UIMenu settings;
+    [SerializeField] public BigMenu map;
+    [SerializeField] public BigMenu inventory;
 
     //When UIController is loaded, sends out action.
     public UnityAction UILoaded;
     public UnityAction ColorSlotAmountChanged; 
 
-    //Input actions for opening the various menus.
-    [SerializeField] InputActionReference openPauseMenu;
-    [SerializeField] InputActionReference openMap;
-    [SerializeField] InputActionReference openInventory;
-    [SerializeField] InputActionReference closeTips;
     [SerializeField] GameObject[] hideSlots;
 
     public UnityAction<Sprite, String> inspired;
@@ -60,15 +48,13 @@ public class UIController : MonoBehaviour
         Player.instance.colorInventory.onColorSlotsChanged += colorSlotUpdate;
         colorSlotUpdate();
         
-        openPauseMenu.action.performed += OpenPauseMenu;
-        openMap.action.performed += OpenMap;
-        openInventory.action.performed += OpenInventory;
-        closeTips.action.performed += CloseTips;
+        Player.instance.mapAction += map.OpenMenu;
+        Player.instance.inventoryAction += inventory.OpenMenu;
 
         lightbox.SetActive(false);
-        pauseMenuContainer.SetActive(false);
-        mapContainer.SetActive(false);
-        inventoryContainer.SetActive(false);
+        map.CloseMenu();
+        inventory.CloseMenu();
+        pauseMenu.CloseMenu();
         loadingText.gameObject.SetActive(false);
 
         if(hideSlots.Length>0)
@@ -77,10 +63,8 @@ public class UIController : MonoBehaviour
 
     void OnDestroy(){
         Player.instance.colorInventory.onColorSlotsChanged -= colorSlotUpdate;
-        openPauseMenu.action.performed -= OpenPauseMenu;
-        openMap.action.performed -= OpenMap;
-        openInventory.action.performed -= OpenInventory;
-        closeTips.action.performed -= CloseTips;
+        Player.instance.mapAction -= map.OpenMenu;
+        Player.instance.inventoryAction -= inventory.OpenMenu;
     }
 
     public void UnlockColorSlots()
@@ -104,104 +88,6 @@ public class UIController : MonoBehaviour
         colorSlotContainersRotate[Player.instance.colorInventory.colorSlots.Count - initialSlotCount].SetActive(true);
         
         ColorSlotAmountChanged?.Invoke();
-    }
-
-    private void OpenPauseMenu(InputAction.CallbackContext ctx) {OpenPauseMenu();}
-    /// <summary>
-    /// Opens the pause menu and closes all other menus.
-    /// </summary>
-    public void OpenPauseMenu() {
-        GameManager.instance.tipsManager.CloseTips();
-        pauseMenuOpen = !pauseMenuOpen;
-        if(pauseMenuOpen) {
-            GameManager.instance.Pause();
-        } else {
-            GameManager.instance.Resume();
-        }
-        anyMenuOpen = pauseMenuOpen;
-        pauseMenuContainer.SetActive(pauseMenuOpen);
-        lightbox.SetActive(pauseMenuOpen);
-        Player.instance.playerMovement.movementRoot.SetTotalRoot("menuOpen", pauseMenuOpen);
-        mapOpen = false;
-        mapContainer.SetActive(mapOpen);
-        inventoryOpen = false;
-        inventoryContainer.SetActive(inventoryOpen);
-        settingsOpen = false;
-        settingsContainer.SetActive(settingsOpen);
-    }
-
-    public void OpenSettings() {
-        GameManager.instance.tipsManager.CloseTips();
-        settingsOpen = !settingsOpen;
-        if(settingsOpen) {
-            GameManager.instance.Pause();
-        } else {
-            GameManager.instance.Resume();
-        }
-        anyMenuOpen = settingsOpen;
-        settingsContainer.SetActive(settingsOpen);
-        lightbox.SetActive(settingsOpen);
-        Player.instance.playerMovement.movementRoot.SetTotalRoot("menuOpen", settingsOpen);
-        pauseMenuOpen = false;
-        pauseMenuContainer.SetActive(pauseMenuOpen);
-        mapOpen = false;
-        mapContainer.SetActive(mapOpen);
-        inventoryOpen = false;
-        inventoryContainer.SetActive(inventoryOpen);
-    }
-
-    private void CloseTips(InputAction.CallbackContext ctx){CloseTips();}
-    private void CloseTips()
-    {
-        GameManager.instance.tipsManager.CloseTips();
-    }
-
-    /// <summary>
-    /// Opens the map menu and closes all other menus.
-    /// </summary>
-    private void OpenMap(InputAction.CallbackContext ctx) {OpenMap();}
-    public void OpenMap() {
-        GameManager.instance.tipsManager.CloseTips();
-        mapOpen = !mapOpen;
-        if(mapOpen) {
-            GameManager.instance.Pause();
-        } else {
-            GameManager.instance.Resume();
-        }
-        anyMenuOpen = mapOpen;
-        mapContainer.SetActive(mapOpen);
-        lightbox.SetActive(mapOpen);
-        Player.instance.playerMovement.movementRoot.SetTotalRoot("menuOpen", mapOpen);
-        pauseMenuOpen = false;
-        pauseMenuContainer.SetActive(pauseMenuOpen);
-        inventoryOpen = false;
-        inventoryContainer.SetActive(inventoryOpen);
-        settingsOpen = false;
-        settingsContainer.SetActive(settingsOpen);
-    }
-
-    private void OpenInventory(InputAction.CallbackContext ctx) {OpenInventory();}
-    /// <summary>
-    /// Opens the inventory menu and closes all other menus.
-    /// </summary>
-    public void OpenInventory() {
-        GameManager.instance.tipsManager.CloseTips();
-        inventoryOpen = !inventoryOpen;
-        if(inventoryOpen) {
-            GameManager.instance.Pause();
-        } else {
-            GameManager.instance.Resume();
-        }
-        anyMenuOpen = inventoryOpen;
-        inventoryContainer.SetActive(inventoryOpen);
-        lightbox.SetActive(inventoryOpen);
-        Player.instance.playerMovement.movementRoot.SetTotalRoot("menuOpen", inventoryOpen);
-        pauseMenuOpen = false;
-        pauseMenuContainer.SetActive(pauseMenuOpen);
-        mapOpen = false;
-        mapContainer.SetActive(mapOpen);
-        settingsOpen = false;
-        settingsContainer.SetActive(settingsOpen);
     }
 
     public void Inspired(Sprite spell, String text) {
