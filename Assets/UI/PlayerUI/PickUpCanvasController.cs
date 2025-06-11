@@ -16,6 +16,8 @@ public class PickUpCanvasController : UIMenu
     [SerializeField] LocalizedString buyLocalString;
     [SerializeField] LocalizedString collectLocalString;
     [SerializeField] LocalizedString colorRetLocalString;
+    [SerializeField] LocalizedString closeUiString;
+    [SerializeField] LocalizedString nextTextString;
     [SerializeField] Color cantBuyColor;
     Color normalBuyColor;
 
@@ -99,6 +101,13 @@ public class PickUpCanvasController : UIMenu
         SetTexts(objName, objDesc, costString, buyString);
         collectText.gameObject.SetActive(canBuy);
         interactButtonPrompt.SetActive(canBuy);
+    }
+
+    public void SetDisplayText(string objName, string objDesc, bool lastText)
+    {
+        costText.gameObject.SetActive(false);
+        string closeString = lastText ? closeUiString.GetLocalizedString() : nextTextString.GetLocalizedString();
+        SetTexts(objName, objDesc, "", closeString);
     }
 
     private void SetTexts(string objName, string objDesc, string cost, string collect)
