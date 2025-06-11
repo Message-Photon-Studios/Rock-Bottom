@@ -103,13 +103,23 @@ public class PickUpCanvasController : UIMenu
         interactButtonPrompt.SetActive(canBuy);
     }
 
+    bool isLast = false;
     public void SetDisplayText(string objName, string objDesc, bool lastText)
     {
         costText.gameObject.SetActive(false);
         string closeString = lastText ? closeUiString.GetLocalizedString() : nextTextString.GetLocalizedString();
-        SetTexts(objName, objDesc, "", closeString);
+        if (!mainComponent.activeSelf || isLast) SetTexts(objName, objDesc, "", closeString);
+        else NextText(objDesc, closeString);
+        isLast = lastText;
     }
 
+    private void NextText(string newDesc, string closeString)
+    {
+        collectText.text = closeString;
+        shortDescText.text = newDesc;
+        collectText.gameObject.SetActive(true);
+        interactButtonPrompt.gameObject.SetActive(true);
+    }
     private void SetTexts(string objName, string objDesc, string cost, string collect)
     {
         nameText.text = objName;
