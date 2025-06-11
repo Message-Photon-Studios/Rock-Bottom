@@ -32,7 +32,7 @@ public class TipsManager : UIMenu, IDataPersistence
 
     private void FetchComponent()
     {
-        if (Player.instance.playerUi.tipsPanel)
+        if (Player.instance)
         {
             mainComponent = Player.instance.playerUi.tipsPanel;
             Player.instance.interactAction -= BeforeClosing;
