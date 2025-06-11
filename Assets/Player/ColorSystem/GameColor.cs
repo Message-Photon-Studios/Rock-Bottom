@@ -23,7 +23,7 @@ public class GameColor : ScriptableObject
     /// <summary>
     /// A description of the color
     /// </summary>
-    [SerializeField, TextArea(5,20)] public string description;
+    [SerializeField, TextArea(5, 20)] public string description;
 
     /// <summary>
     /// The effect that this color has
@@ -44,7 +44,7 @@ public class GameColor : ScriptableObject
     /// <returns></returns>
     public GameColor MixColor(GameColor color)
     {
-        if(color != null && mixes.Exists(item => item.mixWith == color))
+        if (color != null && mixes.Exists(item => item.mixWith == color))
         {
             return mixes.Find(item => item.mixWith == color).mixTo;
         }

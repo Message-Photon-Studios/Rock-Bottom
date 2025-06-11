@@ -2130,6 +2130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1110097504496171644}
   - component: {fileID: -6625770280257989673}
+  - component: {fileID: -5267524994746378600}
   m_Layer: 0
   m_Name: Room 7
   m_TagString: Untagged
@@ -2177,10 +2178,24 @@ MonoBehaviour:
     - doors: 00000000010000000000000001000000
   displayMode: 0
   maxSpawns: -1
-  spawnCount: 0
+  spawnCount: 1
   selectedNode: {x: 0, y: 0}
-  isClosingRoom: 0
+  isClosingRoom: 1
   roomVariants: []
+--- !u!114 &-5267524994746378600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5348347649415766062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 096cde8ad1af2854cacc68e8a824fa2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maskCell: {fileID: 6232566873042256313, guid: b7225e9ba6e3fcb4fb89aef452d7f2b1, type: 3}
+  maskParentsObj: []
 --- !u!1 &5811936704619011101
 GameObject:
   m_ObjectHideFlags: 0

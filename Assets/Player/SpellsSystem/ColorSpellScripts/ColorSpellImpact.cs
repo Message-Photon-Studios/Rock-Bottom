@@ -57,7 +57,6 @@ public class ColorSpellImpact : SpellImpact
             var main = instantiatedParticles.main;
             main.startColor = spell.GetColor().plainColor;
             instantiatedParticles.Play();
-            Destroy(instantiatedParticles.gameObject, instantiatedParticles.main.duration * 2);
         }
     }
 }
