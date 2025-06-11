@@ -20,7 +20,6 @@ public class TipsManager : UIMenu, IDataPersistence
     void Start()
     {
         removeTooltip = (InputAction.CallbackContext ctx) => { CloseTips(); };
-        Player.instance.interactAction += BeforeClosing;
         GameManager.instance.onLevelLoaded += FetchComponent;
         FetchComponent();
     }
@@ -36,14 +35,15 @@ public class TipsManager : UIMenu, IDataPersistence
         if (Player.instance.playerUi.tipsPanel)
         {
             mainComponent = Player.instance.playerUi.tipsPanel;
+            Player.instance.interactAction -= BeforeClosing;
+            Player.instance.interactAction += CloseMenu;
         }
     }
 
     public void CloseTips()
     {
         if (!Player.instance) return;
-        if (!mainComponent.activeSelf) return;
-        CloseMenu();
+        if (mainComponent && !mainComponent.activeSelf) return;
         Player.instance.playerUi.lightbox.SetActive(false);
         GameManager.instance.Resume();
     }

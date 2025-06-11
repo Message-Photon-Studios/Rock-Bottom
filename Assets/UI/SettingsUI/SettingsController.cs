@@ -20,12 +20,31 @@ public class SettingsController : BigMenu
             screenSizeSlider.value = screenSize;
             screenSizeText.text = screenSize.ToString("F1");
         }
-        CloseMenu();
     }
 
     public void UpdateCameraSizeSlider()
     {
         SettingsManager.instance.SetCameraSize(screenSizeSlider.value);
         screenSizeText.text = screenSizeSlider.value.ToString("F1");
+    }
+
+    protected override void AfterClosing()
+    {
+        if (controller)
+        {
+            controller.hideSettings();
+        }
+        else
+        {
+            base.AfterClosing();
+        }
+    }
+
+    protected override void AfterOpening()
+    {
+        if (!controller)
+        {
+            base.AfterOpening();
+        }
     }
 }
