@@ -37,9 +37,16 @@ public class PickUpCanvasController : UIMenu
         SetBuy(healingShrine.GetName(), healingShrine.GetDescription(), cost, hasMoney);
     }
 
-    public void SetColorShrine (ColorWell colorWell)
+    public void UpdateHealthShrine(HealingShrine healingShrine)
     {
-        if(colorWell.GetColorAmount() > 0)
+        int cost = healingShrine.CalculatePrice();
+        bool hasMoney = Player.instance.playerInventory.HasEnoughCoins(cost);
+        UpdateBuy(healingShrine.GetName(), healingShrine.GetDescription(), cost, hasMoney);
+    }
+
+    public void SetColorShrine(ColorWell colorWell)
+    {
+        if (colorWell.GetColorAmount() > 0)
         {
             SetCollect(colorWell.color.name, colorWell.color.description);
             return;
@@ -50,7 +57,7 @@ public class PickUpCanvasController : UIMenu
 
     public void SetItem(ItemPickup itemPickup)
     {
-        if(itemPickup.GetNeedsPayment())
+        if (itemPickup.GetNeedsPayment())
         {
             bool canBuy = Player.instance.playerInventory.HasEnoughCoins(itemPickup.GetItemCost());
             SetBuy(itemPickup.GetItem().GetName(), itemPickup.GetItem().GetDesc(), itemPickup.GetItemCost(), canBuy);
@@ -74,10 +81,10 @@ public class PickUpCanvasController : UIMenu
 
     public void SetCrate(string name, string desc, int cost)
     {
-        bool canBuy =  Player.instance.playerInventory.HasEnoughCoins(cost);
+        bool canBuy = Player.instance.playerInventory.HasEnoughCoins(cost);
         SetBuy(name, desc, cost, canBuy);
     }
-    
+
     private void SetReturnColor(string objName, string objDesc)
     {
         costText.gameObject.SetActive(false);
@@ -96,9 +103,20 @@ public class PickUpCanvasController : UIMenu
     {
         string costString = costLocalString.GetLocalizedString() + " " + cost;
         string buyString = buyLocalString.GetLocalizedString();
-        costText.color = canBuy?normalBuyColor:cantBuyColor;
+        costText.color = canBuy ? normalBuyColor : cantBuyColor;
         costText.gameObject.SetActive(true);
         SetTexts(objName, objDesc, costString, buyString);
+        collectText.gameObject.SetActive(canBuy);
+        interactButtonPrompt.SetActive(canBuy);
+    }
+
+    private void UpdateBuy(string objName, string objDesc, int cost, bool canBuy)
+    {
+        string costString = costLocalString.GetLocalizedString() + " " + cost;
+        string buyString = buyLocalString.GetLocalizedString();
+        costText.color = canBuy ? normalBuyColor : cantBuyColor;
+        costText.gameObject.SetActive(true);
+        UpdateTexts(objName, objDesc, costString, buyString);
         collectText.gameObject.SetActive(canBuy);
         interactButtonPrompt.SetActive(canBuy);
     }
@@ -130,5 +148,13 @@ public class PickUpCanvasController : UIMenu
         interactButtonPrompt.gameObject.SetActive(true);
 
         OpenMenu();
+    }
+
+    private void UpdateTexts(string objName, string objDesc, string cost, string collect)
+    {
+        nameText.text = objName;
+        shortDescText.text = objDesc;
+        costText.text = cost;
+        collectText.text = collect;
     }
 }

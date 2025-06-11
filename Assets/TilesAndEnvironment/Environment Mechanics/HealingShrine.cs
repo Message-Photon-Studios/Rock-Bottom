@@ -52,7 +52,7 @@ public class HealingShrine : InteractionObject
         {
             player.HealPlayer(heal);
             count++;
-            pickUpController.SetHealthShrine(this);
+            pickUpController.UpdateHealthShrine(this);
             animator.SetBool("heal", true);
         }
     }
