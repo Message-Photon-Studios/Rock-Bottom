@@ -5,9 +5,8 @@ using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.Localization;
 
-public class NPCScript : MonoBehaviour
+public class NPCScript : UIMenu
 {
-    [SerializeField] GameObject infoCanvas;
     [SerializeField] GameObject speechAlert;
     [SerializeField] GameObject mapIcon;
 
@@ -49,7 +48,7 @@ public class NPCScript : MonoBehaviour
                 dialogue = NpcManager.instance.GetDialogue(name);
             }
 
-            if (infoCanvas.activeSelf)
+            if (mainComponent.activeSelf)
             {   
                 currentText ++;
 
@@ -70,15 +69,25 @@ public class NPCScript : MonoBehaviour
         }
     }
 
-    private void EnableText(bool input) {
-        infoCanvas.SetActive(input);
-        speechAlert.SetActive(!input);
-
-        if(input == true)
+    private void EnableText(bool input)
+    {
+        if (input == true)
         {
-            if(dialogue == null) dialogue = NpcManager.instance.GetDialogue(name);
+            OpenMenu();
+            speechAlert.SetActive(false);
+            if (dialogue == null) dialogue = NpcManager.instance.GetDialogue(name);
             textUi.text = dialogue.texts[currentText].GetLocalizedString();
         }
+        else
+        {
+            CloseMenu();
+            speechAlert.SetActive(true);
+        }
+    }
+
+    protected override void BeforeClosing()
+    {
+        speechAlert.SetActive(true);
     }
 
     public void OnTriggerEnter2D(Collider2D other)

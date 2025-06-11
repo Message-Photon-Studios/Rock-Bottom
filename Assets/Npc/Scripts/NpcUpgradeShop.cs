@@ -14,7 +14,7 @@ public abstract class NpcUpgradeShop : InteractionObject, IDataPersistence
     [SerializeField] int cost; 
     [SerializeField] int costIncrease;
     [SerializeField] TMP_Text costText;
-    [SerializeField] GameObject canvas;
+    [SerializeField] UIMenu canvas;
 
 
 
@@ -25,7 +25,7 @@ public abstract class NpcUpgradeShop : InteractionObject, IDataPersistence
 
     void OnDisable()
     {
-        canvas.SetActive(false);
+        canvas.CloseMenu();
     }
 
     protected override void PlayerClose(bool isClose)
@@ -33,17 +33,17 @@ public abstract class NpcUpgradeShop : InteractionObject, IDataPersistence
         base.PlayerClose(isClose);
         
         if(isClose) OpenShop();
-        else canvas.SetActive(false);
+        else canvas.CloseMenu();
     }
 
     void OpenShop()
     {
         if(inactiveWhenMaxed && buys >= maxBuys)
         {   
-            canvas.SetActive(false);
+            canvas.CloseMenu();
             return;
         }
-        canvas.SetActive(true);
+        canvas.OpenMenu();
         if(GameManager.instance.GetPetrifiedPigmentAmount() < cost+buys*costIncrease)
         {
             costText.color = Color.red;
@@ -67,7 +67,7 @@ public abstract class NpcUpgradeShop : InteractionObject, IDataPersistence
 
     protected override void PlayerInteract()
     {
-        if(!canvas.activeSelf) return;
+        if(!canvas.mainComponent.activeSelf) return;
         if(buys >= maxBuys) return;
         if(GameManager.instance.TryRemovePetrifiedPigment(cost+buys*costIncrease))
         {

@@ -5,9 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Localization;
 
-public class PickUpCanvasController : MonoBehaviour
+public class PickUpCanvasController : UIMenu
 {
-    [SerializeField] GameObject mainObj;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text shortDescText;
     [SerializeField] TMP_Text costText;
@@ -24,13 +23,11 @@ public class PickUpCanvasController : MonoBehaviour
 
     void Start()
     {
-        mainObj.SetActive(false);
+        if (mainComponent)
+        {
+            CloseMenu();
+        }
         normalBuyColor = costText.color;
-    }
-
-    public void CloseUi()
-    {
-        mainObj.SetActive(false);
     }
 
     public void SetHealthShrine(HealingShrine healingShrine)
@@ -40,9 +37,16 @@ public class PickUpCanvasController : MonoBehaviour
         SetBuy(healingShrine.GetName(), healingShrine.GetDescription(), cost, hasMoney);
     }
 
-    public void SetColorShrine (ColorWell colorWell)
+    public void UpdateHealthShrine(HealingShrine healingShrine)
     {
-        if(colorWell.GetColorAmount() > 0)
+        int cost = healingShrine.CalculatePrice();
+        bool hasMoney = Player.instance.playerInventory.HasEnoughCoins(cost);
+        UpdateBuy(healingShrine.GetName(), healingShrine.GetDescription(), cost, hasMoney);
+    }
+
+    public void SetColorShrine(ColorWell colorWell)
+    {
+        if (colorWell.GetColorAmount() > 0)
         {
             SetCollect(colorWell.color.name, colorWell.color.description);
             return;
@@ -53,7 +57,7 @@ public class PickUpCanvasController : MonoBehaviour
 
     public void SetItem(ItemPickup itemPickup)
     {
-        if(itemPickup.GetNeedsPayment())
+        if (itemPickup.GetNeedsPayment())
         {
             bool canBuy = Player.instance.playerInventory.HasEnoughCoins(itemPickup.GetItemCost());
             SetBuy(itemPickup.GetItem().GetName(), itemPickup.GetItem().GetDesc(), itemPickup.GetItemCost(), canBuy);
@@ -77,10 +81,10 @@ public class PickUpCanvasController : MonoBehaviour
 
     public void SetCrate(string name, string desc, int cost)
     {
-        bool canBuy =  Player.instance.playerInventory.HasEnoughCoins(cost);
+        bool canBuy = Player.instance.playerInventory.HasEnoughCoins(cost);
         SetBuy(name, desc, cost, canBuy);
     }
-    
+
     private void SetReturnColor(string objName, string objDesc)
     {
         costText.gameObject.SetActive(false);
@@ -99,20 +103,41 @@ public class PickUpCanvasController : MonoBehaviour
     {
         string costString = costLocalString.GetLocalizedString() + " " + cost;
         string buyString = buyLocalString.GetLocalizedString();
-        costText.color = canBuy?normalBuyColor:cantBuyColor;
+        costText.color = canBuy ? normalBuyColor : cantBuyColor;
         costText.gameObject.SetActive(true);
         SetTexts(objName, objDesc, costString, buyString);
         collectText.gameObject.SetActive(canBuy);
         interactButtonPrompt.SetActive(canBuy);
     }
 
+    private void UpdateBuy(string objName, string objDesc, int cost, bool canBuy)
+    {
+        string costString = costLocalString.GetLocalizedString() + " " + cost;
+        string buyString = buyLocalString.GetLocalizedString();
+        costText.color = canBuy ? normalBuyColor : cantBuyColor;
+        costText.gameObject.SetActive(true);
+        UpdateTexts(objName, objDesc, costString, buyString);
+        collectText.gameObject.SetActive(canBuy);
+        interactButtonPrompt.SetActive(canBuy);
+    }
+
+    bool isLast = false;
     public void SetDisplayText(string objName, string objDesc, bool lastText)
     {
         costText.gameObject.SetActive(false);
         string closeString = lastText ? closeUiString.GetLocalizedString() : nextTextString.GetLocalizedString();
-        SetTexts(objName, objDesc, "", closeString);
+        if (!mainComponent.activeSelf || isLast) SetTexts(objName, objDesc, "", closeString);
+        else NextText(objDesc, closeString);
+        isLast = lastText;
     }
 
+    private void NextText(string newDesc, string closeString)
+    {
+        collectText.text = closeString;
+        shortDescText.text = newDesc;
+        collectText.gameObject.SetActive(true);
+        interactButtonPrompt.gameObject.SetActive(true);
+    }
     private void SetTexts(string objName, string objDesc, string cost, string collect)
     {
         nameText.text = objName;
@@ -122,6 +147,14 @@ public class PickUpCanvasController : MonoBehaviour
         collectText.gameObject.SetActive(true);
         interactButtonPrompt.gameObject.SetActive(true);
 
-        mainObj.SetActive(true);
+        OpenMenu();
+    }
+
+    private void UpdateTexts(string objName, string objDesc, string cost, string collect)
+    {
+        nameText.text = objName;
+        shortDescText.text = objDesc;
+        costText.text = cost;
+        collectText.text = collect;
     }
 }

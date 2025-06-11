@@ -8,10 +8,9 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 
-public class TizoShop : MonoBehaviour
+public class TizoShop : BigMenu
 {   
     [Header("Ui")]
-    [SerializeField] GameObject canvas;
     [SerializeField] TizoTradeModule[] tizoTradeModules;
     [SerializeField] Image[] inventoryItemImages;
     [SerializeField] GameObject[] infoCards;
@@ -46,9 +45,8 @@ public class TizoShop : MonoBehaviour
         if(!shopOpen && openShop)
         {
             shopOpen = true;
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("tizoShop", true);
             UpdateUi();
-            canvas.SetActive(true);
+            OpenMenu();
             FindObjectOfType<EventSystem>().SetSelectedGameObject(null);
 
             foreach (GameObject infoCard in infoCards)
@@ -67,22 +65,24 @@ public class TizoShop : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
-            GameManager.instance.Pause();
         } else if (shopOpen && !openShop)
         {
-            shopOpen = false;
-            Player.instance.playerMovement.movementRoot.SetTotalRoot("tizoShop", false);
-            canvas.SetActive(false);
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            GameManager.instance.Resume();
+            BeforeClosing();
+            CloseMenu();
         }
+    }
+
+    protected override void BeforeClosing()
+    {
+        shopOpen = false;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Start()
     {
         shopOpen = false;
-        canvas.SetActive(false);
+        CloseMenu();
         trades = new List<TizoTrade>();
     }
     

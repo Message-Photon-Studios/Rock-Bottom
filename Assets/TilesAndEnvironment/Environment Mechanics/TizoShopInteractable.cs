@@ -22,7 +22,7 @@ public class TizoShopInteractable : InteractionObject
         base.PlayerClose(isClose);
 
         if(isClose) pickUpCanvas.SetCollect(title.GetLocalizedString(), desc.GetLocalizedString());
-        else pickUpCanvas.CloseUi();
+        else pickUpCanvas.CloseMenu();
         if(!isClose) tizoShop.ShopInteract(false);
     }
 
