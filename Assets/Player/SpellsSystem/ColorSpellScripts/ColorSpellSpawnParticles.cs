@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Spawns particles with same color as spell
 /// </summary>
-public class ColorSpellSpawnParticles : SpellImpact
+public class ColorSpellSpawnParticles : MonoBehaviour
 {
     /// <summary>
     /// After this time the particles  will autospawn the spawn spells.
@@ -14,6 +14,8 @@ public class ColorSpellSpawnParticles : SpellImpact
     [SerializeField] float spawnDelay;
     private float delayTimer;
     [SerializeField] int spawnAmount;
+    [SerializeField] bool requirePlayerLOS;
+    [SerializeField] ColorSpell spell;
 
     [SerializeField] ParticleSystem[] spawnPrefabs;
 
@@ -38,16 +40,16 @@ public class ColorSpellSpawnParticles : SpellImpact
 
     public void Spawn()
     {
-        foreach (ParticleSystem spawnPrefab in spawnPrefabs)
+        if (requirePlayerLOS)
         {
-            GameObject obj = GameObject.Instantiate(spawnPrefab.gameObject, transform.position, transform.rotation) as GameObject;
-            var main = obj.GetComponent<ParticleSystem>().main;
-            main.startColor = spell.GetColor().plainColor;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Player.instance.transform.position - transform.position, Vector2.Distance(Player.instance.transform.position, transform.position), GameManager.instance.maskLibrary.onlySolidGround());
+            if (hit) return;
         }
-    }
-
-    public override void Impact(Collider2D other, Vector2 impactPoint)
-    {
-
+        foreach (ParticleSystem spawnPrefab in spawnPrefabs)
+            {
+                GameObject obj = GameObject.Instantiate(spawnPrefab.gameObject, transform.position, transform.rotation) as GameObject;
+                var main = obj.GetComponent<ParticleSystem>().main;
+                main.startColor = spell.GetColor().plainColor;
+            }
     }
 }
