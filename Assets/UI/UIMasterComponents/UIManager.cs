@@ -112,7 +112,15 @@ public class UIManager : MonoBehaviour
     {
         if (currentlyOpen && currentlyOpen.IsBigMenu())
         {
-            EscapeHatch();
+            if (currentlyOpen.GetType().Name == "TizoShop")
+            {
+                return;
+            }
+            else
+            {
+                EscapeHatch(); 
+            } 
+            
         }
     }
 }
