@@ -38,7 +38,6 @@ public class UIMenu : MonoBehaviour
     {
         if (mainComponent == null)
         {
-            Debug.LogWarning("UIMenu missing main component: " + transform.parent.name);
             return;
         }
         BeforeOpening();
