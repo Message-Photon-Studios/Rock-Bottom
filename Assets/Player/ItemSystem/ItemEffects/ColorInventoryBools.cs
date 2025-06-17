@@ -14,6 +14,11 @@ public class ColorInventoryBools : ItemEffect
     [SerializeField] bool enemyDontMix;
     [SerializeField] bool enemyGiveColorOnChange;
     [SerializeField] bool enemyGiveColorOnSame;
+    [SerializeField] bool doubleExtraDamage;
+    [SerializeField] bool greatBrushFirstHit;
+    [SerializeField] bool paintersKnife;
+    [SerializeField] bool colorVarnish;
+    [SerializeField] int rainbowComboExtraColor;
     public override void ActivateEffect()
     {
         ColorInventory colorInv = GetPlayer().GetComponent<ColorInventory>();
@@ -27,7 +32,11 @@ public class ColorInventoryBools : ItemEffect
         if (enemyDontMix) colorInv.enemyDontMix = true;
         if (enemyGiveColorOnChange) colorInv.enemyGiveColorOnChange = true;
         if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = true;
-
+        if (doubleExtraDamage) colorInv.doubleExtraDamage = true;
+        if (greatBrushFirstHit) colorInv.greatBrushFirstHit = true;
+        if (paintersKnife) colorInv.paintersKnife = true;
+        if (colorVarnish) colorInv.colorVarnish = true;
+        if (rainbowComboExtraColor != 0) colorInv.rainbowComboExtraColor += rainbowComboExtraColor;
     }
 
     public override void DisableEffect()
@@ -43,6 +52,11 @@ public class ColorInventoryBools : ItemEffect
         if (enemyDontMix) colorInv.enemyDontMix = false;
         if (enemyGiveColorOnChange) colorInv.enemyGiveColorOnChange = false;
         if (enemyGiveColorOnSame) colorInv.enemyGiveColorOnSame = false;
+        if (doubleExtraDamage) colorInv.doubleExtraDamage = false;
+        if (greatBrushFirstHit) colorInv.greatBrushFirstHit = false;
+        if (paintersKnife) colorInv.paintersKnife = false;
+        if (colorVarnish) colorInv.colorVarnish = false;
+        if (rainbowComboExtraColor != 0) colorInv.rainbowComboExtraColor -= rainbowComboExtraColor;
     }
 
 }

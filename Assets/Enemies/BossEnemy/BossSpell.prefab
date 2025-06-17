@@ -60,6 +60,7 @@ MonoBehaviour:
     max: 0
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   comboParticles: {fileID: 6205137580783060889, guid: 08a80dfa497e1524d8b1d91a3ef76662, type: 3}
+  deathParticles: {fileID: 0}
   knockbackImune: 1
   sleepForcedown: 0
   setColorByHand: 0
@@ -69,6 +70,7 @@ MonoBehaviour:
   sleepCooldown: 2
   currentCombo: 0
   enemySounds: {fileID: 0}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &2879108018827515127
 MonoBehaviour:
@@ -82,8 +84,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6281c2b063ee904d8d82ace1350b7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   damage: 30
   force: {x: 0, y: 0}
   attackTrigger:

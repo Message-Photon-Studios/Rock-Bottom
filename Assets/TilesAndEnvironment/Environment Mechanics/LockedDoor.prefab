@@ -344,7 +344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &250177281859799514
 RectTransform:
   m_ObjectHideFlags: 0
@@ -909,13 +909,14 @@ GameObject:
   - component: {fileID: 8475306149879917068}
   - component: {fileID: 7844934595925889461}
   - component: {fileID: 1422435431126397420}
+  - component: {fileID: 2662245177910459878}
   m_Layer: 9
   m_Name: LockedUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4736360359002496160
 RectTransform:
   m_ObjectHideFlags: 0
@@ -998,6 +999,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2662245177910459878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5077432469785176092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e52f19081aac7249acdfb6abf89ec12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainComponent: {fileID: 1639698392176159797}
 --- !u!1 &5221377452320663474
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,7 +1356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2068243292756808229
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1465,13 +1479,14 @@ GameObject:
   - component: {fileID: 6299620349000058399}
   - component: {fileID: 5991694485784385799}
   - component: {fileID: 8195903126502618127}
+  - component: {fileID: 6493990009229301261}
   m_Layer: 9
   m_Name: UnlockableUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2861110887074954983
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1554,6 +1569,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6493990009229301261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7945975168905888923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e52f19081aac7249acdfb6abf89ec12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainComponent: {fileID: 5837231829161137676}
 --- !u!1 &8184562010277291588
 GameObject:
   m_ObjectHideFlags: 0
@@ -1752,8 +1780,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: {fileID: 11400000, guid: d679cca1d406e9f45b0bfe1da7155928, type: 2}
   consumeKeyOnUnlock: 1
-  lockedUI: {fileID: 5077432469785176092}
-  unlockabelUI: {fileID: 7945975168905888923}
+  lockedUI: {fileID: 2662245177910459878}
+  unlockabelUI: {fileID: 6493990009229301261}
   unlockAction: {fileID: -4679931084075046408, guid: fd04459890e791843a48243064f9151b, type: 3}
   audioSource: {fileID: 1895440153112765953}
   animator: {fileID: 8223713449615444110}

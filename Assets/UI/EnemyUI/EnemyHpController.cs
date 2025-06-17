@@ -11,6 +11,7 @@ public class EnemyHpController : MonoBehaviour
     public EnemyStats enemy;
     [SerializeField] Slider healthSlider;
     [SerializeField] Slider healthSubSlider;
+    [SerializeField] Slider rainbowSlider;
     [SerializeField] float subBarRate;
     [SerializeField] RectTransform rectTransform;
     [SerializeField] float healthBarScale;
@@ -21,34 +22,52 @@ public class EnemyHpController : MonoBehaviour
         enemy.onHealthChanged +=  HpChanged;
         enemy.onEnemyDeath += EnemyDied;
         enemy.onMaxHealthChanged += MaxHealthChanged;
+        enemy.onColorChanged += EnemyColorChanged;
         var sliders = GetComponents<Slider>();
 
         healthSlider.maxValue = enemy.GetHealth();
         healthSubSlider.maxValue = enemy.GetHealth();
         healthSlider.value = enemy.GetHealth();
         healthSubSlider.value = enemy.GetHealth();
+        rainbowSlider.value = 0;
         healthSlider.gameObject.SetActive(false);
         healthSubSlider.gameObject.SetActive(false);
+        rainbowSlider.gameObject.SetActive(false);
 
-        if(rectTransform)
-            rectTransform.sizeDelta = new Vector2(healthBarBaseSize + healthBarScale*enemy.GetHealth(), rectTransform.sizeDelta.y);
+        if (rectTransform)
+            rectTransform.sizeDelta = new Vector2(healthBarBaseSize + healthBarScale * enemy.GetHealth(), rectTransform.sizeDelta.y);
     }
 
     void OnDestroy()
     {
-        enemy.onHealthChanged -=  HpChanged;
+        enemy.onHealthChanged -= HpChanged;
         enemy.onEnemyDeath -= EnemyDied;
         enemy.onMaxHealthChanged -= MaxHealthChanged;
+        enemy.onColorChanged -= EnemyColorChanged;
     }
 
     /// <summary>
     /// When hp is changed, update slider;
     /// </summary>
     /// <param name="newHp"></param> Float with value to update. 
-    private void HpChanged(float newHp) {
+    private void HpChanged(float newHp)
+    {
         healthSlider.value = newHp;
         healthSlider.gameObject.SetActive(true);
         healthSubSlider.gameObject.SetActive(true);
+        rainbowSlider.gameObject.SetActive(true);
+    }
+
+    private void EnemyColorChanged(GameColor color)
+    {
+        if (enemy.IsRaibowed())
+        {
+            rainbowSlider.value = Player.instance.stats.rainbowExecutePercentage;
+        }
+        else
+        {
+            rainbowSlider.value = 0;
+        }
     }
 
     /// <summary>

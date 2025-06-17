@@ -80,6 +80,10 @@ public class SpellTintedStoneManager : SpellImpact
         {
             foreach (GameObject obj in subSpells)
             {
+                if (obj == null)
+                {
+                    continue;
+                }
                 Vector2 dir = obj.transform.position - transform.position;
                 float dist = Vector2.Distance(obj.transform.position, transform.position);
 

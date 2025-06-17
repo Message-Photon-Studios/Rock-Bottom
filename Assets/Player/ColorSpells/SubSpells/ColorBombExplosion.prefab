@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
   - component: {fileID: 816937159620727808}
+  - component: {fileID: 7920075780017124611}
   m_Layer: 8
   m_Name: ColorBombExplosion
   m_TagString: Spell
@@ -34,7 +35,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8644870799317477031}
   - {fileID: 1350228376300030591}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -232,89 +232,25 @@ MonoBehaviour:
   forcePerspectivePlayer: 0
   triggerImpactSpells: 1
   requiresEnemyLOS: 1
-  onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
---- !u!1001 &2641858031565607371
-PrefabInstance:
+  onImpactParticles: {fileID: 0}
+--- !u!114 &7920075780017124611
+MonoBehaviour:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 3321278458073070405}
-    m_Modifications:
-    - target: {fileID: 833276740483783782, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1425561236906393269, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723469493756390114, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369965, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_Name
-      value: SpellExplosion
-      objectReference: {fileID: 0}
-    - target: {fileID: 6003583976257369965, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7823452886484329023, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
---- !u!4 &8644870799317477031 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6003583976257369964, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
-  m_PrefabInstance: {fileID: 2641858031565607371}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14331867b7cd41c40bc5ab8003dea709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOneInstantly: 1
+  spawnDelay: 0
+  spawnAmount: 0
+  spell: {fileID: -7692674297862362138}
+  spawnPrefabs:
+  - {fileID: 6003583976257369962, guid: 7ee48ee858c3f43439dd80737bf6c6cb, type: 3}
 --- !u!1001 &3846070122332992324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -328,7 +264,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2874147498126129467, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2874147498126129467, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
       propertyPath: m_LocalPosition.x

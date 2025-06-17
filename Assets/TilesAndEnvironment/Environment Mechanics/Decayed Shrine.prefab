@@ -752,7 +752,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -301831581
-  m_SortingLayer: 14
+  m_SortingLayer: 15
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: b2364035504e1d04486a8396e33fb324, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -878,6 +878,7 @@ GameObject:
   - component: {fileID: 9162048891033690465}
   - component: {fileID: 5033590945966569777}
   - component: {fileID: 4131407542880205133}
+  - component: {fileID: 8960725678753210198}
   - component: {fileID: 7469246443919165841}
   - component: {fileID: 8150497502854557247}
   m_Layer: 9
@@ -989,7 +990,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthCost: 50
   itemPickup: {fileID: 6794175000534708999}
-  canvasObject: {fileID: 4789543943232920575}
+  infoBox: {fileID: 8960725678753210198}
+--- !u!114 &8960725678753210198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6402055719377219389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e52f19081aac7249acdfb6abf89ec12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainComponent: {fileID: 4789543943232920575}
 --- !u!114 &7469246443919165841
 MonoBehaviour:
   m_ObjectHideFlags: 0

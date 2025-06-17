@@ -27,7 +27,8 @@ public class PlayerStats : MonoBehaviour
 
     public float colorNearbyRange = 0;
     public int chanceToColorNearby = 0;
-    public float colorRainbowMaxedPower = 1;
+    public int rainbowedDamage = 0;
+    public float rainbowExecutePercentage = .2f;
     
     int shield = 0;
     float shieldDecay = -1;
@@ -84,6 +85,8 @@ public class PlayerStats : MonoBehaviour
     private float adaptiveArmourBonus = 0f;
     private float defaultArmour = 0f;
     private float invincibilityBonus = 0f;
+
+    private const string lifelineName = "Lifeline";
 
     public bool isDead { get; private set; } = false;
 
@@ -336,6 +339,14 @@ public class PlayerStats : MonoBehaviour
 
     private void PlayerReachZeroHp()
     {
+        if (Player.instance.playerInventory.HasItemWithName(lifelineName))
+        {
+            Player.instance.playerInventory.RemoveItemWithName(lifelineName);
+            health = 0;
+            HealPlayer(10);
+            return;
+        }
+
         isDead = true;
         invincibilityTimer = 3f;
         movement.movementRoot.SetTotalRoot("dead", true);

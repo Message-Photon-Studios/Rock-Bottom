@@ -41,7 +41,7 @@ public class HealingShrine : InteractionObject
     protected override void PlayerClose(bool isClose)
     {
         if(isClose) pickUpController.SetHealthShrine(this);
-        else pickUpController.CloseUi();
+        else pickUpController.CloseMenu();
     }
 
     protected override void PlayerInteract()
@@ -52,7 +52,7 @@ public class HealingShrine : InteractionObject
         {
             player.HealPlayer(heal);
             count++;
-            pickUpController.SetHealthShrine(this);
+            pickUpController.UpdateHealthShrine(this);
             animator.SetBool("heal", true);
         }
     }

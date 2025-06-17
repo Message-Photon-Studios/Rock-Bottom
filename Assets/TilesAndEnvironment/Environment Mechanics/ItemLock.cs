@@ -11,8 +11,8 @@ public abstract class ItemLock : MonoBehaviour
 {
     [SerializeField] Item key;
     [SerializeField] bool consumeKeyOnUnlock;
-    [SerializeField] GameObject lockedUI;
-    [SerializeField] GameObject unlockabelUI;
+    [SerializeField] UIMenu lockedUI;
+    [SerializeField] UIMenu unlockabelUI;
     [SerializeField] InputActionReference unlockAction;
     [SerializeField] AudioSource audioSource;
     Action<InputAction.CallbackContext> unlock;
@@ -46,12 +46,10 @@ public abstract class ItemLock : MonoBehaviour
             if(itemInventory.HasItemWithName(key.name))
             {
                 unlockable = true;
-                unlockabelUI.SetActive(true);
-                lockedUI.SetActive(false);
+                unlockabelUI.OpenMenu();
             } else
             {
-                lockedUI.SetActive(true);
-                unlockabelUI.SetActive(false);
+                lockedUI.OpenMenu();
             }
         }
     }
@@ -60,8 +58,14 @@ public abstract class ItemLock : MonoBehaviour
     {
         if(other.CompareTag("Player")) 
         {
-            lockedUI.SetActive(false);
-            unlockabelUI.SetActive(false);
+            if (unlockable)
+            {
+                unlockabelUI.CloseMenu();
+            }
+            else
+            {
+                lockedUI.CloseMenu();
+            }
             unlockable = false;
         }
     }
@@ -83,8 +87,7 @@ public abstract class ItemLock : MonoBehaviour
             {
                 itemInventory.RemoveItemWithName(key.name);
             }
-            lockedUI.SetActive(false);
-            unlockabelUI.SetActive(false);
+            unlockabelUI.CloseMenu();
         }
     }
 

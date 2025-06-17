@@ -43,7 +43,7 @@ public class ItemPickup : InteractionObject
         {
             spawnFromEnemy.onEnemyDeath += SpawnFromEnemy;
         } 
-        else if(setByhand)
+        else if(setByhand && item != null)
         {
             SetItem(item, item.itemCost);
         } else
@@ -108,14 +108,14 @@ public class ItemPickup : InteractionObject
         if(isClose)
         {
             pickUpController.SetItem(this);
-        } else pickUpController.CloseUi();
+        } else pickUpController.CloseMenu();
     }
 
     protected override void PlayerInteract()
     {
         if(!needsPayment || inventory.PayCost(itemCost))
         {
-            pickUpController.CloseUi();
+            pickUpController.CloseMenu();
             inventory.AddItem(item);
             GameObject.Destroy(gameObject);
             StopCoroutine(hoverCoroutine);

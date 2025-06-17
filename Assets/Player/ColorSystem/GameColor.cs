@@ -23,7 +23,7 @@ public class GameColor : ScriptableObject
     /// <summary>
     /// A description of the color
     /// </summary>
-    [SerializeField, TextArea(5,20)] public string description;
+    [SerializeField, TextArea(5, 20)] public string description;
 
     /// <summary>
     /// The effect that this color has
@@ -44,7 +44,7 @@ public class GameColor : ScriptableObject
     /// <returns></returns>
     public GameColor MixColor(GameColor color)
     {
-        if(color != null && mixes.Exists(item => item.mixWith == color))
+        if (color != null && mixes.Exists(item => item.mixWith == color))
         {
             return mixes.Find(item => item.mixWith == color).mixTo;
         }
@@ -158,16 +158,30 @@ public class GameColor : ScriptableObject
 
         GameColor setToColor = enemy.GetPlayerMixColor(this);
 
-        bool delay = setToColor.name.Equals("Rainbow");
-
-        if (delay && canColorEnemies) enemy.SetPlayerColor(setToColor, 1);
+        if (canColorEnemies) enemy.SetPlayerColor(setToColor, 1);
 
         colorPower += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
         colorPower = colorPower * powerScale;
 
-        colorEffect.Apply(enemyObj, impactPoint, playerObj, colorPower, forcePerspectivePlayer, extraDamage);
+        if (Player.instance.colorInventory.colorVarnish && setToColor != this)
+        {
+            int colorDamage = enemy.GetColorAmmount();
+            if (colorDamage > 20) colorDamage = 20;
+            extraDamage += colorDamage;
+        }
 
-        if (!delay && canColorEnemies) enemy.SetPlayerColor(setToColor, 1);
+        if (Player.instance.colorInventory.greatBrushFirstHit)
+        {
+            if (enemy.GetHealth() / (float)enemy.GetMaxHealth() > .9f)
+            {
+                extraDamage += 15;
+            }
+
+            extraDamage = Mathf.RoundToInt(extraDamage * colorPower);
+        }
+        if (Player.instance.colorInventory.doubleExtraDamage) extraDamage *= 2;
+
+        colorEffect.Apply(enemyObj, impactPoint, playerObj, colorPower, forcePerspectivePlayer, extraDamage);
 
         if (!canColorEnemies) return;
         

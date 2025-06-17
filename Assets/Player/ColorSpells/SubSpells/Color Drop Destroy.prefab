@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
   - component: {fileID: 5526896281579278936}
+  - component: {fileID: 1095473592249428720}
   m_Layer: 8
   m_Name: Color Drop Destroy
   m_TagString: Spell
@@ -250,6 +251,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0.1, y: 0}
   m_Size: {x: 0.5, y: 0.2}
   m_Direction: 1
+--- !u!114 &1095473592249428720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14331867b7cd41c40bc5ab8003dea709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOneInstantly: 1
+  spawnDelay: 0
+  spawnAmount: 0
+  requirePlayerLOS: 0
+  spell: {fileID: -7692674297862362138}
+  spawnPrefabs:
+  - {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!1001 &3068050921329342166
 PrefabInstance:
   m_ObjectHideFlags: 0

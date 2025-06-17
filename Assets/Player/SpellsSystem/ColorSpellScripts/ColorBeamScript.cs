@@ -7,16 +7,18 @@ public class ColorBeamScript : MonoBehaviour
     [SerializeField] float range = 10;
     [SerializeField] GameObject hitShape;
     [SerializeField] ParticleSystem rootParticle;
+    [SerializeField] ParticleSystem hitParticles;
     // Start is called before the first frame update
     void Start()
     {
-        int dir = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().lookDir;
+        int dir = Player.instance.playerMovement.lookDir;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(dir, 0), range, GameManager.instance.maskLibrary.onlySolidGround());
         float hitRange;
         if (hit.distance == 0)
         {
             hitRange = range;
-        } else
+        }
+        else
         {
             hitRange = hit.distance;
         }
@@ -28,6 +30,13 @@ public class ColorBeamScript : MonoBehaviour
         hitShape.transform.position = new Vector2(hitShape.transform.position.x + hitVector.x, hitShape.transform.position.y);
         ParticleSystem.ShapeModule rootShape = rootParticle.shape;
         rootShape.position = hitVector * -1;
+
+        if (hit && hitParticles)
+        {
+            GameObject part = Instantiate(hitParticles.gameObject, hit.point, Quaternion.identity);
+            var main = part.GetComponent<ParticleSystem>().main;
+            main.startColor = GetComponent<ColorSpell>().GetColor().plainColor;
+        }
     }
 
     // Update is called once per frame
