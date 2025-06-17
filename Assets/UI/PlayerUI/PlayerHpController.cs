@@ -72,11 +72,10 @@ public class PlayerHpController : MonoBehaviour
     private void MaxHpChanged(float newMaxHp)
     {
         if (newMaxHp == maxHealth) return;
-        maxHealth = newMaxHp;
         if (maxHealth != 0)
-            StartCoroutine(IncreaseHealthBar(newMaxHp > maxHealth));
+            StartCoroutine(IncreaseHealthBar(newMaxHp));
 
-        
+        maxHealth = newMaxHp;
         healthMultiplier = 100 / maxHealth;
         healthSliderValue = healthSliderValue;
         if(maxHealth < healthSliderValue) {
@@ -102,18 +101,12 @@ public class PlayerHpController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private IEnumerator IncreaseHealthBar(bool increased)
+    private IEnumerator IncreaseHealthBar(float newMaxHp)
     {
         float newSizeMultiplier;
-        if (increased)
-            newSizeMultiplier = Math.Min(Math.Min(sizeMultiplier + (1.5f - sizeMultiplier) / 1.5f, maxHealth/150), maxHealthMultiplyer);
-        else
-            newSizeMultiplier = Math.Max(Math.Max(sizeMultiplier - (1.5f - sizeMultiplier) * 1.5f, maxHealth / 150), minHealthMultiplyer);
-
         var tempMult = sizeMultiplier;
-        sizeMultiplier = GetHealthMultiplier(maxHealth);
+        sizeMultiplier = GetHealthMultiplier(newMaxHp);
         newSizeMultiplier = sizeMultiplier;
-        Debug.Log(GetHealthMultiplier(maxHealth));
 
         for (var i = 0.0f; i < 1.0f; i += 0.02f)
         {
