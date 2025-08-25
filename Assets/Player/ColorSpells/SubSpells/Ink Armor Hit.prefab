@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
   - component: {fileID: 5496652818838023700}
+  - component: {fileID: 7364128176972024737}
   m_Layer: 8
   m_Name: Ink Armor Hit
   m_TagString: Spell
@@ -89,9 +90,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0900cb19f680a734ba6a9d1fcb2ffcdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forcePerspectivePlayer: 1
+  forcePerspectivePlayer: 0
   triggerImpactSpells: 1
-  requiresEnemyLOS: 1
+  requiresEnemyLOS: 0
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -214,7 +215,7 @@ MonoBehaviour:
   impactOnEnemies: 1
   impactOnNonEnemies: 0
   triggerOnlyOnce: 0
-  triggerOnlyOncePerEnemy: 0
+  triggerOnlyOncePerEnemy: 1
   attackAgainTimer: -1
   requirePlayerLOSonSpawn: 0
   lifeTime: 0.8
@@ -247,6 +248,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreEnemyDeath: 1
+  dontHitEnemy: 1
+--- !u!70 &7364128176972024737
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.3, y: 0.27}
+  m_Size: {x: 1, y: 3}
+  m_Direction: 0
 --- !u!1001 &3068050921329342166
 PrefabInstance:
   m_ObjectHideFlags: 0

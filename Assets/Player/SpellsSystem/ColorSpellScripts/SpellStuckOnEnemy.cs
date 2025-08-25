@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpellStuckOnEnemy : SpellEnemyInteraction
 {
     [SerializeField] bool ignoreEnemyDeath;
+    [SerializeField] bool dontHitEnemy;
     private Vector3 offset;
     private EnemyStats enemyTarget = null;
 
@@ -13,7 +14,7 @@ public class SpellStuckOnEnemy : SpellEnemyInteraction
     {
         enemyTarget = enemyCollider.GetComponent<EnemyStats>();
         offset = transform.position - enemyCollider.transform.position;
-        GetComponent<ColorSpell>().AddObjectAlreadyHit(enemyCollider);
+        if (!dontHitEnemy) GetComponent<ColorSpell>().AddObjectAlreadyHit(enemyCollider);
     }
 
     private void Update()

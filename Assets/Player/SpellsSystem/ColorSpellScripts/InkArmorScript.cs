@@ -35,7 +35,7 @@ public class InkArmorScript : SpellImpact
         {
             foreach (GameObject spawnPrefab in spawnPrefabs)
             {
-                GameObject obj = GameObject.Instantiate(spawnPrefab, enemy.transform.position, enemy.transform.rotation) as GameObject;
+                GameObject obj = GameObject.Instantiate(spawnPrefab, enemy.transform.position, transform.rotation) as GameObject;
                 obj.GetComponent<ColorSpell>().Initi(spell.GetColor(), spell.GetPower(), spell.GetPlayerObj(), spell.lookDir, spell.GetExtraDamage());
                 foreach (SpellEnemyInteraction enemyInteraction in obj.GetComponents<SpellEnemyInteraction>())
                 {
