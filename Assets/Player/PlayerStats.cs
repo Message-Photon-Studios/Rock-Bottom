@@ -85,6 +85,7 @@ public class PlayerStats : MonoBehaviour
     private float adaptiveArmourBonus = 0f;
     private float defaultArmour = 0f;
     private float invincibilityBonus = 0f;
+    private List<InkArmorScript> inkArmorList = new List<InkArmorScript>();
 
     private const string lifelineName = "Lifeline";
 
@@ -174,7 +175,11 @@ public class PlayerStats : MonoBehaviour
 
         DealRedListDamage(damage);
         shieldDecay = 0;
-        if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
+        if (HasInkArmor(enemy))
+        {
+            inkArmorList.Clear();
+        }
+        else if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
         {
             GameObject aura = Instantiate(blockAura, transform);
             Destroy(aura, 1);
@@ -490,6 +495,35 @@ public class PlayerStats : MonoBehaviour
     public void AddDefaultArmour(float addArmour)
     {
         defaultArmour += addArmour;
+    }
+
+    #endregion
+
+    #region Stored Spells
+
+    public void AddInkArmor(InkArmorScript inkArmor)
+    {
+        inkArmorList.Add(inkArmor);
+    }
+
+    public void RemoveInkArmor(InkArmorScript inkArmor)
+    {
+        if(inkArmorList.Contains(inkArmor)) inkArmorList.Remove(inkArmor);
+    }
+
+    public bool HasInkArmor(EnemyStats enemy)
+    {
+        bool status = false;
+           foreach(InkArmorScript inkArmor in inkArmorList.ToArray())
+        {
+            if (inkArmor == null) inkArmorList.Remove(inkArmor);
+            else
+            {
+                status = true;
+                inkArmor.InitiateArmor(enemy);
+            }
+        }
+        return status;
     }
 
     #endregion

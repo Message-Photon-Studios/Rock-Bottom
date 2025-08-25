@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(ColorSpell))] 
 public class SpellStuckOnEnemy : SpellEnemyInteraction
 {
+    [SerializeField] bool ignoreEnemyDeath;
     private Vector3 offset;
     private EnemyStats enemyTarget = null;
 
@@ -21,7 +22,7 @@ public class SpellStuckOnEnemy : SpellEnemyInteraction
         if (enemyTarget != null)
         {
             transform.position = enemyTarget.transform.position + offset;
-            if (enemyTarget.IsDead())
+            if (enemyTarget.IsDead() && !ignoreEnemyDeath)
             {
                 Destroy(gameObject);
             }

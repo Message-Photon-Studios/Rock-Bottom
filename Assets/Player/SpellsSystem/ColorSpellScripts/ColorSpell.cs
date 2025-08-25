@@ -264,18 +264,25 @@ public class ColorSpell : MonoBehaviour
             if(attackAgainTimer > 0) attackAgainTimer -= Time.deltaTime;
             else
             {
-                try{
-                    foreach (Collider2D obj in objectsAlreadyHit)
-                    {
-                        if(obj != null)
-                            Impact(obj, GetComponent<Collider2D>().ClosestPoint(obj.transform.position));
-                    }
-                } catch (InvalidOperationException e)
-                {
-                    Debug.LogWarning(e);
-                }
+                ImpactAgain();
                 attackAgainTimer = resetEnemyTime;
             }
+        }
+    }
+
+    public void ImpactAgain()
+    {
+        try
+        {
+            foreach (Collider2D obj in objectsAlreadyHit)
+            {
+                if (obj != null)
+                    Impact(obj, GetComponent<Collider2D>().ClosestPoint(obj.transform.position));
+            }
+        }
+        catch (InvalidOperationException e)
+        {
+            Debug.LogWarning(e);
         }
     }
 
