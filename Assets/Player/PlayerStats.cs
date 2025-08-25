@@ -175,7 +175,7 @@ public class PlayerStats : MonoBehaviour
 
         DealRedListDamage(damage);
         shieldDecay = 0;
-        if (HasInkArmor(enemy))
+        if (HasInkArmor(enemy.GetParent()))
         {
             inkArmorList.Clear();
         }
@@ -217,7 +217,7 @@ public class PlayerStats : MonoBehaviour
         }
         
         onHealthChanged?.Invoke(health);
-        onPlayerDamaged?.Invoke(this, enemy);
+        onPlayerDamaged?.Invoke(this, enemy.GetParent());
     }
 
     /// <summary>

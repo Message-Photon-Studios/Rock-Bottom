@@ -86,6 +86,8 @@ public class EnemyStats : MonoBehaviour
 
     private Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)> lightningQueue = new Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)>();
 
+    private EnemyStats enemyParent;
+
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -1028,6 +1030,21 @@ public class EnemyStats : MonoBehaviour
         {
             Instantiate(coin1, transform.position, Quaternion.identity);
         }
+    }
+
+    #endregion
+
+    #region Enemy Parent
+
+    public void SetParent(EnemyStats parent)
+    {
+        enemyParent = parent;
+    }
+
+    public EnemyStats GetParent()
+    {
+        if (enemyParent != null) return enemyParent;
+        return this;
     }
 
     #endregion
