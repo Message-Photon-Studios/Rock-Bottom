@@ -6,6 +6,7 @@ public class InkArmorScript : SpellImpact
 {
     [SerializeField] bool isSubSpell;
     [SerializeField] GameObject[] spawnPrefabs;
+    [SerializeField] GameObject[] spawnPrefabsMiss;
 
     public override void Impact(Collider2D other, Vector2 impactPoint)
     {
@@ -41,6 +42,13 @@ public class InkArmorScript : SpellImpact
                 {
                     enemyInteraction.SetEnemy(enemy.GetComponent<Collider2D>());
                 }
+            }
+        } else
+        {
+            foreach (GameObject spawnPrefab in spawnPrefabsMiss)
+            {
+                GameObject obj = GameObject.Instantiate(spawnPrefab, transform.position, transform.rotation) as GameObject;
+                obj.GetComponent<ColorSpell>().Initi(spell.GetColor(), spell.GetPower(), spell.GetPlayerObj(), spell.lookDir, spell.GetExtraDamage());
             }
         }
         Destroy(gameObject);

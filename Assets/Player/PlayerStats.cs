@@ -175,7 +175,10 @@ public class PlayerStats : MonoBehaviour
 
         DealRedListDamage(damage);
         shieldDecay = 0;
-        if (HasInkArmor(enemy.GetParent()))
+        EnemyStats enemySource = enemy;
+        if (enemy != null) enemySource = enemy.GetParent();
+
+        if (HasInkArmor(enemySource))
         {
             inkArmorList.Clear();
         }
@@ -217,7 +220,7 @@ public class PlayerStats : MonoBehaviour
         }
         
         onHealthChanged?.Invoke(health);
-        onPlayerDamaged?.Invoke(this, enemy.GetParent());
+        onPlayerDamaged?.Invoke(this, enemySource);
     }
 
     /// <summary>
