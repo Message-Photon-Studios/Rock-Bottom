@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: -7692674297862362138}
   - component: {fileID: 571049661081810353}
   - component: {fileID: 1849990816063535819}
+  - component: {fileID: -6361971553403866681}
   m_Layer: 8
   m_Name: Ink Armor
   m_TagString: Spell
@@ -207,8 +208,8 @@ MonoBehaviour:
   staggeredSpell: 0
   storedSpells: 2
   colorCost: 1
-  maxSpawn: 0
-  spawnKey: 
+  maxSpawn: 1
+  spawnKey: InkArmor
   ignoreLookDir: 0
   destroyOnAllImpact: 0
   destroyOnEnemyHit: 0
@@ -267,6 +268,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetSpell: 0
+--- !u!114 &-6361971553403866681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf290b486d4794640ad769b34f368a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnKey: InkArmor
 --- !u!1001 &3068050921329342166
 PrefabInstance:
   m_ObjectHideFlags: 0

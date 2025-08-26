@@ -594,6 +594,7 @@ public class EnemyStats : MonoBehaviour
         yield return new WaitForSeconds(lightningQueue[frame].delay);
         foreach (GameObject target in lightningQueue[frame].queuedStrikes)
         {
+            if (target == null) continue;
             GameObject connector = GameObject.Instantiate(lightningObj, transform.position, transform.rotation);
             connector.GetComponent<LineRenderer>().SetPosition(0, target.transform.position);
             connector.GetComponent<LineRenderer>().SetPosition(1, transform.position);

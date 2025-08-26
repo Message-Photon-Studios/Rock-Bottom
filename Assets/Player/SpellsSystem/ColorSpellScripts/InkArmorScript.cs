@@ -10,7 +10,7 @@ public class InkArmorScript : SpellImpact
 
     public override void Impact(Collider2D other, Vector2 impactPoint)
     {
-        throw new System.NotImplementedException();
+        return;
     }
 
     private void OnEnable()
@@ -36,12 +36,14 @@ public class InkArmorScript : SpellImpact
         {
             foreach (GameObject spawnPrefab in spawnPrefabs)
             {
-                GameObject obj = GameObject.Instantiate(spawnPrefab, enemy.transform.position, transform.rotation) as GameObject;
+                GameObject obj = GameObject.Instantiate(spawnPrefab, enemy.transform.position, Quaternion.identity) as GameObject;
                 obj.GetComponent<ColorSpell>().Initi(spell.GetColor(), spell.GetPower(), spell.GetPlayerObj(), spell.lookDir, spell.GetExtraDamage());
                 foreach (SpellEnemyInteraction enemyInteraction in obj.GetComponents<SpellEnemyInteraction>())
                 {
                     enemyInteraction.SetEnemy(enemy.GetComponent<Collider2D>());
                 }
+                float dir = transform.position.x - enemy.transform.position.x;
+                if (dir > 0) obj.transform.localScale = new Vector3(-1, 1, 1);
             }
         } else
         {
