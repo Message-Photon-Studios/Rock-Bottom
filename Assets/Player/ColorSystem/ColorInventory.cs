@@ -572,7 +572,6 @@ public class ColorInventory : MonoBehaviour
     {
         float buff = 0;
         float relativeCharge = (float)slot.charge / (float)slot.maxCapacity;
-        Debug.Log("max: " + slot.maxCapacity + " charge: " + slot.charge + " " + relativeCharge);
         if (relativeCharge <= 0.75 && slot.gameColor != null) buff += concentratedSmallBuff;
         if (relativeCharge <= 0.50 && slot.gameColor != null) buff += concentratedMidBuff;
         if (relativeCharge <= 0.25 && slot.gameColor != null) buff += concentratedMaxBuff;

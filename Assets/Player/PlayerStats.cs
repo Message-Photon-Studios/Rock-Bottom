@@ -160,23 +160,30 @@ public class PlayerStats : MonoBehaviour
 
     #region Damage Player
 
+    public void DamagePlayer(int damage, EnemyStats enemy)
+    {
+        GameColor damageColor = null;
+        if (enemy) damageColor = enemy.GetColor();
+        DamagePlayer(damage, enemy, damageColor);
+    }
+
     /// <summary>
     /// Damage the player
     /// </summary>
     /// <param name="damage"></param>
-    public void DamagePlayer(int damage, EnemyStats enemy)
+    public void DamagePlayer(int damage, EnemyStats enemy, GameColor colorDamage)
     {
         if(invincibilityTimer > 0) return;
-        if(enemy != null && damage > 0)
+        if(colorDamage && damage > 0)
         {
-            damage = Mathf.RoundToInt(damage * (1f - GetColorArmour(enemy.GetColor())));
+            damage = Mathf.RoundToInt(damage * (1f - GetColorArmour(colorDamage)));
             if (damage <= 0) damage = 1;
         }
 
         DealRedListDamage(damage);
         shieldDecay = 0;
         EnemyStats enemySource = enemy;
-        if (enemy != null) enemySource = enemy.GetParent();
+        if (enemy) enemySource = enemy.GetParent();
 
         if (HasInkArmor(enemySource))
         {
@@ -187,7 +194,7 @@ public class PlayerStats : MonoBehaviour
             GameObject aura = Instantiate(blockAura, transform);
             Destroy(aura, 1);
         }
-        else if (enemy != null && colorInventory.CheckRoutedSheild(enemy.GetColor()))
+        else if (colorInventory.CheckRoutedSheild(colorDamage))
         {
             //TODO add proper block Sheild
             GameObject aura = Instantiate(blockAura, transform);

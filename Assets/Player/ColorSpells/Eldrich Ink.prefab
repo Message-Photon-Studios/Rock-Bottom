@@ -11,15 +11,14 @@ GameObject:
   - component: {fileID: 3321278458073070405}
   - component: {fileID: 3321278458073070400}
   - component: {fileID: 3321278458073070462}
-  - component: {fileID: 3321278458073070407}
   - component: {fileID: 4874330200776334801}
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
-  - component: {fileID: 571049661081810353}
-  - component: {fileID: 1849990816063535819}
-  - component: {fileID: -6361971553403866681}
+  - component: {fileID: -547541886655672389}
+  - component: {fileID: -6780715156264448936}
+  - component: {fileID: 5687138472340331783}
   m_Layer: 8
-  m_Name: Ink Armor
+  m_Name: Eldrich Ink
   m_TagString: Spell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,31 +69,15 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.33}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
---- !u!114 &3321278458073070407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0900cb19f680a734ba6a9d1fcb2ffcdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forcePerspectivePlayer: 1
-  triggerImpactSpells: 1
-  requiresEnemyLOS: 1
-  onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
+  m_Radius: 3
 --- !u!212 &4874330200776334801
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -102,7 +85,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -136,7 +119,7 @@ SpriteRenderer:
   m_SortingLayerID: -615436619
   m_SortingLayer: 12
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1553837647, guid: a7041a1588214bf498112bae7af0f663, type: 3}
+  m_Sprite: {fileID: -566457090, guid: a9cadb104bfc3fe45ac8edf3e433c088, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -155,9 +138,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e1863b02ba2d1e645bef68327cdf2f81, type: 2}
+  m_Controller: {fileID: 9100000, guid: f35c18177846f6146a51fb27f318f302, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -198,18 +181,18 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   spellCost: 20
-  powerScale: 1
-  coolDown: 2
-  customMinimunCoolDown: 1
+  powerScale: 1.8
+  coolDown: 1
+  customMinimunCoolDown: 0
   castWhenDamaged: 0
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 0
   staggeredSpell: 0
-  storedSpells: 2
+  storedSpells: 1
   colorCost: 1
-  maxSpawn: 1
-  spawnKey: InkArmor
+  maxSpawn: 0
+  spawnKey: 
   ignoreLookDir: 0
   destroyOnAllImpact: 0
   destroyOnEnemyHit: 0
@@ -217,45 +200,27 @@ MonoBehaviour:
   impactOnEnemies: 1
   impactOnNonEnemies: 0
   triggerOnlyOnce: 0
-  triggerOnlyOncePerEnemy: 1
+  triggerOnlyOncePerEnemy: 0
   attackAgainTimer: -1
   requirePlayerLOSonSpawn: 0
-  lifeTime: 1.5
-  animationTrigger: raisedSpell
+  lifeTime: 3
+  animationTrigger: handSpell
   onImpact:
-  - {fileID: 3321278458073070407}
-  - {fileID: 571049661081810353}
+  - {fileID: -6780715156264448936}
   spellSprite:
-    bigSprite: {fileID: 21300000, guid: cbaad027020fe7247a5eb29bc36ab35b, type: 3}
-    bigSpriteMask: {fileID: 21300000, guid: c118a56ed866231459ce92d6da990063, type: 3}
-    bigSpriteCapMask: {fileID: 21300000, guid: e0f12582c49d75145b3b4e718a08cb3d, type: 3}
-    mediumSprite: {fileID: 21300000, guid: 0afc5d2361529d645b81502e31ba5649, type: 3}
-    mediumSpriteMask: {fileID: 21300000, guid: 6192ceab2f62f3641a18f832b620d03a, type: 3}
-    mediumSpriteCapMask: {fileID: 21300000, guid: 859536656a0ab8e47ab5e25a2e74aeb9, type: 3}
-    smallSprite: {fileID: 21300000, guid: b0575b0cfef98924aae6514f2edbf9ef, type: 3}
-    smallSpriteMask: {fileID: 21300000, guid: a822ccbf639b5c84ead66a735b35a1e2, type: 3}
-    smallSpriteCapMask: {fileID: 21300000, guid: 651545ac5bbb1bc4982d879ffc036dfc, type: 3}
+    bigSprite: {fileID: 21300000, guid: eb46bbc211a25b9499867ee955912f52, type: 3}
+    bigSpriteMask: {fileID: 21300000, guid: 0dfa331a3ff2eb341b89a367e36301d6, type: 3}
+    bigSpriteCapMask: {fileID: 21300000, guid: ccba29dcff7488545afd4653b6795c8f, type: 3}
+    mediumSprite: {fileID: 21300000, guid: 9ef4cd8f1dac3324babae533413efa90, type: 3}
+    mediumSpriteMask: {fileID: 21300000, guid: 2498abc67c9aeb74aae6d7751af90fd3, type: 3}
+    mediumSpriteCapMask: {fileID: 21300000, guid: 2b6ad35486714b24cbe017a953072b0b, type: 3}
+    smallSprite: {fileID: 21300000, guid: bda43597a5daf1248b98c3765a107f7f, type: 3}
+    smallSpriteMask: {fileID: 21300000, guid: 21cb5863e1f51c0459a50e2b0b039881, type: 3}
+    smallSpriteCapMask: {fileID: 21300000, guid: db86681281ac0bb428e6f3d7ebe83efd, type: 3}
   references:
     version: 2
     RefIds: []
---- !u!114 &571049661081810353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 142056fed3936554590e9b2edf57bff2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isSubSpell: 0
-  spawnPrefabs:
-  - {fileID: 3321278458073070463, guid: 77f39d5c59c69d0418180eda7862d898, type: 3}
-  spawnPrefabsMiss:
-  - {fileID: 3321278458073070463, guid: da5a09192259b4948b7f5607046b0353, type: 3}
---- !u!114 &1849990816063535819
+--- !u!114 &-547541886655672389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -268,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetSpell: 0
---- !u!114 &-6361971553403866681
+--- !u!114 &-6780715156264448936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,10 +242,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 3321278458073070463}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf290b486d4794640ad769b34f368a88, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b60752d689d2eb44a9f5a5c46fa69b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnKey: InkArmor
+  spawnPrefabs:
+  - {fileID: 3321278458073070463, guid: 9a87f3c4406d96c42bc7534d4f995aa0, type: 3}
+  spellImpacts:
+  - {fileID: 5687138472340331783}
+  playerDamage: 15
+  playerHeal: 2
+  startRange: 3
+  activeRange: 3
+--- !u!114 &5687138472340331783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0900cb19f680a734ba6a9d1fcb2ffcdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forcePerspectivePlayer: 1
+  triggerImpactSpells: 1
+  requiresEnemyLOS: 0
+  onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!1001 &3068050921329342166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -353,6 +341,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: InitialModule.startSize.minScalar
       value: 0.5
       objectReference: {fileID: 0}
@@ -362,7 +358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 6046597493112720838, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[0].inSlope
