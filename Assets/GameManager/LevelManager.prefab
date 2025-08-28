@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -301831581
-  m_SortingLayer: 14
+  m_SortingLayer: 16
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 512992e80de2de2418d329a6c434fbd2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -142,6 +142,8 @@ MonoBehaviour:
   clearInventoryOnLevelEnd: 0
   allowTips: 1
   isCaveTownLevel: 0
+  rerunStart: 0
+  increaseLevelNum: 1
   wellSpawnAmount: 2
   spawnableColors:
   - {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
@@ -187,6 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057fd27788c34f44a93ceef2d2e77b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyScaling: 0.1
   spawnableColors:
   - {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
   - {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
@@ -208,6 +211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPop: 0
   stageCostMultiplier: 1
+  cratePop: 0
   healthItem: {fileID: 11400000, guid: 4eafc665398987e41b73d8cbd3db533d, type: 2}
   healthItemAmount: 1
   petrifiedPigmentDrops: 2
@@ -232,3 +236,5 @@ MonoBehaviour:
   - {fileID: -7692674297862362138, guid: 899e591bc6301404fa3090739ce04e97, type: 3}
   - {fileID: -7692674297862362138, guid: ceb57f664518fbb4fabf4671a87205da, type: 3}
   - {fileID: -7692674297862362138, guid: bbedbdee45eab7a4e9b663d4392d987b, type: 3}
+  - {fileID: -7692674297862362138, guid: 45af14ade1322734e8e3c98f25f27a59, type: 3}
+  - {fileID: -7692674297862362138, guid: add053d27e20228479dc29cf07b88970, type: 3}
