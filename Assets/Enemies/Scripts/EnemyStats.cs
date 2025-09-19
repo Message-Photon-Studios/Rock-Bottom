@@ -314,6 +314,7 @@ public class EnemyStats : MonoBehaviour
     /// <param name="damage"></param>
     public void DamageEnemy(int damage)
     {
+        if (!gameObject.activeSelf) return;
         //if (enemySleep) WakeEnemyAnimation();
 
         damage = Mathf.RoundToInt(damage * (1f - armour + paintersKnifeArmourReduction));

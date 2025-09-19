@@ -29,10 +29,12 @@ public class EnemyHpController : MonoBehaviour
         healthSubSlider.maxValue = enemy.GetHealth();
         healthSlider.value = enemy.GetHealth();
         healthSubSlider.value = enemy.GetHealth();
-        rainbowSlider.value = 0;
+        if(rainbowSlider)
+            rainbowSlider.value = 0;
         healthSlider.gameObject.SetActive(false);
         healthSubSlider.gameObject.SetActive(false);
-        rainbowSlider.gameObject.SetActive(false);
+        if(rainbowSlider)
+            rainbowSlider.gameObject.SetActive(false);
 
         if (rectTransform)
             rectTransform.sizeDelta = new Vector2(healthBarBaseSize + healthBarScale * enemy.GetHealth(), rectTransform.sizeDelta.y);
@@ -64,7 +66,7 @@ public class EnemyHpController : MonoBehaviour
         {
             rainbowSlider.value = Player.instance.stats.rainbowExecutePercentage;
         }
-        else
+        else if (rainbowSlider)
         {
             rainbowSlider.value = 0;
         }

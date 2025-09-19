@@ -23,7 +23,7 @@ public class ActivateAction<T> : Node
     public override NodeState Evaluate()
     {
         
-        if(action != null) action.Invoke((T)GetData(varName));
+        if(action != null) action?.Invoke((T)GetData(varName));
         state = NodeState.SUCCESS;
         return state;
     }
