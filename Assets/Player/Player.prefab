@@ -5316,7 +5316,8 @@ MonoBehaviour:
   chanceToBlock: 0
   colorNearbyRange: 8
   chanceToColorNearby: 0
-  colorRainbowMaxedPower: 1
+  rainbowedDamage: 0
+  rainbowExecutePercentage: 0.2
   complimentaryDamage: 0
   corrosiveColor: 0
   playerSounds: {fileID: 8219171091925355652}
@@ -5396,7 +5397,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f103e0ae6722fd74bad3f78153d7d42e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rainbowComboDamage: 10
   spellSpawnPoint: {fileID: 806439298}
   playerMovement: {fileID: 468746527930208003}
   colorInventory: {fileID: 2907638193198340670}
@@ -5437,7 +5437,7 @@ MonoBehaviour:
   defaultSpell: {fileID: -7692674297862362138, guid: 143286fca810d5547a46eced785b473b, type: 3}
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   rainbowExtraDrain: 4
-  minCD: 0.1
+  minCD: 0.5
   maxStoredSpells: 6
   routedSheildCost: 0.25
   lockSwapping: 0
@@ -16046,7 +16046,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -301831581
-  m_SortingLayer: 15
+  m_SortingLayer: 16
   m_SortingOrder: 11
   m_Sprite: {fileID: 21300000, guid: ad1361674abba6d45aec13723fe357d3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

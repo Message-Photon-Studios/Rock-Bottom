@@ -416,15 +416,17 @@ public class ColorInventory : MonoBehaviour
 
     public void SetCoolDown(float time, ColorSlot slot)
     {
+        float customMinCD = minCD;
+        if (slot.colorSpell != null) customMinCD = Mathf.Max(slot.colorSpell.customMinimunCoolDown, minCD);
         for (int i = 0; i < slot.storedSpellCDs.Count; i++)
         {
             if (slot.storedSpellCDs[i] <= Time.fixedTime)
             {
-                slot.storedSpellCDs = SetCoolDownForIndex(slot.storedSpellCDs, i, time);
+                slot.storedSpellCDs = SetCoolDownForIndex(slot.storedSpellCDs, i, time, customMinCD);
                 break;
             }
         }
-        onCoolDownSet?.Invoke(slot.storedSpellCDs, CalculateCD(time), colorSlots.IndexOf(slot));
+        onCoolDownSet?.Invoke(slot.storedSpellCDs, Mathf.Max(CalculateCD(time), customMinCD), colorSlots.IndexOf(slot));
     }
 
     public float CalculateCD(float time)
@@ -432,10 +434,11 @@ public class ColorInventory : MonoBehaviour
         return (time - time * addetiveCDModifier) * multetiveCDModifier;
     }
 
-    public List<float> SetCoolDownForIndex(List<float> list, int index, float time)
+    public List<float> SetCoolDownForIndex(List<float> list, int index, float time, float customMinCD)
     {
+        
         time = CalculateCD(time);
-        if (time <= minCD) time = minCD;
+        if (time <= Mathf.Max(customMinCD)) time = Mathf.Max(customMinCD);
         list[index] = 0;
         float max = Time.fixedTime;
         foreach (float cd in list)
@@ -905,7 +908,7 @@ public class ColorInventory : MonoBehaviour
         for (int i = 1; i < spellCapacity; i++)
         {
             list.Add(0);
-            list = SetCoolDownForIndex(list, i, spell.coolDown);
+            list = SetCoolDownForIndex(list, i, spell.coolDown, Mathf.Max(spell.customMinimunCoolDown, minCD));
         }
         return list;
     }
