@@ -17,6 +17,8 @@ public class PlayerHpController : MonoBehaviour
     [SerializeField] AnimationCurve maxHpChangeCurve;
     [SerializeField] float secondaryRate;
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] float maxHealthMultiplyer = 4f;
+    [SerializeField] float minHealthMultiplyer = 0.5f;
  
     private RectTransform rect;
     private RectTransform secondaryRect;
@@ -71,7 +73,7 @@ public class PlayerHpController : MonoBehaviour
     {
         if (newMaxHp == maxHealth) return;
         if (maxHealth != 0)
-            StartCoroutine(IncreaseHealthBar(newMaxHp > maxHealth));
+            StartCoroutine(IncreaseHealthBar(newMaxHp));
 
         maxHealth = newMaxHp;
         healthMultiplier = 100 / maxHealth;
@@ -99,16 +101,12 @@ public class PlayerHpController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private IEnumerator IncreaseHealthBar(bool increased)
+    private IEnumerator IncreaseHealthBar(float newMaxHp)
     {
         float newSizeMultiplier;
-        if (increased)
-            newSizeMultiplier = Math.Min(sizeMultiplier + (2.5f - sizeMultiplier) / 1.5f, sizeMultiplier + 0.2f);
-        else
-            newSizeMultiplier = Math.Max(sizeMultiplier + (sizeMultiplier - 1) / 1.5f, sizeMultiplier - 0.2f);
-
         var tempMult = sizeMultiplier;
-        sizeMultiplier = newSizeMultiplier;
+        sizeMultiplier = GetHealthMultiplier(newMaxHp);
+        newSizeMultiplier = sizeMultiplier;
 
         for (var i = 0.0f; i < 1.0f; i += 0.02f)
         {
@@ -119,6 +117,17 @@ public class PlayerHpController : MonoBehaviour
             secondaryRect.sizeDelta = size;
             yield return new WaitForSeconds(0.01f);
         }
+    }
+
+    private float GetHealthMultiplier(float newMaxHealth)
+    {
+        float x = newMaxHealth / 100;
+        float l = 0.6f;
+        float k = 2;
+        float x0 = 1.5f;
+        float m = 0.7f;
+        float sCurve = (l / (1 + Mathf.Exp(-k * (x - x0)))) + m;
+        return sCurve;
     }
 
     private void Update()
