@@ -52,18 +52,13 @@ public class Item : ScriptableObject
         if (maxSpawn != -1 && ret)
         {
             int count = 0;
-            foreach (Item item in GameObject.FindWithTag("Player").GetComponent<ItemInventory>().getItems())
+            foreach (Item item in Player.instance.playerInventory.getItems())
             {
                 if (this.name.Equals(item.name)) count++;
                 
             }
-            foreach (GameObject itemHolder in GameObject.FindGameObjectsWithTag("Item"))
-            {
-                Item item = itemHolder.GetComponent<ItemPickup>().GetItem();
-                if (item != null)
-                    if (item.name.Equals(name))
-                        count++;
-            }
+
+            count += ItemSpellManager.instance.GetItemsSpawned(this);
             if (count >= maxSpawn) ret = false;
         }
         return ret;
@@ -90,7 +85,7 @@ public class Item : ScriptableObject
     //Ensures that the item category and item rarity variables are always set correctly, dependent on what folder the item is in.
     private void OnValidate() 
     {
-        if(itemCategory == ItemCategory.Special) return;
+        if(itemCategory == ItemCategory._Special) return;
         string currentPath = AssetDatabase.GetAssetPath(this);
         string[] splitString = currentPath.Split('/');
         
@@ -154,11 +149,6 @@ public class ItemInspector : Editor
         if(GUILayout.Button("Add Rainbow Maxed buff"))
         {
             item.effects.Add(new RainbowMaxedBuff());
-        }
-
-        if(GUILayout.Button("Add enemy color don't mix"))
-        {
-            item.effects.Add(new EnemyDontMixItem());
         }
 
         if(GUILayout.Button("Add brush damage"))

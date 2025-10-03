@@ -46,7 +46,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Menu"",
+                    ""name"": ""Escape"",
                     ""type"": ""Button"",
                     ""id"": ""4e844f64-9f17-456c-bd29-bc6cb4929508"",
                     ""expectedControlType"": ""Button"",
@@ -150,7 +150,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""id"": ""96a22342-4dc2-446a-a5bb-3d8484bec3fc"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=4)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -159,7 +159,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""id"": ""f5a9ed5b-d314-43cf-912c-eba98e7c0ad4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=4)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -168,7 +168,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""id"": ""b4b30c80-9858-4725-9adf-f3ae7f6411dd"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=4)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -177,13 +177,22 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""id"": ""775a382d-9ce5-4083-a678-69badfffc638"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.8)"",
+                    ""interactions"": ""Hold(duration=4)"",
                     ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""037ca3e1-dd53-4689-9ad1-0396c2af09ca"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ControllerBack"",
+                    ""type"": ""Button"",
+                    ""id"": ""0347771a-fa35-4b2f-bfcc-71d1ca824a27"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -330,7 +339,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PlayStation;XboxController"",
-                    ""action"": ""Menu"",
+                    ""action"": ""Escape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -341,7 +350,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""Menu"",
+                    ""action"": ""Escape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1081,6 +1090,28 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""DivideColor4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9755d2ca-9740-4861-b0e8-40dae4dfd82f"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController"",
+                    ""action"": ""ControllerBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""725cf336-897b-44bd-bd8c-4f3f62bc27a1"",
+                    ""path"": ""<DualShockGamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PlayStation"",
+                    ""action"": ""ControllerBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1141,7 +1172,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
+        m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Map = m_Player.FindAction("Map", throwIfNotFound: true);
@@ -1157,6 +1188,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_DivideColor3 = m_Player.FindAction("DivideColor3", throwIfNotFound: true);
         m_Player_DivideColor4 = m_Player.FindAction("DivideColor4", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_ControllerBack = m_Player.FindAction("ControllerBack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1218,7 +1250,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Walk;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Menu;
+    private readonly InputAction m_Player_Escape;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Map;
@@ -1234,13 +1266,14 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DivideColor3;
     private readonly InputAction m_Player_DivideColor4;
     private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_ControllerBack;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
         public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Walk => m_Wrapper.m_Player_Walk;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Menu => m_Wrapper.m_Player_Menu;
+        public InputAction @Escape => m_Wrapper.m_Player_Escape;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Map => m_Wrapper.m_Player_Map;
@@ -1256,6 +1289,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @DivideColor3 => m_Wrapper.m_Player_DivideColor3;
         public InputAction @DivideColor4 => m_Wrapper.m_Player_DivideColor4;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @ControllerBack => m_Wrapper.m_Player_ControllerBack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1271,9 +1305,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @Menu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
-                @Menu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
-                @Menu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenu;
+                @Escape.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEscape;
+                @Escape.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEscape;
+                @Escape.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEscape;
                 @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
@@ -1319,6 +1353,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @ControllerBack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnControllerBack;
+                @ControllerBack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnControllerBack;
+                @ControllerBack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnControllerBack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1329,9 +1366,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Menu.started += instance.OnMenu;
-                @Menu.performed += instance.OnMenu;
-                @Menu.canceled += instance.OnMenu;
+                @Escape.started += instance.OnEscape;
+                @Escape.performed += instance.OnEscape;
+                @Escape.canceled += instance.OnEscape;
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
@@ -1377,6 +1414,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @ControllerBack.started += instance.OnControllerBack;
+                @ControllerBack.performed += instance.OnControllerBack;
+                @ControllerBack.canceled += instance.OnControllerBack;
             }
         }
     }
@@ -1421,7 +1461,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     {
         void OnWalk(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnMenu(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
@@ -1437,5 +1477,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnDivideColor3(InputAction.CallbackContext context);
         void OnDivideColor4(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnControllerBack(InputAction.CallbackContext context);
     }
 }

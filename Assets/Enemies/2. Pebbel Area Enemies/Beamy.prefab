@@ -4975,7 +4975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 150
+  health: 120
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
   colorAmmount: 2
   movementSpeed: 3000
@@ -4984,6 +4984,7 @@ MonoBehaviour:
     max: 15
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   comboParticles: {fileID: 6205137580783060889, guid: 08a80dfa497e1524d8b1d91a3ef76662, type: 3}
+  deathParticles: {fileID: 8433749086128351822, guid: 317318bde42e4fd489b4dec17509c0fd, type: 3}
   knockbackImune: 1
   sleepForcedown: 4000
   setColorByHand: 0
@@ -4993,6 +4994,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 3809192256626251174}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &3809192256626251169
 MonoBehaviour:
@@ -5006,7 +5008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08ba59636b198f544a3c35a9f87c91b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
+  damage: 12
   laserDecaySpeed: 0.5
   attackTrigger:
     radius: 8

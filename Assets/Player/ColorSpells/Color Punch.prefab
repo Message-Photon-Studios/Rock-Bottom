@@ -36,6 +36,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4510281058152760757}
+  - {fileID: 5121728846496134712}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -106,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 1
   triggerImpactSpells: 1
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -146,7 +148,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: 280521465, guid: 6a228cce4aa2215448b4a098c8f4892c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -210,13 +212,15 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   spellCost: 20
-  powerScale: 1.6
+  powerScale: 1.5
   coolDown: 1.5
   castWhenDamaged: 0
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 2
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0
@@ -246,6 +250,57 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!1 &4840821512502651266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5121728846496134712}
+  - component: {fileID: 4626472220740427844}
+  m_Layer: 8
+  m_Name: ParticleSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5121728846496134712
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4840821512502651266}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3, y: -0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3321278458073070405}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4626472220740427844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4840821512502651266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14331867b7cd41c40bc5ab8003dea709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOneInstantly: 1
+  spawnDelay: 0.1
+  spawnAmount: 6
+  requirePlayerLOS: 1
+  spell: {fileID: -7692674297862362138}
+  spawnPrefabs:
+  - {fileID: 7014778554409817202, guid: ce1c1893037c9534e88561596354178d, type: 3}
 --- !u!1001 &1834294710718233742
 PrefabInstance:
   m_ObjectHideFlags: 0

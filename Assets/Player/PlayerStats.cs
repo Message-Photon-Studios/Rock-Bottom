@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] int health = 100;
     [SerializeField] int maxShield = 50;
     [SerializeField] int maxPermanetShield = 20;
-    [SerializeField] int shieldDecayIncrease = 1;
+    [SerializeField] float shieldDecayIncrease = 1;
     [SerializeField] float hitInvincibilityTime;
     [SerializeField] LevelManager levelManager;
     [SerializeField] Animator animator;
@@ -26,12 +27,11 @@ public class PlayerStats : MonoBehaviour
 
     public float colorNearbyRange = 0;
     public int chanceToColorNearby = 0;
-    public float colorRainbowMaxedPower = 1;
+    public int rainbowedDamage = 0;
+    public float rainbowExecutePercentage = .2f;
     
     int shield = 0;
-    int shieldDecay = -1;
-
-    public int chanceThatEnemyDontMix = 0;
+    float shieldDecay = -1;
 
     public int complimentaryDamage = 0;
 
@@ -85,6 +85,11 @@ public class PlayerStats : MonoBehaviour
     private float adaptiveArmourBonus = 0f;
     private float defaultArmour = 0f;
     private float invincibilityBonus = 0f;
+    private List<InkArmorScript> inkArmorList = new List<InkArmorScript>();
+
+    private const string lifelineName = "Lifeline";
+
+    public bool isDead { get; private set; } = false;
 
     #region Setup
     public void Setup(LevelManager levelManager)
@@ -106,6 +111,7 @@ public class PlayerStats : MonoBehaviour
         maxHealth = health;
         onMaxHealthChanged?.Invoke(maxHealth);
         onHealthChanged?.Invoke(health);
+        isDead = false;
     }
 
     #endregion
@@ -122,7 +128,7 @@ public class PlayerStats : MonoBehaviour
             if(shield > maxPermanetShield)
             {
                 Debug.Log(maxPermanetShield);
-                shield -= (shieldDecay<0)?0:shieldDecay;
+                shield -= Mathf.RoundToInt((shieldDecay<0)?0:shieldDecay);
                 shieldDecay += shieldDecayIncrease;
                 if(shield < maxPermanetShield) shield = maxPermanetShield;
                 onShieldChanged?.Invoke(shield);
@@ -154,27 +160,41 @@ public class PlayerStats : MonoBehaviour
 
     #region Damage Player
 
+    public void DamagePlayer(int damage, EnemyStats enemy)
+    {
+        GameColor damageColor = null;
+        if (enemy) damageColor = enemy.GetColor();
+        DamagePlayer(damage, enemy, damageColor);
+    }
+
     /// <summary>
     /// Damage the player
     /// </summary>
     /// <param name="damage"></param>
-    public void DamagePlayer(int damage, EnemyStats enemy)
+    public void DamagePlayer(int damage, EnemyStats enemy, GameColor colorDamage)
     {
         if(invincibilityTimer > 0) return;
-        if(enemy != null && damage > 0)
+        if(colorDamage && damage > 0)
         {
-            damage = Mathf.RoundToInt(damage * (1f - GetColorArmour(enemy.GetColor())));
+            damage = Mathf.RoundToInt(damage * (1f - GetColorArmour(colorDamage)));
             if (damage <= 0) damage = 1;
         }
 
         DealRedListDamage(damage);
         shieldDecay = 0;
-        if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
+        EnemyStats enemySource = enemy;
+        if (enemy) enemySource = enemy.GetParent();
+
+        if (HasInkArmor(enemySource))
+        {
+            inkArmorList.Clear();
+        }
+        else if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
         {
             GameObject aura = Instantiate(blockAura, transform);
             Destroy(aura, 1);
         }
-        else if (enemy != null && colorInventory.CheckRoutedSheild(enemy.GetColor()))
+        else if (colorInventory.CheckRoutedSheild(colorDamage))
         {
             //TODO add proper block Sheild
             GameObject aura = Instantiate(blockAura, transform);
@@ -207,7 +227,7 @@ public class PlayerStats : MonoBehaviour
         }
         
         onHealthChanged?.Invoke(health);
-        onPlayerDamaged?.Invoke(this, enemy);
+        onPlayerDamaged?.Invoke(this, enemySource);
     }
 
     /// <summary>
@@ -334,9 +354,27 @@ public class PlayerStats : MonoBehaviour
 
     private void PlayerReachZeroHp()
     {
-        animator.SetBool("dead", true);
-        movement.movementRoot.SetTotalRoot("dead", true);
+        if (Player.instance.playerInventory.HasItemWithName(lifelineName))
+        {
+            Player.instance.playerInventory.RemoveItemWithName(lifelineName);
+            health = 0;
+            HealPlayer(10);
+            return;
+        }
+
+        isDead = true;
         invincibilityTimer = 3f;
+        movement.movementRoot.SetTotalRoot("dead", true);
+        StartCoroutine(DeathPause());
+    }
+
+    IEnumerator DeathPause()
+    {
+        CameraMovement cameraMovement = FindObjectOfType<CameraMovement>();
+        cameraMovement.TeleportCamarera(transform.position);
+        cameraMovement.ZoomCamera(1.8f, .2f);
+        yield return new WaitForSeconds(.5f);
+        animator.SetBool("dead", true);
         playerSounds.PlayDeath();
     }
 
@@ -389,14 +427,14 @@ public class PlayerStats : MonoBehaviour
         invincibilityTimer = 10f;
         //Physics2D.IgnoreLayerCollision(3,6);
         //Physics2D.IgnoreLayerCollision(3,13);
-        Physics2D.IgnoreLayerCollision(3,2);
+        //Physics2D.IgnoreLayerCollision(3,2);
     }
 
     public void RemovePlayerInvincible()
     {
         //Physics2D.IgnoreLayerCollision(3,6, false);
         //Physics2D.IgnoreLayerCollision(3,13, false);
-        Physics2D.IgnoreLayerCollision(3,2, false);
+        //Physics2D.IgnoreLayerCollision(3,2, false);
 
         invincibilityTimer = 0;
     }
@@ -440,7 +478,7 @@ public class PlayerStats : MonoBehaviour
         if(color == null) return 0;
         float armour = defaultArmour;
         if (colorArmour.ContainsKey(color)) armour += colorArmour[color];
-        if (color != null && colorInventory.CheckIfActiveColorMatches(color)) armour += adaptiveArmourBonus;
+        //if (color != null && colorInventory.CheckIfActiveColorMatches(color)) armour += adaptiveArmourBonus;
         if (armour > .9f)
         {
             return .9f;
@@ -467,6 +505,35 @@ public class PlayerStats : MonoBehaviour
     public void AddDefaultArmour(float addArmour)
     {
         defaultArmour += addArmour;
+    }
+
+    #endregion
+
+    #region Stored Spells
+
+    public void AddInkArmor(InkArmorScript inkArmor)
+    {
+        inkArmorList.Add(inkArmor);
+    }
+
+    public void RemoveInkArmor(InkArmorScript inkArmor)
+    {
+        if(inkArmorList.Contains(inkArmor)) inkArmorList.Remove(inkArmor);
+    }
+
+    public bool HasInkArmor(EnemyStats enemy)
+    {
+        bool status = false;
+           foreach(InkArmorScript inkArmor in inkArmorList.ToArray())
+        {
+            if (inkArmor == null) inkArmorList.Remove(inkArmor);
+            else
+            {
+                status = true;
+                inkArmor.InitiateArmor(enemy);
+            }
+        }
+        return status;
     }
 
     #endregion

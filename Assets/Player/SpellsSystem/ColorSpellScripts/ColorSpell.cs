@@ -20,6 +20,7 @@ public class ColorSpell : MonoBehaviour
     /// </summary>
     [SerializeField] public float powerScale = 1;
     [SerializeField] public float coolDown = 1;
+    [SerializeField] public float customMinimunCoolDown = 0;
     [SerializeField] public bool castWhenDamaged;
     [SerializeField] public bool castOnSpellImpact;
     [SerializeField] public bool castOnDash;
@@ -27,6 +28,7 @@ public class ColorSpell : MonoBehaviour
     [SerializeField] public bool staggeredSpell;
 
     [SerializeField] public int storedSpells = 1;
+    [SerializeField] public int colorCost = 1;
 
     [SerializeField] public int maxSpawn = 0;
 
@@ -37,7 +39,7 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// The projectile will be destroyed on impact with any object
     /// </summary>
-    [SerializeField] protected bool destroyOnAllImpact;
+    [SerializeField] public bool destroyOnAllImpact;
 
     /// <summary>
     /// The projectile will be destroyed on impact with the enemy
@@ -54,7 +56,7 @@ public class ColorSpell : MonoBehaviour
     /// <summary>
     /// If true this spell will detect non-enemies as a hit
     /// </summary>
-    [SerializeField] protected bool impactOnNonEnemies = true;
+    [SerializeField] public bool impactOnNonEnemies = true;
     /// <summary>
     /// If true the spell will only trigger once.
     /// </summary>
@@ -110,13 +112,13 @@ public class ColorSpell : MonoBehaviour
     /// Needs to be called after the spell is instantiated
     /// </summary>
     /// <param name="gameColor">The color effect of the spell</param>
-    /// <param name="power">The total power of the spell</param>
+    /// <param name="colorPower">The total power of the spell</param>
     /// <param name="player">The player object</param>
     /// <param name="lookDir">The direction the spell should face horizontally</param>
-    public void Initi(GameColor gameColor, float power, GameObject player, int lookDir, int extraDamage)
+    public void Initi(GameColor gameColor, float colorPower, GameObject player, int lookDir, int extraDamage)
     {
         this.gameColor = gameColor;
-        this.power = power+powerScale;
+        this.power = colorPower*powerScale;
         this.player = player;
         this.lookDir = lookDir;
         this.extraDamage = extraDamage;
@@ -242,7 +244,7 @@ public class ColorSpell : MonoBehaviour
     {
         if (destroyOnCollission)
         {
-            Impact(other.collider, GetComponent<Collider2D>().ClosestPoint(other.transform.position));
+            Impact(other.collider, other.GetContact(0).point);
             Destroy(gameObject);
             return;
         }
@@ -263,18 +265,25 @@ public class ColorSpell : MonoBehaviour
             if(attackAgainTimer > 0) attackAgainTimer -= Time.deltaTime;
             else
             {
-                try{
-                    foreach (Collider2D obj in objectsAlreadyHit)
-                    {
-                        if(obj != null)
-                            Impact(obj, GetComponent<Collider2D>().ClosestPoint(obj.transform.position));
-                    }
-                } catch (InvalidOperationException e)
-                {
-                    Debug.LogWarning(e);
-                }
+                ImpactAgain();
                 attackAgainTimer = resetEnemyTime;
             }
+        }
+    }
+
+    public void ImpactAgain()
+    {
+        try
+        {
+            foreach (Collider2D obj in objectsAlreadyHit)
+            {
+                if (obj != null)
+                    Impact(obj, GetComponent<Collider2D>().ClosestPoint(obj.transform.position));
+            }
+        }
+        catch (InvalidOperationException e)
+        {
+            Debug.LogWarning(e);
         }
     }
 

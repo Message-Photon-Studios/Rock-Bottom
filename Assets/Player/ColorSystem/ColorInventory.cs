@@ -56,6 +56,14 @@ public class ColorInventory : MonoBehaviour
     public bool routedSheild = false;
     public bool shatteredPrism = false;
     public bool centrifuge = false;
+    public bool enemyDontMix = false;
+    public bool enemyGiveColorOnChange = false;
+    public bool enemyGiveColorOnSame = false;
+    public bool doubleExtraDamage = false;
+    public bool greatBrushFirstHit = false;
+    public bool paintersKnife = false;
+    public bool colorVarnish = false;
+    public int rainbowComboExtraColor = 0;
     private float rngMax = 0;
     private float rngMin = 0;
     private float rngBuff = 0;
@@ -190,8 +198,8 @@ public class ColorInventory : MonoBehaviour
 
             if (Random.Range(0, 100) > blockDrainColor && !crackedUrn)
             {
-                int charge = slot.charge - 1;
-                if (slot.gameColor.name == "Rainbow")
+                int charge = slot.charge - GetColorSpell(slot).colorCost;
+                if (GetColorSlotColor(slot).name == "Rainbow")
                     charge -= rainbowExtraDrain;
                 if(charge < 0) charge = 0;
                 slot.SetCharge(charge);
@@ -408,15 +416,17 @@ public class ColorInventory : MonoBehaviour
 
     public void SetCoolDown(float time, ColorSlot slot)
     {
+        float customMinCD = minCD;
+        if (slot.colorSpell != null) customMinCD = Mathf.Max(slot.colorSpell.customMinimunCoolDown, minCD);
         for (int i = 0; i < slot.storedSpellCDs.Count; i++)
         {
             if (slot.storedSpellCDs[i] <= Time.fixedTime)
             {
-                slot.storedSpellCDs = SetCoolDownForIndex(slot.storedSpellCDs, i, time);
+                slot.storedSpellCDs = SetCoolDownForIndex(slot.storedSpellCDs, i, time, customMinCD);
                 break;
             }
         }
-        onCoolDownSet?.Invoke(slot.storedSpellCDs, CalculateCD(time), colorSlots.IndexOf(slot));
+        onCoolDownSet?.Invoke(slot.storedSpellCDs, Mathf.Max(CalculateCD(time), customMinCD), colorSlots.IndexOf(slot));
     }
 
     public float CalculateCD(float time)
@@ -424,10 +434,11 @@ public class ColorInventory : MonoBehaviour
         return (time - time * addetiveCDModifier) * multetiveCDModifier;
     }
 
-    public List<float> SetCoolDownForIndex(List<float> list, int index, float time)
+    public List<float> SetCoolDownForIndex(List<float> list, int index, float time, float customMinCD)
     {
+        
         time = CalculateCD(time);
-        if (time <= minCD) time = minCD;
+        if (time <= Mathf.Max(customMinCD)) time = Mathf.Max(customMinCD);
         list[index] = 0;
         float max = Time.fixedTime;
         foreach (float cd in list)
@@ -472,9 +483,9 @@ public class ColorInventory : MonoBehaviour
     /// <returns></returns>
     public float GetColorBuff(GameColor color)
     {
-        if (color == null) return 0;
-        if(color == emptyBottleColor) return 0;
-        float buff = 0;
+        if (color == null) return 1;
+        if(color == emptyBottleColor) return 1;
+        float buff = 1;
         foreach (ColorSlot slot in colorSlots)
         {
             if((slot.gameColor == color || balanceColors) && IsSlotFull(slot)) 
@@ -485,6 +496,7 @@ public class ColorInventory : MonoBehaviour
 
         if (balanceColors)
         {
+            buff += 6; //Add base power for the other 6 bottles.
             foreach (KeyValuePair<GameColor, float> entry in colorBuffs)
             {
                 buff += entry.Value;
@@ -551,11 +563,15 @@ public class ColorInventory : MonoBehaviour
         return GetSlotBuff(GetSlot(slotIndex));
     }
 
+    /// <summary>
+    /// Returns slot specific buffs such as concentrated color.
+    /// </summary>
+    /// <param name="slot"></param>
+    /// <returns></returns>
     public float GetSlotBuff(ColorSlot slot)
     {
         float buff = 0;
-        float relativeCharge = (float) slot.charge / (float) slot.maxCapacity;
-        Debug.Log("max: " + slot.maxCapacity + " charge: " + slot.charge + " " + relativeCharge);
+        float relativeCharge = (float)slot.charge / (float)slot.maxCapacity;
         if (relativeCharge <= 0.75 && slot.gameColor != null) buff += concentratedSmallBuff;
         if (relativeCharge <= 0.50 && slot.gameColor != null) buff += concentratedMidBuff;
         if (relativeCharge <= 0.25 && slot.gameColor != null) buff += concentratedMaxBuff;
@@ -672,35 +688,13 @@ public class ColorInventory : MonoBehaviour
 
     public void AddColorOrbColor(GameColor gameColor, int amount)
     {
-        int rootAmount = amount/gameColor.rootColors.Length;
-        int existingRootAmount = 0;
-        foreach(GameColor rootColor in gameColor.rootColors)
-        {
-            for(int i = 0; i < colorSlots.Count; i++)
-            {
-                int check = (activeSlot+i)%colorSlots.Count;
-                if(colorSlots[check].gameColor != null && colorSlots[check].charge > 0 && colorSlots[check].gameColor.ContainsRootColor(rootColor) && !colorSlots[check].IsFilledMax())
-                {
-                    existingRootAmount++;
-                    break;
-                }
-            }
-        }
-
-        if(existingRootAmount <= 0)
-        {
-            return;
-        }
-
-        amount -= (rootAmount * (gameColor.rootColors.Length - existingRootAmount));
-
         HashSet<ColorSlot> fillableSlots = new HashSet<ColorSlot>();
         foreach(GameColor rootColor in gameColor.rootColors)
         {
             for (int i = 0; i < colorSlots.Count; i++)
             {
                 int check = (activeSlot+i)%colorSlots.Count;
-                if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0) continue;
+                if(colorSlots[check].gameColor == null || colorSlots[check].charge <= 0 || colorSlots[check].gameColor == GetEmptyBottleColor()) continue;
                 if(colorSlots[check].gameColor.ContainsRootColor(rootColor) && colorSlots[check].gameColor)
                 {
                     if(!fillableSlots.Contains(colorSlots[check]) && !colorSlots[check].IsFilledMax()) fillableSlots.Add(colorSlots[check]);
@@ -708,13 +702,32 @@ public class ColorInventory : MonoBehaviour
             }
         }
 
-        amount = amount/fillableSlots.Count;
-        if(amount < 1) amount = 1;
+        if (fillableSlots.Count <= 0) return;
+
+        int ammountRest = amount % fillableSlots.Count;
+        amount = (amount - ammountRest) / fillableSlots.Count;
+        if (amount > 0 && amount < 1) amount = 1;
+        if (amount < 0) amount = 0;
+        int indexer = 0;
+        
         foreach (ColorSlot slot in fillableSlots)
         {
-            slot.AddCharge(amount);
-            if(centrifuge) GetComponent<PlayerStats>().AddShield(amount);
+            if (UnityEngine.Random.Range(0f, 1f) <= 1f / (fillableSlots.Count-indexer))
+            {
+                slot.AddCharge(amount + ammountRest);
+                if (centrifuge) GetComponent<PlayerStats>().AddShield(amount + ammountRest);
+                ammountRest = 0;
+            }
+            else
+            {
+                slot.AddCharge(amount);
+                if (centrifuge) GetComponent<PlayerStats>().AddShield(amount);
+            }
+
+            indexer++;
         }
+
+        
 
         onColorUpdated?.Invoke();
     }
@@ -895,7 +908,7 @@ public class ColorInventory : MonoBehaviour
         for (int i = 1; i < spellCapacity; i++)
         {
             list.Add(0);
-            list = SetCoolDownForIndex(list, i, spell.coolDown);
+            list = SetCoolDownForIndex(list, i, spell.coolDown, Mathf.Max(spell.customMinimunCoolDown, minCD));
         }
         return list;
     }
@@ -945,6 +958,13 @@ public class ColorInventory : MonoBehaviour
             return defaultSpell;
         return colorSlots[index].colorSpell;
     }
+
+    public ColorSpell GetColorSpell(ColorSlot slot)
+    {
+        if (slot.colorSpell == null)
+            return defaultSpell;
+        return slot.colorSpell;
+    } 
 
     /// <summary>
     /// Changes the color spell of the specified slot
@@ -1042,7 +1062,7 @@ public class ColorInventory : MonoBehaviour
         {
             if (slot.gameColor == color && IsSlotFull(slot))
             {
-                if (Random.Range(0, 100) > blockDrainColor) slot.SetCharge((int) (slot.charge * routedSheildCost));
+                if (Random.Range(0, 100) > blockDrainColor) slot.SetCharge((int) (slot.charge * (1 - routedSheildCost)));
                 return true;
             }
         }
@@ -1070,7 +1090,8 @@ public class ColorInventory : MonoBehaviour
                 {
                     spellTracker.Add(spell.spawnKey, 0);
                 }
-                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell));
+                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell, CastType.EXTRA));
+                StartCoroutine(Player.instance.playerCombatSystem.ExtraSpell(slot, CastType.HURT));
             }
         }
         EnableRotation();
@@ -1092,15 +1113,15 @@ public class ColorInventory : MonoBehaviour
                 {
                     spellTracker.Add(spell.spawnKey, 0);
                 }
-                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell));
+                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell, CastType.HIT));
             }
         }
     }
 
-    public IEnumerator PocketSpecialAttack(string spell, int delay, ColorSlot slot, bool staggerd)
+    public IEnumerator PocketSpecialAttack(string spell, int delay, ColorSlot slot, bool staggerd, CastType castType)
     {
         yield return new WaitUntil(() => spellTracker[spell] < delay || delay == 0 || spell.Equals("") || !staggerd);
-        GetComponent<PlayerCombatSystem>().DashSpecialAttack(slot);
+        Player.instance.playerCombatSystem.SpellAttack(slot, castType);
     }
 
     public void DashSpells()
@@ -1119,19 +1140,19 @@ public class ColorInventory : MonoBehaviour
                 {
                     spellTracker.Add(spell.spawnKey, 0);
                 }
-                StartCoroutine(DashSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell));
+                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell, CastType.DASH));
             }
         }
         EnableRotation();
 
     }
-
+    /*
     public IEnumerator DashSpecialAttack(string spell, int delay, ColorSlot slot, bool staggerd)
     {
         yield return new WaitUntil(() => spellTracker[spell] < delay || delay == 0 || spell.Equals("") || !staggerd);
         GetComponent<PlayerCombatSystem>().DashSpecialAttack(slot);
     }
-
+    */
     public void DoubleJumpSpells()
     {
         foreach (ColorSlot slot in colorSlots)
@@ -1148,18 +1169,18 @@ public class ColorInventory : MonoBehaviour
                 {
                     spellTracker.Add(spell.spawnKey, 0);
                 }
-                StartCoroutine(DoubleJumpSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell));
+                StartCoroutine(PocketSpecialAttack(spell.spawnKey, spellTracker[spell.spawnKey], slot, spell.staggeredSpell, CastType.JUMP));
             }
         }
         EnableRotation();
     }
-
+    /*
     public IEnumerator DoubleJumpSpecialAttack(string spell, int delay, ColorSlot slot, bool staggerd)
     {
         yield return new WaitUntil(() => spellTracker[spell] < delay || delay == 0 || spell.Equals("") || !staggerd);
         GetComponent<PlayerCombatSystem>().DashSpecialAttack(slot);
     }
-
+    */
     public void QuedSpells(string spell)
     {
         if (spellTracker.ContainsKey(spell))
@@ -1197,11 +1218,13 @@ public class ColorSlot
     public void SetCharge(int set)
     {
         charge = set;
-        if(charge > maxCapacity)
+        if (charge > maxCapacity)
         {
             charge = maxCapacity;
             GameManager.instance.tipsManager.DisplayTips("filledBottle");
         }
+
+        Player.instance.colorInventory.onColorUpdated?.Invoke();
     }
 
     public void AddCharge(int addCharge)

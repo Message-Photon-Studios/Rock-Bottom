@@ -694,7 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 300
+  health: 340
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
   colorAmmount: 6
   movementSpeed: 500
@@ -703,6 +703,7 @@ MonoBehaviour:
     max: 25
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   comboParticles: {fileID: 6205137580783060889, guid: 08a80dfa497e1524d8b1d91a3ef76662, type: 3}
+  deathParticles: {fileID: 8433749086128351822, guid: 317318bde42e4fd489b4dec17509c0fd, type: 3}
   knockbackImune: 1
   sleepForcedown: 0
   setColorByHand: 0
@@ -712,6 +713,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 6569880262898042755}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &569050536732786453
 MonoBehaviour:
@@ -734,15 +736,15 @@ MonoBehaviour:
     radius: 1.3
     direction: 130.7
     width: 159.1
-    offset: {x: -0.3, y: 0}
+    offset: {x: -0.3, y: 0.1}
     color: {r: 1, g: 0.41492444, b: 0, a: 1}
   attackDamageTrigger:
     radius: 2.8
     direction: 128
     width: 127.5
-    offset: {x: 0.1, y: -0.74}
+    offset: {x: 0.15, y: -0.64}
     color: {r: 1, g: 0, b: 0, a: 1}
-  clubDamage: 75
+  clubDamage: 60
   clubForce: 1000
   patrollIdleTime: 2
 --- !u!50 &6567443812170086897
@@ -872,7 +874,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.07}
+  m_Offset: {x: 0, y: -0.185}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -883,7 +885,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.85}
+  m_Size: {x: 1.4, y: 1.6}
   m_EdgeRadius: 0
 --- !u!58 &1795198555313609797
 CircleCollider2D:

@@ -14,11 +14,13 @@ public class LightningAnimator : MonoBehaviour
     private GameObject target;
     private int hasSource = 0;
     private int hasTarget = 0;
+    private float width = 1f;
 
     // Start is called before the first frame update
     void Start()
     {
         line = GetComponent<LineRenderer>();
+        line.widthMultiplier = width;
     }
 
     // Update is called once per frame
@@ -44,5 +46,13 @@ public class LightningAnimator : MonoBehaviour
     public void SetTarget(GameObject target)
     {       
         this.target = target;
+    }
+
+    public void SetWidth(float power)
+    {
+        float width = power * 0.5f;
+        if (width < 0.25f) width = 0.25f;
+        if (width > 1f) width = 1f;
+        this.width = width;
     }
 }

@@ -35,13 +35,13 @@ public class HealingShrine : InteractionObject
 
     public int CalculatePrice()
     {
-        return Mathf.RoundToInt((baseCost + increaseCost * count) * ItemSpellManager.instance.stageCostMultiplier);
+        return Mathf.RoundToInt((baseCost + increaseCost * count) * ItemSpellManager.instance.stageCostMultiplier * GameManager.instance.rerunNum);
     }
 
     protected override void PlayerClose(bool isClose)
     {
         if(isClose) pickUpController.SetHealthShrine(this);
-        else pickUpController.CloseUi();
+        else pickUpController.CloseMenu();
     }
 
     protected override void PlayerInteract()
@@ -52,7 +52,7 @@ public class HealingShrine : InteractionObject
         {
             player.HealPlayer(heal);
             count++;
-            pickUpController.SetHealthShrine(this);
+            pickUpController.UpdateHealthShrine(this);
             animator.SetBool("heal", true);
         }
     }

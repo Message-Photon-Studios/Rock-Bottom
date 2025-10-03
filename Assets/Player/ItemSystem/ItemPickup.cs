@@ -21,6 +21,8 @@ public class ItemPickup : InteractionObject
     [SerializeField] Item item;
     [SerializeField] EnemyStats spawnFromEnemy;
 
+    [SerializeField] public bool enableTizoTrade = true;
+
     [Header("Functional")]
     [SerializeField] PickUpCanvasController pickUpController;
     [SerializeField] SpriteRenderer spriteRenderer;
@@ -41,7 +43,7 @@ public class ItemPickup : InteractionObject
         {
             spawnFromEnemy.onEnemyDeath += SpawnFromEnemy;
         } 
-        else if(setByhand)
+        else if(setByhand && item != null)
         {
             SetItem(item, item.itemCost);
         } else
@@ -79,10 +81,21 @@ public class ItemPickup : InteractionObject
     /// <param name="setItem"></param>
     public void SetItem(Item setItem, int itemCost)
     {
-        ItemSpellManager.instance.AddSpawnedEffects(setItem);
+        if(ItemSpellManager.instance == null)
+        {
+            Debug.LogWarning("Item spell manager not initiated.");
+            return;
+        }
+
+        if(!setItem.CanBeSpawned())
+        {
+            setItem = ItemSpellManager.instance.healthItem;
+        }
+
+        ItemSpellManager.instance.AddSpawnedItem(setItem);
 
         this.item = setItem;
-        this.itemCost = Mathf.RoundToInt(itemCost*ItemSpellManager.instance.stageCostMultiplier);
+        this.itemCost = Mathf.RoundToInt(itemCost*ItemSpellManager.instance.stageCostMultiplier*GameManager.instance.rerunNum);
 
         spriteRenderer.sprite = item.sprite;
         hoverCoroutine = StartCoroutine(hoverAnimation());
@@ -95,14 +108,14 @@ public class ItemPickup : InteractionObject
         if(isClose)
         {
             pickUpController.SetItem(this);
-        } else pickUpController.CloseUi();
+        } else pickUpController.CloseMenu();
     }
 
     protected override void PlayerInteract()
     {
         if(!needsPayment || inventory.PayCost(itemCost))
         {
-            pickUpController.CloseUi();
+            pickUpController.CloseMenu();
             inventory.AddItem(item);
             GameObject.Destroy(gameObject);
             StopCoroutine(hoverCoroutine);

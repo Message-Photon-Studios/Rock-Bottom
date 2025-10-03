@@ -12,8 +12,8 @@ public class ItemSpellManager : MonoBehaviour
     public static ItemSpellManager instance;
     [SerializeField] int itemPop;
     [SerializeField] public float stageCostMultiplier = 1;
-
-    [SerializeField] Item healthItem;
+    [SerializeField] int cratePop = 0;
+    [SerializeField] public Item healthItem;
     [SerializeField] int healthItemAmount;
 
     [SerializeField] int petrifiedPigmentDrops = 2;
@@ -21,16 +21,19 @@ public class ItemSpellManager : MonoBehaviour
 
     private Dictionary<Type, List<ItemEffect>> itemEffectsInLevel = new Dictionary<Type, List<ItemEffect>>();
 
+    private Dictionary<Item, int> itemsInLevel = new Dictionary<Item, int>();
+
     private List<PetrifiedPigmentPickup> petrifiedPigments = new List<PetrifiedPigmentPickup>(0);
 
     void Awake()
     {
-        if(instance != null)
+        if (instance != null)
         {
             Debug.LogError("Two ItemSpellManagers exist in this scene!!!");
         }
         instance = this;
         itemEffectsInLevel = new Dictionary<Type, List<ItemEffect>>();
+        itemsInLevel = new Dictionary<Item, int>();
     }
 
     /// <summary>
@@ -49,22 +52,26 @@ public class ItemSpellManager : MonoBehaviour
         return new List<T>();
     }
 
-    public void AddSpawnedEffects(Item item)
+    public void AddSpawnedItem(Item item)
     {
         List<ItemEffect> effects = item.effects;
 
         foreach (ItemEffect effect in effects)
         {
-            if(itemEffectsInLevel.ContainsKey(effect.GetType()))
+            if (itemEffectsInLevel.ContainsKey(effect.GetType()))
             {
                 itemEffectsInLevel[effect.GetType()].Add(effect);
-            } else
+            }
+            else
             {
                 List<ItemEffect> newList = new List<ItemEffect>();
                 newList.Add(effect);
                 itemEffectsInLevel.Add(effect.GetType(), newList);
             }
         }
+
+        if (itemsInLevel.ContainsKey(item)) itemsInLevel[item]++;
+        else itemsInLevel.Add(item, 1);
     }
 
     public void SpawnItems()
@@ -167,8 +174,70 @@ public class ItemSpellManager : MonoBehaviour
                 continue;
             }
 
-            petrifiedPigments[pick].gameObject.SetActive(true);
+            if(petrifiedPigments[pick] != null) petrifiedPigments[pick].gameObject.SetActive(true);
+            else 
+            {
+                j++;
+                i--;
+                continue;
+            }
         }
+
+        List<WillowCrate> crates = new List<WillowCrate>();
+        crates.AddRange(FindObjectsOfType<WillowCrate>());
+        List<WillowCrate> highChanceCrate = new List<WillowCrate>();
+        List<WillowCrate> lowChanceCrate = new List<WillowCrate>();
+
+        for(int i = 0; i < crates.Count; i++)
+        {
+            if(crates[i].spawnChance == SpawnPointChance.Guaranteed)
+            {
+                continue;
+            }
+
+            crates[i].gameObject.SetActive(false);
+
+            if(crates[i].spawnChance == SpawnPointChance.HighChance)
+            {
+                highChanceCrate.Add(crates[i]);
+                continue;
+            }
+
+            lowChanceCrate.Add(crates[i]);
+        }
+
+       while(cratePop > 0 && highChanceCrate.Count > 0)
+        {
+            int r = UnityEngine.Random.Range(0, highChanceCrate.Count);
+            highChanceCrate[r].gameObject.SetActive(true);
+            highChanceCrate.RemoveAt(r);
+            cratePop --;
+        }
+
+        while(cratePop > 0 && lowChanceCrate.Count > 0)
+        {
+            int r = UnityEngine.Random.Range(0, lowChanceCrate.Count);
+            lowChanceCrate[r].gameObject.SetActive(true);
+            lowChanceCrate.RemoveAt(r);
+            cratePop--;
+        }
+
+        
+        foreach (TizoShop tizoShop in FindObjectsOfType<TizoShop>())
+        {
+            tizoShop.LevelLoaded();
+        }
+    }
+
+    /// <summary>
+    /// Returns how many of an item that is spawned in the level so far.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public int GetItemsSpawned(Item item)
+    {
+        if (!itemsInLevel.ContainsKey(item)) return 0;
+        return itemsInLevel[item];
     }
 
     public void AddPetrifiedPigment(PetrifiedPigmentPickup petrifiedPigmentPickup)

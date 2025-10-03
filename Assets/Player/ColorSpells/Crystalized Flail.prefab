@@ -205,7 +205,9 @@ MonoBehaviour:
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 1
+  colorCost: 4
   maxSpawn: 0
   spawnKey: flailSpell
   ignoreLookDir: 0
@@ -254,7 +256,7 @@ SpringJoint2D:
   m_AutoConfigureDistance: 0
   m_Distance: 1
   m_DampingRatio: 0
-  m_Frequency: 0.9
+  m_Frequency: 1.8
 --- !u!114 &-22479688373101332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +275,7 @@ MonoBehaviour:
   anchorOffset: {x: 0, y: -0.3, z: 0}
   delayBreak: 1
   delay: 0.3
-  breakForce: 9000
+  breakForce: 15000
   destroyOnBreak: 1
   destroyTime: 3
 --- !u!120 &4089204558661445079
@@ -315,7 +317,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1472463759
-  m_SortingLayer: 7
+  m_SortingLayer: 6
   m_SortingOrder: -10
   m_Positions:
   - {x: 0, y: 0, z: 0}

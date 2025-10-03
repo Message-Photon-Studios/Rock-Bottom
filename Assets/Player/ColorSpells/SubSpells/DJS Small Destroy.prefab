@@ -1,5 +1,56 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2200929162232172030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5163743113905423571}
+  - component: {fileID: 2006197783812097720}
+  m_Layer: 8
+  m_Name: ParticlSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5163743113905423571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200929162232172030}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.282, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3321278458073070405}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2006197783812097720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200929162232172030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14331867b7cd41c40bc5ab8003dea709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOneInstantly: 1
+  spawnDelay: 0
+  spawnAmount: 0
+  requirePlayerLOS: 0
+  spell: {fileID: -7692674297862362138}
+  spawnPrefabs:
+  - {fileID: 1619697743729994882, guid: 4ef783815f8e1944099474c7b14b5462, type: 3}
 --- !u!1 &3321278458073070463
 GameObject:
   m_ObjectHideFlags: 0
@@ -36,6 +87,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8737262009350890088}
+  - {fileID: 5163743113905423571}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -103,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 1
   triggerImpactSpells: 0
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -143,7 +196,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: -1008084284, guid: a983e25dffda58a408d364a0fa362e64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -188,16 +241,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Fire a bolt of color that impacts the first target it hits.
-
-    Power:
-    100%'
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 50
-  powerScale: -0.4
+  powerScale: 0.6
   coolDown: 1
   castWhenDamaged: 0
   castOnSpellImpact: 0
+  castOnDash: 0
+  castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 1
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0
@@ -224,6 +295,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 0e4410dc1c8445849863eb9a57105ac2, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: c0da91dbb370a2a4eae7a5661573c13d, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 6e26f46f0d2fe6840a3e2d330dbce090, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &6819567397486369619
 PrefabInstance:
   m_ObjectHideFlags: 0

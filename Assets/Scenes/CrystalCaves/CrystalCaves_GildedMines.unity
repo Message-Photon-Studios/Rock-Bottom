@@ -12922,6 +12922,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 15381499}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &15381499
 MonoBehaviour:
@@ -12937,13 +12938,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 15381500}
   walking: {fileID: 1285421094}
+  walkingClips: []
   running: {fileID: 1632931528}
   sleeping: {fileID: 159016309}
   dying: {fileID: 1430110946}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 417363563}
-  onHit: {fileID: 556770948}
   spellHit: {fileID: 539867060}
+  attack: {fileID: 0}
 --- !u!95 &15381500
 Animator:
   serializedVersion: 5
@@ -13104,8 +13105,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff05b56a3ed20004b87f3c83123a640b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 1000, y: 5000}
+  damage: 0
+  attackForce: 0
+  attackTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   viewTrigger:
     radius: 6
     direction: 0
@@ -13122,8 +13129,11 @@ MonoBehaviour:
   jumpForce: 6000
   checkJumpHight: 3
   forwardJumpForce: 800
+  smallJumpForce: 0
+  smallJumpForward: 0
   jumpIdleTime: 2
   patrollIdleTime: 2
+  aggroResetTime: 2
 --- !u!1 &19380878
 GameObject:
   m_ObjectHideFlags: 0
@@ -21637,6 +21647,7 @@ MonoBehaviour:
   spawnCount: 5
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &40700691
 GameObject:
   m_ObjectHideFlags: 0
@@ -28183,6 +28194,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 71196085}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &71196085
 MonoBehaviour:
@@ -28198,13 +28210,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 71196086}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 409456325}
   dying: {fileID: 1047992300}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 850559137}
   spellHit: {fileID: 1567050586}
+  attack: {fileID: 0}
 --- !u!95 &71196086
 Animator:
   serializedVersion: 5
@@ -28326,8 +28338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf22cbb5684d2ad4caa70642bab93e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   attackTrigger:
     radius: 8
     direction: 0
@@ -31652,6 +31662,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 81910648}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &81910648
 MonoBehaviour:
@@ -31667,13 +31678,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 81910649}
   walking: {fileID: 308536710}
+  walkingClips: []
   running: {fileID: 1257965039}
   sleeping: {fileID: 2444290}
   dying: {fileID: 828096347}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1511881290}
   spellHit: {fileID: 1576139113}
+  attack: {fileID: 0}
 --- !u!95 &81910649
 Animator:
   serializedVersion: 5
@@ -31795,8 +31806,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1291f1979121ddc4b8ae3d3f80ad6d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 15
-  playerCollisionForce: {x: 2000, y: 0}
   attackTrigger:
     radius: 1.7
     direction: 0
@@ -34610,6 +34619,7 @@ MonoBehaviour:
   spawnCount: 7
   selectedNode: {x: 0, y: -1}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &85099078
 GameObject:
   m_ObjectHideFlags: 0
@@ -34868,6 +34878,7 @@ MonoBehaviour:
   spawnCount: 5
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &86504748
 GameObject:
   m_ObjectHideFlags: 0
@@ -35831,6 +35842,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 98668811}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &98668811
 MonoBehaviour:
@@ -35846,13 +35858,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 98668812}
   walking: {fileID: 1062386330}
+  walkingClips: []
   running: {fileID: 772459379}
   sleeping: {fileID: 1207672919}
   dying: {fileID: 9218531}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 607819704}
-  onHit: {fileID: 570218910}
   spellHit: {fileID: 265648362}
+  attack: {fileID: 0}
 --- !u!95 &98668812
 Animator:
   serializedVersion: 5
@@ -36003,8 +36015,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a0c24cb696b8d04aa3d83217cb4ebe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 40
-  playerCollisionForce: {x: 1000, y: 5000}
   viewRange: 20
   chaseCooldown: 2
   runSpeedFactor: 4
@@ -42178,7 +42188,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -45461,6 +45471,7 @@ MonoBehaviour:
   spawnCount: 3
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &158068837
 GameObject:
   m_ObjectHideFlags: 0
@@ -49017,16 +49028,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 184995693}
-  cost: {fileID: 1384653787}
-  nameText: {fileID: 1685155733}
-  descriptionText: {fileID: 1428633400}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 1369312325}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &175205392
 GameObject:
   m_ObjectHideFlags: 0
@@ -50724,7 +50731,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -55299,6 +55306,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 218683638}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &218683638
 MonoBehaviour:
@@ -55314,13 +55322,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 218683639}
   walking: {fileID: 252360702}
+  walkingClips: []
   running: {fileID: 1104717013}
   sleeping: {fileID: 200307823}
   dying: {fileID: 1702470310}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 30270813}
   spellHit: {fileID: 937736672}
+  attack: {fileID: 0}
 --- !u!95 &218683639
 Animator:
   serializedVersion: 5
@@ -55442,8 +55450,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcb0c18e1af8dfb4cbf8578ca4d44785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   viewRange: 3
   attackTrigger:
     radius: 0.6
@@ -58075,7 +58081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6781334976677708193, guid: f980fd017dfd64b44b138c1f8f10fdd7, type: 3}
       propertyPath: nextLevelName
-      value: Cloudy_Caverns
+      value: TutorialCaves_Rerun
       objectReference: {fileID: 0}
     - target: {fileID: 6781334976677708193, guid: f980fd017dfd64b44b138c1f8f10fdd7, type: 3}
       propertyPath: addLevelClockTime
@@ -78123,7 +78129,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -98727,7 +98733,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -101999,8 +102005,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08ba59636b198f544a3c35a9f87c91b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   damage: 20
   laserDecaySpeed: 0.5
   attackTrigger:
@@ -102044,6 +102048,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 353364978}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &353364978
 MonoBehaviour:
@@ -102059,13 +102064,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 353364979}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 1640147931}
   dying: {fileID: 1659399799}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1752004739}
   spellHit: {fileID: 1270495019}
+  attack: {fileID: 0}
 --- !u!95 &353364979
 Animator:
   serializedVersion: 5
@@ -102664,6 +102669,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 358604322}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &358604322
 MonoBehaviour:
@@ -102679,13 +102685,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 358604323}
   walking: {fileID: 257019849}
+  walkingClips: []
   running: {fileID: 1060654036}
   sleeping: {fileID: 1917484169}
   dying: {fileID: 1105746101}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1937247526}
   spellHit: {fileID: 1922903813}
+  attack: {fileID: 0}
 --- !u!95 &358604323
 Animator:
   serializedVersion: 5
@@ -102807,8 +102813,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1291f1979121ddc4b8ae3d3f80ad6d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 15
-  playerCollisionForce: {x: 2000, y: 0}
   attackTrigger:
     radius: 1.7
     direction: 0
@@ -104828,6 +104832,7 @@ MonoBehaviour:
   spawnCount: 1
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &366894635
 GameObject:
   m_ObjectHideFlags: 0
@@ -128337,7 +128342,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 567990507
-  m_SortingLayer: 8
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -137065,7 +137070,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -147659,6 +147664,30 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6084328019528193705, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840163392644197070, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840163392644197070, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840163392644197070, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322732649275574600, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322732649275574600, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7322732649275574600, guid: 5d57141fb574288439e53ea9c123b700, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
@@ -186133,8 +186162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2996a6f36971beb47b286e7fe6c4941b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 25
-  playerCollisionForce: {x: 2000, y: 0.5}
+  spikesDamage: 0
   rangeTrigger:
     radius: 7.5
     direction: 90
@@ -186147,6 +186175,12 @@ MonoBehaviour:
     width: 130
     offset: {x: 0, y: 0}
     color: {r: 1, g: 0, b: 0, a: 1}
+  damageTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   patrollIdleTime: 2
   attackSpawn: {fileID: 8094419970937011932, guid: a559141a38b8717499efe9c0e074bf90, type: 3}
   spawnOffset: {x: 0, y: 0}
@@ -186182,6 +186216,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 598057683}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &598057683
 MonoBehaviour:
@@ -186197,13 +186232,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 598057684}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 950348818}
   dying: {fileID: 159179406}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 902862598}
   spellHit: {fileID: 1596138922}
+  attack: {fileID: 0}
 --- !u!95 &598057684
 Animator:
   serializedVersion: 5
@@ -192862,6 +192897,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 620246649}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &620246649
 MonoBehaviour:
@@ -192877,13 +192913,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 620246650}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 1722922924}
   dying: {fileID: 926256306}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 2132137990}
   spellHit: {fileID: 1455718535}
+  attack: {fileID: 0}
 --- !u!95 &620246650
 Animator:
   serializedVersion: 5
@@ -193005,8 +193041,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf22cbb5684d2ad4caa70642bab93e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   attackTrigger:
     radius: 8
     direction: 0
@@ -193297,16 +193331,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 1278550162}
-  cost: {fileID: 973555292}
-  nameText: {fileID: 1747621745}
-  descriptionText: {fileID: 692819912}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 12243063}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &622338887
 GameObject:
   m_ObjectHideFlags: 0
@@ -193809,6 +193839,7 @@ MonoBehaviour:
   spawnCount: 0
   selectedNode: {x: 0, y: -1}
   isClosingRoom: 0
+  roomVariants: []
 --- !u!1 &629930090
 GameObject:
   m_ObjectHideFlags: 0
@@ -204994,7 +205025,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 567990507
-  m_SortingLayer: 8
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -209999,6 +210030,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 728652140}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &728652140
 MonoBehaviour:
@@ -210014,13 +210046,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 728652141}
   walking: {fileID: 640653968}
+  walkingClips: []
   running: {fileID: 1953867057}
   sleeping: {fileID: 2141848715}
   dying: {fileID: 2121746209}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 1968203408}
-  onHit: {fileID: 1943949386}
   spellHit: {fileID: 624280378}
+  attack: {fileID: 0}
 --- !u!95 &728652141
 Animator:
   serializedVersion: 5
@@ -210181,8 +210213,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff05b56a3ed20004b87f3c83123a640b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 1000, y: 5000}
+  damage: 0
+  attackForce: 0
+  attackTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   viewTrigger:
     radius: 6
     direction: 0
@@ -210199,8 +210237,11 @@ MonoBehaviour:
   jumpForce: 6000
   checkJumpHight: 3
   forwardJumpForce: 800
+  smallJumpForce: 0
+  smallJumpForward: 0
   jumpIdleTime: 2
   patrollIdleTime: 2
+  aggroResetTime: 2
 --- !u!1 &728784907
 GameObject:
   m_ObjectHideFlags: 0
@@ -219494,6 +219535,7 @@ MonoBehaviour:
   spawnCount: 1
   selectedNode: {x: 0, y: 1}
   isClosingRoom: 0
+  roomVariants: []
 --- !u!1 &767848611
 GameObject:
   m_ObjectHideFlags: 0
@@ -221386,6 +221428,7 @@ MonoBehaviour:
   spawnCount: 7
   selectedNode: {x: 0, y: -1}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &772459377
 GameObject:
   m_ObjectHideFlags: 0
@@ -223118,6 +223161,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 781091387}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &781091387
 MonoBehaviour:
@@ -223133,13 +223177,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 781091388}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 1055853741}
   dying: {fileID: 651328706}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1252676066}
   spellHit: {fileID: 2040161729}
+  attack: {fileID: 0}
 --- !u!95 &781091388
 Animator:
   serializedVersion: 5
@@ -223261,8 +223305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf22cbb5684d2ad4caa70642bab93e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   attackTrigger:
     radius: 8
     direction: 0
@@ -223675,7 +223717,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -224588,6 +224630,7 @@ MonoBehaviour:
   spawnCount: 7
   selectedNode: {x: 0, y: -1}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &796752237
 GameObject:
   m_ObjectHideFlags: 0
@@ -230899,16 +230942,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 1778620507}
-  cost: {fileID: 214988767}
-  nameText: {fileID: 1781719805}
-  descriptionText: {fileID: 1385390653}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 760071382}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &826886991
 GameObject:
   m_ObjectHideFlags: 0
@@ -232497,16 +232536,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 2011545775}
-  cost: {fileID: 1346781295}
-  nameText: {fileID: 1045736239}
-  descriptionText: {fileID: 1690250116}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 2143416875}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &828096345
 GameObject:
   m_ObjectHideFlags: 0
@@ -241181,16 +241216,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 1850380295}
-  cost: {fileID: 546374913}
-  nameText: {fileID: 1793056261}
-  descriptionText: {fileID: 1842799417}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 221841681}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &857549807
 GameObject:
   m_ObjectHideFlags: 0
@@ -248216,16 +248247,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 1581191414}
-  cost: {fileID: 961065601}
-  nameText: {fileID: 141519228}
-  descriptionText: {fileID: 54747653}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 1857480100}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &909184736
 GameObject:
   m_ObjectHideFlags: 0
@@ -253004,7 +253031,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -254926,6 +254953,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 944305525}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &944305525
 MonoBehaviour:
@@ -254941,13 +254969,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 944305526}
   walking: {fileID: 1195306066}
+  walkingClips: []
   running: {fileID: 1319259676}
   sleeping: {fileID: 456176564}
   dying: {fileID: 1956392566}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1887692823}
   spellHit: {fileID: 348937039}
+  attack: {fileID: 0}
 --- !u!95 &944305526
 Animator:
   serializedVersion: 5
@@ -255069,8 +255097,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1291f1979121ddc4b8ae3d3f80ad6d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 15
-  playerCollisionForce: {x: 2000, y: 0}
   attackTrigger:
     radius: 1.7
     direction: 0
@@ -255501,16 +255527,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 283479455}
-  cost: {fileID: 298272798}
-  nameText: {fileID: 1145872161}
-  descriptionText: {fileID: 920031733}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 297374046}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &954513684
 GameObject:
   m_ObjectHideFlags: 0
@@ -256022,6 +256044,7 @@ MonoBehaviour:
   spawnCount: 2
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 0
+  roomVariants: []
 --- !u!1 &962574920
 GameObject:
   m_ObjectHideFlags: 0
@@ -257743,7 +257766,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -267384,6 +267407,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1031896721}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1031896721
 MonoBehaviour:
@@ -267399,13 +267423,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1031896722}
   walking: {fileID: 1531733714}
+  walkingClips: []
   running: {fileID: 2094706257}
   sleeping: {fileID: 1926043154}
   dying: {fileID: 87249990}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 2005926715}
   spellHit: {fileID: 19986545}
+  attack: {fileID: 0}
 --- !u!95 &1031896722
 Animator:
   serializedVersion: 5
@@ -267527,8 +267551,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1291f1979121ddc4b8ae3d3f80ad6d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 15
-  playerCollisionForce: {x: 2000, y: 0}
   attackTrigger:
     radius: 1.7
     direction: 0
@@ -271543,6 +271565,7 @@ MonoBehaviour:
   spawnCount: 5
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &1045736237
 GameObject:
   m_ObjectHideFlags: 0
@@ -274922,6 +274945,7 @@ MonoBehaviour:
   spawnCount: 7
   selectedNode: {x: 0, y: -1}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &1069652052
 GameObject:
   m_ObjectHideFlags: 0
@@ -275500,7 +275524,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -279397,6 +279421,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1089003084}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1089003084
 MonoBehaviour:
@@ -279412,13 +279437,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1089003085}
   walking: {fileID: 1395794046}
+  walkingClips: []
   running: {fileID: 592980614}
   sleeping: {fileID: 836509899}
   dying: {fileID: 1106702333}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 1026266530}
-  onHit: {fileID: 1089869203}
   spellHit: {fileID: 1522850996}
+  attack: {fileID: 0}
 --- !u!95 &1089003085
 Animator:
   serializedVersion: 5
@@ -279579,8 +279604,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff05b56a3ed20004b87f3c83123a640b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 1000, y: 5000}
+  damage: 0
+  attackForce: 0
+  attackTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   viewTrigger:
     radius: 6
     direction: 0
@@ -279597,8 +279628,11 @@ MonoBehaviour:
   jumpForce: 6000
   checkJumpHight: 3
   forwardJumpForce: 800
+  smallJumpForce: 0
+  smallJumpForward: 0
   jumpIdleTime: 2
   patrollIdleTime: 2
+  aggroResetTime: 2
 --- !u!1 &1089241611
 GameObject:
   m_ObjectHideFlags: 0
@@ -293640,6 +293674,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 2042908631029740834, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1148230693
 MonoBehaviour:
@@ -293655,13 +293690,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1148230694}
   walking: {fileID: 1124029800}
+  walkingClips: []
   running: {fileID: 2080568330}
   sleeping: {fileID: 691422974}
   dying: {fileID: 1087077231}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 115206443}
   spellHit: {fileID: 1026475378}
+  attack: {fileID: 0}
 --- !u!95 &1148230694
 Animator:
   serializedVersion: 5
@@ -293783,8 +293818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc30e9374fe69ce46b13f9d2aa2ea27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 2000, y: 0.5}
   viewRange: 15
   eyePosY: -0.7
   attackTrigger:
@@ -293793,6 +293826,12 @@ MonoBehaviour:
     width: 360
     offset: {x: -2, y: -0.5}
     color: {r: 1, g: 0, b: 0, a: 1}
+  quakeSmashTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   swordDamage: 30
   swordForce: 5000
   quakeTrigger:
@@ -293868,6 +293907,7 @@ MonoBehaviour:
   spawnCount: 3
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &1150448531
 GameObject:
   m_ObjectHideFlags: 0
@@ -297943,6 +297983,7 @@ MonoBehaviour:
   spawnCount: 3
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &1175559887
 GameObject:
   m_ObjectHideFlags: 0
@@ -303662,16 +303703,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 1998472116}
-  cost: {fileID: 1047693988}
-  nameText: {fileID: 1645324632}
-  descriptionText: {fileID: 1074107500}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 1001913886}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &1191390521
 GameObject:
   m_ObjectHideFlags: 0
@@ -304273,6 +304310,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1204667793}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1204667793
 MonoBehaviour:
@@ -304288,13 +304326,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1204667794}
   walking: {fileID: 1088071338}
+  walkingClips: []
   running: {fileID: 344173663}
   sleeping: {fileID: 1228020377}
   dying: {fileID: 1099186097}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 509795213}
   spellHit: {fileID: 2015150139}
+  attack: {fileID: 0}
 --- !u!95 &1204667794
 Animator:
   serializedVersion: 5
@@ -304416,9 +304454,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77b2ab2f6931a348b244a58ecc71710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   viewRange: 10
+  attackFrontFirstTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   attackFrontTrigger:
     radius: 0.9
     direction: 0
@@ -304944,7 +304986,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -311969,6 +312011,7 @@ MonoBehaviour:
   spawnCount: 0
   selectedNode: {x: 1, y: 0}
   isClosingRoom: 0
+  roomVariants: []
 --- !u!1 &1252100846
 GameObject:
   m_ObjectHideFlags: 0
@@ -313439,8 +313482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2996a6f36971beb47b286e7fe6c4941b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 25
-  playerCollisionForce: {x: 2000, y: 0.5}
+  spikesDamage: 0
   rangeTrigger:
     radius: 7.5
     direction: 90
@@ -313453,6 +313495,12 @@ MonoBehaviour:
     width: 130
     offset: {x: 0, y: 0}
     color: {r: 1, g: 0, b: 0, a: 1}
+  damageTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   patrollIdleTime: 2
   attackSpawn: {fileID: 8094419970937011932, guid: a559141a38b8717499efe9c0e074bf90, type: 3}
   spawnOffset: {x: 0, y: 0}
@@ -313488,6 +313536,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1278566290}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1278566290
 MonoBehaviour:
@@ -313503,13 +313552,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1278566291}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 456082730}
   dying: {fileID: 2086359876}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1166299885}
   spellHit: {fileID: 1794424763}
+  attack: {fileID: 0}
 --- !u!95 &1278566291
 Animator:
   serializedVersion: 5
@@ -313991,7 +314040,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -323215,16 +323264,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 1125312563}
-  cost: {fileID: 354021690}
-  nameText: {fileID: 2115433081}
-  descriptionText: {fileID: 352131127}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 1872528427}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &1339920569
 GameObject:
   m_ObjectHideFlags: 0
@@ -332579,6 +332624,7 @@ MonoBehaviour:
   spawnCount: 7
   selectedNode: {x: 0, y: -1}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &1363109586
 GameObject:
   m_ObjectHideFlags: 0
@@ -334429,16 +334475,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 11400000, guid: 262ccc9807914984b8951d58b71a9ef2, type: 2}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 854311086}
-  cost: {fileID: 1106227464}
-  nameText: {fileID: 1001637436}
-  descriptionText: {fileID: 482369137}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 1502681578}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &1386731880
 GameObject:
   m_ObjectHideFlags: 0
@@ -344477,6 +344519,7 @@ MonoBehaviour:
   spawnCount: 1
   selectedNode: {x: -2, y: 1}
   isClosingRoom: 0
+  roomVariants: []
 --- !u!1 &1415208102
 GameObject:
   m_ObjectHideFlags: 0
@@ -348389,7 +348432,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -353168,6 +353211,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1468806258}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1468806258
 MonoBehaviour:
@@ -353183,13 +353227,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1468806259}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 1927514982}
   dying: {fileID: 798315609}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1780937138}
   spellHit: {fileID: 1387393060}
+  attack: {fileID: 0}
 --- !u!95 &1468806259
 Animator:
   serializedVersion: 5
@@ -353311,8 +353355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf22cbb5684d2ad4caa70642bab93e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   attackTrigger:
     radius: 8
     direction: 0
@@ -353492,7 +353534,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -355334,6 +355376,7 @@ MonoBehaviour:
   spawnCount: 1
   selectedNode: {x: 0, y: 2}
   isClosingRoom: 0
+  roomVariants: []
 --- !u!1 &1476256121
 GameObject:
   m_ObjectHideFlags: 0
@@ -357385,16 +357428,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 1761708071}
-  cost: {fileID: 562494}
-  nameText: {fileID: 2043120416}
-  descriptionText: {fileID: 977015056}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 879454486}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &1494024089
 GameObject:
   m_ObjectHideFlags: 0
@@ -357499,6 +357538,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1494844109}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1494844109
 MonoBehaviour:
@@ -357514,13 +357554,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1494844110}
   walking: {fileID: 1158514643}
+  walkingClips: []
   running: {fileID: 1257501429}
   sleeping: {fileID: 272407377}
   dying: {fileID: 147590099}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 1822932107}
-  onHit: {fileID: 539433456}
   spellHit: {fileID: 1130687851}
+  attack: {fileID: 0}
 --- !u!95 &1494844110
 Animator:
   serializedVersion: 5
@@ -357671,8 +357711,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a0c24cb696b8d04aa3d83217cb4ebe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 40
-  playerCollisionForce: {x: 1000, y: 5000}
   viewRange: 20
   chaseCooldown: 2
   runSpeedFactor: 4
@@ -358255,7 +358293,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -358918,7 +358956,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: PetrifiedPigmentPickupBigCrossing145254408
   image: {fileID: 533845487}
-  spawnChance: 0.5
 --- !u!1 &1510741185
 GameObject:
   m_ObjectHideFlags: 0
@@ -360528,7 +360565,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: PetrifiedPigmentPickupMineshaft761988945
   image: {fileID: 1503319511}
-  spawnChance: 0.5
 --- !u!1 &1518149346
 GameObject:
   m_ObjectHideFlags: 0
@@ -367451,16 +367487,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 684967994}
-  cost: {fileID: 1744777370}
-  nameText: {fileID: 899073885}
-  descriptionText: {fileID: 1692249221}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 1733380958}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &1540811302
 GameObject:
   m_ObjectHideFlags: 0
@@ -369590,7 +369622,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -370203,6 +370235,7 @@ MonoBehaviour:
   spawnCount: 7
   selectedNode: {x: 0, y: -1}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &1561420746
 GameObject:
   m_ObjectHideFlags: 0
@@ -376837,16 +376870,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 1340790811}
-  cost: {fileID: 903098158}
-  nameText: {fileID: 361464882}
-  descriptionText: {fileID: 667596482}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 787955015}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &1571533572
 GameObject:
   m_ObjectHideFlags: 0
@@ -378730,6 +378759,7 @@ MonoBehaviour:
   spawnCount: 1
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 0
+  roomVariants: []
 --- !u!1 &1579944218
 GameObject:
   m_ObjectHideFlags: 0
@@ -386764,7 +386794,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 567990507
-  m_SortingLayer: 8
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -393259,6 +393289,7 @@ MonoBehaviour:
   spawnCount: 5
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &1610529236
 GameObject:
   m_ObjectHideFlags: 0
@@ -396723,6 +396754,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1625220943}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1625220943
 MonoBehaviour:
@@ -396738,13 +396770,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1625220944}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 1246700359}
   dying: {fileID: 360401269}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1106494220}
   spellHit: {fileID: 349423389}
+  attack: {fileID: 0}
 --- !u!95 &1625220944
 Animator:
   serializedVersion: 5
@@ -396866,8 +396898,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8a98a8df1255b24fadba16d282afe98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 4000, y: 0.5}
   attackTrigger:
     radius: 8
     direction: 0
@@ -401611,6 +401641,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 2042908631029740834, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1636246908
 MonoBehaviour:
@@ -401626,13 +401657,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1636246909}
   walking: {fileID: 291252189}
+  walkingClips: []
   running: {fileID: 133291294}
   sleeping: {fileID: 416022757}
   dying: {fileID: 970682953}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1680384990}
   spellHit: {fileID: 620346095}
+  attack: {fileID: 0}
 --- !u!95 &1636246909
 Animator:
   serializedVersion: 5
@@ -401754,8 +401785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc30e9374fe69ce46b13f9d2aa2ea27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 2000, y: 0.5}
   viewRange: 15
   eyePosY: -0.7
   attackTrigger:
@@ -401764,6 +401793,12 @@ MonoBehaviour:
     width: 360
     offset: {x: -2, y: -0.5}
     color: {r: 1, g: 0, b: 0, a: 1}
+  quakeSmashTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   swordDamage: 30
   swordForce: 5000
   quakeTrigger:
@@ -401839,6 +401874,7 @@ MonoBehaviour:
   spawnCount: 5
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &1638395729
 GameObject:
   m_ObjectHideFlags: 0
@@ -403544,6 +403580,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1664488285}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1664488285
 MonoBehaviour:
@@ -403559,13 +403596,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1664488286}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 654557883}
   dying: {fileID: 651047663}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 1775046711}
   spellHit: {fileID: 157933929}
+  attack: {fileID: 0}
 --- !u!95 &1664488286
 Animator:
   serializedVersion: 5
@@ -403687,8 +403724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf22cbb5684d2ad4caa70642bab93e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   attackTrigger:
     radius: 8
     direction: 0
@@ -416436,7 +416471,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -419024,6 +419059,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1728159064}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1728159064
 MonoBehaviour:
@@ -419039,13 +419075,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1728159065}
   walking: {fileID: 1639407659}
+  walkingClips: []
   running: {fileID: 1747693180}
   sleeping: {fileID: 1415208104}
   dying: {fileID: 670400785}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 106787569}
-  onHit: {fileID: 1140196676}
   spellHit: {fileID: 1520399059}
+  attack: {fileID: 0}
 --- !u!95 &1728159065
 Animator:
   serializedVersion: 5
@@ -419206,8 +419242,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff05b56a3ed20004b87f3c83123a640b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 1000, y: 5000}
+  damage: 0
+  attackForce: 0
+  attackTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   viewTrigger:
     radius: 6
     direction: 0
@@ -419224,8 +419266,11 @@ MonoBehaviour:
   jumpForce: 6000
   checkJumpHight: 3
   forwardJumpForce: 800
+  smallJumpForce: 0
+  smallJumpForward: 0
   jumpIdleTime: 2
   patrollIdleTime: 2
+  aggroResetTime: 2
 --- !u!1 &1730269326
 GameObject:
   m_ObjectHideFlags: 0
@@ -437905,10 +437950,6 @@ PrefabInstance:
       value: Main Camera
       objectReference: {fileID: 0}
     - target: {fileID: 3004094830190583859, guid: dab1a1b8d4ec3574589c8c93b365f0ba, type: 3}
-      propertyPath: orthographic size
-      value: 5.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3004094830190583859, guid: dab1a1b8d4ec3574589c8c93b365f0ba, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
       value: 0
       objectReference: {fileID: 0}
@@ -437962,10 +438003,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3004094830190583860, guid: dab1a1b8d4ec3574589c8c93b365f0ba, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3004094830190583862, guid: dab1a1b8d4ec3574589c8c93b365f0ba, type: 3}
-      propertyPath: m_Dithering
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3004094830190583863, guid: dab1a1b8d4ec3574589c8c93b365f0ba, type: 3}
@@ -441108,7 +441145,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -446994,6 +447031,7 @@ MonoBehaviour:
   spawnCount: 2
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 0
+  roomVariants: []
 --- !u!1 &1863380752
 GameObject:
   m_ObjectHideFlags: 0
@@ -447098,6 +447136,7 @@ MonoBehaviour:
   spawnCount: 1
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &1865523591
 GameObject:
   m_ObjectHideFlags: 0
@@ -447423,6 +447462,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1873049288}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1873049288
 MonoBehaviour:
@@ -447438,13 +447478,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1873049289}
   walking: {fileID: 0}
+  walkingClips: []
   running: {fileID: 0}
   sleeping: {fileID: 999029659}
   dying: {fileID: 1899105620}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 187181944}
   spellHit: {fileID: 1835325855}
+  attack: {fileID: 0}
 --- !u!95 &1873049289
 Animator:
   serializedVersion: 5
@@ -447566,8 +447606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf22cbb5684d2ad4caa70642bab93e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 10
-  playerCollisionForce: {x: 2000, y: 0.5}
   attackTrigger:
     radius: 8
     direction: 0
@@ -452433,7 +452471,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -461390,6 +461428,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 2042908631029740834, guid: a7535c43c57344b468aab40bffb77bf6, type: 3}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1914543644
 MonoBehaviour:
@@ -461405,13 +461444,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1914543645}
   walking: {fileID: 1018072727}
+  walkingClips: []
   running: {fileID: 1894170872}
   sleeping: {fileID: 2055798852}
   dying: {fileID: 2105345118}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 787820747}
   spellHit: {fileID: 438814390}
+  attack: {fileID: 0}
 --- !u!95 &1914543645
 Animator:
   serializedVersion: 5
@@ -461533,8 +461572,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc30e9374fe69ce46b13f9d2aa2ea27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 20
-  playerCollisionForce: {x: 2000, y: 0.5}
   viewRange: 15
   eyePosY: -0.7
   attackTrigger:
@@ -461543,6 +461580,12 @@ MonoBehaviour:
     width: 360
     offset: {x: -2, y: -0.5}
     color: {r: 1, g: 0, b: 0, a: 1}
+  quakeSmashTrigger:
+    radius: 0
+    direction: 0
+    width: 360
+    offset: {x: 0, y: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   swordDamage: 30
   swordForce: 5000
   quakeTrigger:
@@ -465368,16 +465411,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 836447263}
-  cost: {fileID: 1047205435}
-  nameText: {fileID: 2028466141}
-  descriptionText: {fileID: 744819789}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 2100859427}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &1931977858
 GameObject:
   m_ObjectHideFlags: 0
@@ -466329,16 +466368,12 @@ MonoBehaviour:
   needsPayment: 0
   dropPointRarity: 0
   availableCategories: 
+  allowsHealthItem: 1
   setByhand: 0
   item: {fileID: 0}
   spawnFromEnemy: {fileID: 0}
-  canvas: {fileID: 365302234}
-  cost: {fileID: 187195807}
-  nameText: {fileID: 452192366}
-  descriptionText: {fileID: 1170823157}
+  pickUpController: {fileID: 0}
   spriteRenderer: {fileID: 1418440762}
-  collectObj: {fileID: 0}
-  buyObj: {fileID: 0}
 --- !u!1 &1945764411
 GameObject:
   m_ObjectHideFlags: 0
@@ -471193,7 +471228,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: PetrifiedPigmentPickupMiningCavern923119065
   image: {fileID: 767848612}
-  spawnChance: 0.5
 --- !u!1 &1970350814
 GameObject:
   m_ObjectHideFlags: 0
@@ -475112,6 +475146,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 1998204164}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1998204164
 MonoBehaviour:
@@ -475127,13 +475162,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 1998204165}
   walking: {fileID: 662707242}
+  walkingClips: []
   running: {fileID: 237482611}
   sleeping: {fileID: 344424693}
   dying: {fileID: 902117847}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 193285316}
   spellHit: {fileID: 922974152}
+  attack: {fileID: 0}
 --- !u!95 &1998204165
 Animator:
   serializedVersion: 5
@@ -475255,8 +475290,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1291f1979121ddc4b8ae3d3f80ad6d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 15
-  playerCollisionForce: {x: 2000, y: 0}
   attackTrigger:
     radius: 1.7
     direction: 0
@@ -488141,6 +488174,7 @@ MonoBehaviour:
   spawnCount: 7
   selectedNode: {x: 0, y: -1}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &2042496418
 GameObject:
   m_ObjectHideFlags: 0
@@ -499665,7 +499699,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2140779007
-  m_SortingLayer: 9
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0.8499999, z: 0}
@@ -511146,6 +511180,7 @@ MonoBehaviour:
   spawnCount: 1
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 1
+  roomVariants: []
 --- !u!1 &2128293290
 GameObject:
   m_ObjectHideFlags: 0
@@ -511376,6 +511411,7 @@ MonoBehaviour:
   sleepCooldown: 5
   currentCombo: 0
   enemySounds: {fileID: 2130762175}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &2130762175
 MonoBehaviour:
@@ -511391,13 +511427,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 2130762176}
   walking: {fileID: 1093231384}
+  walkingClips: []
   running: {fileID: 204089606}
   sleeping: {fileID: 479595403}
   dying: {fileID: 1966110331}
-  takingDamage: {fileID: 0}
   jumping: {fileID: 0}
-  onHit: {fileID: 782822636}
   spellHit: {fileID: 560129671}
+  attack: {fileID: 0}
 --- !u!95 &2130762176
 Animator:
   serializedVersion: 5
@@ -511519,8 +511555,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1291f1979121ddc4b8ae3d3f80ad6d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollisionDamage: 15
-  playerCollisionForce: {x: 2000, y: 0}
   attackTrigger:
     radius: 1.7
     direction: 0

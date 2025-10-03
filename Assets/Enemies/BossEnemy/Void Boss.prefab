@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a28be97c4a6364489ec76252b8c8d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2500
+  health: 3000
   color: {fileID: 11400000, guid: 5f2b6f6ae8acaf3469c5a5c99178de06, type: 2}
   colorAmmount: 6
   movementSpeed: 1500
@@ -68,6 +68,7 @@ MonoBehaviour:
     max: 0
   defaultColor: {fileID: 2100000, guid: 35a13ff390626d64b8941068ce494c99, type: 2}
   comboParticles: {fileID: 6205137580783060889, guid: 08a80dfa497e1524d8b1d91a3ef76662, type: 3}
+  deathParticles: {fileID: 8433749086128351822, guid: 317318bde42e4fd489b4dec17509c0fd, type: 3}
   knockbackImune: 0
   sleepForcedown: 0
   setColorByHand: 0
@@ -77,6 +78,7 @@ MonoBehaviour:
   sleepCooldown: 2
   currentCombo: 0
   enemySounds: {fileID: 1275441234857655824}
+  damageScaling: 0
   spawnPower: 1
 --- !u!114 &1275441234857655825
 MonoBehaviour:
@@ -90,13 +92,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e5a80ab1ec1fa449a4bd7580f1e842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minionMax: 3
+  minionMax: 4
   wispTimer: 0.5
-  minionWaveTimer: 30
+  minionWaveTimer: 20
   wispTmp: {fileID: 3904210810762673740, guid: 48fd111d4ca293846a0368a316105c0b, type: 3}
   spawnOffset: {x: 0, y: 2}
   spawnForce: {x: 0, y: 1000}
-  beamDamage: 20
+  beamDamage: 25
   laserDecaySpeed: 0.5
   beamTrigger:
     radius: 3.5
@@ -344,7 +346,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 801079871
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4f8eaea976fd9ce43b1ced39259885ab, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

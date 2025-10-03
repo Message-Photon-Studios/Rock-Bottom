@@ -31,11 +31,20 @@ public abstract class Enemy : BehaviourTree.Tree
     private void OnEnable()
     {
         stats = GetComponent<EnemyStats>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        body = GetComponent<Rigidbody2D>();
+
+        if (Player.instance == null || stats == null || stats.IsDead())
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+
+        player = Player.instance.stats;
         spriteRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
-        body = GetComponent<Rigidbody2D>();
+   
         stats.onDamageTaken += DamageTaken;
     }
 

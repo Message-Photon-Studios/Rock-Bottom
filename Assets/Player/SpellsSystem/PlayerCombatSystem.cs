@@ -11,14 +11,13 @@ using System.Linq;
 /// </summary>
 public class PlayerCombatSystem : MonoBehaviour
 {
-    public int rainbowComboDamage = 20;
     [SerializeField] Transform spellSpawnPoint; //The spawn point for the spells. This will be automatically fliped on the x-level
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
     [SerializeField] PlayerSounds playerSounds;
     [SerializeField] float bunnyCastTolerance;
-    public int defaultAttackDamage = 0;
+    public int greyExtraDamage = 0;
     private float bunnyCast = 0;
 
     /// <summary>
@@ -26,6 +25,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private int cascadeDamage = 0;
     public int maxCascadeDamage;
+    private string lastSpellCast = "";
     private int bonusDamage;
     private int spellSorting = 0;
     private int emergecyBonusDamageMin = 0;
@@ -33,7 +33,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private int d6 = 0;
     private bool attacking;
     private Rigidbody2D body;
-    private bool spellAirHit = false;
+    //private bool spellAirHit = false; // This bool checks so that only one spell can be cast in the air.
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
 
@@ -108,11 +108,11 @@ public class PlayerCombatSystem : MonoBehaviour
 
 
         if (Time.timeScale == 0) return;
-        if(!playerMovement.IsGrounded() && spellAirHit)
+        /*if(!playerMovement.IsGrounded() && spellAirHit)
         {
             SetBunnySpell(slotIndex);
             return;
-        }
+        }*/
         currentSpell= colorInventory.GetColorSpell(slotIndex).gameObject;
         if(currentSpell == null) return;
         if(attacking)
@@ -132,7 +132,7 @@ public class PlayerCombatSystem : MonoBehaviour
         
         if(!playerMovement.IsGrounded()) 
         {
-            spellAirHit = true;
+            //spellAirHit = true;
             if(!attackDoubleJumped) 
             {
                 playerMovement.ResetDoubleJump();
@@ -156,108 +156,56 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpellAttack()
     {
-        if(activeSpellSlot < 0 || activeSpellSlot >= colorInventory.colorSlots.Count) return;
-
-        GameColor color = colorInventory.GetColorSlotColor(activeSpellSlot);
-        if(currentSpell == null || color == null) return;
-        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x+currentSpell.transform.position.x) * playerMovement.lookDir, 
-                                        currentSpell.transform.position.y+spellSpawnPoint.localPosition.y);
-        GameObject spell = GameObject.Instantiate(currentSpell, transform.position + spawnPoint, transform.rotation) as GameObject;
-        if(spell != null)
-        {
-            ColorSpell spellStats = spell.GetComponent<ColorSpell>();
-            spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(activeSpellSlot), gameObject, playerMovement.lookDir, GetExtraDamage());
-            colorInventory.UseColorSlot(colorInventory.colorSlots[activeSpellSlot]);
-            spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
-            if (!spellStats.spawnKey.Equals(""))onRecast?.Invoke(spellStats.spawnKey);
-            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, colorInventory.GetSlot(activeSpellSlot)); //When adding items to change the cooldown change it here! 
-            colorInventory.SetRandomBuff();
-            colorInventory.MixRandom(activeSpellSlot);
-        }
-        colorInventory.EnableRotation();
-        cascadeDamage++;
-        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
-        transform.position= new Vector3(transform.position.x, transform.position.y-0.001f,transform.position.z);
+        SpellAttack(colorInventory.GetSlot(activeSpellSlot), CastType.NORMAL);
     }
 
-    public void PocketSpecialAttack(ColorSlot slot)
+    public void SpellAttack(ColorSlot slot, CastType castType)
     {
         GameColor color = colorInventory.GetColorSlotColor(slot);
-        ColorSpell spell = slot.colorSpell;
+        ColorSpell spell = colorInventory.GetColorSpell(slot);
         if (spell == null || color == null) return;
 
-        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.transform.position.x) * playerMovement.lookDir,
-                                        spell.transform.position.y + spellSpawnPoint.localPosition.y);
-        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
-        if (spellSpawn != null)
-        {
+        if (!spell.name.Equals(lastSpellCast)) cascadeDamage = 0;
+        lastSpellCast = spell.name;
 
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, playerMovement.lookDir, GetExtraDamage());
-            colorInventory.UseColorSlot(slot);
-            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
-            colorInventory.SetRandomBuff();
-            colorInventory.MixRandom(slot);
-        }
-        cascadeDamage++;
-        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
+        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.gameObject.transform.position.x) * playerMovement.lookDir,
+                                        spell.gameObject.transform.position.y + spellSpawnPoint.localPosition.y); //Creates spawn point for the spell
 
-        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z);
-    }
+        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject; //Spawns the spell object
 
-    public void DashSpecialAttack(ColorSlot slot)
-    {
-        GameColor color = colorInventory.GetColorSlotColor(slot);
-        ColorSpell spell = slot.colorSpell;
-        if (spell == null || color == null) return;
-
-        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.transform.position.x) * playerMovement.lookDir,
-                                        spell.transform.position.y + spellSpawnPoint.localPosition.y);
-        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
-        if (spellSpawn != null)
-        {
-             spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, playerMovement.lookDir, GetExtraDamage());
-            colorInventory.UseColorSlot(slot);
-            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
-            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
-            colorInventory.SetRandomBuff();
-            colorInventory.MixRandom(slot);
-        }
-        cascadeDamage++;
-        if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
-
-        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z);
-    }
-
-    public void DoubleJumpSpecialAttack(ColorSlot slot)
-    {
-        GameColor color = colorInventory.GetColorSlotColor(slot);
-        ColorSpell spell = slot.colorSpell;
-        if (spell == null || color == null) return;
-
-        Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.transform.position.x) * playerMovement.lookDir,
-                                        spell.transform.position.y + spellSpawnPoint.localPosition.y);
-        GameObject spellSpawn = GameObject.Instantiate(spell.gameObject, transform.position + spawnPoint, transform.rotation) as GameObject;
         if (spellSpawn != null)
         {
             int lookDir = playerMovement.lookDir;
-            if(Time.time - playerMovement.lastFlipTime < 0.2f) lookDir *=-1;
+            if (castType == CastType.JUMP) if (Time.time - playerMovement.lastFlipTime < 0.2f) lookDir *= -1;
+            
+            ColorSpell spellStats = spellSpawn.GetComponent<ColorSpell>();
+            spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, lookDir, GetExtraDamage(color)); //Sets all the stats for the spell
+            if (castType != CastType.EXTRA) colorInventory.UseColorSlot(slot); //Consumes the color after the spell has been spawned.
+            spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++; //Makes sure that the spells arent Z fighting. 
+            if (!spellStats.spawnKey.Equals("")) onRecast?.Invoke(spellStats.spawnKey); //Triggers all spells that have some recast behaviour. EX Flail's chain breaks
+            if (castType != CastType.HURT && castType != CastType.HIT && castType != CastType.EXTRA) colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot); //Consumes ones spell Charge and sets it on cooldown.
+            colorInventory.SetRandomBuff(); //Rerolls the D20 bonus
+            colorInventory.MixRandom(slot); //Activates chaothic bottle
 
-            spellSpawn.GetComponent<ColorSpell>().Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, lookDir, GetExtraDamage());
-            colorInventory.UseColorSlot(slot);
-            spellSpawn.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++;
-            colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot);
-            colorInventory.SetRandomBuff();
-            colorInventory.MixRandom(slot);
         }
+        if (castType == CastType.NORMAL) colorInventory.EnableRotation();
         cascadeDamage++;
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
+        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z); //It aint broke, dont touch it (We dont know what this does)
 
-        transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z);
     }
 
-    public int GetExtraDamage()
+    public IEnumerator ExtraSpell(ColorSlot slot, CastType castType)
     {
-        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage + GetEmergencyDamage() + GetD6Damage(d6);
+        yield return new WaitForSeconds(0.2f);
+        SpellAttack(slot, castType);
+    }
+
+    public int GetExtraDamage(GameColor color)
+    {
+        int addDamage = 0;
+        if (color == colorInventory.GetEmptyBottleColor()) addDamage += greyExtraDamage;
+        return cascadeDamage + colorInventory.GetColorMaxDamageBuff() + bonusDamage + GetEmergencyDamage() + GetD6Damage(d6) + addDamage;
     }
 
     public void AddBonusDamage(int bonus)
@@ -321,7 +269,7 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     public void SetPlayerGrounded()
     {
-        spellAirHit = false;
+        //spellAirHit = false;
         attackDoubleJumped = false;
     }
 
@@ -473,4 +421,14 @@ public class PlayerCombatSystem : MonoBehaviour
     }
     */
     #endregion
+}
+
+public enum CastType
+{
+    NORMAL, //When a spell is cast normally with a button press
+    DASH, //The spell was cast when the player dashed
+    JUMP, //The spell was cast when the player double jumped
+    HURT, //The spell was cast when the player took damage
+    HIT, //The spell was cast when another spell hit an enemy
+    EXTRA //An additional spell that is casted for free (Both color and casting time/charge is free)
 }

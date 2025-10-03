@@ -13,7 +13,7 @@ public class FloatingCrystalProjectile : Enemy
 
     protected override Node SetupTree()
     {
-        startRotation = Quaternion.Euler(new Vector3(0, 0, Random.Range(0f, 359f)));
+        startRotation = Quaternion.Euler(new Vector3(0, 0, UnityEngine.Random.Range(0f, 359f)));
         transform.rotation = startRotation;
         Node root = new Selector(new List<Node> 
         {

@@ -14,7 +14,7 @@ public abstract class ItemEffect
 
     protected GameObject GetPlayer()
     {
-        return GameObject.FindGameObjectWithTag("Player");
+        return Player.instance.gameObject;
     }
 
     /// <summary>

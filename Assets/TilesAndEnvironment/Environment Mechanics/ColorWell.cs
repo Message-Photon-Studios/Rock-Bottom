@@ -106,15 +106,17 @@ public class ColorWell : InteractionObject
 
     protected override void PlayerInteract()
     {
-        if(!Player.instance.playerCombatSystem.addColorMode)
+        if (!Player.instance.playerCombatSystem.addColorMode)
         {
             Player.instance.playerCombatSystem.EnableAbsorbColor(this);
-        } else
+            //pickUpCanvasController.SetColorShrine(this);
+        }
+        else
         {
             Player.instance.playerCombatSystem.DeactivateAddColorMode();
         }
 
-        pickUpCanvasController.SetColorShrine(this);
+        
     }
 
     #region Check playerClose
@@ -133,10 +135,10 @@ public class ColorWell : InteractionObject
             pickUpCanvasController.SetColorShrine(this);
         } else
         {
-            pickUpCanvasController.CloseUi();
+            pickUpCanvasController.CloseMenu();
             colorIconImage.color = iconShadedColor;
             if(wellUsed) colorIconImage.gameObject.SetActive(false);
-            Player.instance.playerCombatSystem.DeactivateAddColorMode();
+            if(Player.instance.playerCombatSystem.addColorMode) Player.instance.playerCombatSystem.DeactivateAddColorMode();
             Player.instance.playerCombatSystem.MovedAwayFromWell(this);
         }
     }

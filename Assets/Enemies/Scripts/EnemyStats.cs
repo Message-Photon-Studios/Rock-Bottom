@@ -13,16 +13,21 @@ using static UnityEngine.ParticleSystem;
 /// </summary>
 [RequireComponent(typeof(Collider2D), typeof(Animator))]
 public class EnemyStats : MonoBehaviour
-{
+{   
+    [Header("Base Stats")]
     [SerializeField] int health; //The health of the enemy
     [SerializeField] GameColor color; //The colorMat of the enemy
     [SerializeField] int colorAmmount; //The ammount of colorMat you will get when absorbing the colorMat from the enemy'
     [SerializeField] float movementSpeed; //The current movement speed of the enemy
     [SerializeField] CoinRange coinsDropped; //Keeps track of how much coins this enemy drops upon death
-
     private Collider2D myCollider;
+
+    int maxHealth;
+
+    [Header("Enemy Settings")]
     [SerializeField] private Material defaultColor; //The material that is used when there is no GameColor attached
     [SerializeField] private GameObject comboParticles;
+    [SerializeField] private GameObject deathParticles;
 
     [SerializeField] private bool knockbackImune = false;
     [SerializeField] private float sleepForcedown; //The force downwards that will be applied to a sleeping enemy
@@ -30,8 +35,8 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private bool setColorByHand;
 
     [SerializeField] private float deathTimer = 0;
-    
-
+    private float armour = 0f;
+    private float paintersKnifeArmourReduction = 0f;
     private bool hasDeathTimer = false;
 
     /// <summary>
@@ -44,7 +49,8 @@ public class EnemyStats : MonoBehaviour
     private float normalMovementDrag; //The normal movement drag of the enemy
     private float movementSpeedTimer;
     private float normalAnimationSpeed;
-    private float colorComboTimer = 4.5f; //The timer before the enemy explode
+    private float colorComboTimer = 3f; //The time the enemy have to execute rainbowed enemies.
+    private float maxColorComboTimer;
 
     bool enemySleep = false; //If the enemy sleep is true the enemy will be inactive
     private float sleepTimer = 0;
@@ -52,6 +58,7 @@ public class EnemyStats : MonoBehaviour
     private float sleepPowerBonus = 0f; //The extra damage dealt to a slept enemy
     [SerializeField] float sleepCooldown = 5f;
     float sleepCooldownTimer = 0f;
+    float drowsyPower;
     GameObject sleepParticles;
     [HideInInspector] public int currentCombo = 0; //At what stage this combo is at
 
@@ -69,13 +76,23 @@ public class EnemyStats : MonoBehaviour
     private float redTimer = 0;
     private float redPower = 0;
 
+    private bool diedRainbowed = false;
+
+    [HideInInspector] public float damageScaling = 1f;
+
     [HideInInspector] public float spawnPower = 1f;
 
     private (int damage, float timer, float range, GameObject particles, GameObject[] burnable, GameObject floorParticles, GameObject enemyParticles, int flames) burning;
+
+    private Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)> lightningQueue = new Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)>();
+
+    private EnemyStats enemyParent;
+
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
     public UnityAction<float> onHealthChanged;
+    public UnityAction<float, float> onMaxHealthChanged;
     public UnityAction<float, Vector2> onDamageTaken;
     public UnityAction<GameColor> onColorChanged;
 
@@ -90,12 +107,8 @@ public class EnemyStats : MonoBehaviour
     [CanBeNull] private Coroutine currentCoroutine;
 
     public bool isColoredThisFrame {get; private set;} = false;
-    private bool dealingRainbowDamage = false;
     public static bool chaoticMixer = false;
     ColorLibrary colorLibrary;
-    GameObject player;
-    PlayerStats playerStats;
-    PlayerCombatSystem playerCombat;
     Light2D enemyLight;
 
     Rigidbody2D body;
@@ -107,6 +120,9 @@ public class EnemyStats : MonoBehaviour
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         normalAnimationSpeed = animator.speed;
+        damageScaling = 1f;
+        maxHealth = health;
+        maxColorComboTimer = colorComboTimer;
     }
 
     void Start()
@@ -138,12 +154,7 @@ public class EnemyStats : MonoBehaviour
         enemySounds = GetComponent<EnemySounds>();
         onColorChanged?.Invoke(color);
         if (deathTimer > 0) hasDeathTimer = true;
-        player = GameObject.FindGameObjectWithTag("Player");
-        if(player != null)
-        {
-            playerStats = player.GetComponent<PlayerStats>();
-            playerCombat = player.GetComponent<PlayerCombatSystem>();
-        } else 
+        if(Player.instance == null)
         {
             this.enabled = false;
         }
@@ -179,6 +190,14 @@ public class EnemyStats : MonoBehaviour
         mat.SetFloat("_takingDmg", 0);
     }
 
+    public void ScaleEnemy(float scaling)
+    {
+        health = (int)(health * scaling * Mathf.Pow(1.3f, GameManager.instance.rerunNum-1));
+        maxHealth = health;
+        damageScaling = scaling * GameManager.instance.rerunNum;
+        onMaxHealthChanged?.Invoke(health, health);
+    }
+
     #endregion
 
     #region Update
@@ -186,29 +205,19 @@ public class EnemyStats : MonoBehaviour
     {
         if(sleepCooldownTimer > 0) sleepCooldownTimer -= Time.deltaTime;
         if(isColoredThisFrame) isColoredThisFrame = false;
-        if(secTimer > 1f)
+
+        if (IsRaibowed())
         {
-            if(color != null && color.name == "Rainbow")
+            colorComboTimer -= Time.deltaTime;
+            if (colorComboTimer <= 0) RemoveColor();    
+        }
+        
+        if (secTimer > 1f)
+        {
+            if (movementSpeedTimer > 0)
             {
-                int rainbowDamage = (int)(playerCombat.rainbowComboDamage*playerStats.colorRainbowMaxedPower);
-
-                if(rainbowDamage >= health)
-                {
-                    DealRainbowDamage(rainbowDamage);
-                }
-
-                colorComboTimer--;
-
-                if (colorComboTimer <= 0)
-                {
-                    DealRainbowDamage(rainbowDamage);
-                }
-            }
-
-            if(movementSpeedTimer > 0)
-            {
-                movementSpeedTimer --;
-                if(movementSpeedTimer <= 0)
+                movementSpeedTimer--;
+                if (movementSpeedTimer <= 0)
                 {
                     movementSpeedTimer = 0;
                     GetComponent<Rigidbody2D>().drag = normalMovementDrag;
@@ -216,74 +225,74 @@ public class EnemyStats : MonoBehaviour
                 }
             }
 
-            if(sleepTimer > 0)
+            if (sleepTimer > 0)
             {
-                sleepTimer --;
-                if(sleepTimer <= 0)
+                sleepTimer--;
+                if (sleepTimer <= 0)
                 {
                     sleepTimer = 0;
                     WakeEnemyAnimation();
                 }
             }
 
-            if(poisonTimer > 0)
-            {   
+            if (poisonTimer > 0)
+            {
                 DamageEnemy(poisonDamageToTake);
-                poisonTimer --;
-                if(poisonTimer <= 0)
+                poisonTimer--;
+                if (poisonTimer <= 0)
                 {
                     poisonDamageToTake = 0;
                     poisonDamageReduction = 0;
                 }
             }
 
-            if(redTimer > 0)
+            if (redTimer > 0)
             {
                 redTimer--;
-                if(redTimer <= 0)
+                if (redTimer <= 0)
                 {
-                    playerStats.RemoveEnemyFromRedList(this);
+                    Player.instance.playerStats.RemoveEnemyFromRedList(this);
                     redPower = 0;
                 }
             }
 
-            if(burning.damage > 0 && burning.timer > 0)
+            if (burning.damage > 0 && burning.timer > 0)
             {
                 DamageEnemy(burning.damage);
                 //if(color?.name != "Orange" || color == null) DamageEnemy(burning.damage);
                 //else DamageEnemy(0);
                 float timer = burning.timer;
-                timer --;
+                timer--;
                 burning.timer = timer;
 
                 int damage = burning.damage;
-                damage-=4;
+                damage -= 4;
                 burning.damage = damage;
 
                 //Debug.Log("burning: d " + burning.damage + " : t " + burning.timer);
 
-                if(burning.damage <= 0 || burning.timer <= 0)
+                if (burning.damage <= 0 || burning.timer <= 0)
                 {
                     StopBurning();
                     return;
                 }
-                
 
-                foreach(GameObject obj in burning.burnable)
+
+                foreach (GameObject obj in burning.burnable)
                 {
-                    if(obj == null) continue;
+                    if (obj == null) continue;
                     float dist = Vector2.Distance(transform.position, obj.transform.position);
-                    if(dist < burning.range)
+                    if (dist < burning.range)
                     {
-                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage+6, burning.timer+2, burning.range, burning.particles, burning.floorParticles, burning.flames);
+                        obj.GetComponent<EnemyStats>()?.BurnDamage(burning.damage + 6, burning.timer + 2, burning.range, burning.particles, burning.floorParticles, burning.flames);
                     }
                 }
             }
 
-            if(hasDeathTimer)
+            if (hasDeathTimer)
             {
                 deathTimer--;
-                if(deathTimer <= 0) KillEnemy();
+                if (deathTimer <= 0) KillEnemy();
             }
             secTimer = 0f;
 
@@ -305,28 +314,47 @@ public class EnemyStats : MonoBehaviour
     /// <param name="damage"></param>
     public void DamageEnemy(int damage)
     {
+        if (!gameObject.activeSelf) return;
         //if (enemySleep) WakeEnemyAnimation();
 
-        health -= damage;
+        damage = Mathf.RoundToInt(damage * (1f - armour + paintersKnifeArmourReduction));
 
+        health -= damage;
+        
         if (chaoticMixer && damage > 0)
         {
             StartCoroutine(ChaothicMixer());
-        } 
+        }
+
+        if (Player.instance.colorInventory.paintersKnife && paintersKnifeArmourReduction < .5f)
+        {
+            paintersKnifeArmourReduction += 0.05f;
+        }
+
+        StartCoroutine(DamageFlash());
+        
         onHealthChanged?.Invoke(health);
         onDamageTaken?.Invoke(damage, transform.position);
-        int rainbowDmg = (int)(playerCombat.rainbowComboDamage * playerStats.colorRainbowMaxedPower);
         if (currentCoroutine != null)
             StopCoroutine(currentCoroutine);
         if (health <= 0) KillEnemy();
-        else if ((health - rainbowDmg <= 0 && IsRaibowed() && !dealingRainbowDamage)) DealRainbowDamage(rainbowDmg);
-        else currentCoroutine = StartCoroutine(dmgResponse());
+        else if (IsRaibowed() && health <= (maxHealth * Player.instance.stats.rainbowExecutePercentage)) DealRainbowDamage(health+1);
+        else if (gameObject.activeSelf) currentCoroutine = StartCoroutine(dmgResponse());
+    }
+
+    private IEnumerator DamageFlash()
+    {
+        Color hurtColor = (GetColor() != null)? GetColor().plainColor : Color.grey;
+        if (hurtColor.Equals(Color.white)) hurtColor = Color.grey;
+        GetComponent<SpriteRenderer>().color = hurtColor;
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     public IEnumerator ChaothicMixer()
     {
         yield return new WaitForSeconds(0.1f);
-        colorLibrary.GetRandomPrimaryColor().MixThisColorOntoEnemy(this, playerStats);
+        colorLibrary.GetRandomPrimaryColor().MixThisColorOntoEnemy(this, Player.instance.playerStats);
     }
 
     public IEnumerator dmgResponse()
@@ -343,9 +371,10 @@ public class EnemyStats : MonoBehaviour
     /// </summary>
     public void KillEnemy()
     {
-        if(isPoisoned())
+        if (IsRaibowed()) diedRainbowed = true;
+        if (isPoisoned())
         {
-            GameObject orb = GameObject.Instantiate(poisonOrbPrefab,transform.position, Quaternion.identity) as GameObject;
+            GameObject orb = GameObject.Instantiate(poisonOrbPrefab, transform.position, Quaternion.identity) as GameObject;
             orb.GetComponent<PoisonOrb>().SetupOrb(poisonDamageToTake, poisonDamageReduction, poisonTimer, poisonOrbPrefab);
             poisonTimer = 0;
             poisonDamageToTake = 0;
@@ -357,28 +386,28 @@ public class EnemyStats : MonoBehaviour
         enemySounds?.PlayDeath();
         //TODO
         if (animator.GetBool("dead")) return;
-        Debug.Log(gameObject.name + " died");
         animator.SetBool("dead", true);
         GetComponent<Rigidbody2D>().simulated = false;
         GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, 5);
-        SleepEnemy(10, 1, null);
+        //SleepEnemy(10, 1, null);
+        if (IsRaibowed()) SpawnRainbowParticles();
+
         int drainAmount = 0;
-        if(color != null && color.name.Equals("Rainbow") && colorOrbPrefab != null && colorAmmount-drainAmount > 0)
+        int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+        if (IsRaibowed() && giveColor > 0)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if(player != null)
-            {
-                GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;  
-                orb.GetComponent<ColorOrb>().SetTarget(player, colorAmmount - drainAmount, color);
-            }
+            SpawnRainbowOrb(giveColor);
+        }
+
+        if (deathParticles != null)
+        {
+            GameObject deathP = Instantiate(deathParticles, transform.position, transform.rotation);
+            var main = deathP.GetComponent<ParticleSystem>().main;
+            main.startColor = GetColor() ? GetColor().plainColor : Color.grey;
+            deathP.GetComponent<ParticleSystem>().Play();
         }
         onEnemyDeath?.Invoke(this);
-    }
-
-    public bool IsDead()
-    {
-        return enemyDead;
     }
 
     public void DropCoins()
@@ -393,34 +422,48 @@ public class EnemyStats : MonoBehaviour
     {
         Destroy(gameObject);
     }
+    #endregion
+
+    #region Health and status effects
 
     /// <summary>
     /// Returns the enemys current health
     /// </summary>
     /// <returns></returns>
-    public float GetHealth()
+    public int GetHealth()
     {
         return health;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
     }
 
     public bool isFrozen()
     {
         return movementSpeedTimer > 0;
     }
+    public bool IsDead()
+    {
+        return enemyDead;
+    }
+
 
     #endregion
 
-    #region Rainbow damage
+    #region Rainbow
+
 
     private void DealRainbowDamage(int rainbowDamage)
     {
         GameManager.instance.tipsManager.DisplayTips("rainbowCombo");
-        dealingRainbowDamage = true;
+        SpawnRainbowParticles();
         DamageEnemy(rainbowDamage);
-        dealingRainbowDamage = false;
-        AbsorbColor();
-        colorComboTimer = 2f;
+    }
 
+    private void SpawnRainbowParticles()
+    {
         GameObject instantiatedParticles = GameObject.Instantiate(comboParticles, transform.position, transform.rotation);
         instantiatedParticles.GetComponent<ParticleSystem>().Play();
         Destroy(instantiatedParticles, 1f);
@@ -433,8 +476,19 @@ public class EnemyStats : MonoBehaviour
         return color != null && colorAmmount > 0 && color.name == "Rainbow";
     }
 
+    public void SpawnRainbowOrb(int orbColorAmount)
+    {
+        if (!colorOrbPrefab) return;
+        GameObject player = Player.instance.gameObject;
+        if(player != null)
+        {
+            GameObject orb = Instantiate(colorOrbPrefab, GetPosition(), transform.rotation) as GameObject;  
+            orb.GetComponent<ColorOrb>().SetTarget(player, orbColorAmount);
+        }
+    }
+
     #endregion
-    
+
     #region Poison damage
     /// <summary>
     /// Adds a damage over time effect to the enemy
@@ -444,10 +498,10 @@ public class EnemyStats : MonoBehaviour
     /// <param name="timer"></param>
     public void PoisonDamage(int damage, float damageReduction, float timer, GameObject poisonOrbPrefab)
     {
-        if(poisonTimer > 0)
+        if (poisonTimer > 0)
         {
-            if(damage > poisonDamageToTake) poisonDamageToTake = damage;
-            if(damageReduction > poisonDamageReduction) poisonDamageReduction = damageReduction;
+            if (damage > poisonDamageToTake) poisonDamageToTake = damage;
+            if (damageReduction > poisonDamageReduction) poisonDamageReduction = damageReduction;
             poisonTimer += timer;
             this.poisonOrbPrefab = poisonOrbPrefab;
         } else
@@ -520,8 +574,66 @@ public class EnemyStats : MonoBehaviour
 
     #endregion
 
+    #region Ligtning damage
+
+    public void QueueLightning(int frame, int damage, float delay, float power, GameObject lightningObj)
+    {
+        if (lightningQueue.ContainsKey(frame))
+        {
+            lightningQueue[frame] = (Math.Max(damage, lightningQueue[frame].damage), Math.Min(delay, lightningQueue[frame].delay), lightningQueue[frame].power, lightningQueue[frame].queuedStrikes);
+        }
+        else
+        {
+            lightningQueue.Add(frame, (damage, delay, power, new List<GameObject>()));
+            StartCoroutine(ApplyLightning(frame, lightningObj));
+        }
+    }
+
+    private IEnumerator ApplyLightning(int frame, GameObject lightningObj)
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(lightningQueue[frame].delay);
+        foreach (GameObject target in lightningQueue[frame].queuedStrikes)
+        {
+            if (target == null) continue;
+            GameObject connector = GameObject.Instantiate(lightningObj, transform.position, transform.rotation);
+            connector.GetComponent<LineRenderer>().SetPosition(0, target.transform.position);
+            connector.GetComponent<LineRenderer>().SetPosition(1, transform.position);
+            connector.GetComponent<LightningAnimator>().SetSource(target);
+            connector.GetComponent<LightningAnimator>().SetTarget(gameObject);
+            connector.GetComponent<LightningAnimator>().SetWidth(lightningQueue[frame].power);
+            Destroy(connector, 0.5f);
+
+            target.GetComponent<EnemyStats>().DealLightningDamage(frame);
+        }
+        lightningQueue.Remove(frame);
+    }
+
+    public void DealLightningDamage(int frame)
+    {
+        if (!lightningQueue.ContainsKey(frame)) return;
+        if (lightningQueue[frame].damage <= 0) return;
+        DamageEnemy(lightningQueue[frame].damage);
+        lightningQueue[frame] = (0, lightningQueue[frame].delay, lightningQueue[frame].power, lightningQueue[frame].queuedStrikes);
+    }
+
+    public float GetLightningDelay(int frame)
+    {
+        if (!lightningQueue.ContainsKey(frame)) return 0;
+        return lightningQueue[frame].delay;
+    }
+
+    public void AddLightningTarget(int frame, GameObject target)
+    {
+        if (!lightningQueue.ContainsKey(frame)) return;
+        List<GameObject> newQueue = lightningQueue[frame].queuedStrikes;
+        newQueue.Add(target);
+    }
+
+    #endregion
+
     #region Enemy Color
-    
+
     /// <summary>
     /// Return what colorMat this enemy has and how much, then remove the colorMat form the enemy.
     /// </summary>
@@ -561,30 +673,68 @@ public class EnemyStats : MonoBehaviour
 
     public void SetColor(GameColor color)
     {
-        if (IsRaibowed())
-        {
-            DealRainbowDamage((int)(playerCombat.rainbowComboDamage * playerStats.colorRainbowMaxedPower));
-            if (health <= 0) return;
-        }
         this.color = color;
         onColorChanged?.Invoke(color);
         if (enemySleep && lastSleep != Time.time) WakeEnemyAnimation();
         if (color != null)
         {
             GetComponent<SpriteRenderer>().material = color.colorMat;
-            if(color.name.Equals("Rainbow"))
-            {
-                AchievementsManager.instance.ProgressAchievement("Painter");
-                if (enemySleep && lastSleep == Time.time) colorComboTimer++;
-            }
         }
         else
             GetComponent<SpriteRenderer>().material = defaultColor;
-        
-        if(enemyLight) enemyLight.color = color.lightTintColor;
+
+        if (enemyLight) enemyLight.color = color.lightTintColor;
         isColoredThisFrame = true;
     }
 
+    public void SetColorByHand(GameColor color)
+    {
+        SetColor(color);
+        setColorByHand = true;
+    }
+
+    /// <summary>
+    /// Returns the color that the enemy should be set to when colored by player
+    /// </summary>
+    /// <param name="colorToMix"></param>
+    /// <returns></returns>
+    public GameColor GetPlayerMixColor(GameColor colorToMix)
+    {
+        if (IsRaibowed()) return GetColor();
+
+        GameColor colorToSet = (Player.instance.colorInventory.enemyDontMix || colorToMix.name.Equals("Rainbow")) ? colorToMix : colorToMix.MixColor(GetColor());
+        return colorToSet;
+    }
+
+    public void SetPlayerColor(GameColor color, int addAmount)
+    {
+
+        if (Player.instance.colorInventory.enemyGiveColorOnChange && GetColor() != color) SpawnRainbowOrb(1);
+        if (Player.instance.colorInventory.enemyGiveColorOnSame && GetColor() == color) SpawnRainbowOrb(1);
+
+        bool firstRainbowed = color.name.Equals("Rainbow") && !IsRaibowed();
+
+        SetColor(color, GetColorAmmount() + addAmount);
+
+        if (firstRainbowed)
+        {
+            AchievementsManager.instance.ProgressAchievement("Painter");
+            DamageEnemy(Player.instance.stats.rainbowedDamage);
+
+            colorComboTimer = maxColorComboTimer;
+
+            if (IsDead() && !diedRainbowed)
+            {
+                diedRainbowed = true;
+                int drainAmount = 0;
+                int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+                if (giveColor > 0)
+                {
+                    SpawnRainbowOrb(giveColor);
+                }
+            }
+        }
+    }
     public void SetColor(GameColor color, int ammount)
     {
         SetColor(color);
@@ -636,7 +786,10 @@ public class EnemyStats : MonoBehaviour
         float poisonFactor = 1f;
         if(isPoisoned())
             poisonFactor = (1f-poisonDamageReduction);
-        return spawnPower * poisonFactor;
+
+        float blodiedFactor = 1f;
+        if (Player.instance.colorInventory.greatBrushFirstHit && GetHealth() / (float)GetMaxHealth() < .5f) blodiedFactor = 1.2f;
+        return spawnPower * poisonFactor * damageScaling * blodiedFactor;
     }
 
     /// <summary>
@@ -742,11 +895,14 @@ public class EnemyStats : MonoBehaviour
     /// Sets the enemy to asleep for the specified time
     /// </summary>
     /// <param name="timer"></param>
-    public void SleepEnemy(float timer, float sleepPower, GameObject particles)
+    public void SleepEnemy(float timer, float sleepPower, float drowsyPower,  GameObject particles)
     {
         if(sleepCooldownTimer > 0) return;
-        if(sleepTimer <= 0)
+        if(sleepTimer <= 0 || sleepPowerBonus < sleepPower)
             sleepPowerBonus = sleepPower;
+
+        if (sleepTimer <= 0 || this.drowsyPower < drowsyPower)
+            this.drowsyPower = drowsyPower;
 
         sleepTimer = timer;
         lastSleep = Time.time;
@@ -761,14 +917,14 @@ public class EnemyStats : MonoBehaviour
             instantiatedParticles.transform.parent = transform;
             sleepParticles = instantiatedParticles;
         }
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        /* GameObject player = Player.instance.gameObject;
         if(player)
         {
             foreach (Collider2D collider in GetComponents<Collider2D>())
             {
-                Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>());
+                Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>(), true);
             }
-        }
+        }*/
         animator.SetBool("sleep", true);
         onEnemySlept?.Invoke();
     }
@@ -785,7 +941,7 @@ public class EnemyStats : MonoBehaviour
             sleepParticles.GetComponent<ParticleSystem>().Stop();
             GameObject.Destroy(sleepParticles, 1f);
         }
-        sleepCooldownTimer = sleepCooldown;
+        sleepCooldownTimer = sleepCooldown * (drowsyPower<1f?drowsyPower:1f);
     }
 
     /// <summary>
@@ -795,14 +951,14 @@ public class EnemyStats : MonoBehaviour
     {
         enemySleep = false;
         sleepTimer = 0;
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+       /*GameObject player = Player.instance.gameObject;
         if(player)
         {
             foreach (Collider2D collider in GetComponents<Collider2D>())
             {
                 Physics2D.IgnoreCollision(collider, player.GetComponent<Collider2D>(), false);
             }
-        }
+        }*/
     }
 
     /// <summary>
@@ -840,7 +996,7 @@ public class EnemyStats : MonoBehaviour
         {
             redTimer = timer;
             redPower = power;
-            playerStats.AddEnemyToRedList(this);
+            Player.instance.playerStats.AddEnemyToRedList(this);
         }
     }
 
@@ -879,6 +1035,21 @@ public class EnemyStats : MonoBehaviour
     }
 
     #endregion
+
+    #region Enemy Parent
+
+    public void SetParent(EnemyStats parent)
+    {
+        enemyParent = parent;
+    }
+
+    public EnemyStats GetParent()
+    {
+        if (enemyParent != null) return enemyParent;
+        return this;
+    }
+
+    #endregion
 }
 
 [System.Serializable]
@@ -888,10 +1059,9 @@ public struct CoinRange
     [SerializeField] int max;
 
     public int GetReward()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if(player != null)
-            return (int)(UnityEngine.Random.Range(min, max+1)*player.GetComponent<ItemInventory>().coinBoost);
+    {;
+        if(Player.instance != null)
+            return (int)(UnityEngine.Random.Range(min, max+1)*Player.instance.playerInventory.coinBoost);
         else return UnityEngine.Random.Range(min, max+1);
     }
 }

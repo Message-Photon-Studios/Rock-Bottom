@@ -83,7 +83,7 @@ public class ClockTimerController : MonoBehaviour
                 timeText.gameObject.SetActive(false);
             }
             
-        }
+        } 
     }
 
     //Sets clocks active state acording to if it's active or not.
@@ -100,6 +100,7 @@ public class ClockTimerController : MonoBehaviour
     {
         animator.Rebind();
         animator.Update(0f);
+        timeText.text = "";
         LoadClock();
     }
 

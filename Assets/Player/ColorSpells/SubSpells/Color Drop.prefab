@@ -117,7 +117,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4f514e7e3b369e247a8904633351c481, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -162,18 +162,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec1f12213843ff940b7071efb89c3129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  description: 'Fire a bolt of color that impacts the first target it hits.
-
-    Power:
-    100%'
+  bottleName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   spellCost: 40
-  powerScale: 0
+  powerScale: 1
   coolDown: 1
   castWhenDamaged: 0
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 1
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0
@@ -200,6 +216,9 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: 0e4410dc1c8445849863eb9a57105ac2, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: c0da91dbb370a2a4eae7a5661573c13d, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: 6e26f46f0d2fe6840a3e2d330dbce090, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!70 &5526896281579278936
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -1753,6 +1753,8 @@ GameObject:
   - component: {fileID: 7474946213633799611}
   - component: {fileID: 4351019461878009442}
   - component: {fileID: 7366352065056492609}
+  - component: {fileID: 5058077073313717140}
+  - component: {fileID: 3304198604496691133}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -1806,6 +1808,9 @@ MonoBehaviour:
   - {fileID: -7692674297862362138, guid: 8c072b255aafb364586d145ce4608284, type: 3}
   - {fileID: -7692674297862362138, guid: 0667849121b330d43bbb2a0dcaeacaf4, type: 3}
   - {fileID: -7692674297862362138, guid: 2c59c48a92a29054792f0a05b786b0ba, type: 3}
+  - {fileID: -7692674297862362138, guid: bbedbdee45eab7a4e9b663d4392d987b, type: 3}
+  - {fileID: -7692674297862362138, guid: 45af14ade1322734e8e3c98f25f27a59, type: 3}
+  - {fileID: -7692674297862362138, guid: add053d27e20228479dc29cf07b88970, type: 3}
   spellUnlockSound: {fileID: 5256688047709658222}
   petrifiedPickupSound: {fileID: 2976471086048920126}
   soundEffectManager: {fileID: 7690066140520027446}
@@ -1816,6 +1821,7 @@ MonoBehaviour:
     playerFeetLayer: 15
     platformLayer: 14
     groundLayer: 0
+    ghostEnemies: 13
     onlyGround:
       serializedVersion: 2
       m_Bits: 16385
@@ -1843,6 +1849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875cc3f2e2ccb2f4d897fecb8507387a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainComponent: {fileID: 0}
   tipsDictionary:
     _serializedList:
     - Key: colorPower
@@ -1994,7 +2001,6 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  removeTooltipButton: {fileID: -4679931084075046408, guid: fd04459890e791843a48243064f9151b, type: 3}
   references:
     version: 2
     RefIds: []
@@ -2068,6 +2074,48 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fb4a5352fdc867147b0b07d399cd221d, type: 2}
   - {fileID: 11400000, guid: 515b8e0cc06f688409aca84476871b24, type: 2}
   rainbow: {fileID: 11400000, guid: aab7a3fd5f4b5c04fb45da55783d8aa1, type: 2}
+--- !u!114 &5058077073313717140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6749319306640925491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc28d2bbeb6cac44b72ade027a17920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 5967074392481292837, guid: ba99bb8515316f24e9aa6786138ee4eb, type: 3}
+  inputActions:
+  - {fileID: 8536812167366974807, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: 4469551230878750276, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: 4778719026035505401, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: -2141338855679079499, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: 6904516431623520599, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: -4679931084075046408, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: -3112959694430139555, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: 8155338115105704411, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: -9189985484616426647, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: 425318427900767816, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: 7816966763905407227, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: -5664506344742684639, guid: fd04459890e791843a48243064f9151b, type: 3}
+  - {fileID: 2156130203312526529, guid: fd04459890e791843a48243064f9151b, type: 3}
+--- !u!114 &3304198604496691133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6749319306640925491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfc68a5569e3e064c85f830acb2f34b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentlyOpen: {fileID: 0}
+  escapeHatch: {fileID: 425318427900767816, guid: fd04459890e791843a48243064f9151b, type: 3}
+  controllerBack: {fileID: 7953598145553123608, guid: fd04459890e791843a48243064f9151b, type: 3}
 --- !u!1 &7038129132029276527
 GameObject:
   m_ObjectHideFlags: 0

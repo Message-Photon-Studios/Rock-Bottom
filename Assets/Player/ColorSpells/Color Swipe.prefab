@@ -36,6 +36,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2938589175368044139}
+  - {fileID: 1861994748350554073}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -106,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 1
   triggerImpactSpells: 1
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -127,7 +129,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 87ff859addb7e1946a53b5a3f05c7079, type: 2}
+  - {fileID: 2100000, guid: 170fd1007ab639d44845ce79db6ef190, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -146,8 +148,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
-  m_SortingOrder: 0
+  m_SortingLayer: 12
+  m_SortingOrder: 2
   m_Sprite: {fileID: 1140706814, guid: f66b1a66bd1ce8148979f8f5cd34bd25, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -216,7 +218,9 @@ MonoBehaviour:
   castOnSpellImpact: 0
   castOnDash: 0
   castOnDoubleJump: 0
+  staggeredSpell: 0
   storedSpells: 1
+  colorCost: 1
   maxSpawn: 0
   spawnKey: 
   ignoreLookDir: 0
@@ -224,7 +228,7 @@ MonoBehaviour:
   destroyOnEnemyHit: 0
   destroyOnCollission: 0
   impactOnEnemies: 1
-  impactOnNonEnemies: 1
+  impactOnNonEnemies: 0
   triggerOnlyOnce: 0
   triggerOnlyOncePerEnemy: 1
   attackAgainTimer: -1
@@ -246,6 +250,57 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!1 &4379907310506324618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1861994748350554073}
+  - component: {fileID: 4994506811232726713}
+  m_Layer: 0
+  m_Name: ParticleSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1861994748350554073
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4379907310506324618}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.853, y: -0.092, z: 0.02359614}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3321278458073070405}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4994506811232726713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4379907310506324618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14331867b7cd41c40bc5ab8003dea709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOneInstantly: 1
+  spawnDelay: 0.1
+  spawnAmount: 5
+  requirePlayerLOS: 1
+  spell: {fileID: -7692674297862362138}
+  spawnPrefabs:
+  - {fileID: 7014778554409817202, guid: ce1c1893037c9534e88561596354178d, type: 3}
 --- !u!1001 &1091263790877275984
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -300,6 +355,18 @@ PrefabInstance:
     - target: {fileID: 2874147498126129467, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874147498126129468, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874147498126129468, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
+      propertyPath: m_Color.g
+      value: 0.8867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874147498126129468, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8867924
       objectReference: {fileID: 0}
     - target: {fileID: 2874147498126129468, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
       propertyPath: m_Intensity

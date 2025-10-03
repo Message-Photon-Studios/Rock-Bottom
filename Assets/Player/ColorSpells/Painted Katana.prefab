@@ -36,6 +36,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3033471370556282935}
+  - {fileID: 4976576197327314729}
+  - {fileID: 7914372313979034042}
+  - {fileID: 3622575526401711514}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -106,6 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forcePerspectivePlayer: 1
   triggerImpactSpells: 1
+  requiresEnemyLOS: 1
   onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!212 &4874330200776334801
 SpriteRenderer:
@@ -146,7 +150,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: 2074292757, guid: e32aa89d0eb03a7489febaf4448fc239, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -218,6 +222,7 @@ MonoBehaviour:
   castOnDoubleJump: 1
   staggeredSpell: 1
   storedSpells: 3
+  colorCost: 1
   maxSpawn: 0
   spawnKey: Katana
   ignoreLookDir: 0
@@ -225,7 +230,7 @@ MonoBehaviour:
   destroyOnEnemyHit: 0
   destroyOnCollission: 0
   impactOnEnemies: 1
-  impactOnNonEnemies: 1
+  impactOnNonEnemies: 0
   triggerOnlyOnce: 0
   triggerOnlyOncePerEnemy: 0
   attackAgainTimer: -1
@@ -247,6 +252,159 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!1 &6527189294132174984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3622575526401711514}
+  - component: {fileID: 879464116472276378}
+  m_Layer: 8
+  m_Name: ParticleSpawner (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &3622575526401711514
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6527189294132174984}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.49, y: -1.55, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3321278458073070405}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &879464116472276378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6527189294132174984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14331867b7cd41c40bc5ab8003dea709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOneInstantly: 1
+  spawnDelay: 0.1
+  spawnAmount: 2
+  requirePlayerLOS: 1
+  spell: {fileID: -7692674297862362138}
+  spawnPrefabs:
+  - {fileID: 7014778554409817202, guid: ce1c1893037c9534e88561596354178d, type: 3}
+--- !u!1 &7594213651187732203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7914372313979034042}
+  - component: {fileID: 3696711210255948566}
+  m_Layer: 8
+  m_Name: ParticleSpawner (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7914372313979034042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7594213651187732203}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.49, y: -1.55, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3321278458073070405}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3696711210255948566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7594213651187732203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14331867b7cd41c40bc5ab8003dea709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOneInstantly: 1
+  spawnDelay: 0.1
+  spawnAmount: 3
+  requirePlayerLOS: 1
+  spell: {fileID: -7692674297862362138}
+  spawnPrefabs:
+  - {fileID: 7014778554409817202, guid: ce1c1893037c9534e88561596354178d, type: 3}
+--- !u!1 &7913442644220273777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4976576197327314729}
+  - component: {fileID: 5468751591360041849}
+  m_Layer: 8
+  m_Name: ParticleSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4976576197327314729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7913442644220273777}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.3, y: -0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3321278458073070405}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5468751591360041849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7913442644220273777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14331867b7cd41c40bc5ab8003dea709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOneInstantly: 1
+  spawnDelay: 0.1
+  spawnAmount: 3
+  requirePlayerLOS: 1
+  spell: {fileID: -7692674297862362138}
+  spawnPrefabs:
+  - {fileID: 7014778554409817202, guid: ce1c1893037c9534e88561596354178d, type: 3}
 --- !u!1001 &1007130421494915340
 PrefabInstance:
   m_ObjectHideFlags: 0

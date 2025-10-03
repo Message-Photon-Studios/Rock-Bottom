@@ -19,7 +19,7 @@ public class Inspired : InteractionObject
     [SerializeField] LocalizedString unlockString;
     [SerializeField] LocalizedString costString;
 
-    [SerializeField] GameObject ui;
+    [SerializeField] UIMenu ui;
     [SerializeField] TMP_Text costText;
     [SerializeField] TMP_Text descriptionText;
     [SerializeField] TMP_Text headerText;
@@ -52,7 +52,10 @@ public class Inspired : InteractionObject
         costText.text = costString.GetLocalizedString() + petrifiedPigmentCost;
         descriptionText.text = unlockSpell.description.GetLocalizedString();
         headerText.text = unlockString.GetLocalizedString() + unlockSpell.GetName();
-        ui.SetActive(false);
+        if (ui)
+        {
+            ui.CloseMenu();
+        }
     }
 
     void OnEnable()
@@ -64,20 +67,22 @@ public class Inspired : InteractionObject
     }
     
     protected override void PlayerClose(bool isClose) {
-        if(isClose)
+        if (isClose)
         {
-            if(!triggered && !GameManager.instance.IsSpellSpawnable(unlockSpell)) {
-
+            if (!triggered && !GameManager.instance.IsSpellSpawnable(unlockSpell))
+            {
                 costText.text = costString.GetLocalizedString() + petrifiedPigmentCost;
                 descriptionText.text = unlockSpell.description.GetLocalizedString();
                 headerText.text = unlockString.GetLocalizedString() + unlockSpell.GetName();
-                if(GameManager.instance.GetPetrifiedPigmentAmount() < petrifiedPigmentCost) costText.color = Color.red;
+                if (GameManager.instance.GetPetrifiedPigmentAmount() < petrifiedPigmentCost) costText.color = Color.red;
                 else costText.color = Color.white;
-
             }
-        } 
-
-        ui.SetActive(isClose);
+            ui.OpenMenu();
+        }
+        else
+        {
+            ui.CloseMenu();
+        }
     }
 
     protected override void PlayerInteract()
@@ -99,7 +104,7 @@ public class Inspired : InteractionObject
             spellToEnable.GetComponent<SpellPickup>().SetSpell(unlockSpell);
         }
         GameManager.instance.AddInspiration(1);
-        ui.SetActive(false);
+        ui.CloseMenu();
 
         if(animator) animator.SetBool("inspired", true);
 

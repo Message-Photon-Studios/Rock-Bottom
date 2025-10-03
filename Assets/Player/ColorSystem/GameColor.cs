@@ -23,7 +23,7 @@ public class GameColor : ScriptableObject
     /// <summary>
     /// A description of the color
     /// </summary>
-    [SerializeField, TextArea(5,20)] public string description;
+    [SerializeField, TextArea(5, 20)] public string description;
 
     /// <summary>
     /// The effect that this color has
@@ -44,7 +44,7 @@ public class GameColor : ScriptableObject
     /// <returns></returns>
     public GameColor MixColor(GameColor color)
     {
-        if(color != null && mixes.Exists(item => item.mixWith == color))
+        if (color != null && mixes.Exists(item => item.mixWith == color))
         {
             return mixes.Find(item => item.mixWith == color).mixTo;
         }
@@ -125,7 +125,7 @@ public class GameColor : ScriptableObject
 
         return mix;
     }
-    public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
+    public void ApplyColorEffect(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float colorPower, bool forcePerspectivePlayer, int extraDamage)
     {
         EnemyStats enemy = enemyObj.GetComponent<EnemyStats>();
         PlayerStats playerStats = playerObj.GetComponent<PlayerStats>();
@@ -140,9 +140,9 @@ public class GameColor : ScriptableObject
         if(playerStats.corrosiveColor)
         {   
             if(enemy.GetColor() == this)
-                powerScale = 1.3f;
+                powerScale = 1.5f;
             else 
-                powerScale = 0.8f;
+                powerScale = 0.75f;
         }
 
         /*
@@ -156,29 +156,45 @@ public class GameColor : ScriptableObject
 
         if (GameManager.instance.GetComponent<ColorLibrary>().IsComplemtarty(enemy.GetColor(), this)) extraDamage += playerStats.complimentaryDamage;
 
-        GameColor setToColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix && this.canColorEnemies || name.Equals("Rainbow"))?this:MixColor(enemy.GetColor());
+        GameColor setToColor = enemy.GetPlayerMixColor(this);
 
-        bool delay = setToColor.name.Equals("Rainbow");
+        if (canColorEnemies) enemy.SetPlayerColor(setToColor, 1);
 
-        if (delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
+        colorPower += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
+        colorPower = colorPower * powerScale;
 
-        power += enemyObj.GetComponent<EnemyStats>().GetSleepPowerBonus();
-        power = power * powerScale;
+        if (Player.instance.colorInventory.colorVarnish && setToColor != this)
+        {
+            int colorDamage = enemy.GetColorAmmount();
+            if (colorDamage > 20) colorDamage = 20;
+            extraDamage += colorDamage;
+        }
 
-        colorEffect.Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage);
+        if (Player.instance.colorInventory.greatBrushFirstHit)
+        {
+            if (enemy.GetHealth() / (float)enemy.GetMaxHealth() > .9f)
+            {
+                extraDamage += 15;
+            }
 
-        if (!delay && canColorEnemies) enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
+            extraDamage = Mathf.RoundToInt(extraDamage * colorPower);
+        }
+        if (Player.instance.colorInventory.doubleExtraDamage) extraDamage *= 2;
 
+        colorEffect.Apply(enemyObj, impactPoint, playerObj, colorPower, forcePerspectivePlayer, extraDamage);
+
+        if (!canColorEnemies) return;
+        
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
         {
-            if(Random.Range(0, 100) < playerStats.chanceToColorNearby)
+            if (Random.Range(0, 100) < playerStats.chanceToColorNearby)
             {
                 EnemyStats objStats = obj.GetComponent<EnemyStats>();
-                    //if(objStats.GetColor() != null) return;               
-                if(obj != enemy.gameObject && Vector2.Distance(obj.transform.position, enemy.transform.position) < playerStats.colorNearbyRange)
+                //if(objStats.GetColor() != null) return;               
+                if (obj != enemy.gameObject && Vector2.Distance(obj.transform.position, enemy.transform.position) < playerStats.colorNearbyRange)
                 {
-                    GameColor setObjColor = (Random.Range(0,100) < playerStats.chanceThatEnemyDontMix)?this:MixColor(objStats.GetColor());
-                    if(setObjColor.canColorEnemies) objStats.SetColor(setObjColor, objStats.GetColorAmmount() + 1);
+                    GameColor setObjColor = objStats.GetPlayerMixColor(this);
+                    if (setObjColor.canColorEnemies) objStats.SetPlayerColor(setObjColor, 1);
                 }
             }
         }
@@ -188,8 +204,10 @@ public class GameColor : ScriptableObject
 
     public void MixThisColorOntoEnemy(EnemyStats enemy, PlayerStats playerStats)
     {
-        GameColor setToColor = (Random.Range(0, 100) < playerStats.chanceThatEnemyDontMix) ? this : MixColor(enemy.GetColor());
-        enemy.SetColor(setToColor, enemy.GetColorAmmount() + 1);
+        if (!canColorEnemies) return;
+        
+        GameColor setToColor = enemy.GetPlayerMixColor(this);
+        enemy.SetPlayerColor(setToColor, 1);
 
         if (playerStats.chanceToColorNearby <= 0) return;
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
@@ -199,8 +217,8 @@ public class GameColor : ScriptableObject
                 EnemyStats objStats = obj.GetComponent<EnemyStats>();             
                 if (obj != enemy.gameObject && Vector2.Distance(obj.transform.position, enemy.transform.position) < playerStats.colorNearbyRange)
                 {
-                    GameColor setObjColor = (Random.Range(0, 100) < playerStats.chanceThatEnemyDontMix) ? this : MixColor(objStats.GetColor());
-                    if(setObjColor.canColorEnemies) objStats.SetColor(setObjColor, objStats.GetColorAmmount() + 1);
+                    GameColor setObjColor = objStats.GetPlayerMixColor(this);
+                    if(setObjColor.canColorEnemies) objStats.SetPlayerColor(setObjColor, 1);
                 }
             }
         }

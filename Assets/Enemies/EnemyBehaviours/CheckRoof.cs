@@ -6,10 +6,17 @@ using BehaviourTree;
 public class CheckRoof : Node
 {
     EnemyStats stats;
+    float distance;
 
     public CheckRoof(EnemyStats stats)
     {
         this.stats = stats;
+        this.distance = 2f;
+    }
+    public CheckRoof(EnemyStats stats, float distance)
+    {
+        this.stats = stats;
+        this.distance = distance;
     }
 
     /// <summary>
@@ -18,7 +25,7 @@ public class CheckRoof : Node
     /// <returns></returns>
     public override NodeState Evaluate()
     {
-        bool test = Physics2D.Raycast(stats.GetPosition(), Vector2.up, 2f, GameManager.instance.maskLibrary.onlyGround);
+        bool test = Physics2D.Raycast(stats.GetPosition(), Vector2.up, distance, GameManager.instance.maskLibrary.onlyGround);
         state = test?NodeState.SUCCESS:NodeState.FAILURE;
         return state;
     }

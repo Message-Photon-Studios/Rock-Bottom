@@ -34,8 +34,8 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] Sprite[] LoadingSprites;
 
-    [SerializeField] GameObject credits;
-    [SerializeField] GameObject settings;
+    [SerializeField] BigMenu credits;
+    [SerializeField] BigMenu settings;
 
     [SerializeField] InputActionReference cancel;
     [SerializeField] GameObject trailer;
@@ -77,7 +77,7 @@ public class MainMenuController : MonoBehaviour
     //Load scene "Gem" when pressed.
     public void LoadScene()
     {
-        if(!GameManager.instance.GetStartScene().Equals("Tutorial_0"))
+        if(!GameManager.instance.GetStartScene().Equals("Tutorial"))
         {
             TutorialMusic bgMusic = GameObject.FindObjectOfType<TutorialMusic>();
             bgMusic?.disableChildren();
@@ -170,7 +170,7 @@ public class MainMenuController : MonoBehaviour
         exitButton.interactable = false;
 
         areCreditsOpen = true;
-        credits.SetActive(true);
+        credits.OpenMenu();
         timeSinceLastInput = Time.time;
     }
 
@@ -185,7 +185,6 @@ public class MainMenuController : MonoBehaviour
         creditsButton.Select();
 
         areCreditsOpen = false;
-        credits.SetActive(false);
         timeSinceLastInput = Time.time;
     }
 
@@ -197,7 +196,7 @@ public class MainMenuController : MonoBehaviour
         creditsButton.interactable = false;
         exitButton.interactable = false;
 
-        settings.SetActive(true);
+        settings.OpenMenu();
         timeSinceLastInput = Time.time;
     }
 
@@ -211,7 +210,6 @@ public class MainMenuController : MonoBehaviour
 
         settingsButton.Select();
 
-        settings.SetActive(false);
         timeSinceLastInput = Time.time;
     }
 

@@ -4498,6 +4498,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1110097504496171644}
   - component: {fileID: -6625770280257989673}
+  - component: {fileID: 4755708216925465793}
   m_Layer: 0
   m_Name: ItemShop
   m_TagString: Untagged
@@ -4565,6 +4566,20 @@ MonoBehaviour:
   selectedNode: {x: 0, y: 0}
   isClosingRoom: 0
   roomVariants: []
+--- !u!114 &4755708216925465793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5348347649415766062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 096cde8ad1af2854cacc68e8a824fa2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maskCell: {fileID: 6232566873042256313, guid: b7225e9ba6e3fcb4fb89aef452d7f2b1, type: 3}
+  maskParentsObj: []
 --- !u!1 &5927641445981482623
 GameObject:
   m_ObjectHideFlags: 0
@@ -8844,6 +8859,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shop Pickup Variant (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5475907742402102963, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
+      propertyPath: enableTizoTrade
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
 --- !u!4 &1421873038280837649 stripped
@@ -8973,6 +8992,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5475907742402102963, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
+      propertyPath: enableTizoTrade
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5475907742402102963, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
       propertyPath: availableCategories.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -9053,6 +9076,10 @@ PrefabInstance:
     - target: {fileID: 5475907742402102963, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
       propertyPath: dropPointRarity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5475907742402102963, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
+      propertyPath: enableTizoTrade
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5475907742402102963, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
       propertyPath: availableCategories.Array.size
@@ -9197,6 +9224,10 @@ PrefabInstance:
     - target: {fileID: 4518471291375933680, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
       propertyPath: m_Name
       value: Shop Pickup Variant (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5475907742402102963, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
+      propertyPath: enableTizoTrade
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a4e4c63edb22fe448ac7933fd63a2d4, type: 3}
