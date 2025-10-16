@@ -305,7 +305,7 @@ public class LevelGenerator
 
     public bool instantiated = false;
 
-    private int fillMarginSize = 8;
+    private int fillMarginSize = 1;
 
     public int tries = 0;
     public void generate(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin, int maxTries)
@@ -372,84 +372,86 @@ public class LevelGenerator
     {
         
         // Instantiate the room
-            var pos = room.Item1 * 2 * ROOMSIZE;
-            
-            CustomRoom pickedRoom = room.Item2;
-
-            //If room variants exist pick a random one
-            if(pickedRoom.roomVariants.Length > 0)
+        var pos = room.Item1 * 2 * ROOMSIZE;
+        
+        CustomRoom pickedRoom = room.Item2;
+        if (pickedRoom.roomVariants == null) Debug.LogWarning("Room variants null in " + pickedRoom.name);
+        
+        //If room variants exist pick a random one
+        if(pickedRoom.roomVariants.Length > 0)
+        {
+            int picker = Random.Range(0, pickedRoom.roomVariants.Length+1); 
+            if(picker < pickedRoom.roomVariants.Length)
+                pickedRoom = room.Item2.roomVariants[picker];
+        }
+        
+        
+        var roomObj = Object.Instantiate(pickedRoom, pos, Quaternion.identity);
+        // Get child object called "enemies"
+        var enemies = roomObj.transform.Find("Enemies");
+        if (enemies != null)
+        {
+            // For all children of type EnemySpawner, obtain the object called enemies
+            foreach (var enemySpawner in enemies.GetComponentsInChildren<EnemySpawner>())
             {
-                int picker = Random.Range(0, pickedRoom.roomVariants.Length+1); 
-                if(picker < pickedRoom.roomVariants.Length)
-                    pickedRoom = room.Item2.roomVariants[picker];
-            }
-
-            var roomObj = Object.Instantiate(pickedRoom, pos, Quaternion.identity);
-            // Get child object called "enemies"
-            var enemies = roomObj.transform.Find("Enemies");
-            if (enemies != null)
-            {
-                // For all children of type EnemySpawner, obtain the object called enemies
-                foreach (var enemySpawner in enemies.GetComponentsInChildren<EnemySpawner>())
+                // Get random value between 0 and 1
+                var rand = Random.value;
+                var cummulativeChance = 0f;
+                foreach (var enemyChance in enemySpawner.enemies.list.OrderBy(enemy => enemy.spawnChance))
                 {
-                    // Get random value between 0 and 1
-                    var rand = Random.value;
-                    var cummulativeChance = 0f;
-                    foreach (var enemyChance in enemySpawner.enemies.list.OrderBy(enemy => enemy.spawnChance))
+                    if (rand > cummulativeChance + enemyChance.spawnChance)
                     {
-                        if (rand > cummulativeChance + enemyChance.spawnChance)
-                        {
-                            cummulativeChance += enemyChance.spawnChance;
-                            continue;
-                        }
-
-                        var enemy = enemyChance.enemy;
-                        // Instantiate the enemy
-                        var enemyObj = Object.Instantiate(enemy, enemySpawner.transform.position, Quaternion.identity);
-                        // Set as child of enemyHolder
-                        enemyObj.transform.parent = enemyHolder.transform;
-                        break;
+                        cummulativeChance += enemyChance.spawnChance;
+                        continue;
                     }
 
+                    var enemy = enemyChance.enemy;
+                    // Instantiate the enemy
+                    var enemyObj = Object.Instantiate(enemy, enemySpawner.transform.position, Quaternion.identity);
+                    // Set as child of enemyHolder
+                    enemyObj.transform.parent = enemyHolder.transform;
+                    break;
                 }
 
-                foreach (var enemy in enemies.GetComponentsInChildren<EnemyStats>())
-                {
-                    enemy.transform.parent = enemyHolder.transform;
-                }
-                // Remove the Enemies object from the room
-                Object.DestroyImmediate(enemies.gameObject);
             }
 
-            foreach (var item in roomObj.transform.GetComponentsInChildren<ItemPickup>())
+            foreach (var enemy in enemies.GetComponentsInChildren<EnemyStats>())
             {
-                item.transform.parent = itemHolder.transform;
+                enemy.transform.parent = enemyHolder.transform;
             }
+            // Remove the Enemies object from the room
+            Object.DestroyImmediate(enemies.gameObject);
+        }
 
-            foreach (var spell in roomObj.transform.GetComponentsInChildren<SpellPickup>())
-            {
-                spell.transform.parent = itemHolder.transform;
-            }
+        foreach (var item in roomObj.transform.GetComponentsInChildren<ItemPickup>())
+        {
+            item.transform.parent = itemHolder.transform;
+        }
 
-            foreach (var npc in roomObj.transform.GetComponentsInChildren<NPCScript>())
-            {
-                npc.transform.parent = itemHolder.transform;
-            }
+        foreach (var spell in roomObj.transform.GetComponentsInChildren<SpellPickup>())
+        {
+            spell.transform.parent = itemHolder.transform;
+        }
 
-            foreach (var itemLock in roomObj.transform.GetComponentsInChildren<ItemLock>())
-            {
-                itemLock.transform.parent = itemHolder.transform;
-            }
+        foreach (var npc in roomObj.transform.GetComponentsInChildren<NPCScript>())
+        {
+            npc.transform.parent = itemHolder.transform;
+        }
 
-            foreach(var petrifiedPigment in roomObj.transform.GetComponentsInChildren<PetrifiedPigmentPickup>())
-            {
-                petrifiedPigment.transform.parent = itemHolder.transform;
-            }
+        foreach (var itemLock in roomObj.transform.GetComponentsInChildren<ItemLock>())
+        {
+            itemLock.transform.parent = itemHolder.transform;
+        }
 
-            // Finish setting up the room
-            roomObj.name = room.Item2.name + " | " + room.Item1;
-            roomObj.transform.parent = roomHolder.transform;
-            prefabs.Add((pos, roomObj));
+        foreach(var petrifiedPigment in roomObj.transform.GetComponentsInChildren<PetrifiedPigmentPickup>())
+        {
+            petrifiedPigment.transform.parent = itemHolder.transform;
+        }
+
+        // Finish setting up the room
+        roomObj.name = room.Item2.name + " | " + room.Item1;
+        roomObj.transform.parent = roomHolder.transform;
+        prefabs.Add((pos, roomObj));
     }
 
     private (Vector2, Vector2) getDungeonSize()
