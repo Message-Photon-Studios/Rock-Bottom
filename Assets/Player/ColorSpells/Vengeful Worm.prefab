@@ -147,7 +147,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -615436619
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: -1948917817, guid: d6cc482d72ad7c14298daae9d02953f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -212,7 +212,8 @@ MonoBehaviour:
     m_LocalVariables: []
   spellCost: 20
   powerScale: 1
-  coolDown: 4
+  coolDown: 2.5
+  customMinimunCoolDown: 0
   castWhenDamaged: 1
   castOnSpellImpact: 0
   castOnDash: 0
@@ -291,7 +292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 275500846492424100, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: m_SortingLayer
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 275500846492424100, guid: c8f7b49310f23b74bad42d9ccadd3e30, type: 3}
       propertyPath: m_SortingOrder
