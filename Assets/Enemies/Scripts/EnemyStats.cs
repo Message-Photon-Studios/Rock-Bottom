@@ -393,8 +393,9 @@ public class EnemyStats : MonoBehaviour
         //SleepEnemy(10, 1, null);
         if (IsRaibowed()) SpawnRainbowParticles();
 
-        int drainAmount = 0;
-        int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+        //int drainAmount = 0;
+        //int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+        int giveColor = Player.instance.colorInventory.rainbowComboExtraColor;
         if (IsRaibowed() && giveColor > 0)
         {
             SpawnRainbowOrb(giveColor);
@@ -726,8 +727,9 @@ public class EnemyStats : MonoBehaviour
             if (IsDead() && !diedRainbowed)
             {
                 diedRainbowed = true;
-                int drainAmount = 0;
-                int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+                //int drainAmount = 0;
+                //int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+                int giveColor = Player.instance.colorInventory.rainbowComboExtraColor;
                 if (giveColor > 0)
                 {
                     SpawnRainbowOrb(giveColor);
