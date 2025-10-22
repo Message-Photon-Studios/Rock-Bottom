@@ -154,9 +154,9 @@ public class BossEnemyMain : Enemy
         player.DamagePlayer(stats.GetScaledDamage(beamDamage), stats);
     }
 
-    protected override void OnDisable()
+    protected override void OnDestroy()
     {
-        base.OnDisable();
+        base.OnDestroy();
         onWispSpawned.RemoveAllListeners();
         onNewMinionWave.RemoveAllListeners();
     }

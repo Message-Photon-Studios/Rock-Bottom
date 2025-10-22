@@ -55,7 +55,9 @@ public class UIController : MonoBehaviour
         map.CloseMenu();
         inventory.CloseMenu();
         pauseMenu.CloseMenu();
-        loadingText.gameObject.SetActive(false);
+        if(GameManager.instance != null)
+            loadingText.text = GameManager.instance.tipsManager.GetLoadingTips();
+        //loadingText.gameObject.SetActive(false);
 
         if(hideSlots.Length>0)
         foreach(GameObject slot in hideSlots) slot.SetActive(false);
@@ -96,15 +98,21 @@ public class UIController : MonoBehaviour
 
     private IEnumerator Loading()
     {
-        int count = 0;
+        float textTimer = 0;
         sylviaLoading.gameObject.SetActive(true);
         if(GameManager.instance != null)
             loadingText.text = GameManager.instance.tipsManager.GetLoadingTips();
         loadingText.gameObject.SetActive(true);
         while (!loaded)
         {
-            sylviaLoading.sprite = LoadingSprites[count];
-            count = (count + 1) % LoadingSprites.Length;
+            //sylviaLoading.sprite = LoadingSprites[count];
+            //count = (count + 1) % LoadingSprites.Length;
+            textTimer += 0.1f;
+            if (textTimer >= 10)
+            {
+                loadingText.text = GameManager.instance.tipsManager.GetLoadingTips();
+                textTimer = 0;
+            }
             yield return new WaitForSeconds(0.1f);
         }
         sylviaLoading.gameObject.SetActive(false);

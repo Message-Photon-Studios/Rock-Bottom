@@ -307,27 +307,39 @@ public class LevelGenerator
 
     private int fillMarginSize = 1;
 
+    public bool generationDone = false;
     public int tries = 0;
-    public void generate(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin, int maxTries)
+    /// <summary>
+    /// This generates the hole graph completely in one go.
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="areaPath"></param>
+    /// <param name="regionSize"></param>
+    /// <param name="regionSizeMargin"></param>
+    /// <param name="maxTries"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public IEnumerator generateAll(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin, int maxTries)
     {
+        generationDone = false;
         tries = 0;
         bool res = false;
         do
-        {   
+        {
             Dictionary<DoorColor, int> regionSizeCopy = new Dictionary<DoorColor, int>();
             foreach (KeyValuePair<DoorColor, int> item in regionSize)
             {
-                regionSizeCopy.Add(item.Key,item.Value);
+                regionSizeCopy.Add(item.Key, item.Value);
             }
-            
-            if (maxTries > 0 && tries > maxTries) 
+
+            if (maxTries > 0 && tries > maxTries)
             {
-                #if UNITY_EDITOR
-                    throw new Exception("Failed Generation Exception on try " + tries);
-                #endif
-                
+#if UNITY_EDITOR
+                throw new Exception("Failed Generation Exception on try " + tries);
+#endif
+
                 Debug.LogError("Failed generation exception");
-                return;
+                yield return null;
             }
 
             initGeneration(areaPath);
@@ -335,8 +347,12 @@ public class LevelGenerator
             //if (!res) continue;
             endGeneration(areaPath);
             tries++;
+            yield return new WaitForEndOfFrame();
 
         } while (!graph.validate() || !res);
+
+        Debug.Log("Succeded level gen after " + tries + " tries");
+        generationDone = true;
     }
 
     private void recreateGameObjs()
@@ -350,14 +366,17 @@ public class LevelGenerator
         // Create a roomHolder game object
         roomHolder = new GameObject("RoomHolder");
         roomHolder.transform.parent = dungeon.transform;
+        roomHolder.SetActive(false);
         
         // Create an enemyHolder game object
         enemyHolder = new GameObject("EnemyHolder");
         enemyHolder.transform.parent = dungeon.transform;
+        enemyHolder.SetActive(false);
 
         // Create an fillHolder game object
         fillHolder = new GameObject("FillHolder");
         fillHolder.transform.parent = dungeon.transform;
+        fillHolder.SetActive(false);
 
         // Try to find the object ItemHolder and if it exists, delete it
         itemHolder = GameObject.Find("ItemHolder");
@@ -443,11 +462,30 @@ public class LevelGenerator
             itemLock.transform.parent = itemHolder.transform;
         }
 
-        foreach(var petrifiedPigment in roomObj.transform.GetComponentsInChildren<PetrifiedPigmentPickup>())
+        foreach (var petrifiedPigment in roomObj.transform.GetComponentsInChildren<PetrifiedPigmentPickup>())
         {
             petrifiedPigment.transform.parent = itemHolder.transform;
         }
 
+        foreach (var colorWell in roomObj.transform.GetComponentsInChildren<ColorWell>())
+        {
+            colorWell.transform.parent = itemHolder.transform;
+        }
+
+        foreach (var willowCrate in roomObj.transform.GetComponentsInChildren<WillowCrate>())
+        {
+            willowCrate.transform.parent = itemHolder.transform;
+        }
+
+        foreach (var tizoCart in roomObj.transform.GetComponentsInChildren<TizoShop>())
+        {
+            tizoCart.transform.parent = itemHolder.transform;
+        }
+        
+        foreach (var spellUnlock in roomObj.transform.GetComponentsInChildren<Inspired>())
+        {
+            spellUnlock.transform.parent = itemHolder.transform;
+        }
         // Finish setting up the room
         roomObj.name = room.Item2.name + " | " + room.Item1;
         roomObj.transform.parent = roomHolder.transform;
@@ -528,7 +566,7 @@ public class LevelGenerator
         topDoor = new Door(new Vector2(0, 0), Direction.Up, initRoom, 0, DoorColor.Green, true);
     }
 
-    private void endGeneration(string areaPath)
+    public void endGeneration(string areaPath)
     {
         var endRooms = Resources.LoadAll<CustomRoom>(areaPath + "/EndRooms");
         var endRoom = endRooms[Random.Range(0, endRooms.Length - 1)];
@@ -613,7 +651,7 @@ public class LevelGenerator
         remainingDoors = remainingDoors.Concat(newDoors).ToList();
     }
 
-    private bool tryGenerate(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin)
+    public bool tryGenerate(int size, string areaPath, Dictionary<DoorColor, int> regionSize, int regionSizeMargin)
     {
         while (true)
         {
@@ -754,7 +792,7 @@ public class LevelGenerator
 
     public void cullElements()
     {
-        if(!GameObject.FindGameObjectWithTag("Player")) return;
+        if (!GameObject.FindGameObjectWithTag("Player")) return;
         // Get the player position
         var camPos = Camera.main.transform.position;
         var cameraSize = Camera.main.orthographicSize;
@@ -762,10 +800,10 @@ public class LevelGenerator
         // Make the square that will be used to cull rooms
         var dist = LevelGenManager.cullDistance;
         var cullSquare = new Rect(
-            camPos.x - (cameraWidth * dist), 
-            camPos.y - (cameraSize * dist), 
-            (cameraWidth * dist) * 2, 
-            (cameraSize * dist) * 2);
+            camPos.x - (cameraWidth * dist),
+            camPos.y - (cameraSize * dist),
+            (cameraWidth * dist) * 1.7f,
+            (cameraSize * dist) * 1.7f);
         foreach (var room in prefabs)
         {
             var size = room.Item2.size * 2 * ROOMSIZE;
@@ -774,7 +812,7 @@ public class LevelGenerator
             var roomSquare = new Rect(pos.x, pos.y, size.x, size.y);
             room.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
         }
-        
+
         foreach (var fill in filledPrefabs)
         {
             var pos = fill.Item1 + Vector2.one * ROOMSIZE;
@@ -782,18 +820,25 @@ public class LevelGenerator
             var roomSquare = new Rect(pos.x, pos.y, 2 * ROOMSIZE, 2 * ROOMSIZE);
             fill.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
         }
-        
+
         foreach (Transform enemy in enemyHolder.transform)
         {
             // Create rect with position and size of the enemy
             var enemySquare = new Rect(
-                enemy.position.x - enemy.localScale.x / 2, 
-                enemy.position.y - enemy.localScale.y / 2, 
-                enemy.localScale.x, 
+                enemy.position.x - enemy.localScale.x / 2,
+                enemy.position.y - enemy.localScale.y / 2,
+                enemy.localScale.x,
                 enemy.localScale.y);
-            
+
             enemy.gameObject.SetActive(cullSquare.Overlaps(enemySquare));
         }
+    }
+    
+    public void ActivateHolders()
+    {
+        roomHolder.SetActive(true);
+        enemyHolder.SetActive(true);
+        fillHolder.SetActive(true);
     }
 
     public void insertPrefabs(string areaPath)

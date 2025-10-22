@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine.Rendering.Universal;
 
 public enum LevelArea
 {
@@ -69,6 +71,8 @@ public class LevelGenManager : MonoBehaviour
 
         if (canvas != null)
             canvas.loaded = true;
+
+        levelGen.ActivateHolders();
         finished = true;
         
         GetComponent<LevelManager>().FinishedGeneration();
@@ -78,15 +82,32 @@ public class LevelGenManager : MonoBehaviour
     /// If this var is set to positive then the generation will stop trying to generate after this ammount
     /// </summary>
     [SerializeField] int maxTries = -1;
-    public int init(UIController canvas, bool async)
+    public IEnumerator init(UIController canvas, bool async)
     {
         levelGen = new LevelGenerator();
-        levelGen.generate(size, paths[(int)levelType]+level, regionSize, regionSizeMargin, maxTries);
+        levelGen.generationDone = false;
+        StartCoroutine(levelGen.generateAll(size, paths[(int)levelType] + level, regionSize, regionSizeMargin, maxTries));
+
+        while (!levelGen.generationDone)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
         if (async)
             StartCoroutine(generateSceneAsync(canvas));
         else
             generateScene(canvas);
-        
+
+        yield return levelGen.tries;
+    }
+
+    public bool SceneGenerated()
+    {
+        return levelGen.generationDone;
+    }
+    
+    public int LastGenerationTries()
+    {
         return levelGen.tries;
     }
 
