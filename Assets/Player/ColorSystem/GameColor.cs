@@ -131,11 +131,13 @@ public class GameColor : ScriptableObject
         PlayerStats playerStats = playerObj.GetComponent<PlayerStats>();
         float powerScale = 1;
         
+        /* #Removed this because we don't think it is needed anymore
         if (enemy.GetColor() == this && !playerStats.corrosiveColor)
         {
             powerScale = .75f;
             GameManager.instance.tipsManager.DisplayTips("colorImmunity");
         }
+        */
 
         if(playerStats.corrosiveColor)
         {   

@@ -117,23 +117,32 @@ public class PlayerStats : MonoBehaviour
     #endregion
 
     #region Update Loop
+    float drainTimer = 0;
     void Update()
     {
         secTimer -= Time.deltaTime;
-        if(secTimer <= 0)
+        if (secTimer <= 0)
         {
             secTimer = 1;
             //DO stuff each second here:
 
-            if(shield > maxPermanetShield)
+            if (shield > maxPermanetShield)
             {
                 Debug.Log(maxPermanetShield);
-                shield -= Mathf.RoundToInt((shieldDecay<0)?0:shieldDecay);
+                shield -= Mathf.RoundToInt((shieldDecay < 0) ? 0 : shieldDecay);
                 shieldDecay += shieldDecayIncrease;
-                if(shield < maxPermanetShield) shield = maxPermanetShield;
+                if (shield < maxPermanetShield) shield = maxPermanetShield;
                 onShieldChanged?.Invoke(shield);
             }
-            if (colorInventory.crackedUrn) colorInventory.DrainAllSlots(1);
+            if (colorInventory.crackedUrn)
+            {
+                drainTimer++;
+                if (drainTimer >= 2f)
+                {
+                    drainTimer = 0;
+                    colorInventory.DrainAllSlots(1);
+                }
+            }
         }
 
         if(invincibilityTimer >= 0)

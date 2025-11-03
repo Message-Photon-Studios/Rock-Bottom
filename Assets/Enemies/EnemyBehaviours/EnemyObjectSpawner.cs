@@ -57,7 +57,7 @@ public class EnemyObjectSpawner : Node
 
     public override NodeState Evaluate()
     {
-        if(stats.IsAsleep())
+        if(stats.IsAsleep() || stats.IsDead())
         {
             state = NodeState.FAILURE;
             return state;
