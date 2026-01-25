@@ -7,6 +7,7 @@ using System.Diagnostics.Tracing;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Data.Common;
 
 /// <summary>
 /// This class controls the players movement and keeps track of player states such as it being rooted, falling or in the air. 
@@ -352,7 +353,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(walkDir != lookDir && walkDir != 0) return false;
         if (playerStats.isDead) return false;
-        if (Player.instance.verticalMoveDir < 0f) return false;
+        //if (Player.instance.verticalMoveDir < 0f) return false;
 
         RaycastHit2D startHitR =  Physics2D.Raycast(transform.position+Vector3.right* playerCollider.size.x/2, Vector2.down, 2.1f, GameManager.instance.maskLibrary.onlyGround);
         RaycastHit2D startHitL = Physics2D.Raycast(transform.position+Vector3.left* playerCollider.size.x/2, Vector2.down, 2.1f, GameManager.instance.maskLibrary.onlyGround);
@@ -543,11 +544,11 @@ public class PlayerMovement : MonoBehaviour
 
                 if(GroundIncomming(aimFocusMaxY) == 0 || (airTime < 1f && climbTime < 1f))
                 {
-                    if(body.velocity.y < -0.2f && focusPoint.localPosition.y > -aimFocusMaxY)
+                    if(body.velocity.y < -1f && focusPoint.localPosition.y > -aimFocusMaxY)
                     {
                         Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusX, -aimFocusMaxY+originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
                         focusPoint.localPosition = new Vector3(aimPosTo.x, aimPosTo.y, focusPoint.localPosition.z);
-                    } else if(body.velocity.y > 0.2f && focusPoint.localPosition.y < aimFocusMaxY)
+                    } else if(body.velocity.y > 1f && focusPoint.localPosition.y < aimFocusMaxY)
                     {
                         Vector3 aimPosTo = Vector3.Slerp(focusPoint.localPosition, new Vector3(focusX, 2*aimFocusMaxY+originalFocusPointPos.y, focusPoint.localPosition.z), aimFocusAcceleration*Time.fixedDeltaTime);
                         focusPoint.localPosition = new Vector3(aimPosTo.x, aimPosTo.y, focusPoint.localPosition.z);
@@ -589,8 +590,9 @@ public class PlayerMovement : MonoBehaviour
         {   
             playerFeet.SetActive(false);
             dashedDone = false;
-            float lookWalk = Player.instance.verticalMoveDir;
-            if(lookWalk > lookDir*walkDir) walkDir = lookWalk*lookDir;
+            float climbDir = Player.instance.verticalMoveDir;
+            Debug.Log("climbDir = " + climbDir);
+            //if(lookWalk > lookDir*walkDir) walkDir = lookWalk*lookDir;
 
             climbTime += Time.fixedDeltaTime;
             if(!wasClimbing) 
@@ -612,38 +614,48 @@ public class PlayerMovement : MonoBehaviour
             
             wasClimbing = true;
 
-            if(walkDir != lookDir && walkDir != 0)
+            if (walkDir != lookDir && walkDir != 0 && climbDir == 0)
             {
-               ReleaseWall();
+                ReleaseWall();
             }
-            else if(walkDir == lookDir)
+            else if (walkDir == lookDir || climbDir > 1)
             {
                 playerAnimator.SetInteger("velocityY", 1);
                 wallParticles.Stop();
 
-                if(HitCeling())
+                if (HitCeling())
                 {
-                    if(!climbCeilingDetected)
+                    if (!climbCeilingDetected)
                     {
-                        body.constraints |= RigidbodyConstraints2D.FreezePositionY;   
-                        body.velocity = new Vector2(body.velocity.x+wallStickPower*lookDir, 0);
+                        body.constraints |= RigidbodyConstraints2D.FreezePositionY;
+                        body.velocity = new Vector2(body.velocity.x + wallStickPower * lookDir, 0);
                         climbCeilingDetected = true;
                     }
-                } else
+                }
+                else
                 {
-                    body.velocity = new Vector2(body.velocity.x+wallStickPower*lookDir, climbSpeed);
+                    body.velocity = new Vector2(body.velocity.x + wallStickPower * lookDir, climbSpeed);
+                    body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
                     climbCeilingDetected = false;
                 }
             }
-            else if(body.velocity.y < 0)
+            else if (walkDir == 0 && climbDir == 0)
             {
-                body.velocity = new Vector2(body.velocity.x + wallStickPower*lookDir, -2);
+                body.velocity = new Vector2(body.velocity.x + wallStickPower * lookDir, -.5f);
+                body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
                 playerAnimator.SetInteger("velocityY", -1);
                 wallParticles.Play();
+            }
+            else if (body.velocity.y < 0 || climbDir < 0)
+            {
+                body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+                body.velocity = new Vector2(body.velocity.x + wallStickPower * lookDir, -8);
+                playerAnimator.SetInteger("velocityY", -1);
+                wallParticles.Play();
+            }
 
-                
-            } else if(!inAttackAnimation)
-            {   
+            else if (!inAttackAnimation)
+            {
                 body.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             }
         } else
