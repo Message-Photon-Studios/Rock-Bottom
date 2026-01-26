@@ -244,7 +244,7 @@ public class PlayerStats : MonoBehaviour
         onPlayerDamaged?.Invoke(this, enemySource);
 
         //Damage Pause
-        if(enemy && damage > 0) StartCoroutine(DamagePause());
+        if(damage > 0) StartCoroutine(DamagePause());
     }
 
     IEnumerator DamagePause ()
