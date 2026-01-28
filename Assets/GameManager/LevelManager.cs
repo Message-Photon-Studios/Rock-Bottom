@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
     public bool allowsClockTimer = true;
     [SerializeField] float addLevelClockTime;
     [SerializeField] bool restartClockTimer;
+    [SerializeField] public bool autoChase = false;
 
     [Header("Settings")]
     public bool saveProgressionOnStart = false;
