@@ -30,6 +30,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public bool isCaveTownLevel = false;
     [SerializeField] public bool rerunStart = false;
     [SerializeField] public bool increaseLevelNum = true;
+    [SerializeField] private bool invertedLevel = false;
 
     [Header("Color Wells")]
     [SerializeField] int wellSpawnAmount = 2;
@@ -84,6 +85,7 @@ public class LevelManager : MonoBehaviour
         else
         {
             Player.instance.SetStartLevel(this);
+            if(invertedLevel) Player.instance.playerMovement.Teleport(transform.GetChild(0).position);
             StartCoroutine(Player.instance.playerUi.FadeOutCoroutine(true));
         }
         if(GameManager.instance != null)
@@ -93,6 +95,7 @@ public class LevelManager : MonoBehaviour
         ProneColorWells();
 
         GetEnemyManager().ScaleEnemyStats();
+
     }
 
     public IEnumerator EndLevelAsync()

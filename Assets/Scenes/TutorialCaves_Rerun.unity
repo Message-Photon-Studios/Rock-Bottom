@@ -131345,7 +131345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 468746527930208000, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.79
+      value: 15.62
       objectReference: {fileID: 0}
     - target: {fileID: 468746527930208000, guid: 5256ad299e7d644438d56a2aad89a22f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -179225,12 +179225,14 @@ MonoBehaviour:
   allowsClockTimer: 0
   addLevelClockTime: 0
   restartClockTimer: 0
+  autoChase: 0
   saveProgressionOnStart: 1
   clearInventoryOnLevelEnd: 0
   allowTips: 1
   isCaveTownLevel: 0
   rerunStart: 1
   increaseLevelNum: 1
+  invertedLevel: 0
   wellSpawnAmount: 2
   spawnableColors: []
   sameColorRerolls: 1
@@ -195366,7 +195368,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &738044288
 Transform:
   m_ObjectHideFlags: 0
@@ -196727,7 +196729,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &743472406
 Transform:
   m_ObjectHideFlags: 0
@@ -361633,6 +361635,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CaveLight (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7888349315969715080, guid: a3bbd8bcb9476e84997d66664f3c4d55, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7888349315969715081, guid: a3bbd8bcb9476e84997d66664f3c4d55, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -366156,7 +366162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1000570547
 Transform:
   m_ObjectHideFlags: 0
@@ -656847,7 +656853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7888349315969715080, guid: a3bbd8bcb9476e84997d66664f3c4d55, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7888349315969715081, guid: a3bbd8bcb9476e84997d66664f3c4d55, type: 3}
       propertyPath: m_RootOrder
