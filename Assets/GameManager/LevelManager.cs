@@ -84,8 +84,8 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Player.instance.SetStartLevel(this);
-            if(invertedLevel) Player.instance.playerMovement.Teleport(transform.GetChild(0).position);
+            if(invertedLevel) Player.instance.SetStartLevel(this, transform.GetChild(0));
+            else Player.instance.SetStartLevel(this);
             StartCoroutine(Player.instance.playerUi.FadeOutCoroutine(true));
         }
         if(GameManager.instance != null)

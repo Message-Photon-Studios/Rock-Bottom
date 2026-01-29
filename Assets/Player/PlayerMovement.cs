@@ -806,8 +806,8 @@ public class PlayerMovement : MonoBehaviour
     public void Teleport(Vector2 toPosition)
     {
         transform.position = toPosition;
-        cameraFocus.Teleport(toPosition);
-        mainCamera.TeleportCamarera(toPosition);
+        if (cameraFocus) cameraFocus.Teleport(toPosition);
+        if (mainCamera) mainCamera.TeleportCamarera(toPosition);
     }
 
     public void ReturnToLastGround()
