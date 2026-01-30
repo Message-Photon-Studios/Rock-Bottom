@@ -86,6 +86,8 @@ public class EnemyStats : MonoBehaviour
 
     private Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)> lightningQueue = new Dictionary<int, (int damage, float delay, float power, List<GameObject> queuedStrikes)>();
 
+    private EnemyStats enemyParent;
+
     /// <summary>
     /// This event fires when the enemys health is changed. The float is the damage received.
     /// </summary>
@@ -312,6 +314,7 @@ public class EnemyStats : MonoBehaviour
     /// <param name="damage"></param>
     public void DamageEnemy(int damage)
     {
+        if (!gameObject.activeSelf) return;
         //if (enemySleep) WakeEnemyAnimation();
 
         damage = Mathf.RoundToInt(damage * (1f - armour + paintersKnifeArmourReduction));
@@ -390,8 +393,9 @@ public class EnemyStats : MonoBehaviour
         //SleepEnemy(10, 1, null);
         if (IsRaibowed()) SpawnRainbowParticles();
 
-        int drainAmount = 0;
-        int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+        //int drainAmount = 0;
+        //int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+        int giveColor = Player.instance.colorInventory.rainbowComboExtraColor;
         if (IsRaibowed() && giveColor > 0)
         {
             SpawnRainbowOrb(giveColor);
@@ -592,6 +596,7 @@ public class EnemyStats : MonoBehaviour
         yield return new WaitForSeconds(lightningQueue[frame].delay);
         foreach (GameObject target in lightningQueue[frame].queuedStrikes)
         {
+            if (target == null) continue;
             GameObject connector = GameObject.Instantiate(lightningObj, transform.position, transform.rotation);
             connector.GetComponent<LineRenderer>().SetPosition(0, target.transform.position);
             connector.GetComponent<LineRenderer>().SetPosition(1, transform.position);
@@ -722,8 +727,9 @@ public class EnemyStats : MonoBehaviour
             if (IsDead() && !diedRainbowed)
             {
                 diedRainbowed = true;
-                int drainAmount = 0;
-                int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+                //int drainAmount = 0;
+                //int giveColor = colorAmmount + Player.instance.colorInventory.rainbowComboExtraColor - drainAmount;
+                int giveColor = Player.instance.colorInventory.rainbowComboExtraColor;
                 if (giveColor > 0)
                 {
                     SpawnRainbowOrb(giveColor);
@@ -1028,6 +1034,21 @@ public class EnemyStats : MonoBehaviour
         {
             Instantiate(coin1, transform.position, Quaternion.identity);
         }
+    }
+
+    #endregion
+
+    #region Enemy Parent
+
+    public void SetParent(EnemyStats parent)
+    {
+        enemyParent = parent;
+    }
+
+    public EnemyStats GetParent()
+    {
+        if (enemyParent != null) return enemyParent;
+        return this;
     }
 
     #endregion

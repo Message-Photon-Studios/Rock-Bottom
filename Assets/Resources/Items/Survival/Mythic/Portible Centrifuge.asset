@@ -34,6 +34,7 @@ MonoBehaviour:
   itemCost: 60
   effects:
   - rid: 2516108604060467208
+  - rid: 5616602725582635049
   itemCategory: 2
   itemRarity: 2
   maxSpawn: 1
@@ -50,3 +51,16 @@ MonoBehaviour:
         chaoticMixer: 0
         shatteredPrism: 0
         centrifuge: 1
+        enemyDontMix: 0
+        enemyGiveColorOnChange: 0
+        enemyGiveColorOnSame: 0
+        doubleExtraDamage: 0
+        greatBrushFirstHit: 0
+        paintersKnife: 0
+        colorVarnish: 0
+        rainbowComboExtraColor: 0
+    - rid: 5616602725582635049
+      type: {class: ChangeTemporaryHealth, ns: , asm: Assembly-CSharp}
+      data:
+        addMaxTHP: 0
+        addMaxPermaTHP: 10

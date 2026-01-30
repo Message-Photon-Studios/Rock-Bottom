@@ -16,10 +16,10 @@ public class Player : MonoBehaviour
     [SerializeField] InputActionReference   interactInput;
     [SerializeField]
     InputActionReference attack1Input, attack2Input, attack3Input, attack4Input,
-                                            removeColorInput1, removeColorInput2, removeColorInput3, removeColorInput4,
-                                            rotateColorInput,
-                                            walkInput, jumpInput, verticalMoveInput, dashInput, lookInput,
-                                            mapInput, inventoryInput;
+                            removeColorInput1, removeColorInput2, removeColorInput3, removeColorInput4,
+                            rotateColorInput,
+                            walkInput, jumpInput, verticalMoveInput, dashInput, lookInput,
+                            mapInput, inventoryInput;
 
 
     [Header("Load with player")]
@@ -140,6 +140,7 @@ public class Player : MonoBehaviour
         if(instance != null && instance.killMe && instance != this)
         {
             instance.DestroyPlayer();
+            Debug.Log("Previous instance of player destroyed");
             instance = null;
         }
 
@@ -269,10 +270,14 @@ public class Player : MonoBehaviour
             stats.onPlayerDied -= ForceKillPlayer;
         SceneManager.sceneLoaded -= OnSceneLoaded;
         foreach (GameObject obj in loadWithPlayerObjects)
-            {
-                Destroy(obj);
-            }
-        Destroy(gameObject);
+        {
+            Destroy(obj);
+        }
+            
+        if(this)
+        {
+            Destroy(gameObject);
+        }
     }
 
     #endregion

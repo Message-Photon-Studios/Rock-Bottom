@@ -63,6 +63,11 @@ public class MiniBossSpawner : MonoBehaviour
 
     private void EnemySpawned(GameObject enemy)
     {
+        if (bossEnemy == null || bossEnemy.GetComponent<EnemyStats>().IsDead() || spawnedEnemies.Count <= 0)
+        {
+            EnemyDied(enemy.GetComponent<EnemyStats>());
+            return;
+        }
         spawnedEnemies[spawnedEnemies.Count-1] = enemy.GetComponent<EnemyStats>();
         enemy.GetComponent<EnemyStats>().onEnemyDeath += EnemyDied;
     }

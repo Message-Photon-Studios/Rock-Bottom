@@ -60,7 +60,8 @@ public class TutorialManager : MonoBehaviour
     IEnumerator Respawn(Vector3 position, GameColor color, float lookDir,  int index)
     {
         yield return new WaitForSeconds(respawnTime);
-        GameObject newDummy = GameObject.Instantiate(dummyTemplate,position, dummyTemplate.transform.rotation) as GameObject;
+        GameObject newDummy = GameObject.Instantiate(dummyTemplate, position, dummyTemplate.transform.rotation) as GameObject;
+        newDummy.GetComponent<Enemy>().SetupEnemy();
         newDummy.GetComponent<EnemyStats>().SetColorByHand(color);
         if (newDummy.GetComponent<EnemyStats>().lookDir != lookDir) newDummy.GetComponent<EnemyStats>().ChangeDirection();
         dummys[index] = newDummy;

@@ -64,7 +64,7 @@ public class LevelManager : MonoBehaviour
         if (levelGenerator)
         {
             ItemSpellManager.instance.ClearPetrifiedPigmentList();
-            levelGenerator.init(Player.instance.playerUi, true);
+            StartCoroutine(levelGenerator.init(Player.instance.playerUi, true));
         }
         else
         {

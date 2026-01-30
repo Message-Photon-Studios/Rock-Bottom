@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using BehaviourTree;
+using Unity.VisualScripting;
 
 /// <summary>
 /// This class is an abstract class extended by all enemy AIs. It haves important general functionallity and variables used by all enemy AI. 
@@ -20,6 +21,8 @@ public abstract class Enemy : BehaviourTree.Tree
     private Collider2D myCollider;
     protected PlayerStats player;
 
+    public bool isSetup { get; private set; } = false;
+
     /// <summary>
     /// Add triggers to this list if tou want them to be flipped in sync with the enemy
     /// </summary>
@@ -28,25 +31,36 @@ public abstract class Enemy : BehaviourTree.Tree
     protected List<Trigger> triggersToFlip = new List<Trigger>();
 
     #region Setup and Updates
-    private void OnEnable()
+    public void SetupEnemy()
     {
+        if (isSetup) return;
+        if (gameObject.IsDestroyed()) return;
         stats = GetComponent<EnemyStats>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
-        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+
+        if (Player.instance == null || stats == null || stats.IsDead())
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        player = Player.instance.stats;
+
         stats.onDamageTaken += DamageTaken;
+        base.Start();
+        isSetup = true;
+    }
+    protected override void Start()
+    {
+        SetupEnemy();
     }
 
-    protected virtual void OnDisable()
+    protected virtual void OnDestroy()
     {
         stats.onDamageTaken -= DamageTaken;
-    }
-    void OnValidate()
-    {
-        stats = GetComponent<EnemyStats>();
-        myCollider = GetComponent<Collider2D>();
     }
 
     protected virtual void DamageTaken(float damage, Vector2 atPostion)

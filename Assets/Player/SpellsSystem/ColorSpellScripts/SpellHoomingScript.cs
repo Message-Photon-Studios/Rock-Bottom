@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpellHoomingScript : MonoBehaviour
@@ -24,6 +25,7 @@ public class SpellHoomingScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameObject.IsDestroyed()) return;
         if (timer <= spawnTargetDelay)
         {
             timer += Time.deltaTime;

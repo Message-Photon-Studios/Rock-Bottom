@@ -52,6 +52,7 @@ public class EnemyObjectSpawnerAim : Node
         if(spwnStats) spwnStats.spawnPower = stats.GetDamageFactor();
 
         spwn.GetComponent<EnemyStats>()?.SetColor(stats.GetColor());
+        spwn.GetComponent<EnemyStats>()?.SetParent(stats);
         state = NodeState.SUCCESS;
         return state;
     }

@@ -1,17 +1,21 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(LevelGenManager))]
 public class LevelGenManagerEditor : Editor
 {
+    /*
+
     public override void OnInspectorGUI()
     {
         var genManager = (LevelGenManager)target;
         base.OnInspectorGUI();
         if (GUILayout.Button("Generate graph"))
         {
-            int tries = genManager.init(null, false);
+            genManager.init(null, false);
+            int tries = genManager.LastGenerationTries();
             Debug.Log("Level generated after " + tries + " tries"); 
         }   
         
@@ -36,7 +40,9 @@ public class LevelGenManagerEditor : Editor
             {
                 try
                 {
-                    int tries = genManager.init(null, false);
+                    genManager.StartCoroutine(genManager.init(null, false));
+                    while (!genManager.SceneGenerated()) ;
+                    int tries = genManager.LastGenerationTries();
                     totalTries += tries;
                     if(maxTries < tries) maxTries = tries;
                     if(tries > 50) triesOver50++;
@@ -55,5 +61,5 @@ public class LevelGenManagerEditor : Editor
             + maxTries + "\n Tries over 50: " + triesOver50 +"%\nTries over 100: " + triesOver100 +"%\nTries over 150: " + triesOver150+"%\nTries over 200: " + triesOver200 +"%");
         }
     }
-    
+    */
 }

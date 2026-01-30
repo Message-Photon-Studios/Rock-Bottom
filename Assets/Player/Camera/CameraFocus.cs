@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 /// <summary>
 /// This point follows the players aim point but reduces the movement in some extreme circumstances
@@ -81,6 +82,7 @@ public class CameraFocus : MonoBehaviour
 
     public void Teleport(Vector2 toPosition)
     {
+        if (gameObject.IsDestroyed()) return;
         x = toPosition.x;
         y = toPosition.y;
         transform.position = new Vector3(x,y,transform.position.z);

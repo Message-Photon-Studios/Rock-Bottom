@@ -13,7 +13,7 @@ namespace BehaviourTree
         /// The root node of the behaviour tree
         /// </summary>
         protected Node root = null;
-        protected void Start()
+        protected virtual void Start()
         {
             root = SetupTree();
         }

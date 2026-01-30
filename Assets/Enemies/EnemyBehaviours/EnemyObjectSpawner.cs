@@ -57,7 +57,7 @@ public class EnemyObjectSpawner : Node
 
     public override NodeState Evaluate()
     {
-        if(stats.IsAsleep())
+        if(stats.IsAsleep() || stats.IsDead())
         {
             state = NodeState.FAILURE;
             return state;
@@ -75,8 +75,9 @@ public class EnemyObjectSpawner : Node
                 if(spwnStats) spwnStats.spawnPower = stats.GetDamageFactor();
                 if(setColor) spwn.GetComponent<EnemyStats>()?.SetColor(stats.GetColor());
                 else if(!setColor) spwn.GetComponent<EnemyStats>()?.SetColor(null);
+                spwn.GetComponent<EnemyStats>()?.SetParent(stats);
 
-                if(returnObjName != "")
+                if (returnObjName != "")
                 {
                     Node n = this;
                     while(n.parent != null)

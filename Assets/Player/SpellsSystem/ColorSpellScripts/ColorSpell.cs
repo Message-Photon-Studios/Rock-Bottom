@@ -20,6 +20,7 @@ public class ColorSpell : MonoBehaviour
     /// </summary>
     [SerializeField] public float powerScale = 1;
     [SerializeField] public float coolDown = 1;
+    [SerializeField] public float customMinimunCoolDown = 0;
     [SerializeField] public bool castWhenDamaged;
     [SerializeField] public bool castOnSpellImpact;
     [SerializeField] public bool castOnDash;
@@ -264,18 +265,25 @@ public class ColorSpell : MonoBehaviour
             if(attackAgainTimer > 0) attackAgainTimer -= Time.deltaTime;
             else
             {
-                try{
-                    foreach (Collider2D obj in objectsAlreadyHit)
-                    {
-                        if(obj != null)
-                            Impact(obj, GetComponent<Collider2D>().ClosestPoint(obj.transform.position));
-                    }
-                } catch (InvalidOperationException e)
-                {
-                    Debug.LogWarning(e);
-                }
+                ImpactAgain();
                 attackAgainTimer = resetEnemyTime;
             }
+        }
+    }
+
+    public void ImpactAgain()
+    {
+        try
+        {
+            foreach (Collider2D obj in objectsAlreadyHit)
+            {
+                if (obj != null)
+                    Impact(obj, GetComponent<Collider2D>().ClosestPoint(obj.transform.position));
+            }
+        }
+        catch (InvalidOperationException e)
+        {
+            Debug.LogWarning(e);
         }
     }
 

@@ -85,6 +85,7 @@ public class PlayerStats : MonoBehaviour
     private float adaptiveArmourBonus = 0f;
     private float defaultArmour = 0f;
     private float invincibilityBonus = 0f;
+    private List<InkArmorScript> inkArmorList = new List<InkArmorScript>();
 
     private const string lifelineName = "Lifeline";
 
@@ -116,23 +117,32 @@ public class PlayerStats : MonoBehaviour
     #endregion
 
     #region Update Loop
+    float drainTimer = 0;
     void Update()
     {
         secTimer -= Time.deltaTime;
-        if(secTimer <= 0)
+        if (secTimer <= 0)
         {
             secTimer = 1;
             //DO stuff each second here:
 
-            if(shield > maxPermanetShield)
+            if (shield > maxPermanetShield)
             {
                 Debug.Log(maxPermanetShield);
-                shield -= Mathf.RoundToInt((shieldDecay<0)?0:shieldDecay);
+                shield -= Mathf.RoundToInt((shieldDecay < 0) ? 0 : shieldDecay);
                 shieldDecay += shieldDecayIncrease;
-                if(shield < maxPermanetShield) shield = maxPermanetShield;
+                if (shield < maxPermanetShield) shield = maxPermanetShield;
                 onShieldChanged?.Invoke(shield);
             }
-            if (colorInventory.crackedUrn) colorInventory.DrainAllSlots(1);
+            if (colorInventory.crackedUrn)
+            {
+                drainTimer++;
+                if (drainTimer >= 2f)
+                {
+                    drainTimer = 0;
+                    colorInventory.DrainAllSlots(1);
+                }
+            }
         }
 
         if(invincibilityTimer >= 0)
@@ -159,27 +169,41 @@ public class PlayerStats : MonoBehaviour
 
     #region Damage Player
 
+    public void DamagePlayer(int damage, EnemyStats enemy)
+    {
+        GameColor damageColor = null;
+        if (enemy) damageColor = enemy.GetColor();
+        DamagePlayer(damage, enemy, damageColor);
+    }
+
     /// <summary>
     /// Damage the player
     /// </summary>
     /// <param name="damage"></param>
-    public void DamagePlayer(int damage, EnemyStats enemy)
+    public void DamagePlayer(int damage, EnemyStats enemy, GameColor colorDamage)
     {
         if(invincibilityTimer > 0) return;
-        if(enemy != null && damage > 0)
+        if(colorDamage && damage > 0)
         {
-            damage = Mathf.RoundToInt(damage * (1f - GetColorArmour(enemy.GetColor())));
+            damage = Mathf.RoundToInt(damage * (1f - GetColorArmour(colorDamage)));
             if (damage <= 0) damage = 1;
         }
 
         DealRedListDamage(damage);
         shieldDecay = 0;
-        if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
+        EnemyStats enemySource = enemy;
+        if (enemy) enemySource = enemy.GetParent();
+
+        if (HasInkArmor(enemySource))
+        {
+            inkArmorList.Clear();
+        }
+        else if (UnityEngine.Random.Range(0, 100) < chanceToBlock)
         {
             GameObject aura = Instantiate(blockAura, transform);
             Destroy(aura, 1);
         }
-        else if (enemy != null && colorInventory.CheckRoutedSheild(enemy.GetColor()))
+        else if (colorInventory.CheckRoutedSheild(colorDamage))
         {
             //TODO add proper block Sheild
             GameObject aura = Instantiate(blockAura, transform);
@@ -212,7 +236,7 @@ public class PlayerStats : MonoBehaviour
         }
         
         onHealthChanged?.Invoke(health);
-        onPlayerDamaged?.Invoke(this, enemy);
+        onPlayerDamaged?.Invoke(this, enemySource);
     }
 
     /// <summary>
@@ -490,6 +514,35 @@ public class PlayerStats : MonoBehaviour
     public void AddDefaultArmour(float addArmour)
     {
         defaultArmour += addArmour;
+    }
+
+    #endregion
+
+    #region Stored Spells
+
+    public void AddInkArmor(InkArmorScript inkArmor)
+    {
+        inkArmorList.Add(inkArmor);
+    }
+
+    public void RemoveInkArmor(InkArmorScript inkArmor)
+    {
+        if(inkArmorList.Contains(inkArmor)) inkArmorList.Remove(inkArmor);
+    }
+
+    public bool HasInkArmor(EnemyStats enemy)
+    {
+        bool status = false;
+           foreach(InkArmorScript inkArmor in inkArmorList.ToArray())
+        {
+            if (inkArmor == null) inkArmorList.Remove(inkArmor);
+            else
+            {
+                status = true;
+                inkArmor.InitiateArmor(enemy);
+            }
+        }
+        return status;
     }
 
     #endregion
