@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashSpeed;
     [SerializeField] float dashDistance;
     [SerializeField] float dashCooldown = 1f;
+    [SerializeField] float invincibilityTimeAfterDash = .2f;
 
     /*
     * The jumpJetpack and the jumpFalloff does controll the extra force over time for the players jump that allows the player to controll the heigh of the jump.
@@ -728,7 +729,7 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator.SetBool("dash", false);
         isDashing = false;
         playerStats.RemovePlayerInvincible();
-        playerStats.SetPlayerInvincible(.5f);
+        playerStats.SetPlayerInvincible(invincibilityTimeAfterDash);
         dashCdStart = Time.time;
     }
 
