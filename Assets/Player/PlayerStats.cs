@@ -183,11 +183,13 @@ public class PlayerStats : MonoBehaviour
     public void DamagePlayer(int damage, EnemyStats enemy, GameColor colorDamage)
     {
         if(invincibilityTimer > 0) return;
+        damage = Mathf.CeilToInt(damage / 10) * 10; //splits the damage into 10hp chunks
         if(colorDamage && damage > 0)
         {
             damage = Mathf.RoundToInt(damage * (1f - GetColorArmour(colorDamage)));
             if (damage <= 0) damage = 1;
         }
+        damage = Mathf.CeilToInt(damage/5)*5; //If the armor deduced the damage, divide into 5hp chunks
 
         DealRedListDamage(damage);
         shieldDecay = 0;
@@ -223,6 +225,7 @@ public class PlayerStats : MonoBehaviour
                 shield = 0;
                 onShieldChanged?.Invoke(shield);
             }
+            damage = Mathf.FloorToInt(damage / 5) * 5; //makes sure that the hp is divided into 5hp chunks
             health -= damage;
             if (damage > 0 && health > 0) onPlayerRealDamage?.Invoke(this, enemy);
             animator.SetTrigger("damaged");

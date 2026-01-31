@@ -13,6 +13,8 @@ public class PlayerHpController : MonoBehaviour
     PlayerStats playerStats;
     // The UI component for the health bar.
     [SerializeField] Slider healthSlider;
+    [SerializeField] Image healthFiller;
+    [SerializeField] Image bgHealthFiller;
     [SerializeField] Slider secondarySlider;
     [SerializeField] AnimationCurve maxHpChangeCurve;
     [SerializeField] float secondaryRate;
@@ -71,6 +73,7 @@ public class PlayerHpController : MonoBehaviour
     /// <param name="newMaxHp"></param> Float with new max hp.
     private void MaxHpChanged(float newMaxHp)
     {
+        UpdateHpDivider(newMaxHp);
         if (newMaxHp == maxHealth) return;
         if (maxHealth != 0)
             StartCoroutine(IncreaseHealthBar(newMaxHp));
@@ -90,7 +93,7 @@ public class PlayerHpController : MonoBehaviour
     /// When hp is changed, update slider;
     /// </summary>
     /// <param name="newHp"></param> Float with value to update. 
-    private void HpChanged(float newHp) {
+    private void HpChanged(float newHp) { 
         targetValue = newHp * healthMultiplier;
     }
 
@@ -107,6 +110,7 @@ public class PlayerHpController : MonoBehaviour
         var tempMult = sizeMultiplier;
         sizeMultiplier = GetHealthMultiplier(newMaxHp);
         newSizeMultiplier = sizeMultiplier;
+        
 
         for (var i = 0.0f; i < 1.0f; i += 0.02f)
         {
@@ -115,6 +119,7 @@ public class PlayerHpController : MonoBehaviour
             Vector2 size = new Vector2(origSize * value, rect.rect.height);
             rect.sizeDelta = size;
             secondaryRect.sizeDelta = size;
+            UpdateHpDivider(newMaxHp);
             yield return new WaitForSeconds(0.01f);
         }
     }
@@ -128,6 +133,12 @@ public class PlayerHpController : MonoBehaviour
         float m = 0.7f;
         float sCurve = (l / (1 + Mathf.Exp(-k * (x - x0)))) + m;
         return sCurve;
+    }
+
+    private void UpdateHpDivider(float MaxHp)
+    {
+        healthFiller.pixelsPerUnitMultiplier = ((MaxHp / 20) * 52) / rect.rect.width;
+        bgHealthFiller.pixelsPerUnitMultiplier = ((MaxHp / 20) * 52) / rect.rect.width;
     }
 
     private void Update()
