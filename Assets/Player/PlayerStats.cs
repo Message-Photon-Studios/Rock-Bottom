@@ -48,7 +48,7 @@ public class PlayerStats : MonoBehaviour
     /// <summary>
     /// This event fires when the player health is changed. The float is the new health.
     /// </summary>
-    public UnityAction<float> onHealthChanged;
+    public UnityAction<float, GameColor> onHealthChanged;
 
     /// <summary>
     /// This event fires when the shield takes damage. The float is the new shield.
@@ -110,7 +110,7 @@ public class PlayerStats : MonoBehaviour
         health += PermanentUpgradeManager.instance.upgrades.extraHealth;
         maxHealth = health;
         onMaxHealthChanged?.Invoke(maxHealth);
-        onHealthChanged?.Invoke(health);
+        onHealthChanged?.Invoke(health, null);
         isDead = false;
     }
 
@@ -238,7 +238,7 @@ public class PlayerStats : MonoBehaviour
             PlayerReachZeroHp();
         }
         
-        onHealthChanged?.Invoke(health);
+        onHealthChanged?.Invoke(health, colorDamage);
         onPlayerDamaged?.Invoke(this, enemySource);
     }
 
@@ -255,7 +255,7 @@ public class PlayerStats : MonoBehaviour
         {
             PlayerReachZeroHp();
         }
-        onHealthChanged?.Invoke(health);
+        onHealthChanged?.Invoke(health, null);
     }
 
     #endregion
@@ -270,7 +270,7 @@ public class PlayerStats : MonoBehaviour
     {
         health += healing;
         if(health > maxHealth) health = maxHealth;
-        onHealthChanged?.Invoke(health);
+        onHealthChanged?.Invoke(health, null);
     }
 
     /// <summary>
@@ -299,7 +299,7 @@ public class PlayerStats : MonoBehaviour
         maxHealth += addMaxHealth;
         health += addMaxHealth;
         onMaxHealthChanged?.Invoke(maxHealth);
-        onHealthChanged?.Invoke(health);
+        onHealthChanged?.Invoke(health, null);
     }
 
     /// <summary>
@@ -314,7 +314,7 @@ public class PlayerStats : MonoBehaviour
         maxHealth -= removeMaxHealth;
 
         onMaxHealthChanged?.Invoke(maxHealth);
-        onHealthChanged?.Invoke(health);
+        onHealthChanged?.Invoke(health, null);
     }
 
     public void AddMaxShield(int addMaxShield)

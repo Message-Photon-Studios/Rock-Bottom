@@ -15,6 +15,7 @@ public class PlayerHpController : MonoBehaviour
     [SerializeField] Slider healthSlider;
     [SerializeField] Image healthFiller;
     [SerializeField] Image bgHealthFiller;
+    [SerializeField] Image healthChangeFiller;
     [SerializeField] Slider secondarySlider;
     [SerializeField] AnimationCurve maxHpChangeCurve;
     [SerializeField] float secondaryRate;
@@ -31,6 +32,8 @@ public class PlayerHpController : MonoBehaviour
     private float healthMultiplier = 1;
     private float targetValue = 1;
     private float movingValue = 100;
+
+    private Color defaultChangeFiller;
 
     private float healthSliderValue
     {
@@ -54,8 +57,9 @@ public class PlayerHpController : MonoBehaviour
         playerStats.onHealthChanged += HpChanged;
         playerStats.onPlayerDied += PlayerDied;
 
+        defaultChangeFiller = healthChangeFiller.color;
         MaxHpChanged(playerStats.GetMaxHealth());
-        HpChanged(playerStats.GetHealth());
+        HpChanged(playerStats.GetHealth(), null);
         healthSliderValue = 100;
     }
 
@@ -93,8 +97,10 @@ public class PlayerHpController : MonoBehaviour
     /// When hp is changed, update slider;
     /// </summary>
     /// <param name="newHp"></param> Float with value to update. 
-    private void HpChanged(float newHp) { 
+    private void HpChanged(float newHp, GameColor color) { 
         targetValue = newHp * healthMultiplier;
+        //healthChangeFiller.material.SetColor("_Color", color != null ? color.colorMat.GetColor("_Color") : playerStats.GetComponent<ColorInventory>().defaultColor.GetColor("_Color"));
+        healthChangeFiller.color = color != null ? color.colorMat.GetColor("_Color") : defaultChangeFiller;
     }
 
     /// <summary>
