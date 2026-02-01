@@ -592,7 +592,6 @@ public class PlayerMovement : MonoBehaviour
             playerFeet.SetActive(false);
             dashedDone = false;
             float climbDir = Player.instance.verticalMoveDir;
-            Debug.Log("climbDir = " + climbDir);
             //if(lookWalk > lookDir*walkDir) walkDir = lookWalk*lookDir;
 
             climbTime += Time.fixedDeltaTime;
