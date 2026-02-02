@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
     public bool allowsClockTimer = true;
     [SerializeField] float addLevelClockTime;
     [SerializeField] bool restartClockTimer;
+    [SerializeField] public bool autoChase = false;
 
     [Header("Settings")]
     public bool saveProgressionOnStart = false;
@@ -29,6 +30,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] public bool isCaveTownLevel = false;
     [SerializeField] public bool rerunStart = false;
     [SerializeField] public bool increaseLevelNum = true;
+    [SerializeField] private bool invertedLevel = false;
 
     [Header("Color Wells")]
     [SerializeField] int wellSpawnAmount = 2;
@@ -82,7 +84,8 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Player.instance.SetStartLevel(this);
+            if(invertedLevel) Player.instance.SetStartLevel(this, transform.GetChild(0));
+            else Player.instance.SetStartLevel(this);
             StartCoroutine(Player.instance.playerUi.FadeOutCoroutine(true));
         }
         if(GameManager.instance != null)
@@ -92,6 +95,7 @@ public class LevelManager : MonoBehaviour
         ProneColorWells();
 
         GetEnemyManager().ScaleEnemyStats();
+
     }
 
     public IEnumerator EndLevelAsync()

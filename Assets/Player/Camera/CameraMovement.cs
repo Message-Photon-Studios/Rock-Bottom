@@ -43,8 +43,8 @@ public class CameraMovement : MonoBehaviour
     private void Start()
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, -10);
-        startPos = transform.position;
-        focusStartPos = focusPoint.position;
+        startPos = transform.position - Player.instance.transform.position;
+        focusStartPos = focusPoint.position - Player.instance.transform.position;
         var ratio = Screen.height / 1080.0;
         if (Math.Floor(ratio) > 0)
             ratio /= Math.Floor(ratio);
@@ -59,11 +59,12 @@ public class CameraMovement : MonoBehaviour
     /// <summary>
     /// Is called when a new level starts
     /// </summary>
-    public void SetStartLevel()
+    public void SetStartLevel(Transform pTransform)
     {
         if (SceneManager.GetActiveScene().name == "Tutorial" || SceneManager.GetActiveScene().name == "PlayerColorsCombatTest" || SceneManager.GetActiveScene().name == "TutorialCaves") return;
-        focusPoint.position = focusStartPos;
-        transform.position = startPos;
+        focusPoint.position = focusStartPos + pTransform.position;
+        transform.position = startPos + pTransform.position;
+
         focusPoint.GetComponent<CameraFocus>().SetStartLevel();
     }
 
