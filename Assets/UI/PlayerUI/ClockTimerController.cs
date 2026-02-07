@@ -48,7 +48,7 @@ public class ClockTimerController : MonoBehaviour
         timeText.color = clockVars.color;
         rectTransform.sizeDelta = new Vector2(clockVars.size, rectTransform.sizeDelta.y);*/
 
-        if (LevelManager.instance.allowsClockTimer && active)
+        if (!LevelManager.instance.autoChase && LevelManager.instance.allowsClockTimer && active)
         {
             (int min, int sec) time;
             time = GameManager.instance.getTime();
@@ -83,12 +83,22 @@ public class ClockTimerController : MonoBehaviour
                 timeText.gameObject.SetActive(false);
             }
             
-        } 
+        } else if (LevelManager.instance.autoChase)
+        {
+            animator.SetBool("WakeUp", true);
+            animator.SetBool("Glitch", true);
+        } else if (!LevelManager.instance.autoChase && !LevelManager.instance.allowsClockTimer && active)
+        {
+            animator.SetBool("Glitch", false);
+            animator.SetBool("Active", false);
+            active = false;
+        }
+
     }
 
     //Sets clocks active state acording to if it's active or not.
     private void LoadClock() {
-        if (LevelManager.instance.allowsClockTimer)
+        if (LevelManager.instance.allowsClockTimer || LevelManager.instance.autoChase)
         {
             animator.SetBool("Active", true);
             active = true;

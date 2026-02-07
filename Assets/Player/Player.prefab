@@ -5390,10 +5390,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 150
+  hitInvincibilityTime: 1.2
+  hitPauseTime: 0.1
   maxShield: 40
   maxPermanetShield: 0
   shieldDecayIncrease: 2
-  hitInvincibilityTime: 1
   levelManager: {fileID: 0}
   animator: {fileID: 5589058685384803136}
   movement: {fileID: 468746527930208003}
@@ -5418,8 +5419,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694d81906fab42941ad9d4bdb5e18553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 8
-  climbSpeed: 10
+  movementSpeed: 10
+  climbSpeed: 8
   jumpPower: 1100
   leapPower: 100
   wallJumpPower: 1500
@@ -5428,12 +5429,13 @@ MonoBehaviour:
   jumpFalloff: 900
   coyoteTime: 0.1
   stairJumpPower: {x: 1000, y: 1100}
-  dashSpeed: 50
+  dashSpeed: 75
   dashDistance: 5
-  dashCooldown: 1
+  dashCooldown: 0.2
+  invincibilityTimeAfterDash: 0.1
   aimFocusMaxX: 4
-  aimFocusMaxY: 3.5
-  aimFocusAcceleration: 2.5
+  aimFocusMaxY: 2
+  aimFocusAcceleration: 2
   checkPointY: 4
   focusPoint: {fileID: 468746528245736198}
   body: {fileID: 468746527930208001}
