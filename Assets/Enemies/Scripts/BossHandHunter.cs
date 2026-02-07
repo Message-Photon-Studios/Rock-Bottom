@@ -54,7 +54,7 @@ public class BossHandHunter : Enemy
 
     private void OnDestroy()
     {
-        GameManager.instance.RespawnHunter();
+        //GameManager.instance.RespawnHunter();
     }
 
 #if UNITY_EDITOR

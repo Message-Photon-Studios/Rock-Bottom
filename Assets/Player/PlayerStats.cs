@@ -12,10 +12,15 @@ using UnityEngine.Rendering.Universal;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] int health = 100;
+    [SerializeField] float hitInvincibilityTime;
+    [SerializeField] float hitPauseTime;
+
+    [Header("Shield")]
     [SerializeField] int maxShield = 50;
     [SerializeField] int maxPermanetShield = 20;
     [SerializeField] float shieldDecayIncrease = 1;
-    [SerializeField] float hitInvincibilityTime;
+
+    [Header("Components")]
     [SerializeField] LevelManager levelManager;
     [SerializeField] Animator animator;
     [SerializeField] PlayerMovement movement;
@@ -23,8 +28,9 @@ public class PlayerStats : MonoBehaviour
     private ColorInventory colorInventory;
     int maxHealth;
     float invincibilityTimer = 0;
-    public int chanceToBlock = 0;
 
+    [Header("Item stats")]
+    public int chanceToBlock = 0;
     public float colorNearbyRange = 0;
     public int chanceToColorNearby = 0;
     public int rainbowedDamage = 0;
@@ -159,9 +165,7 @@ public class PlayerStats : MonoBehaviour
                 RemovePlayerInvincible();
             }
             GetComponent<SpriteRenderer>().color = tmp;
-        }
-
-        
+        }        
 
     }
 
@@ -240,6 +244,16 @@ public class PlayerStats : MonoBehaviour
         
         onHealthChanged?.Invoke(health, colorDamage);
         onPlayerDamaged?.Invoke(this, enemySource);
+
+        //Damage Pause
+        if(damage > 0) StartCoroutine(DamagePause());
+    }
+
+    IEnumerator DamagePause ()
+    {
+        Time.timeScale = .1f;
+        yield return new WaitForSeconds(hitPauseTime * .1f);
+        Time.timeScale = 1;
     }
 
     /// <summary>

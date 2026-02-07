@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     string gameStartScene = "Tutorial_0";
     public bool allowsTips {get; private set;} = true;
     float hunterTimer = 0f;
-    int hunters = 0;
+    List<EnemyStats> hunters = new List<EnemyStats>(0);
     float maxClockTime;
     public MaskLibrary maskLibrary;
     private PlayerStats player;
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         clockTime = maxClockTime;
         hunterTimer = 0;
-        hunters = 0;
+        hunters = new List<EnemyStats>();
         levelNum = 0;
         rerunNum = 1;
         DataPersistenceManager.instance.SaveGame();
@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
         currentLevelManager = levelManager;
         hunterTimer = 0f;
-        hunters = 0;
+        hunters = new List<EnemyStats>();
         if(!restartTimer || rerunNum > 1)
             clockTime = addClockTime/rerunNum + ((clockTime < 0)?0:clockTime);
         else
@@ -210,19 +210,25 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     void Update()
     {
-        if (currentLevelManager && currentLevelManager.allowsClockTimer)
+        if (currentLevelManager && currentLevelManager.allowsClockTimer && !currentLevelManager.autoChase)
         {
             clockTime -= Time.deltaTime;
 
             if (clockTime <= 0)
             {
                 hunterTimer -= Time.deltaTime;
-                if (hunterTimer <= 0 && hunters < maxHunters)
+                if (hunterTimer <= 0 && hunters.Count < maxHunters)
                 {
                     SpawnHunter();
                     hunterTimer = hunterTime;
                 }
             }
+        } else if (currentLevelManager && currentLevelManager.autoChase && hunters.Count < 1)
+        {
+            SpawnHunter();
+        } else if (currentLevelManager && !currentLevelManager.autoChase && !currentLevelManager.allowsClockTimer && hunters.Count > 0)
+        {
+            KillAllHunters();
         }
     }
 
@@ -230,14 +236,32 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         GameObject hunter = GameObject.Instantiate(hunterPrefab, player.transform.position + (new Vector3(Random.Range(-1f,1f), Random.Range(-1f,1f),0).normalized*hunterSpawnDist), hunterPrefab.transform.rotation,GameObject.Find("EnemyHolder").transform);
         Debug.Log("Hunter spawned");
-        hunters++;
+        hunters.Add(hunter.GetComponent<EnemyStats>());
+        hunter.GetComponent<EnemyStats>().onEnemyDeath += RespawnHunter;
     }
 
+    void RespawnHunter(EnemyStats hunter)
+    {
+        hunters.Remove(hunter);
+        SpawnHunter();
+    }
+
+    public void KillAllHunters()
+    {
+        while(hunters.Count > 0)
+        {
+            hunters[0].onEnemyDeath -= RespawnHunter;
+            hunters[0].KillEnemy();
+            hunters.RemoveAt(0);
+        }
+    }
+
+    /*
     public void RespawnHunter()
     {
         GameObject hunter = GameObject.Instantiate(hunterPrefab, player.transform.position + (new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0).normalized * hunterSpawnDist), hunterPrefab.transform.rotation, GameObject.Find("EnemyHolder").transform);
         Debug.Log("Hunter ReSpawned");
-    }
+    }*/
 
     /// <summary>
     /// Returns the clock time as a formated string in the format "min:sec"
@@ -259,9 +283,9 @@ public class GameManager : MonoBehaviour, IDataPersistence
         }
         else 
         {
-            retString = hunters + ((hunters > 1)?"x Hunters":"x Hunter");
+            retString = hunters.Count + ((hunters.Count > 1)?"x Hunters":"x Hunter");
             retColor = Color.red;
-            retSize = (hunters > 1)?355:310;
+            retSize = (hunters.Count > 1)?355:310;
         } 
 
         return (retString, retSize, retColor);
