@@ -100,7 +100,7 @@ public class PlayerHpController : MonoBehaviour
     private void HpChanged(float newHp, GameColor color) { 
         targetValue = newHp * healthMultiplier;
         //healthChangeFiller.material.SetColor("_Color", color != null ? color.colorMat.GetColor("_Color") : playerStats.GetComponent<ColorInventory>().defaultColor.GetColor("_Color"));
-        healthChangeFiller.color = color != null ? color.colorMat.GetColor("_Color") : defaultChangeFiller;
+        //healthChangeFiller.color = color != null ? color.colorMat.GetColor("_Color") : defaultChangeFiller; //Sets the color of the health bar when damaged 
     }
 
     /// <summary>
