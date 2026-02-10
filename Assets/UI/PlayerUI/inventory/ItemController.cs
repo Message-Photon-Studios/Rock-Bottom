@@ -259,7 +259,7 @@ public class ItemController : MonoBehaviour
             Navigation lastNav =  items[nr-1].GetComponent<Selectable>().navigation;
             nav.mode = Navigation.Mode.Explicit;
             nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
-            if((nr%14) != 0) { // If current item is no the first item in the row, make last item navigate into current on right nav.
+            if((nr%14) != 0) { // If current item is not the first item in the row, make last item navigate into current on right nav.
             lastNav.selectOnRight = newItem.GetComponent<Selectable>();
             }
 
@@ -267,7 +267,7 @@ public class ItemController : MonoBehaviour
                 nav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
                 nav.selectOnRight = null;
             } 
-            else { // If current item is not the last item of the row, loop back to the first item on right nav.
+            else { // If current item is not the first item of the row, loop back to the first item on right nav.
                 nav.selectOnRight = items[nr-nr%14].GetComponent<Selectable>();
                 nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
                 lastNav.selectOnRight = newItem.GetComponent<Selectable>();
