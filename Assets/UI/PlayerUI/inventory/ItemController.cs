@@ -106,6 +106,18 @@ public class ItemController : MonoBehaviour
             AddItem(item);
         }
 
+        foreach(SelectedInventoryItem existingItem in items)
+        {
+            if(existingItem.amount > 1)
+            {
+                existingItem.amountText.text = ""+existingItem.amount;
+                existingItem.amountText.gameObject.SetActive(true);
+            } else
+            {
+                existingItem.amountText.gameObject.SetActive(false);
+            }
+        }
+
         selectedItemContainer.SetActive(false);
         eventSystem.SetSelectedGameObject(null);
         statColorList[0].GetComponent<Selectable>().Select();
@@ -202,30 +214,42 @@ public class ItemController : MonoBehaviour
             excessCount += 1;
             ShowExcessItems(excessCount);
         } else {
-            SelectedInventoryItem newItem = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            newItem.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
-            newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
-            newItem.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
-            newItem.Setup(item);
-            items.Add(newItem);
-            newItem.onInventoryItemSelected += ShowSelectedItem;
-            newItem.onItemLoaded += ItemsLoaded;
-            if(items.Count > 1) {
-                items[items.Count-2].onItemLoaded -= ItemsLoaded;
-                NavigationSetup(newItem);
-            } else if(items.Count == 1) {
-                Navigation itemNav = newItem.GetComponent<Selectable>().navigation;
-                itemNav.mode = Navigation.Mode.Explicit;
-                itemNav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
-                itemNav.selectOnRight = null;
-                itemNav.selectOnDown = null;
-                itemNav.selectOnUp = null;
-                newItem.GetComponent<Selectable>().navigation = itemNav;
+            bool isNewItem = true;
+            foreach(SelectedInventoryItem existingItem in items)
+            {
+                if(existingItem.itemInfo == item)
+                {
+                    existingItem.amount++;
+                    isNewItem = false;
+                    break;
+                }
+            }
+            if(isNewItem) {
+                SelectedInventoryItem newItem = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                newItem.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
+                newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
+                newItem.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+                newItem.Setup(item);
+                items.Add(newItem);
+                newItem.onInventoryItemSelected += ShowSelectedItem;
+                newItem.onItemLoaded += ItemsLoaded;
+                if(items.Count > 1) {
+                    items[items.Count-2].onItemLoaded -= ItemsLoaded;
+                    NavigationSetup(newItem);
+                } else if(items.Count == 1) {
+                    Navigation itemNav = newItem.GetComponent<Selectable>().navigation;
+                    itemNav.mode = Navigation.Mode.Explicit;
+                    itemNav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
+                    itemNav.selectOnRight = null;
+                    itemNav.selectOnDown = null;
+                    itemNav.selectOnUp = null;
+                    newItem.GetComponent<Selectable>().navigation = itemNav;
 
-                foreach (SelectedColor colorInfo in statColorList) {
-                    Navigation nav = colorInfo.GetComponent<Selectable>().navigation;
-                    nav.selectOnRight = newItem.GetComponent<Selectable>();
-                    colorInfo.GetComponent<Selectable>().navigation = nav;
+                    foreach (SelectedColor colorInfo in statColorList) {
+                        Navigation nav = colorInfo.GetComponent<Selectable>().navigation;
+                        nav.selectOnRight = newItem.GetComponent<Selectable>();
+                        colorInfo.GetComponent<Selectable>().navigation = nav;
+                    }
                 }
             }
             
