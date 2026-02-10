@@ -40,9 +40,6 @@ public class ItemController : MonoBehaviour
     //Event system used in inventory.
     [SerializeField] EventSystem eventSystem;
 
-    //Amount of items the player has that is over the inventory display limit.
-    private int excessCount = 0;
-
     //Text showing how many more items you have.
     [SerializeField] TMP_Text excessItemsCounter;
 
@@ -210,46 +207,41 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item">Item to be added.</param>
     private void AddItem(Item item) {
-        if(items.Count >= 69) {
-            excessCount += 1;
-            ShowExcessItems(excessCount);
-        } else {
-            bool isNewItem = true;
-            foreach(SelectedInventoryItem existingItem in items)
+        bool isNewItem = true;
+        foreach(SelectedInventoryItem existingItem in items)
+        {
+            if(existingItem.itemInfo == item)
             {
-                if(existingItem.itemInfo == item)
-                {
-                    existingItem.amount++;
-                    isNewItem = false;
-                    break;
-                }
+                existingItem.amount++;
+                isNewItem = false;
+                break;
             }
-            if(isNewItem) {
-                SelectedInventoryItem newItem = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                newItem.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
-                newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
-                newItem.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
-                newItem.Setup(item);
-                items.Add(newItem);
-                newItem.onInventoryItemSelected += ShowSelectedItem;
-                newItem.onItemLoaded += ItemsLoaded;
-                if(items.Count > 1) {
-                    items[items.Count-2].onItemLoaded -= ItemsLoaded;
-                    NavigationSetup(newItem);
-                } else if(items.Count == 1) {
-                    Navigation itemNav = newItem.GetComponent<Selectable>().navigation;
-                    itemNav.mode = Navigation.Mode.Explicit;
-                    itemNav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
-                    itemNav.selectOnRight = null;
-                    itemNav.selectOnDown = null;
-                    itemNav.selectOnUp = null;
-                    newItem.GetComponent<Selectable>().navigation = itemNav;
+        }
+        if(isNewItem) {
+            SelectedInventoryItem newItem = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            newItem.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
+            newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
+            newItem.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+            newItem.Setup(item);
+            items.Add(newItem);
+            newItem.onInventoryItemSelected += ShowSelectedItem;
+            newItem.onItemLoaded += ItemsLoaded;
+            if(items.Count > 1) {
+                items[items.Count-2].onItemLoaded -= ItemsLoaded;
+                NavigationSetup(newItem);
+            } else if(items.Count == 1) {
+                Navigation itemNav = newItem.GetComponent<Selectable>().navigation;
+                itemNav.mode = Navigation.Mode.Explicit;
+                itemNav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
+                itemNav.selectOnRight = null;
+                itemNav.selectOnDown = null;
+                itemNav.selectOnUp = null;
+                newItem.GetComponent<Selectable>().navigation = itemNav;
 
-                    foreach (SelectedColor colorInfo in statColorList) {
-                        Navigation nav = colorInfo.GetComponent<Selectable>().navigation;
-                        nav.selectOnRight = newItem.GetComponent<Selectable>();
-                        colorInfo.GetComponent<Selectable>().navigation = nav;
-                    }
+                foreach (SelectedColor colorInfo in statColorList) {
+                    Navigation nav = colorInfo.GetComponent<Selectable>().navigation;
+                    nav.selectOnRight = newItem.GetComponent<Selectable>();
+                    colorInfo.GetComponent<Selectable>().navigation = nav;
                 }
             }
             
@@ -303,18 +295,6 @@ public class ItemController : MonoBehaviour
 
             newItem.GetComponent<Selectable>().navigation = nav;
             items[nr-1].GetComponent<Selectable>().navigation = lastNav;
-    }
-
-    /// <summary>
-    /// Is called when player has more items than the inventory can show.
-    /// Displayes extra amount of items as a + followed by the amount of items
-    /// in excess the player has. 
-    /// </summary>
-    /// <param name="excessCount"></param>
-    private void ShowExcessItems(int excessCount)
-    {
-        excessItemsCounter.gameObject.SetActive(true);
-        excessItemsCounter.text = "+" + excessCount;
     }
 
     /// <summary>
