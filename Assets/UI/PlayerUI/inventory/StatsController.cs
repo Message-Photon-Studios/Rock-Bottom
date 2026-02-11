@@ -16,6 +16,7 @@ public class StatsController : MonoBehaviour
 
     //Text field for players coins.
     [SerializeField] TMP_Text coins;
+    [SerializeField] TMP_Text petrifiedPigment;
 
     //Players color inventory.
     ColorInventory colorInventory;
@@ -26,12 +27,16 @@ public class StatsController : MonoBehaviour
     //All the text fields for the power of the colors.
     [SerializeField] TMP_Text[] colorNumbers;
 
+    // All the text fields for the color defense numbers.
+    [SerializeField] TMP_Text[] colorDefenceNumbers;
+
    private void OnEnable() {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
         colorInventory = colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
         UpdateStats();
         UpdateColorNumbers();
+        UpdateColorDefenceNumbers();
    }
 
    private void OnDisable() {
@@ -44,6 +49,7 @@ public class StatsController : MonoBehaviour
     private void UpdateStats(){
         maxHealth.text = playerStats.GetMaxHealth() + "hp";
         coins.text = "" + inventory.GetCoins();
+        //petrifiedPigment.text = "" + 
     }
 
     /// <summary>
@@ -64,6 +70,19 @@ public class StatsController : MonoBehaviour
                 colorNumbers[i].color = Color.white;
             }
             colorNumbers[i].text = (int) number + "%";
+        }
+    }
+
+    /// <summary>
+    /// Updates color defence % in the pigment section.
+    /// </summary>
+    private void UpdateColorDefenceNumbers()
+    {
+        for(int i = 0; i < 7; i++) {
+            float number = 100*playerStats.GetColorArmour(colors[i]);
+            number = Mathf.Round(number);
+            colorDefenceNumbers[i].color = Color.white;
+            colorDefenceNumbers[i].text = (int) number + "%";
         }
     }
 }
