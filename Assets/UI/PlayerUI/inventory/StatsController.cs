@@ -36,7 +36,6 @@ public class StatsController : MonoBehaviour
         colorInventory = colorInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ColorInventory>();
         UpdateStats();
         UpdateColorNumbers();
-        UpdateColorDefenceNumbers();
    }
 
    private void OnDisable() {
@@ -70,19 +69,12 @@ public class StatsController : MonoBehaviour
                 colorNumbers[i].color = Color.white;
             }
             colorNumbers[i].text = (int) number + "%";
+
+            float defenceNumber = 100*playerStats.GetColorArmour(colors[i]);
+            defenceNumber = Mathf.Round(defenceNumber);
+            colorDefenceNumbers[i].color = Color.white;
+            colorDefenceNumbers[i].text = (int) defenceNumber + "%";
         }
     }
 
-    /// <summary>
-    /// Updates color defence % in the pigment section.
-    /// </summary>
-    private void UpdateColorDefenceNumbers()
-    {
-        for(int i = 0; i < 7; i++) {
-            float number = 100*playerStats.GetColorArmour(colors[i]);
-            number = Mathf.Round(number);
-            colorDefenceNumbers[i].color = Color.white;
-            colorDefenceNumbers[i].text = (int) number + "%";
-        }
-    }
 }
