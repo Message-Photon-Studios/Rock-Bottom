@@ -70,7 +70,7 @@ public class ItemController : MonoBehaviour
         }
         BottleNavigation();
 
-        selectedDesc.fontSize = descriptionFontSize;
+        //selectedDesc.fontSize = descriptionFontSize;
 
         selectedItemContainer.SetActive(false);
         excessItemsCounter.gameObject.SetActive(false);
