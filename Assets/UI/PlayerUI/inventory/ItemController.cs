@@ -36,7 +36,8 @@ public class ItemController : MonoBehaviour
     [SerializeField] Image selectedImage;
     [SerializeField] TMP_Text selectedName;
     [SerializeField] TMP_Text selectedDesc;
-    [SerializeField] int descriptionFontSize;
+    [SerializeField] TMP_Text selectedDesc2;
+    [SerializeField] TMP_Text selectedAmount;
 
     //Event system used in inventory.
     [SerializeField] EventSystem eventSystem;
@@ -69,8 +70,6 @@ public class ItemController : MonoBehaviour
             AddBottle(colorInventory.GetColorSpell(i));
         }
         BottleNavigation();
-
-        //selectedDesc.fontSize = descriptionFontSize;
 
         selectedItemContainer.SetActive(false);
         excessItemsCounter.gameObject.SetActive(false);
@@ -295,10 +294,29 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     private void ShowSelectedItem(Item item) {
+        ClearAllSelectedComponents();
         selectedItemContainer.SetActive(true);
         selectedImage.sprite = item.sprite;
         selectedName.text = item.GetName();
-        selectedDesc.text = item.GetDesc();
+
+        if(item.GetLongDesc().Length > 1)
+        {
+            selectedDesc.text = item.GetLongDesc();
+            selectedDesc2.text = item.GetLoreDesc();
+        } else
+        {
+            selectedDesc.text = item.GetDesc();
+        }
+        
+        foreach(SelectedInventoryItem inventoryItem in items)
+        {
+            if (inventoryItem.itemInfo == item)
+            {
+                selectedAmount.gameObject.SetActive(true);
+                selectedAmount.text = inventoryItem.amount + "x";
+                break;
+            }
+        }
     }
 
     /// <summary>
@@ -306,8 +324,9 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     private void ShowSelectedColor(GameColor color) {
+        ClearAllSelectedComponents();
         selectedItemContainer.SetActive(true);
-        selectedImage.sprite =color.colorIcon;
+        selectedImage.sprite = color.colorIcon;
         selectedName.text = color.name;
         selectedDesc.text = color.description;
     }
@@ -317,9 +336,23 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     private void ShowSelectedBottle(ColorSpell bottle) {
+        ClearAllSelectedComponents();
         selectedItemContainer.SetActive(true);
         selectedImage.sprite =bottle.GetBottleSprite().bigSprite;
         selectedName.text = bottle.name;
         selectedDesc.text = bottle.description.GetLocalizedString();
+    }
+
+    /// <summary>
+    /// Empties SelectedItem components and hides amount.
+    /// </summary>
+    private void ClearAllSelectedComponents()
+    {
+        selectedName.text = "";
+        selectedAmount.text = "";
+        selectedDesc.text = "";
+        selectedDesc2.text = "";
+
+        selectedAmount.gameObject.SetActive(false);
     }
 }

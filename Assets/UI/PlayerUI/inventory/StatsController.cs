@@ -48,7 +48,7 @@ public class StatsController : MonoBehaviour
     private void UpdateStats(){
         maxHealth.text = playerStats.GetMaxHealth() + "hp";
         coins.text = "" + inventory.GetCoins();
-        //petrifiedPigment.text = "" + 
+        petrifiedPigment.text = "" + GameManager.instance.GetPetrifiedPigmentAmount();
     }
 
     /// <summary>
