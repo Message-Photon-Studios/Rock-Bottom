@@ -50,6 +50,8 @@ public class ItemController : MonoBehaviour
     //Holds all bottle prefabs.
     private List<SelectedBottle> bottles = new List<SelectedBottle>{};
 
+    private int colCount = 7;
+
 
     private void OnEnable() {
         itemInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<ItemInventory>();
@@ -259,29 +261,29 @@ public class ItemController : MonoBehaviour
             Navigation lastNav =  items[nr-1].GetComponent<Selectable>().navigation;
             nav.mode = Navigation.Mode.Explicit;
             nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
-            if((nr%14) != 0) { // If current item is not the first item in the row, make last item navigate into current on right nav.
+            if((nr%colCount) != 0) { // If current item is not the first item in the row, make last item navigate into current on right nav.
             lastNav.selectOnRight = newItem.GetComponent<Selectable>();
             }
 
-            if((nr%14) == 0) { // If current item is the first item of the row, set left nav to colors and right to null.
+            if((nr%colCount) == 0) { // If current item is the first item of the row, set left nav to colors and right to null.
                 nav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
                 nav.selectOnRight = null;
             } 
             else { // If current item is not the first item of the row, loop back to the first item on right nav.
-                nav.selectOnRight = items[nr-nr%14].GetComponent<Selectable>();
+                nav.selectOnRight = items[nr-nr%colCount].GetComponent<Selectable>();
                 nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
                 lastNav.selectOnRight = newItem.GetComponent<Selectable>();
             } 
 
-            if(nr < 14) { // If there is one row or less items, remove up and down nav.
+            if(nr < colCount) { // If there is one row or less items, remove up and down nav.
                 nav.selectOnUp = null;
                 nav.selectOnDown = null;
             }  else { // If there is more than one row of items, enable up and down nav.
-                nav.selectOnUp = items[nr-14].GetComponent<Selectable>();
-                nav.selectOnDown = items[nr%14].GetComponent<Selectable>();
-                Navigation above = items[nr-14].GetComponent<Selectable>().navigation;
+                nav.selectOnUp = items[nr-colCount].GetComponent<Selectable>();
+                nav.selectOnDown = items[nr%colCount].GetComponent<Selectable>();
+                Navigation above = items[nr-colCount].GetComponent<Selectable>().navigation;
                 above.selectOnDown = newItem.GetComponent<Selectable>();
-                items[nr-14].GetComponent<Selectable>().navigation = above;
+                items[nr-colCount].GetComponent<Selectable>().navigation = above;
             }
 
             newItem.GetComponent<Selectable>().navigation = nav; // Assign completed navs
