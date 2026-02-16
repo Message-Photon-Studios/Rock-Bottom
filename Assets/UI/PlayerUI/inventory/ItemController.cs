@@ -299,6 +299,8 @@ public class ItemController : MonoBehaviour
         selectedImage.sprite = item.sprite;
         selectedName.text = item.GetName();
 
+        //todo Uncomment this when translations are in
+        /*  
         if(item.GetLongDesc().Length > 1)
         {
             selectedDesc.text = item.GetLongDesc();
@@ -306,14 +308,18 @@ public class ItemController : MonoBehaviour
         } else
         {
             selectedDesc.text = item.GetDesc();
-        }
+        } */
+
+        selectedDesc.text = item.GetDesc(); //TODO remove this when translations are in 
         
         foreach(SelectedInventoryItem inventoryItem in items)
         {
             if (inventoryItem.itemInfo == item)
             {
-                selectedAmount.gameObject.SetActive(true);
-                selectedAmount.text = inventoryItem.amount + "x";
+                if(inventoryItem.amount > 1) {
+                    selectedAmount.gameObject.SetActive(true);
+                    selectedAmount.text = inventoryItem.amount + "x";
+                }
                 break;
             }
         }
