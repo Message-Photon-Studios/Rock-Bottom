@@ -301,14 +301,9 @@ public class ItemController : MonoBehaviour
 
         //todo Uncomment this when translations are in
         /*  
-        if(item.GetLongDesc().Length > 1)
-        {
-            selectedDesc.text = item.GetLongDesc();
-            selectedDesc2.text = item.GetLoreDesc();
-        } else
-        {
-            selectedDesc.text = item.GetDesc();
-        } */
+        selectedDesc.text = item.GetLongDesc();
+        selectedDesc2.text = item.GetLoreDesc();
+        */
 
         selectedDesc.text = item.GetDesc(); //TODO remove this when translations are in 
         
