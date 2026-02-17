@@ -119,7 +119,12 @@ public class ItemController : MonoBehaviour
 
         selectedItemContainer.SetActive(false);
         eventSystem.SetSelectedGameObject(null);
-        statColorList[0].GetComponent<Selectable>().Select();
+        if(items.Count < 1) {
+            statColorList[0].GetComponent<Selectable>().Select();
+        } else
+        {
+            items[0].GetComponent<Selectable>().Select();
+        }
     }
 
     /// <summary>
