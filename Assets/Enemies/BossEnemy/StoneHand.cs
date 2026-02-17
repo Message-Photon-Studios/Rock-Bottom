@@ -18,12 +18,14 @@ public class StoneHand : Enemy
     {
         Node root = new Sequence(new List<Node>
         {
+            new CheckBool("sleeping", false),
             new CheckBool("stoneThrowAttack", true),
             new EnemyObjectSpawner(stats, stoneProjectile, spawnOffset, Vector2.up*stoneUpForce, false, stoneRadomForce),
             new SetParentVariable("stoneThrowAttack", false, 1),
         });
 
         root.SetData("stoneThrowAttack", false);
+        root.SetData("sleeping", false);
         return root;
     }
 }
