@@ -136,11 +136,27 @@ public class ItemController : MonoBehaviour
     }
 
     /// <summary>
-    /// If bottle changed, update information with new bottle from index.
+    /// If bottle changed, destroy all bottles in inventory and fetch new updated list of bottles.
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">Not used</param>
     private void BottleChanged(int index) {
-        bottles[index].Setup(colorInventory.GetColorSpell(index));
+        List<GameObject> objs = new List<GameObject>(); //Destroys old bottles in inventory
+        for (int i = 0; i < bottlesContainer.transform.childCount; i++)
+        {
+            objs.Add(bottlesContainer.transform.GetChild(i).gameObject);
+        }
+        bottlesContainer.transform.DetachChildren();
+        for (int i = 0; i < objs.Count; i++)
+        {
+            Destroy(objs[i]);
+        }
+
+        bottles = new List<SelectedBottle>{}; // clears bottles list as Destroy doesn't immidiately delete everything.
+
+        for(int i = 0; i < colorInventory.colorSlots.Count; i++) { //Fetch new bottle information and add it to inventory.
+            AddBottle(colorInventory.GetColorSpell(i));
+        }
+        BottleNavigation();
     }
 
     /// <summary>
@@ -153,7 +169,14 @@ public class ItemController : MonoBehaviour
         newBottle.GetComponent<RectTransform>().sizeDelta = new Vector2(110, 110);
         newBottle.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
         newBottle.Setup(bottle);
-        bottles.Add(newBottle);
+
+        if(bottles.Count == 3)
+        {
+            newBottle.GetComponent<RectTransform>().SetAsFirstSibling();
+            bottles.Insert(0, newBottle);
+        } else {
+            bottles.Add(newBottle);
+        }
         newBottle.onInventoryBottleSelected += ShowSelectedBottle;
     }
 
