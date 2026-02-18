@@ -16,6 +16,8 @@ public class Item : ScriptableObject
     public Sprite sprite;
     [SerializeField] public LocalizedString itemName;
     [SerializeField] public LocalizedString description;
+    [SerializeField] public LocalizedString longDescription;
+    [SerializeField] public LocalizedString loreDescription;
     public int itemCost;
     [SerializeReference] public List<ItemEffect> effects = new List<ItemEffect>(); 
     [SerializeField] public ItemCategory itemCategory;
@@ -78,6 +80,16 @@ public class Item : ScriptableObject
     /// <returns>Localized description.</returns>
     public string GetDesc() {
         return description.GetLocalizedString();
+    }
+
+    public string GetLongDesc()
+    {
+        return longDescription.GetLocalizedString();
+    }
+
+    public string GetLoreDesc()
+    {
+        return loreDescription.GetLocalizedString();
     }
 
     #if UNITY_EDITOR

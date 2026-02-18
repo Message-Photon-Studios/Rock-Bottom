@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using TMPro;
 
 public class SelectedInventoryItem : MonoBehaviour, ISelectHandler, IDeselectHandler,IPointerClickHandler
 {
@@ -14,7 +15,12 @@ public class SelectedInventoryItem : MonoBehaviour, ISelectHandler, IDeselectHan
     [SerializeField] Image image;
 
     //Item.
-    [SerializeField] Item itemInfo;
+    [SerializeField] public Item itemInfo;
+
+    //Amount of the item.
+    public int amount;
+
+    public TMP_Text amountText;
 
     //Send out a notification if selected.
     public UnityAction<Item> onInventoryItemSelected;
@@ -29,6 +35,7 @@ public class SelectedInventoryItem : MonoBehaviour, ISelectHandler, IDeselectHan
         itemInfo = item;
         image.sprite = item.sprite;
         image.SetNativeSize();
+        amount = 1;
     }
 
     /// <summary>
