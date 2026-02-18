@@ -194,6 +194,7 @@ public class BossEnemyMain : Enemy
         base.OnDestroy();
         onWispSpawned.RemoveAllListeners();
         onNewMinionWave.RemoveAllListeners();
+        GameManager.instance.GoToMainMenu();
     }
 
 
