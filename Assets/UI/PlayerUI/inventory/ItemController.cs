@@ -42,9 +42,6 @@ public class ItemController : MonoBehaviour
     //Event system used in inventory.
     [SerializeField] EventSystem eventSystem;
 
-    //Text showing how many more items you have.
-    [SerializeField] TMP_Text excessItemsCounter;
-
     //Holds all item prefabs.
     private List<SelectedInventoryItem> items = new List<SelectedInventoryItem>{};
 
@@ -72,7 +69,6 @@ public class ItemController : MonoBehaviour
         BottleNavigation();
 
         selectedItemContainer.SetActive(false);
-        excessItemsCounter.gameObject.SetActive(false);
     }
 
     private void OnDisable() {

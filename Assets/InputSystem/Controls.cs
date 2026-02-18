@@ -247,10 +247,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""ffd52337-cfa2-400d-bf29-854c8686ceac"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""path"": ""<XInputController>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XboxController;PlayStation"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -258,10 +258,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""389f3e13-88c4-48c6-a4e6-2b0ec60d2c8a"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""path"": ""<XInputController>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XboxController;PlayStation"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -280,10 +280,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""5073e6a6-ffc7-439a-8920-96c3023dd4bc"",
-                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""path"": ""<XInputController>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XboxController;PlayStation"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -291,10 +291,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""7570b051-f418-44c3-b46b-2cca08102277"",
-                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""path"": ""<XInputController>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XboxController;PlayStation"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -323,22 +323,11 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""05f71816-30a8-4e1d-8868-7060c2ebb7df"",
-                    ""path"": ""<DualShockGamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""db383ce0-9e86-4512-a454-ea7694436215"",
-                    ""path"": ""<Gamepad>/start"",
+                    ""path"": ""<XInputController>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""Escape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -400,17 +389,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7069d62b-5cae-47cd-bacd-2456f85234eb"",
-                    ""path"": ""<DualShockGamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""356bb390-c7f5-42d2-9131-f7b8624c8f50"",
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
@@ -437,7 +415,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -456,10 +434,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d6a359c2-bb3d-4778-a7fb-d6640d7b687d"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<XInputController>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -554,17 +532,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1882e2af-d634-42c3-8d3e-ae68f1c98ca1"",
-                    ""path"": ""<DualShockGamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""Attack2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""308fb270-bf0a-44e7-b528-3c6447e2b001"",
                     ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
@@ -592,17 +559,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XboxController"",
-                    ""action"": ""Attack1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""33d0a202-8eb8-4c75-bda4-4c2dc56715de"",
-                    ""path"": ""<DualShockGamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
                     ""action"": ""Attack1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -665,10 +621,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""7d6c6b96-0b02-4b5b-b922-2b5f66f93406"",
-                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""path"": ""<XInputController>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""VerticalLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -676,10 +632,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""9828e0ab-3db4-4c08-82e4-f670d10a1672"",
-                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""path"": ""<XInputController>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""VerticalLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -698,10 +654,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""d6eccdf5-8276-4aa5-a9d0-3ac82e66fede"",
-                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""path"": ""<XInputController>/rightStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""VerticalLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -709,10 +665,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""93a42891-4e1a-4fa3-a3af-8bacde878a0e"",
-                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""path"": ""<XInputController>/rightStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""VerticalLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -724,17 +680,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XboxController"",
-                    ""action"": ""DivideColor1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""76712484-ddae-4462-94cd-c418c91e7563"",
-                    ""path"": ""<DualShockGamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
                     ""action"": ""DivideColor1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -808,10 +753,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""a1680f2f-2296-4833-8d0a-234d32801c91"",
-                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""path"": ""<XInputController>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""VerticalMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -819,10 +764,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""5e4c1ec9-8c78-46ff-8c6e-90f34b863027"",
-                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""path"": ""<XInputController>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""VerticalMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -841,10 +786,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""a28402cf-702c-48b4-b3e0-29ff16fd5254"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""path"": ""<XInputController>/leftStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""VerticalMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -852,10 +797,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""26abb7ca-5396-4662-a303-0f7fd8492855"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""path"": ""<XInputController>/leftStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""VerticalMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -885,10 +830,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""241b2897-888c-45a6-8d4a-62d1100ad916"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<XInputController>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PlayStation;XboxController"",
+                    ""groups"": ""XboxController"",
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -917,17 +862,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a19973ae-51d3-42ae-99dc-2977fee60f8c"",
-                    ""path"": ""<DualShockGamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""Attack3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""85ae0fc6-7b96-43ad-99c4-a436fd923c55"",
                     ""path"": ""<XInputController>/leftShoulder"",
                     ""interactions"": """",
@@ -950,33 +884,11 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""8765d2a2-3b0e-4cf0-a552-b300e503cf9a"",
-                    ""path"": ""<DualShockGamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""Attack4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""92bcfeb7-f6d3-4f4a-a236-d278535d4a64"",
                     ""path"": ""<XInputController>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XboxController"",
-                    ""action"": ""DivideColor2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6f63792c-544f-4d42-b692-b0c061710375"",
-                    ""path"": ""<DualShockGamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
                     ""action"": ""DivideColor2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1016,33 +928,11 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d2cc2a65-4fe6-4956-99cf-4901206a1107"",
-                    ""path"": ""<DualShockGamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""DivideColor3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""2378cc58-33aa-46ef-bb24-5799503e1488"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""DivideColor3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""06f5c0e7-1476-47ff-8fe5-2b8be371a0da"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
                     ""action"": ""DivideColor3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1060,17 +950,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""586236eb-2041-4eb2-bdc1-e6a4af5c5da3"",
-                    ""path"": ""<DualShockGamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
-                    ""action"": ""DivideColor4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""93cec63a-0296-4ad8-a098-5f67207eec76"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
@@ -1082,33 +961,11 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b94f951d-e9db-495b-bd5f-fee8863a32bc"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""DivideColor4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""9755d2ca-9740-4861-b0e8-40dae4dfd82f"",
                     ""path"": ""<XInputController>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""XboxController"",
-                    ""action"": ""ControllerBack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""725cf336-897b-44bd-bd8c-4f3f62bc27a1"",
-                    ""path"": ""<DualShockGamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PlayStation"",
                     ""action"": ""ControllerBack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
