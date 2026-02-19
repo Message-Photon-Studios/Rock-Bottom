@@ -17,12 +17,6 @@ public class PauseMenu : BigMenu
 
     [SerializeField] UIController uiController;
 
-    private void OnEnable()
-    {
-        eventSystem.SetSelectedGameObject(null);
-        resumeButton.GetComponent<Selectable>().Select();
-    }
-
     public void ResumeButton()
     {
         CloseMenu();
@@ -53,4 +47,12 @@ public class PauseMenu : BigMenu
     {
         GameManager.instance.QuitGame();
     }
+
+    protected override void AfterOpening()
+    {
+        base.AfterOpening();
+        eventSystem.SetSelectedGameObject(null);
+        resumeButton.GetComponent<Selectable>().Select();
+    }
+    
 }
