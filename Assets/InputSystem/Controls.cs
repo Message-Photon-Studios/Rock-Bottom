@@ -91,18 +91,18 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack2"",
+                    ""name"": ""Attack1"",
                     ""type"": ""Button"",
-                    ""id"": ""376b0d1a-1f6d-4313-b0fc-8d7f3031f39d"",
+                    ""id"": ""ba16ae19-c792-4e75-a54b-d1e20b66999e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack1"",
+                    ""name"": ""Attack2"",
                     ""type"": ""Button"",
-                    ""id"": ""ba16ae19-c792-4e75-a54b-d1e20b66999e"",
+                    ""id"": ""376b0d1a-1f6d-4313-b0fc-8d7f3031f39d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -510,39 +510,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b705d1e1-cd0f-486d-a5d5-830813744d97"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Attack2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1aeca01e-7b60-49d9-be86-f8ddfcd8a525"",
-                    ""path"": ""<XInputController>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XboxController"",
-                    ""action"": ""Attack2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""308fb270-bf0a-44e7-b528-3c6447e2b001"",
-                    ""path"": ""<Keyboard>/l"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
-                    ""action"": ""Attack2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""045045a8-9a65-4316-8aff-f94753dad8a5"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
@@ -566,7 +533,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""93d5b9d2-5c3b-43c0-9e8e-87860ccd4ff6"",
-                    ""path"": ""<Keyboard>/k"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard;KeyboardMouse"",
@@ -862,6 +829,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""66d40a42-0b77-459d-873b-13828d301dae"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Attack3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""85ae0fc6-7b96-43ad-99c4-a436fd923c55"",
                     ""path"": ""<XInputController>/leftShoulder"",
                     ""interactions"": """",
@@ -878,6 +856,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""Attack4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca8005a2-bd8f-4ca5-b862-027489f68b4f"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Attack4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -969,6 +958,39 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""ControllerBack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b705d1e1-cd0f-486d-a5d5-830813744d97"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Attack2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1aeca01e-7b60-49d9-be86-f8ddfcd8a525"",
+                    ""path"": ""<XInputController>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XboxController"",
+                    ""action"": ""Attack2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""308fb270-bf0a-44e7-b528-3c6447e2b001"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""Attack2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1034,8 +1056,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Map = m_Player.FindAction("Map", throwIfNotFound: true);
         m_Player_RotateColor = m_Player.FindAction("RotateColor", throwIfNotFound: true);
-        m_Player_Attack2 = m_Player.FindAction("Attack2", throwIfNotFound: true);
         m_Player_Attack1 = m_Player.FindAction("Attack1", throwIfNotFound: true);
+        m_Player_Attack2 = m_Player.FindAction("Attack2", throwIfNotFound: true);
         m_Player_Attack3 = m_Player.FindAction("Attack3", throwIfNotFound: true);
         m_Player_Attack4 = m_Player.FindAction("Attack4", throwIfNotFound: true);
         m_Player_VerticalLook = m_Player.FindAction("VerticalLook", throwIfNotFound: true);
@@ -1112,8 +1134,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Map;
     private readonly InputAction m_Player_RotateColor;
-    private readonly InputAction m_Player_Attack2;
     private readonly InputAction m_Player_Attack1;
+    private readonly InputAction m_Player_Attack2;
     private readonly InputAction m_Player_Attack3;
     private readonly InputAction m_Player_Attack4;
     private readonly InputAction m_Player_VerticalLook;
@@ -1135,8 +1157,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Map => m_Wrapper.m_Player_Map;
         public InputAction @RotateColor => m_Wrapper.m_Player_RotateColor;
-        public InputAction @Attack2 => m_Wrapper.m_Player_Attack2;
         public InputAction @Attack1 => m_Wrapper.m_Player_Attack1;
+        public InputAction @Attack2 => m_Wrapper.m_Player_Attack2;
         public InputAction @Attack3 => m_Wrapper.m_Player_Attack3;
         public InputAction @Attack4 => m_Wrapper.m_Player_Attack4;
         public InputAction @VerticalLook => m_Wrapper.m_Player_VerticalLook;
@@ -1177,12 +1199,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RotateColor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
                 @RotateColor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
                 @RotateColor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateColor;
-                @Attack2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
-                @Attack2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
-                @Attack2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
                 @Attack1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack1;
                 @Attack1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack1;
                 @Attack1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack1;
+                @Attack2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
+                @Attack2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
+                @Attack2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack2;
                 @Attack3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack3;
                 @Attack3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack3;
                 @Attack3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack3;
@@ -1238,12 +1260,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @RotateColor.started += instance.OnRotateColor;
                 @RotateColor.performed += instance.OnRotateColor;
                 @RotateColor.canceled += instance.OnRotateColor;
-                @Attack2.started += instance.OnAttack2;
-                @Attack2.performed += instance.OnAttack2;
-                @Attack2.canceled += instance.OnAttack2;
                 @Attack1.started += instance.OnAttack1;
                 @Attack1.performed += instance.OnAttack1;
                 @Attack1.canceled += instance.OnAttack1;
+                @Attack2.started += instance.OnAttack2;
+                @Attack2.performed += instance.OnAttack2;
+                @Attack2.canceled += instance.OnAttack2;
                 @Attack3.started += instance.OnAttack3;
                 @Attack3.performed += instance.OnAttack3;
                 @Attack3.canceled += instance.OnAttack3;
@@ -1323,8 +1345,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
         void OnRotateColor(InputAction.CallbackContext context);
-        void OnAttack2(InputAction.CallbackContext context);
         void OnAttack1(InputAction.CallbackContext context);
+        void OnAttack2(InputAction.CallbackContext context);
         void OnAttack3(InputAction.CallbackContext context);
         void OnAttack4(InputAction.CallbackContext context);
         void OnVerticalLook(InputAction.CallbackContext context);
