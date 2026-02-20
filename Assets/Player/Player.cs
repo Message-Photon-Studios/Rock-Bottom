@@ -77,9 +77,6 @@ public class Player : MonoBehaviour
         lookInput.action.performed += (InputAction.CallbackContext ctx) => lookAction?.Invoke(lookInput.action.ReadValue<float>());
         lookInput.action.canceled += (InputAction.CallbackContext ctx) => lookCancelAction?.Invoke();
 
-        walkInput.action.performed += (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
-        walkInput.action.canceled += (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
-
         verticalMoveInput.action.performed += (InputAction.CallbackContext ctx) => {
             verticalMoveDir = verticalMoveInput.action.ReadValue<float>(); 
             verticalMoveAction?.Invoke();
@@ -110,9 +107,6 @@ public class Player : MonoBehaviour
 
         lookInput.action.performed -= (InputAction.CallbackContext ctx) => lookAction?.Invoke(lookInput.action.ReadValue<float>());
         lookInput.action.canceled -= (InputAction.CallbackContext ctx) => lookCancelAction?.Invoke();
-
-        walkInput.action.performed -= (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
-        walkInput.action.canceled -= (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
 
         verticalMoveInput.action.performed -= (InputAction.CallbackContext ctx) => {
             verticalMoveDir = verticalMoveInput.action.ReadValue<float>(); 
@@ -240,7 +234,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        
+        walkDir = walkInput.action.ReadValue<float>();
     }
 
     #endregion
