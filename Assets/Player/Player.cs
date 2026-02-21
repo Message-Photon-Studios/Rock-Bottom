@@ -77,9 +77,6 @@ public class Player : MonoBehaviour
         lookInput.action.performed += (InputAction.CallbackContext ctx) => lookAction?.Invoke(lookInput.action.ReadValue<float>());
         lookInput.action.canceled += (InputAction.CallbackContext ctx) => lookCancelAction?.Invoke();
 
-        walkInput.action.performed += (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
-        walkInput.action.canceled += (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
-
         verticalMoveInput.action.performed += (InputAction.CallbackContext ctx) => {
             verticalMoveDir = verticalMoveInput.action.ReadValue<float>(); 
             verticalMoveAction?.Invoke();
@@ -110,9 +107,6 @@ public class Player : MonoBehaviour
 
         lookInput.action.performed -= (InputAction.CallbackContext ctx) => lookAction?.Invoke(lookInput.action.ReadValue<float>());
         lookInput.action.canceled -= (InputAction.CallbackContext ctx) => lookCancelAction?.Invoke();
-
-        walkInput.action.performed -= (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
-        walkInput.action.canceled -= (InputAction.CallbackContext ctx) => {walkDir = walkInput.action.ReadValue<float>();};
 
         verticalMoveInput.action.performed -= (InputAction.CallbackContext ctx) => {
             verticalMoveDir = verticalMoveInput.action.ReadValue<float>(); 
@@ -205,15 +199,16 @@ public class Player : MonoBehaviour
     /// Is called when a new level is loaded and generated
     /// </summary>
     /// <param name="gameManager"></param>
-    public void SetStartLevel(LevelManager gameManager)
+    public void SetStartLevel(LevelManager gameManager, Transform teleportStart = null)
     {
         this.levelManager = gameManager;
         
         if(animator) animator.SetBool("dead", false);
         if(playerMovement)
         {
-            transform.position = startPosition;
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>().SetStartLevel();
+            if(!teleportStart) transform.position = startPosition;
+            else transform.position = teleportStart.position;
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraMovement>().SetStartLevel(transform);
             playerMovement.movementRoot.SetTotalRoot("endLevel", false);
             playerMovement.movementRoot.SetTotalRoot("dead", false);
         }
@@ -221,7 +216,8 @@ public class Player : MonoBehaviour
 
         foreach(GameObject obj in loadWithPlayerObjects)
         {
-            obj.transform.position = new Vector3(startPosition.x, startPosition.y, obj.transform.position.z);
+            if(!teleportStart) obj.transform.position = new Vector3(startPosition.x, startPosition.y, obj.transform.position.z);
+            else obj.transform.position = new Vector3(teleportStart.position.x, teleportStart.position.y, obj.transform.position.z);
         }
         
         if(stats) stats.Setup(gameManager);
@@ -238,7 +234,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        
+        walkDir = walkInput.action.ReadValue<float>();
     }
 
     #endregion

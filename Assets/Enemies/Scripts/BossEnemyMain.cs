@@ -4,7 +4,6 @@ using UnityEngine;
 using BehaviourTree;
 using UnityEditor;
 using UnityEngine.Events;
-using System.Reflection;
 
 public class BossEnemyMain : Enemy
 {
@@ -24,6 +23,15 @@ public class BossEnemyMain : Enemy
     [SerializeField] ParticleSystem attackOrb;
     [SerializeField] ParticleSystem attackBeam;
     [SerializeField] ParticleSystem attackAim;
+
+    [Header("Stones attack")]
+    [SerializeField] GameObject stoneHand;
+    //[SerializeField] GameObject stoneProjectile;
+    [SerializeField] Vector2 stoneSpawn1, stoneSpawn2, stoneSpawn3, stoneSpawn4;
+    /*[SerializeField] float stoneUpForce;
+    [SerializeField] float stoneRadomForce; */
+    [SerializeField] float stonesAttackCooldown;
+    [SerializeField] float stonesHpSpawn;
 
     [Header("Bomb attack")]
     [SerializeField] float bombTimer;
@@ -46,22 +54,49 @@ public class BossEnemyMain : Enemy
             new KeepHeight(stats, transform.position.y, 1f),
             new Selector(new List<Node>{
 
-                new Sequence(new List<Node>{
+                new Sequence(new List<Node> //Spawn enemies
+                {
                     new Wait(minionWaveTimer),
                     new ActivateAction(onNewMinionWave)
                 }),
 
-                new Sequence(new List<Node>{
+                /*new Sequence(new List<Node> //Stone attack spawn
+                {
+                    new CheckBool("stoneThrowAttack", true),
+                        new EnemyObjectSpawner(stats, stoneProjectile, stoneSpawn1, Vector2.up*stoneUpForce, false, stoneRadomForce),
+                        new EnemyObjectSpawner(stats, stoneProjectile, stoneSpawn2, Vector2.up*stoneUpForce, false, stoneRadomForce),
+                        new EnemyObjectSpawner(stats, stoneProjectile, stoneSpawn3, Vector2.up*stoneUpForce, false, stoneRadomForce),
+                        new EnemyObjectSpawner(stats, stoneProjectile, stoneSpawn4, Vector2.up*stoneUpForce, false, stoneRadomForce),
+                    new SetParentVariable("attack", false, 3),
+                    new SetParentVariable("stoneThrowAttack", false, 3),
+                }),*/
+
+                new Sequence(new List<Node> //Stone attack trigger animation
+                {
                     new CheckBool("sleeping", false),
+                    new CheckBool("attack", false),
+                    new CheckEnemyHealthPercentage(stats, stonesHpSpawn, false),
+                    new Wait(stonesAttackCooldown),
+                        new EnemyObjectSpawner(stats, stoneHand, stoneSpawn1, Vector2.zero, true),
+                        new EnemyObjectSpawner(stats, stoneHand, stoneSpawn2, Vector2.zero, true),
+                        new EnemyObjectSpawner(stats, stoneHand, stoneSpawn3, Vector2.zero, true),
+                        new EnemyObjectSpawner(stats, stoneHand, stoneSpawn4, Vector2.zero, true),
+                    //new AnimationTrigger(animator, "stonesAttack")
+                }),
+
+                new Sequence(new List<Node>{ // Bomb attack
+                    new CheckBool("sleeping", false),
+                    new CheckBool("attack", false),
                     new Wait(bombTimer),
+                    new SetParentVariable("attack", true, 3),
                     new AnimationTrigger(handAnimator, "bombSnap")
                 }),
-                
-                new Sequence(new List<Node>{
+
+                new Sequence(new List<Node>{ //Beam attack
                     new CheckBool("sleeping", false),
                     new CheckBool("attack", false),
                     new CheckPlayerArea(stats, player, beamTrigger),
-                    new Wait(beamTimer, .5f),
+                    new Wait(beamTimer, .8f),
                     new LookAtPlayer(stats, player),
                     new SetParentVariable("attack", true, 3),
                     new ParticlesPlay(attackAim, true),
@@ -159,6 +194,7 @@ public class BossEnemyMain : Enemy
         base.OnDestroy();
         onWispSpawned.RemoveAllListeners();
         onNewMinionWave.RemoveAllListeners();
+        GameManager.instance.GoToMainMenu();
     }
 
 

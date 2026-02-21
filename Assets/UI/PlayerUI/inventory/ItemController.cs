@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System;
+using Unity.VisualScripting;
 
 public class ItemController : MonoBehaviour
 {
@@ -35,22 +36,19 @@ public class ItemController : MonoBehaviour
     [SerializeField] Image selectedImage;
     [SerializeField] TMP_Text selectedName;
     [SerializeField] TMP_Text selectedDesc;
-    [SerializeField] int descriptionFontSize;
+    [SerializeField] TMP_Text selectedDesc2;
+    [SerializeField] TMP_Text selectedAmount;
 
     //Event system used in inventory.
     [SerializeField] EventSystem eventSystem;
-
-    //Amount of items the player has that is over the inventory display limit.
-    private int excessCount = 0;
-
-    //Text showing how many more items you have.
-    [SerializeField] TMP_Text excessItemsCounter;
 
     //Holds all item prefabs.
     private List<SelectedInventoryItem> items = new List<SelectedInventoryItem>{};
 
     //Holds all bottle prefabs.
     private List<SelectedBottle> bottles = new List<SelectedBottle>{};
+
+    private int colCount = 7;
 
 
     private void OnEnable() {
@@ -70,10 +68,7 @@ public class ItemController : MonoBehaviour
         }
         BottleNavigation();
 
-        selectedDesc.fontSize = descriptionFontSize;
-
         selectedItemContainer.SetActive(false);
-        excessItemsCounter.gameObject.SetActive(false);
     }
 
     private void OnDisable() {
@@ -106,9 +101,26 @@ public class ItemController : MonoBehaviour
             AddItem(item);
         }
 
+        foreach(SelectedInventoryItem existingItem in items)
+        {
+            if(existingItem.amount > 1)
+            {
+                existingItem.amountText.text = ""+existingItem.amount;
+                existingItem.amountText.gameObject.SetActive(true);
+            } else
+            {
+                existingItem.amountText.gameObject.SetActive(false);
+            }
+        }
+
         selectedItemContainer.SetActive(false);
         eventSystem.SetSelectedGameObject(null);
-        statColorList[0].GetComponent<Selectable>().Select();
+        if(items.Count < 1) {
+            statColorList[0].GetComponent<Selectable>().Select();
+        } else
+        {
+            items[0].GetComponent<Selectable>().Select();
+        }
     }
 
     /// <summary>
@@ -120,11 +132,27 @@ public class ItemController : MonoBehaviour
     }
 
     /// <summary>
-    /// If bottle changed, update information with new bottle from index.
+    /// If bottle changed, destroy all bottles in inventory and fetch new updated list of bottles.
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">Not used</param>
     private void BottleChanged(int index) {
-        bottles[index].Setup(colorInventory.GetColorSpell(index));
+        List<GameObject> objs = new List<GameObject>(); //Destroys old bottles in inventory
+        for (int i = 0; i < bottlesContainer.transform.childCount; i++)
+        {
+            objs.Add(bottlesContainer.transform.GetChild(i).gameObject);
+        }
+        bottlesContainer.transform.DetachChildren();
+        for (int i = 0; i < objs.Count; i++)
+        {
+            Destroy(objs[i]);
+        }
+
+        bottles = new List<SelectedBottle>{}; // clears bottles list as Destroy doesn't immidiately delete everything.
+
+        for(int i = 0; i < colorInventory.colorSlots.Count; i++) { //Fetch new bottle information and add it to inventory.
+            AddBottle(colorInventory.GetColorSpell(i));
+        }
+        BottleNavigation();
     }
 
     /// <summary>
@@ -137,7 +165,14 @@ public class ItemController : MonoBehaviour
         newBottle.GetComponent<RectTransform>().sizeDelta = new Vector2(110, 110);
         newBottle.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
         newBottle.Setup(bottle);
-        bottles.Add(newBottle);
+
+        if(bottles.Count == 3)
+        {
+            newBottle.GetComponent<RectTransform>().SetAsFirstSibling();
+            bottles.Insert(0, newBottle);
+        } else {
+            bottles.Add(newBottle);
+        }
         newBottle.onInventoryBottleSelected += ShowSelectedBottle;
     }
 
@@ -198,10 +233,17 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item">Item to be added.</param>
     private void AddItem(Item item) {
-        if(items.Count >= 69) {
-            excessCount += 1;
-            ShowExcessItems(excessCount);
-        } else {
+        bool isNewItem = true;
+        foreach(SelectedInventoryItem existingItem in items)
+        {
+            if(existingItem.itemInfo == item)
+            {
+                existingItem.amount++;
+                isNewItem = false;
+                break;
+            }
+        }
+        if(isNewItem) {
             SelectedInventoryItem newItem = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             newItem.GetComponent<RectTransform>().SetParent(itemsContainer.transform);
             newItem.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
@@ -242,55 +284,33 @@ public class ItemController : MonoBehaviour
             Navigation lastNav =  items[nr-1].GetComponent<Selectable>().navigation;
             nav.mode = Navigation.Mode.Explicit;
             nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
-            if((nr%10) != 0) {
+            if((nr%colCount) != 0) { // If current item is not the first item in the row, make last item navigate into current on right nav.
             lastNav.selectOnRight = newItem.GetComponent<Selectable>();
             }
 
-            if((nr%10) == 0) {
+            if((nr%colCount) == 0) { // If current item is the first item of the row, set left nav to colors and right to null.
                 nav.selectOnLeft = statColorList[0].GetComponent<Selectable>();
                 nav.selectOnRight = null;
             } 
-            else if((nr%10) == 9) {
-                nav.selectOnRight = items[nr-9].GetComponent<Selectable>();
+            else { // If current item is not the first item of the row, loop back to the first item on right nav.
+                nav.selectOnRight = items[nr-nr%colCount].GetComponent<Selectable>();
                 nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
                 lastNav.selectOnRight = newItem.GetComponent<Selectable>();
-            } else if(nr == 68) {
-                nav.selectOnRight = items[nr-8].GetComponent<Selectable>();
-                nav.selectOnLeft = items[nr-1].GetComponent<Selectable>();
-                lastNav.selectOnRight = newItem.GetComponent<Selectable>();
-            }
+            } 
 
-            if(nr < 10) {
+            if(nr < colCount) { // If there is one row or less items, remove up and down nav.
                 nav.selectOnUp = null;
                 nav.selectOnDown = null;
-            } else if (nr > 60) {
-                nav.selectOnDown = null;
-                nav.selectOnUp = items[nr-10].GetComponent<Selectable>();
-                Navigation above = items[nr-10].GetComponent<Selectable>().navigation;
+            }  else { // If there is more than one row of items, enable up and down nav.
+                nav.selectOnUp = items[nr-colCount].GetComponent<Selectable>();
+                nav.selectOnDown = items[nr%colCount].GetComponent<Selectable>();
+                Navigation above = items[nr-colCount].GetComponent<Selectable>().navigation;
                 above.selectOnDown = newItem.GetComponent<Selectable>();
-                items[nr-10].GetComponent<Selectable>().navigation = above;
-            } else {
-                nav.selectOnUp = items[nr-10].GetComponent<Selectable>();
-                nav.selectOnDown = null;
-                Navigation above = items[nr-10].GetComponent<Selectable>().navigation;
-                above.selectOnDown = newItem.GetComponent<Selectable>();
-                items[nr-10].GetComponent<Selectable>().navigation = above;
+                items[nr-colCount].GetComponent<Selectable>().navigation = above;
             }
 
-            newItem.GetComponent<Selectable>().navigation = nav;
+            newItem.GetComponent<Selectable>().navigation = nav; // Assign completed navs
             items[nr-1].GetComponent<Selectable>().navigation = lastNav;
-    }
-
-    /// <summary>
-    /// Is called when player has more items than the inventory can show.
-    /// Displayes extra amount of items as a + followed by the amount of items
-    /// in excess the player has. 
-    /// </summary>
-    /// <param name="excessCount"></param>
-    private void ShowExcessItems(int excessCount)
-    {
-        excessItemsCounter.gameObject.SetActive(true);
-        excessItemsCounter.text = "+" + excessCount;
     }
 
     /// <summary>
@@ -298,10 +318,30 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     private void ShowSelectedItem(Item item) {
+        ClearAllSelectedComponents();
         selectedItemContainer.SetActive(true);
         selectedImage.sprite = item.sprite;
         selectedName.text = item.GetName();
-        selectedDesc.text = item.GetDesc();
+
+        //todo Uncomment this when translations are in
+        /*  
+        selectedDesc.text = item.GetLongDesc();
+        selectedDesc2.text = item.GetLoreDesc();
+        */
+
+        selectedDesc.text = item.GetDesc(); //TODO remove this when translations are in 
+        
+        foreach(SelectedInventoryItem inventoryItem in items)
+        {
+            if (inventoryItem.itemInfo == item)
+            {
+                if(inventoryItem.amount > 1) {
+                    selectedAmount.gameObject.SetActive(true);
+                    selectedAmount.text = inventoryItem.amount + "x";
+                }
+                break;
+            }
+        }
     }
 
     /// <summary>
@@ -309,8 +349,9 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     private void ShowSelectedColor(GameColor color) {
+        ClearAllSelectedComponents();
         selectedItemContainer.SetActive(true);
-        selectedImage.sprite =color.colorIcon;
+        selectedImage.sprite = color.colorIcon;
         selectedName.text = color.name;
         selectedDesc.text = color.description;
     }
@@ -320,9 +361,23 @@ public class ItemController : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     private void ShowSelectedBottle(ColorSpell bottle) {
+        ClearAllSelectedComponents();
         selectedItemContainer.SetActive(true);
         selectedImage.sprite =bottle.GetBottleSprite().bigSprite;
         selectedName.text = bottle.name;
         selectedDesc.text = bottle.description.GetLocalizedString();
+    }
+
+    /// <summary>
+    /// Empties SelectedItem components and hides amount.
+    /// </summary>
+    private void ClearAllSelectedComponents()
+    {
+        selectedName.text = "";
+        selectedAmount.text = "";
+        selectedDesc.text = "";
+        selectedDesc2.text = "";
+
+        selectedAmount.gameObject.SetActive(false);
     }
 }

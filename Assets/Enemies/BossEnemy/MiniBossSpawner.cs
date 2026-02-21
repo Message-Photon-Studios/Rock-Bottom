@@ -35,6 +35,8 @@ public class MiniBossSpawner : MonoBehaviour
                 }
             }
 
+            LevelManager.instance.autoChase = false;
+
             return;
         }
 
