@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TridentSpellScript : SpellImpact
 {
-    [SerializeField] float strength;
+    [SerializeField] float rotateStrength;
+    [SerializeField] float boostStrength;
     [SerializeField] LayerMask layersToHit;
     [SerializeField] float waitTime;
     [SerializeField] float despawnDistance;
@@ -52,22 +53,27 @@ public class TridentSpellScript : SpellImpact
             if (count >= 20) Destroy(gameObject);
             Vector3 direction = player.transform.position - transform.position;
             float playerAngle = Mathf.Atan2(direction.y * spell.lookDir, direction.x * spell.lookDir) * Mathf.Rad2Deg ;
-            Quaternion newDir = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, playerAngle)), Time.deltaTime * strength * ((count + 10f) / 10f));
+            Quaternion newDir = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, playerAngle)), Time.deltaTime * rotateStrength * ((count + 10f) / 10f));
             transform.rotation = newDir;
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, newDir * new Vector2(spell.lookDir, 0), 50f, layersToHit);
-            if (hit.rigidbody && time < Time.time - waitTime)
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, newDir * new Vector2(spell.lookDir, 0), 2f, layersToHit);
+
+            if (time < Time.time - waitTime)
             { 
-                if (hit.rigidbody.gameObject == player)
+                if (hit.rigidbody)
+                {
+                    Destroy(gameObject);
+                }
+                else
                 {
                     Vector2 dir = newDir * new Vector2(1 * spell.lookDir, 0);
-                    body.velocity = (dir.normalized * 20 * (count + 10f)/10f);
+                    body.velocity = (dir.normalized * boostStrength * (count + 10f)/10f);
                     count++;
                     timeSinceLastBoost = Time.time + .5f;
                     canBeDestroyed = true;
                     canBoostAgain = false;
                     foreach (ParticleSystem particle in GetComponentsInChildren<ParticleSystem>()) particle.emissionRate = emmission;
                 }
-            }
+            } 
         }
         else
         {
