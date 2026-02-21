@@ -59,7 +59,7 @@ public class BossEnemyController : MonoBehaviour
     {
         float health = stats.GetHealth();
 
-        int newPhase =  (int)(4f * (1-(health/bossStartHealth)));
+        int newPhase =  (int)(4f * (1f-(health/(float)bossStartHealth)));
         if(newPhase != phase)
         {
             phase = newPhase;
