@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: -7692674297862362138}
   - component: {fileID: -3571827099952294123}
   - component: {fileID: 1386513622766948605}
+  - component: {fileID: -4194106663655495843}
   m_Layer: 8
   m_Name: Trident
   m_TagString: Spell
@@ -272,6 +273,7 @@ MonoBehaviour:
   waitTime: 1
   despawnDistance: 0.6
   maxDistance: 7
+  maxBoosts: 10
   canBoostAgianDistance: 6
 --- !u!70 &1386513622766948605
 CapsuleCollider2D:
@@ -289,6 +291,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 2, y: 0.75}
   m_Direction: 1
+--- !u!114 &-4194106663655495843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3321278458073070463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6110a5fd1d8d2a942b5656d31192bd83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPrefabs:
+  - {fileID: 3321278458073070463, guid: b9aca72c59db0414ba07acba9081a0b8, type: 3}
 --- !u!1 &7695216169340282102
 GameObject:
   m_ObjectHideFlags: 0

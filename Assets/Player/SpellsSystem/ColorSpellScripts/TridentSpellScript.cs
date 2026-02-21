@@ -10,6 +10,7 @@ public class TridentSpellScript : SpellImpact
     [SerializeField] float waitTime;
     [SerializeField] float despawnDistance;
     [SerializeField] float maxDistance;
+    [SerializeField] int maxBoosts;
     [SerializeField] float canBoostAgianDistance;
     GameObject player;
     Rigidbody2D body;
@@ -50,7 +51,7 @@ public class TridentSpellScript : SpellImpact
         {
             body.velocity = new Vector2(0,0);
             foreach (ParticleSystem particle in GetComponentsInChildren<ParticleSystem>()) particle.emissionRate = 0;
-            if (count >= 20) Destroy(gameObject);
+            if (count >= maxBoosts) Destroy(gameObject);
             Vector3 direction = player.transform.position - transform.position;
             float playerAngle = Mathf.Atan2(direction.y * spell.lookDir, direction.x * spell.lookDir) * Mathf.Rad2Deg ;
             Quaternion newDir = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, playerAngle)), Time.deltaTime * rotateStrength * ((count + 10f) / 10f));
