@@ -654,10 +654,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3d3c56e3-f25e-4b8d-9f4e-28116275c3ba"",
-                    ""path"": ""<Keyboard>/k"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""DivideColor1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -885,10 +885,10 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a37a2076-a81f-4f62-839e-18935ed870de"",
-                    ""path"": ""<Keyboard>/l"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""DivideColor2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -928,6 +928,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""49704549-3941-41d2-bab0-37ee2845ea45"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""DivideColor3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""3923e7cf-bdda-4293-b550-5f7493503079"",
                     ""path"": ""<XInputController>/leftShoulder"",
                     ""interactions"": """",
@@ -944,6 +955,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard;KeyboardMouse"",
+                    ""action"": ""DivideColor4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c48ded66-d69e-4c0f-879e-952479165a19"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""DivideColor4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
