@@ -21,6 +21,7 @@ public class PetrifiedPigmentPickup : InteractionObject
     void Awake()
     {
         if(ItemSpellManager.instance) ItemSpellManager.instance.AddPetrifiedPigment(this);
+        else FindObjectOfType<ItemSpellManager>().AddPetrifiedPigment(this);
         gameObject.SetActive(false);
     }
 
