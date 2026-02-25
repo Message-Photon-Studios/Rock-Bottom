@@ -11,6 +11,7 @@ public class SettingsController : BigMenu
     [SerializeField] MainMenuController controller;
     [SerializeField] Slider screenSizeSlider;
     [SerializeField] TMP_Text screenSizeText;
+    [SerializeField] Selectable firstOption;
 
     void Start()
     {
@@ -20,6 +21,7 @@ public class SettingsController : BigMenu
             screenSizeSlider.value = screenSize;
             screenSizeText.text = screenSize.ToString("F1");
         }
+        mainComponent.SetActive(false);
     }
 
     public void UpdateCameraSizeSlider()
@@ -46,5 +48,6 @@ public class SettingsController : BigMenu
         {
             base.AfterOpening();
         }
+        firstOption.Select();
     }
 }
