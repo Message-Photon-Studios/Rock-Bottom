@@ -30,6 +30,11 @@ public class SettingsController : BigMenu
         screenSizeText.text = screenSizeSlider.value.ToString("F1");
     }
 
+    public void ToggleFullscreen()
+    {
+        Screen.fullScreen = !Screen.fullScreen;
+    }
+
     protected override void AfterClosing()
     {
         if (controller)
