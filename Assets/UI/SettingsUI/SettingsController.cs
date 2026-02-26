@@ -35,6 +35,20 @@ public class SettingsController : BigMenu
         Screen.fullScreen = !Screen.fullScreen;
     }
 
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if(hasFocus && mainComponent.activeSelf)
+        {
+            StartCoroutine(FocusGained());
+        }
+    }
+
+    IEnumerator FocusGained()
+    {
+        yield return null;
+        firstOption.Select();
+    }
+
     protected override void AfterClosing()
     {
         if (controller)

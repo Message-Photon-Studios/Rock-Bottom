@@ -213,6 +213,20 @@ public class MainMenuController : MonoBehaviour
         timeSinceLastInput = Time.time;
     }
 
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if(hasFocus && !settings.mainComponent.activeSelf)
+        {
+            StartCoroutine(FocusGained());
+        }
+    }
+
+    IEnumerator FocusGained()
+    {
+        yield return null;
+        continueButton.Select();
+    }
+
     /*
     IEnumerator StartTrailer()
     {
