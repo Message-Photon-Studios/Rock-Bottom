@@ -800,16 +800,16 @@ public class LevelGenerator
         // Make the square that will be used to cull rooms
         var dist = LevelGenManager.cullDistance;
         var cullSquare = new Rect(
-            camPos.x - (cameraWidth * dist),
-            camPos.y - (cameraSize * dist),
-            (cameraWidth * dist) * 1.7f,
-            (cameraSize * dist) * 1.7f);
+            camPos.x - (cameraWidth * dist/2),
+            camPos.y - (cameraSize * dist/2),
+            cameraWidth * dist,
+            cameraSize * dist);
         foreach (var room in prefabs)
         {
             var size = room.Item2.size * 2 * ROOMSIZE;
             var pos = room.Item2.minNode * 2 * ROOMSIZE - Vector2.one * ROOMSIZE + room.Item1;
             // Make room square
-            var roomSquare = new Rect(pos.x, pos.y, size.x, size.y);
+            var roomSquare = new Rect(pos.x-5, pos.y-5, size.x+10, size.y+10);
             room.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
         }
 
