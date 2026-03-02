@@ -147,8 +147,10 @@ public class EnemyStats : MonoBehaviour
             }
         }
             
-            
-            
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        if(renderer)
+            renderer.sortingOrder = UnityEngine.Random.Range(0,100);    
+        
         onDamageTaken += DmgNumber.create;
         onEnemyDeath += (EnemyStats _) => dropCoins(coinsDropped.GetReward());
         enemySounds = GetComponent<EnemySounds>();
