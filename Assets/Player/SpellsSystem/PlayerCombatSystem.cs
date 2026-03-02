@@ -336,6 +336,7 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         addColorMode = false;
         playerMovement.movementRoot.SetTotalRoot("colorWellActivation", false);
+        playerMovement.movementRoot.UnrootCompletely();
         onColorPickupMode?.Invoke(false, null);
     }
     #endregion
