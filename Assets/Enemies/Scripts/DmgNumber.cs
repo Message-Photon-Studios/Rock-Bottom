@@ -41,10 +41,7 @@ public class DmgNumber : MonoBehaviour
         var prefab = Resources.Load<DmgNumber>("DmgNumbers/DmgNumber");
         DmgNumber dmgNumber = Instantiate(prefab, position, Quaternion.identity);
         dmgNumber.textMesh = dmgNumber.GetComponent<TextMeshPro>();
-        if (numberInt == 0)
-            dmgNumber.textMesh.SetText(prefab.immuneMsg);
-        else
-            dmgNumber.textMesh.SetText(numberInt.ToString(CultureInfo.InvariantCulture));
+        dmgNumber.textMesh.SetText(numberInt.ToString(CultureInfo.InvariantCulture));
         if (numberInt == 0)
         {
             dmgNumber.size = 0.75f;

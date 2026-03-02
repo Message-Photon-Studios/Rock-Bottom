@@ -720,7 +720,8 @@ public class EnemyStats : MonoBehaviour
         if (firstRainbowed)
         {
             AchievementsManager.instance.ProgressAchievement("Painter");
-            DamageEnemy(Player.instance.stats.rainbowedDamage);
+            if(Player.instance.stats.rainbowedDamage > 0)
+                DamageEnemy(Player.instance.stats.rainbowedDamage);
 
             colorComboTimer = maxColorComboTimer;
 
