@@ -13,6 +13,9 @@ public class SettingsController : BigMenu
     [SerializeField] TMP_Text screenSizeText;
     [SerializeField] Selectable firstOption;
 
+    public Resolution[] resolutions;
+    [SerializeField] TMP_Dropdown resolutionDropdown;
+
     void Start()
     {
         if (PlayerPrefs.HasKey(SettingsManager.screenSizeKey))
@@ -22,6 +25,26 @@ public class SettingsController : BigMenu
             screenSizeText.text = screenSize.ToString("F1");
         }
         mainComponent.SetActive(false);
+
+        resolutions = Screen.resolutions;
+        resolutionDropdown.ClearOptions();
+        List<string> options = new List<string>();
+        int currentResolutionIndex = 0;
+
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + " x " + resolutions[i].height;
+            options.Add(option);
+
+            if(resolutions[i].width == Screen.currentResolution.width &&
+               resolutions[i].height == Screen.currentResolution.height)
+            {
+                currentResolutionIndex = i;
+            }
+        }
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
     }
 
     public void UpdateCameraSizeSlider()
@@ -33,6 +56,12 @@ public class SettingsController : BigMenu
     public void ToggleFullscreen()
     {
         Screen.fullScreen = !Screen.fullScreen;
+    }
+
+    public void SetResolution (int resolutionIndex)
+    {
+        Resolution resolution = resolutions[resolutionIndex];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
     void OnApplicationFocus(bool hasFocus)
