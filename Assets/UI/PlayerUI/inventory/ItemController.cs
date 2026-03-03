@@ -380,4 +380,23 @@ public class ItemController : MonoBehaviour
 
         selectedAmount.gameObject.SetActive(false);
     }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if(hasFocus && GetComponent<BigMenu>().mainComponent.activeSelf)
+        {
+            StartCoroutine(FocusGained());
+        }
+    }
+
+    IEnumerator FocusGained()
+    {
+        yield return null;
+        if(items.Count < 1) {
+            statColorList[0].GetComponent<Selectable>().Select();
+        } else
+        {
+            items[0].GetComponent<Selectable>().Select();
+        }
+    }
 }
