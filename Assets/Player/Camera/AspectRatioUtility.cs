@@ -9,7 +9,7 @@ public class AspectRatioUtility : MonoBehaviour
         Adjust();
     }
 
-    void Adjust()
+    public void Adjust()
     {
         float targetaspect = 16f / 9f;
         float windowaspect = (float)Screen.width / (float)Screen.height;

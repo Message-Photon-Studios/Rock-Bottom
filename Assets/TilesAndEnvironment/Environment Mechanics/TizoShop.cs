@@ -352,6 +352,20 @@ public class TizoShop : BigMenu
 
         return true;
     }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if(hasFocus && mainComponent.activeSelf)
+        {
+            StartCoroutine(FocusGained());
+        }
+    }
+
+    IEnumerator FocusGained()
+    {
+        yield return null;
+        tizoTradeModules[0].GetComponent<Selectable>().Select();
+    }
 }
 
 [System.Serializable]

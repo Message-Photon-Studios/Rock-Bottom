@@ -55,4 +55,17 @@ public class PauseMenu : BigMenu
         resumeButton.GetComponent<Selectable>().Select();
     }
     
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if(hasFocus && mainComponent.activeSelf)
+        {
+            StartCoroutine(FocusGained());
+        }
+    }
+
+    IEnumerator FocusGained()
+    {
+        yield return null;
+        resumeButton.Select();
+    }
 }
