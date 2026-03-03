@@ -147,8 +147,10 @@ public class EnemyStats : MonoBehaviour
             }
         }
             
-            
-            
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        if(renderer)
+            renderer.sortingOrder = UnityEngine.Random.Range(0,100);    
+        
         onDamageTaken += DmgNumber.create;
         onEnemyDeath += (EnemyStats _) => dropCoins(coinsDropped.GetReward());
         enemySounds = GetComponent<EnemySounds>();
@@ -720,7 +722,8 @@ public class EnemyStats : MonoBehaviour
         if (firstRainbowed)
         {
             AchievementsManager.instance.ProgressAchievement("Painter");
-            DamageEnemy(Player.instance.stats.rainbowedDamage);
+            if(Player.instance.stats.rainbowedDamage > 0)
+                DamageEnemy(Player.instance.stats.rainbowedDamage);
 
             colorComboTimer = maxColorComboTimer;
 

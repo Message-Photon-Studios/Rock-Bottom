@@ -17,6 +17,7 @@ public class ColorWell : InteractionObject
     [SerializeField] PickUpCanvasController pickUpCanvasController;
     private Color iconShadedColor = Color.black;
     public bool wellUsed {get; private set; } = false; 
+    private bool animationPlaying = false;
 
     private ColorSlot activateOnSlot = null;
 
@@ -106,6 +107,7 @@ public class ColorWell : InteractionObject
 
     protected override void PlayerInteract()
     {
+        if(animationPlaying || Player.instance.playerMovement.inAttackAnimation) return;
         if (!Player.instance.playerCombatSystem.addColorMode)
         {
             Player.instance.playerCombatSystem.EnableAbsorbColor(this);
@@ -118,6 +120,9 @@ public class ColorWell : InteractionObject
 
         
     }
+
+    public void AnimFuncSetBoolTrue() {animationPlaying = true;}
+    public void AnimFuncSetBoolFalse() {animationPlaying = false;}
 
     #region Check playerClose
     protected override void PlayerClose(bool isClose)
