@@ -23,7 +23,7 @@ public class SettingsController : BigMenu
         {
             float screenSize = PlayerPrefs.GetFloat(SettingsManager.screenSizeKey);
             screenSizeSlider.value = screenSize;
-            screenSizeText.text = screenSize.ToString("F1");
+            screenSizeText.text = ((int)screenSizeSlider.value).ToString();
         }
         mainComponent.SetActive(false);
 
@@ -57,7 +57,7 @@ public class SettingsController : BigMenu
     public void UpdateCameraSizeSlider()
     {
         SettingsManager.instance.SetCameraSize(screenSizeSlider.value);
-        screenSizeText.text = screenSizeSlider.value.ToString("F1");
+        screenSizeText.text = ((int)screenSizeSlider.value).ToString();
     }
 
     public void ToggleFullscreen(bool isFullscreen)
