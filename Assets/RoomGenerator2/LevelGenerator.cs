@@ -815,9 +815,9 @@ public class LevelGenerator
 
         foreach (var fill in filledPrefabs)
         {
-            var pos = fill.Item1 + Vector2.one * ROOMSIZE;
+            var pos = fill.Item1 + Vector2.right * ROOMSIZE + Vector2.down*ROOMSIZE;
             // Make room square
-            var roomSquare = new Rect(pos.x, pos.y, 2 * ROOMSIZE, 2 * ROOMSIZE);
+            var roomSquare = new Rect(pos.x-5, pos.y-5, 2 * ROOMSIZE+10, 2 * ROOMSIZE+10);
             fill.Item2.gameObject.SetActive(cullSquare.Overlaps(roomSquare));
         }
 

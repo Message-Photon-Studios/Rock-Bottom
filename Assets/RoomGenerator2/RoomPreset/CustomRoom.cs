@@ -338,4 +338,18 @@ public class CustomRoom : MonoBehaviour
         }
         return min;
     }
+
+    public Vector2 getUpLeftCorner()
+    {
+        // Get the node with the lowest x and y value
+        var min = new Vector2(int.MaxValue, int.MinValue);
+        foreach (var node in roomNodes)
+        {
+            if (node.Key.x < min.x)
+                min.x = node.Key.x;
+            if (node.Key.y > min.y)
+                min.y = node.Key.y;
+        }
+        return min;
+    }
 }
