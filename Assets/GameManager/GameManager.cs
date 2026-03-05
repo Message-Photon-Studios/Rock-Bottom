@@ -137,6 +137,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         {
             areasVisited.Add(levelName);
             onNewAreaFound?.Invoke(levelName);
+
             DataPersistenceManager.instance.SaveGame(); 
         }
 
@@ -175,6 +176,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public IEnumerator GoToMainMenuAsync()
     {
         SceneManager.LoadSceneAsync("MainMenu");
+        Player.instance.ForceKillPlayer();
         yield break;
     }
 

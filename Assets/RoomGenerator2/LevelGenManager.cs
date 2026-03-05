@@ -133,6 +133,7 @@ public class LevelGenManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        levelGen?.minimap?.testPosition(player.gameObject.transform.position);
+        if(player != null)
+            levelGen?.minimap?.testPosition(player.gameObject.transform.position);
     }
 }
