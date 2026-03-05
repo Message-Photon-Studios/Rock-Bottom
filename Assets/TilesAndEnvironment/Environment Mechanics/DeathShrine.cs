@@ -36,6 +36,8 @@ public class DeathShrine : InteractionObject
         itemPickup.gameObject.SetActive(true);
         infoBox.CloseMenu();
 
+        AchievementsManager.instance?.onDeathShrineUsed?.Invoke();
+
         bought = true;
     }
 }

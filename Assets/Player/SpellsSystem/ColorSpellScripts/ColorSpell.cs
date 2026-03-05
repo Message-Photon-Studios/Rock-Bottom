@@ -124,6 +124,8 @@ public class ColorSpell : MonoBehaviour
         this.extraDamage = extraDamage;
         resetEnemyTime = attackAgainTimer;
 
+        Player.instance?.playerCombatSystem.onSpellCast?.Invoke(power, this, gameColor);
+
         foreach(Light2D light in GetComponentsInChildren<Light2D>())
         {
             light.color = gameColor.lightTintColor;

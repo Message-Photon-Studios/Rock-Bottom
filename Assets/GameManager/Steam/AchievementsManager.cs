@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Steamworks;
+using System;
 
 public class AchievementsManager : MonoBehaviour
 {
@@ -53,4 +54,10 @@ public class AchievementsManager : MonoBehaviour
         SteamUserStats.SetAchievement(achievementId);
         SteamUserStats.StoreStats();
     }
+
+    public Action onHealingShrineUsed; 
+
+    public Action onWillowCrateOpened;
+
+    public Action onDeathShrineUsed;
 }

@@ -44,6 +44,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public Action<bool, ColorSpell> onSpellPickupMode;
     public Action<bool, GameColor> onColorPickupMode;
+    public Action<float, ColorSpell, GameColor> onSpellCast;
 
     #region Setup & Update
     private void OnEnable() {

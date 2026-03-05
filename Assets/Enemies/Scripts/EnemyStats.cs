@@ -721,7 +721,6 @@ public class EnemyStats : MonoBehaviour
 
         if (firstRainbowed)
         {
-            AchievementsManager.instance.ProgressAchievement("Painter");
             if(Player.instance.stats.rainbowedDamage > 0)
                 DamageEnemy(Player.instance.stats.rainbowedDamage);
 

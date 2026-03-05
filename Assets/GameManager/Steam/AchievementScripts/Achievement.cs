@@ -15,6 +15,7 @@ public abstract class Achievement : MonoBehaviour
     protected void RewardAchievement()
     {
         AchievementsManager.instance.RewardAchievement(achievementId);
+        //Debug.Log("Achievement Rewarded! : " + achievementId);
     }
 
     public virtual void ProgressAchievement()

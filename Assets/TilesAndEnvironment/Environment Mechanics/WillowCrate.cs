@@ -49,6 +49,7 @@ public class WillowCrate : InteractionObject
             itemPickup.gameObject.SetActive(true);
         }
 
+        AchievementsManager.instance.onWillowCrateOpened?.Invoke();
         sprite.SetActive(false);
         pickUpCanvas.gameObject.SetActive(false);
         mapIcon.SetActive(false);
