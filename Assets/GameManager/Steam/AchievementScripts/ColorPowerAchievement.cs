@@ -9,15 +9,22 @@ public class ColorPowerAchievement : Achievement
     {
         base.Start();
         Player.instance.playerCombatSystem.onSpellCast += SpellCast;
+        GameManager.instance.onStartedNewRun += LevelLoaded;
     }
 
+    void LevelLoaded()
+    {
+        Player.instance.playerCombatSystem.onSpellCast += SpellCast;
+    }
     void OnDisable()
     {
         Player.instance.playerCombatSystem.onSpellCast -= SpellCast;
+        GameManager.instance.onStartedNewRun -= LevelLoaded;
     }
 
     void SpellCast (float power, ColorSpell spell, GameColor color)
     {
+        Debug.Log("Achievement power: " + power);
         if(power >= powerNeeded) RewardAchievement();
     }
 }

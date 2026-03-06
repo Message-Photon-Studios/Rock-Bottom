@@ -10,18 +10,18 @@ public abstract class BeatGameAchievement : Achievement
         base.Start();
         GameManager.instance.onLevelLoaded += Setup;
         GameManager.instance.onStartedNewRun += NewRunStarted;
+        GameManager.instance.onGameWon += BossDefeated;
     }
 
     protected virtual void OnDisable()
     {
-        BossEnemyController.onBossDefeated -= BossDefeated;
+        GameManager.instance.onGameWon -= BossDefeated;
         GameManager.instance.onLevelLoaded -= LevelLoaded;
         GameManager.instance.onStartedNewRun -= NewRunStarted;
     }
 
     private void Setup()
     {
-        if(SceneManager.GetActiveScene().name.Equals("BossArena")) BossEnemyController.onBossDefeated += BossDefeated;
         LevelLoaded();
     }
 

@@ -66,6 +66,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     public System.Action<string> onNewAreaFound;
 
+    public System.Action onGameWon;
+
     void Awake()
     {
         if(instance == null)

@@ -128,6 +128,7 @@ public class BossEnemyController : MonoBehaviour
                 hunters[i].GetComponent<EnemyStats>().KillEnemy();
         }
         onBossDefeated?.Invoke();
+        GameManager.instance?.onGameWon?.Invoke();
     }
 
     void PlayerDied()
