@@ -21,7 +21,7 @@ public abstract class BeatGameAchievement : Achievement
 
     private void Setup()
     {
-        BossEnemyController.onBossDefeated += BossDefeated;
+        if(SceneManager.GetActiveScene().name.Equals("BossArena")) BossEnemyController.onBossDefeated += BossDefeated;
         LevelLoaded();
     }
 
