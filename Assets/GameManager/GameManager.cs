@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [SerializeField] int maxHunters;
     
     [SerializeField] ColorSpell[] startSpells;
-    private List<string> unlockedSpells;
+    private List<string> unlockedSpells = new List<string>();
     private HashSet<string> spawnableSpells;
     [SerializeField] AudioSource spellUnlockSound;
 
@@ -110,7 +110,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
         levelNum++;
         if(levelManager.rerunStart && levelNum > 1) rerunNum++;
 
-        DataPersistenceManager.instance.SaveGame();
         DataPersistenceManager.instance.Start();
 
         player = Player.instance.playerStats;

@@ -460,7 +460,6 @@ public class EnemyStats : MonoBehaviour
 
     private void DealRainbowDamage(int rainbowDamage)
     {
-        GameManager.instance.tipsManager.DisplayTips("rainbowCombo");
         SpawnRainbowParticles();
         DamageEnemy(rainbowDamage);
     }

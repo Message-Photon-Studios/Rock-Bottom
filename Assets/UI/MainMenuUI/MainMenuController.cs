@@ -60,11 +60,12 @@ public class MainMenuController : MonoBehaviour
         trailer.SetActive(false);
         //cancel.action.performed += CancelTrailer;
         playing = false;
+    }
 
-        if(!DataPersistenceManager.instance.SaveFileVersionOk())
-        {
-            continueButton.gameObject.SetActive(false);
-        }
+    public void HideContinueButton()
+    {
+        continueButton.gameObject.SetActive(false);
+        startButton.Select();
     }
 
     public void StartNewGame()
@@ -229,7 +230,10 @@ public class MainMenuController : MonoBehaviour
     IEnumerator FocusGained()
     {
         yield return null;
-        continueButton.Select();
+        if(continueButton.IsActive())
+            continueButton.Select();
+        else
+            startButton.Select();
     }
 
     /*

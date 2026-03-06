@@ -158,7 +158,7 @@ public class ColorInventory : MonoBehaviour
 
         ColorSpellImpact.onSpellImpact -= SpellImactTrigger;
         SpellImactOnVelocity.onSpellImpact -= SpellImactTrigger;
-        GameObject player = GameObject.FindWithTag("Player");
+        GameObject player = Player.instance.gameObject;
         player.GetComponent<PlayerStats>().onPlayerDamaged -= WhenDamaged;
         player.GetComponent<PlayerMovement>().onPlayerDash -= DashSpells;
         player.GetComponent<PlayerMovement>().onPlayerDoubleJump -= DoubleJumpSpells;
@@ -472,8 +472,6 @@ public class ColorInventory : MonoBehaviour
         {
             colorBuffs.Add(color, addPower);
         }
-
-        GameManager.instance.tipsManager.DisplayTips("colorPower");
     }
 
     /// <summary>
@@ -1221,7 +1219,6 @@ public class ColorSlot
         if (charge > maxCapacity)
         {
             charge = maxCapacity;
-            GameManager.instance.tipsManager.DisplayTips("filledBottle");
         }
 
         Player.instance.colorInventory.onColorUpdated?.Invoke();
