@@ -7,15 +7,15 @@ public class InspiredAchievement : Achievement
     protected override void Start()
     {
         base.Start();
-        GameManager.instance.onInspirationChanged += Inspired;
+        GameManager.instance.onSpellUnlocked += Inspired;
     }
 
     void OnDisable()
     {
-        GameManager.instance.onInspirationChanged -= Inspired;
+        GameManager.instance.onSpellUnlocked -= Inspired;
     }
 
-    void Inspired(int inspirationAdded)
+    void Inspired(ColorSpell spell)
     {
         ProgressAchievement();
     }

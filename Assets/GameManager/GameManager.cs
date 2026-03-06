@@ -343,6 +343,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     }
 
 
+    public System.Action<ColorSpell> onSpellUnlocked;
     /// <summary>
     /// Permanently unlocks this spell.
     /// </summary>
@@ -352,6 +353,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         unlockedSpells.Add(spell.name);
         spawnableSpells.Add(spell.name);
         spellUnlockSound.Play();
+        onSpellUnlocked?.Invoke(spell);
         DataPersistenceManager.instance.SaveGame();
     }
 
