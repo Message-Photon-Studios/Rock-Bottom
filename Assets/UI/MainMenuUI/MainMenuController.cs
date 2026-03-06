@@ -60,6 +60,11 @@ public class MainMenuController : MonoBehaviour
         trailer.SetActive(false);
         //cancel.action.performed += CancelTrailer;
         playing = false;
+
+        if(!DataPersistenceManager.instance.SaveFileVersionOk())
+        {
+            continueButton.gameObject.SetActive(false);
+        }
     }
 
     public void StartNewGame()

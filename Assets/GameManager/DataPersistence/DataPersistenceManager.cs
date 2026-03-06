@@ -41,6 +41,7 @@ public class DataPersistenceManager : MonoBehaviour
 
     public bool SaveFileVersionOk()
     {
+        if(gameData == null) return false;
         if(gameData.GetSaveFileVersion() != null)
             return gameData.GetSaveFileVersion().Equals(currentSaveFileVersion);
         else return false;
