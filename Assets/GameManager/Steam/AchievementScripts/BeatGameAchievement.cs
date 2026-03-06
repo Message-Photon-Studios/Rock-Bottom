@@ -8,8 +8,7 @@ public abstract class BeatGameAchievement : Achievement
     protected override void Start()
     {
         base.Start();
-        BossEnemyController.onBossDefeated += BossDefeated;
-        GameManager.instance.onLevelLoaded += LevelLoaded;
+        GameManager.instance.onLevelLoaded += Setup;
         GameManager.instance.onStartedNewRun += NewRunStarted;
     }
 
@@ -18,6 +17,12 @@ public abstract class BeatGameAchievement : Achievement
         BossEnemyController.onBossDefeated -= BossDefeated;
         GameManager.instance.onLevelLoaded -= LevelLoaded;
         GameManager.instance.onStartedNewRun -= NewRunStarted;
+    }
+
+    private void Setup()
+    {
+        BossEnemyController.onBossDefeated += BossDefeated;
+        LevelLoaded();
     }
 
     protected virtual void NewRunStarted(){}

@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Achievement : MonoBehaviour
 {
     [SerializeField] private string achievementId;
+    [SerializeField] private string progressStat;
     protected PlayerStats playerStats;
 
     protected virtual void Start()
@@ -20,7 +21,7 @@ public abstract class Achievement : MonoBehaviour
 
     public virtual void ProgressAchievement()
     {
-
+        AchievementsManager.instance.ProgressAchievement(achievementId, progressStat);
     }
 
     public string GetAchivementId()

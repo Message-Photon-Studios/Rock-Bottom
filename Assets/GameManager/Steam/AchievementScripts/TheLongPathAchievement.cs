@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using NaughtyAttributes;
 public class TheLongPathAchievement : BeatGameAchievement
 {
-    [SerializeField] string[] levelsNeeded;
+    [Scene][SerializeField] string[] levelsNeeded;
 
     List<string> currentVisited = new List<string>();
 

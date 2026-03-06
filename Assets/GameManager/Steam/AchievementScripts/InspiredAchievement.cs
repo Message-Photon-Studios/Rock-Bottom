@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InspiredAchievement : Achievement
 {
-    [SerializeField] int inspirationRequired = 1;
     protected override void Start()
     {
         base.Start();
@@ -18,9 +17,6 @@ public class InspiredAchievement : Achievement
 
     void Inspired(int inspirationAdded)
     {
-        if(GameManager.instance.GetInspiration() >= inspirationRequired)
-        {
-            RewardAchievement();
-        }
+        ProgressAchievement();
     }
 }
