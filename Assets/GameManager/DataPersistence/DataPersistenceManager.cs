@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 
 public class DataPersistenceManager : MonoBehaviour
 {
