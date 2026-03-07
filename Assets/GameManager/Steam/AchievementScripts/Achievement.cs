@@ -6,11 +6,9 @@ public abstract class Achievement : MonoBehaviour
 {
     [SerializeField] private string achievementId;
     [SerializeField] private string progressStat;
-    protected PlayerStats playerStats;
 
     protected virtual void Start()
     {
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
     }
 
     protected void RewardAchievement()

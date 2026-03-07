@@ -8,6 +8,6 @@ public class AstralCollectorAchievement : BeatGameAchievement
 
     protected override void BossDefeated()
     {
-        if(playerStats.gameObject.GetComponent<ItemInventory>().GetCoins() >= coinsNeeded) RewardAchievement();
+        if(Player.instance.playerInventory.GetCoins() >= coinsNeeded) RewardAchievement();
     }
 }

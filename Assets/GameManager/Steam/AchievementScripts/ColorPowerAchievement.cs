@@ -24,7 +24,6 @@ public class ColorPowerAchievement : Achievement
 
     void SpellCast (float power, ColorSpell spell, GameColor color)
     {
-        Debug.Log("Achievement power: " + power);
         if(power >= powerNeeded) RewardAchievement();
     }
 }
