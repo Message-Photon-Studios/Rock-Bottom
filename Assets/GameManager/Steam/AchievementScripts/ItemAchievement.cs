@@ -7,6 +7,8 @@ public class ItemAchievement : Achievement
     [SerializeField] Item item;
     [SerializeField] int itemAmount = 1;
 
+    private int collected = 0;
+
     protected override void Start()
     {
         base.Start();
@@ -17,6 +19,7 @@ public class ItemAchievement : Achievement
     void RunStarted()
     {
         Player.instance.playerInventory.onItemPickedUpOrRemoved += ItemsChanged;
+        collected = 0;
     }
 
     void OnDisable()
@@ -29,7 +32,8 @@ public class ItemAchievement : Achievement
     {
         if(itemChanged == item)
         {
-            if(Player.instance.playerInventory.getItemAmoutWithName(item.GetName())>= itemAmount)
+            collected ++;
+            if(collected >= itemAmount)
             {
                 RewardAchievement();
             }
