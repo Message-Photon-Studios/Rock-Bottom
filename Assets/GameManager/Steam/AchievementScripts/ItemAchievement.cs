@@ -11,11 +11,18 @@ public class ItemAchievement : Achievement
     {
         base.Start();
         Player.instance.playerInventory.onItemPickedUpOrRemoved += ItemsChanged;
+        GameManager.instance.onStartedNewRun += RunStarted;
+    }
+
+    void RunStarted()
+    {
+        Player.instance.playerInventory.onItemPickedUpOrRemoved += ItemsChanged;
     }
 
     void OnDisable()
     {
         Player.instance.playerInventory.onItemPickedUpOrRemoved -= ItemsChanged;
+        GameManager.instance.onStartedNewRun -= RunStarted;
     }
 
     void ItemsChanged(Item itemChanged)
