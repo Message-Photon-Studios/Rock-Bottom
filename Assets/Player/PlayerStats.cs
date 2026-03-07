@@ -412,7 +412,6 @@ public class PlayerStats : MonoBehaviour
         isDeathExecuted = true;
         //TODO
         //Debug.Log("Player died. Player deaths not implemented");
-        EnemyStats.chaoticMixer = false; //Resets chaoticMixer 
         levelManager?.PlayerDied();
         onPlayerDied?.Invoke();
     }

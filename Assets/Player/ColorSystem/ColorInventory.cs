@@ -72,6 +72,8 @@ public class ColorInventory : MonoBehaviour
     private float concentratedMaxBuff = 0;
     private float colorMaxBonus = 0;
     private int colorMaxDamageBonus = 0;
+    public bool chaoticMixer = false;
+
     
 
 

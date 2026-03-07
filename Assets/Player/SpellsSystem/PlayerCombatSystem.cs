@@ -37,7 +37,6 @@ public class PlayerCombatSystem : MonoBehaviour
 
     private int currentSlot = -1;
 
-
     public bool addColorMode {get; private set;} = false;
     public ColorWell colorWell {get; private set;}
     public bool pickUpSpellMode {get; private set;} = false;
