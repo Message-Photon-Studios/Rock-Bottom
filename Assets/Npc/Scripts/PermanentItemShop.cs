@@ -23,6 +23,5 @@ public class PermanentItemShop : NpcUpgradeShop
     {
         FindObjectOfType<ItemInventory>().AddItem(item);
         FindObjectOfType<ItemInventory>().SetPermanentItems();
-        DataPersistenceManager.instance.SaveGame();
     }
 }

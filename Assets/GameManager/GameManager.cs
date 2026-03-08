@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [SerializeField] int maxHunters;
     
     [SerializeField] ColorSpell[] startSpells;
-    private List<string> unlockedSpells;
+    private List<string> unlockedSpells = new List<string>();
     private HashSet<string> spawnableSpells;
     [SerializeField] AudioSource spellUnlockSound;
 
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     [SerializeField] private int petrifiedPigment = 0;
     [SerializeField] private int inspirationPoints = 0;
-    string gameStartScene = "Tutorial_0";
+    string gameStartScene = "Tutorial";
     public bool allowsTips {get; private set;} = true;
     float hunterTimer = 0f;
     List<EnemyStats> hunters = new List<EnemyStats>(0);
@@ -40,10 +40,14 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     public ItemLibrary itemLibrary;
 
+    public float currentRunTime {get; private set;} = 0;
+
     private bool prepareStartRun = false;
 
     public int levelNum {get; private set;} = 0;
     public int rerunNum {get; private set;} = 1;
+
+    public List<string> areasVisited = new List<string>();
 
     /// <summary>
     /// Is called right before a new run is loaded. This is called when the player is exiting cave town.
@@ -59,6 +63,10 @@ public class GameManager : MonoBehaviour, IDataPersistence
     /// Is called after the player has died and cave town is loaded.
     /// </summary>
     public System.Action onLoadedCaveTown;
+
+    public System.Action<string> onNewAreaFound;
+
+    public System.Action onGameWon;
 
     void Awake()
     {
@@ -104,8 +112,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         levelNum++;
         if(levelManager.rerunStart && levelNum > 1) rerunNum++;
 
-        DataPersistenceManager.instance.SaveGame();
-        DataPersistenceManager.instance.Start();
+        DataPersistenceManager.instance.LoadGame();
 
         player = Player.instance.playerStats;
 
@@ -124,10 +131,22 @@ public class GameManager : MonoBehaviour, IDataPersistence
         }
         
         allowsTips = levelManager.allowTips;
+
+        string levelName = SceneManager.GetActiveScene().name;
+        //Here the level is loaded
+        if(!areasVisited.Contains(levelName))
+        {
+            areasVisited.Add(levelName);
+            onNewAreaFound?.Invoke(levelName);
+
+            DataPersistenceManager.instance.SaveGame(); 
+        }
+
         onLevelLoaded?.Invoke();
         if(prepareStartRun)
         {
             prepareStartRun = false;
+            currentRunTime = 0;
             onStartedNewRun?.Invoke();
         } else if(levelManager.isCaveTownLevel)
         {
@@ -140,6 +159,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         levelNum = 0;
         rerunNum = 1;
+        currentRunTime = 0;
         prepareStartRun = true;
         onPrepareNewRun?.Invoke();
     }
@@ -157,6 +177,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public IEnumerator GoToMainMenuAsync()
     {
         SceneManager.LoadSceneAsync("MainMenu");
+        Player.instance.ForceKillPlayer();
         yield break;
     }
 
@@ -188,6 +209,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         pickedUpPetrifiedPigment.AddRange(data.petrifiedPigmentPickedUp);
 
         inspirationPoints = data.inspirationPoints;
+        areasVisited = data.areasVisited.ToList<string>();
     }
 
     void IDataPersistence.SaveData(GameData data)
@@ -197,6 +219,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         data.petrifiedPigment = petrifiedPigment;
         data.petrifiedPigmentPickedUp = pickedUpPetrifiedPigment.ToArray();
         data.inspirationPoints = inspirationPoints;
+        data.areasVisited = areasVisited.ToArray();
     }
 
     public string GetStartScene()
@@ -210,6 +233,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     void Update()
     {
+        currentRunTime += Time.deltaTime;
+
         if (currentLevelManager && currentLevelManager.allowsClockTimer && !currentLevelManager.autoChase)
         {
             clockTime -= Time.deltaTime;
@@ -319,6 +344,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     }
 
 
+    public System.Action<ColorSpell> onSpellUnlocked;
     /// <summary>
     /// Permanently unlocks this spell.
     /// </summary>
@@ -328,6 +354,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         unlockedSpells.Add(spell.name);
         spawnableSpells.Add(spell.name);
         spellUnlockSound.Play();
+        onSpellUnlocked?.Invoke(spell);
         DataPersistenceManager.instance.SaveGame();
     }
 
@@ -343,6 +370,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
         petrifiedPigment-=removePigment;
         onPetrifiedPigmentChanged?.Invoke(-removePigment);
+        DataPersistenceManager.instance.SaveGame();
         return true;
     }
 

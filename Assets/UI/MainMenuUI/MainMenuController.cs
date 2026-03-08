@@ -62,6 +62,12 @@ public class MainMenuController : MonoBehaviour
         playing = false;
     }
 
+    public void HideContinueButton()
+    {
+        continueButton.gameObject.SetActive(false);
+        startButton.Select();
+    }
+
     public void StartNewGame()
     {
         DataPersistenceManager.instance.NewGame();
@@ -224,7 +230,10 @@ public class MainMenuController : MonoBehaviour
     IEnumerator FocusGained()
     {
         yield return null;
-        continueButton.Select();
+        if(continueButton.IsActive())
+            continueButton.Select();
+        else
+            startButton.Select();
     }
 
     /*

@@ -107,7 +107,6 @@ public class EnemyStats : MonoBehaviour
     [CanBeNull] private Coroutine currentCoroutine;
 
     public bool isColoredThisFrame {get; private set;} = false;
-    public static bool chaoticMixer = false;
     ColorLibrary colorLibrary;
     Light2D enemyLight;
 
@@ -323,7 +322,7 @@ public class EnemyStats : MonoBehaviour
 
         health -= damage;
         
-        if (chaoticMixer && damage > 0)
+        if (Player.instance.colorInventory.chaoticMixer && damage > 0)
         {
             StartCoroutine(ChaothicMixer());
         }
@@ -460,7 +459,6 @@ public class EnemyStats : MonoBehaviour
 
     private void DealRainbowDamage(int rainbowDamage)
     {
-        GameManager.instance.tipsManager.DisplayTips("rainbowCombo");
         SpawnRainbowParticles();
         DamageEnemy(rainbowDamage);
     }
@@ -721,7 +719,6 @@ public class EnemyStats : MonoBehaviour
 
         if (firstRainbowed)
         {
-            AchievementsManager.instance.ProgressAchievement("Painter");
             if(Player.instance.stats.rainbowedDamage > 0)
                 DamageEnemy(Player.instance.stats.rainbowedDamage);
 

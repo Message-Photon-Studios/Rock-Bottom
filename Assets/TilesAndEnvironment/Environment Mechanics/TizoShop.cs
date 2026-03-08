@@ -78,16 +78,12 @@ public class TizoShop : BigMenu
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
-
-    void Start()
+    
+    public void LevelLoaded()
     {
         shopOpen = false;
         CloseMenu();
         trades = new List<TizoTrade>();
-    }
-    
-    public void LevelLoaded()
-    {
         SetAvailableCostItems();
         SetTrades();
         SetupUi();

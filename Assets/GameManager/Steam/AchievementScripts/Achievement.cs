@@ -5,21 +5,21 @@ using UnityEngine;
 public abstract class Achievement : MonoBehaviour
 {
     [SerializeField] private string achievementId;
-    protected PlayerStats playerStats;
+    [SerializeField] private string progressStat;
 
     protected virtual void Start()
     {
-        playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
     }
 
     protected void RewardAchievement()
     {
         AchievementsManager.instance.RewardAchievement(achievementId);
+        //Debug.Log("Achievement Rewarded! : " + achievementId);
     }
 
     public virtual void ProgressAchievement()
     {
-
+        AchievementsManager.instance.ProgressAchievement(achievementId, progressStat);
     }
 
     public string GetAchivementId()

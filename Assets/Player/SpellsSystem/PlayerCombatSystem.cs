@@ -16,6 +16,7 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] PlayerSounds playerSounds;
     public int greyExtraDamage = 0;
+    [SerializeField] float jumpAttackDrainBlockChance = .3f;
 
     /// <summary>
     /// Cascade damage will increase damage of spells each time a spell is cast, but will reset to zero when default attack is used.
@@ -36,7 +37,6 @@ public class PlayerCombatSystem : MonoBehaviour
 
     private int currentSlot = -1;
 
-
     public bool addColorMode {get; private set;} = false;
     public ColorWell colorWell {get; private set;}
     public bool pickUpSpellMode {get; private set;} = false;
@@ -44,6 +44,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public Action<bool, ColorSpell> onSpellPickupMode;
     public Action<bool, GameColor> onColorPickupMode;
+    public Action<float, ColorSpell, GameColor> onSpellCast;
 
     #region Setup & Update
     private void OnEnable() {
@@ -182,7 +183,10 @@ public class PlayerCombatSystem : MonoBehaviour
             
             ColorSpell spellStats = spellSpawn.GetComponent<ColorSpell>();
             spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, lookDir, GetExtraDamage(color)); //Sets all the stats for the spell
-            if (castType != CastType.EXTRA) colorInventory.UseColorSlot(slot); //Consumes the color after the spell has been spawned.
+            
+            if (castType != CastType.EXTRA && castType != CastType.JUMP) colorInventory.UseColorSlot(slot); //Consumes the color after the spell has been spawned.
+            else if(castType == CastType.JUMP && UnityEngine.Random.Range(0, 1f) > jumpAttackDrainBlockChance) colorInventory.UseColorSlot(slot);
+            
             spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++; //Makes sure that the spells arent Z fighting. 
             if (!spellStats.spawnKey.Equals("")) onRecast?.Invoke(spellStats.spawnKey); //Triggers all spells that have some recast behaviour. EX Flail's chain breaks
             if (castType != CastType.HURT && castType != CastType.HIT && castType != CastType.EXTRA) colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot); //Consumes ones spell Charge and sets it on cooldown.

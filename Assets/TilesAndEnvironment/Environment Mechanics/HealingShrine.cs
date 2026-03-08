@@ -51,6 +51,7 @@ public class HealingShrine : InteractionObject
         if(inventory.PayCost(CalculatePrice()))
         {
             player.HealPlayer(heal);
+            AchievementsManager.instance?.onHealingShrineUsed?.Invoke();
             count++;
             pickUpController.UpdateHealthShrine(this);
             animator.SetBool("heal", true);

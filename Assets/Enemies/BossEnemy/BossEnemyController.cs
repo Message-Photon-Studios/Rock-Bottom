@@ -121,6 +121,7 @@ public class BossEnemyController : MonoBehaviour
 
     void BossDied(EnemyStats deadBoss)
     {
+        GameManager.instance?.onGameWon?.Invoke();
         GetComponent<BossEnemyMain>().KillAllMinions();
         for (int i = 0; i < hunters.Length; i++)
         {
