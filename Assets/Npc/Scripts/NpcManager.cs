@@ -4,6 +4,7 @@ using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using UnityEngine.SceneManagement;
 using UnityEngine.Localization;
+using System;
 
 public class NpcManager : MonoBehaviour, IDataPersistence
 {
@@ -13,6 +14,8 @@ public class NpcManager : MonoBehaviour, IDataPersistence
 
     [Header("Quest Dialogues")]
     [SerializeField] Dialogue williamBottlesAppear;
+    [SerializeField] SerializedDictionary<string, Dialogue> questDefault;
+    [SerializeField] SerializedDictionary<string, Dialogue> questSpecial;
 
     void Start()
     {
@@ -22,6 +25,22 @@ public class NpcManager : MonoBehaviour, IDataPersistence
     void OnDisable()
     {
         GameManager.instance.onSpellUnlocked -= BottleAdded;
+    }
+
+    public void QuestUnlocked(string npc, string location, string quest)
+    {
+        if(!npcData.ContainsKey(npc)) return;
+        if(npcData[npc].IsQuestDone(quest)) return;
+
+        if(questDefault.ContainsKey(quest))
+        {
+            npcData[npc].ChangeDefaultDialogue(questDefault[quest]);
+        }
+
+        if(questSpecial.ContainsKey(quest))
+        {
+            npcData[npc].AddSpecialDialogue(location, questSpecial[quest]);
+        }
     }
 
     void BottleAdded(ColorSpell spell)
@@ -109,7 +128,12 @@ public class NpcData
     [SerializeField] SerializedDictionary<string, Dialogue> regionalDefaultDialogues;
     [SerializeField] SerializedDictionary<string, List<Dialogue>> specificDialogues;
     List<int> specialDialoguesAdded = new List<int>();
+    List<string> questDone = new List<string>();
 
+    public bool IsQuestDone(string questName)
+    {
+        return questDone.Contains(questName);
+    }
 
     public void UpdateDialogues(NpcData original)
     {
@@ -226,7 +250,7 @@ public class Dialogue
     {
         if(id == 0)
         {
-            id = Random.Range(0,1000000000);
+            id = UnityEngine.Random.Range(0,1000000000);
         }
     }
     [SerializeField] public int id = 0;
