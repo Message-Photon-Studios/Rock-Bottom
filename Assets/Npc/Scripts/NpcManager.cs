@@ -46,7 +46,9 @@ public class NpcManager : MonoBehaviour, IDataPersistence
     void BottleAdded(ColorSpell spell)
     {
         int unlockedBottles = GameManager.instance.GetInspiration();
-        if(unlockedBottles >= 4) npcData["William"].AddSpecialDialogue("CrystalHub", williamBottlesAppear); 
+        if(unlockedBottles >= 3) npcData["William"].AddSpecialDialogue("CrystalHub", williamBottlesAppear); 
+        if(unlockedBottles >= 2) QuestUnlocked("Azula", "TheOutskirts", "azulaSomeBottles");
+        if(unlockedBottles >= 18) QuestUnlocked("Azula", "TheOutskirts", "azulaAllBottles");
     }
 
     public void Awake()
