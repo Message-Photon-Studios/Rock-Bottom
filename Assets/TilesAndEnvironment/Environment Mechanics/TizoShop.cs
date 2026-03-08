@@ -7,12 +7,13 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
+using System.Diagnostics.Tracing;
 
 public class TizoShop : BigMenu
 {   
     [Header("Ui")]
     [SerializeField] TizoTradeModule[] tizoTradeModules;
-    [SerializeField] Image[] inventoryItemImages;
+    [SerializeField] TizoInventoryItem[] inventoryItemImages;
     [SerializeField] GameObject[] infoCards;
     [SerializeField] GameObject infoSeparator;
     [SerializeField] LocalizedString missingString;
@@ -231,17 +232,51 @@ public class TizoShop : BigMenu
 
     void UpdateUi()
     {
-        foreach (Image itemImage in inventoryItemImages)
+        foreach (TizoInventoryItem tizoItem in inventoryItemImages) // Reset all items
         {
-            itemImage.gameObject.SetActive(false);
+            tizoItem.gameObject.SetActive(false);
+            tizoItem.amount = 0;
+            tizoItem.amountText.text = "";
+            tizoItem.amountText.gameObject.SetActive(false);
+            tizoItem.itemName = "";
         }
 
         List<Item> inventoryItems = Player.instance.playerInventory.getItems();
+        int inventoryItemPointer = 0;
 
-        for (int i = 0; i < inventoryItems.Count && i < inventoryItemImages.Length; i++)
+        foreach (Item item in inventoryItems) //find item amounts, if new item populate
         {
-            inventoryItemImages[i].sprite = inventoryItems[i].sprite;
-            inventoryItemImages[i].gameObject.SetActive(true);
+            bool isNewItem = true;
+            foreach(TizoInventoryItem tizoItem in inventoryItemImages)
+            {
+                if(tizoItem.itemName == item.name)
+                {
+                    isNewItem = false;
+                    tizoItem.amount++;
+                    break;
+                }
+            } 
+            if(isNewItem)
+            {
+                inventoryItemImages[inventoryItemPointer].itemName = item.name;
+                inventoryItemImages[inventoryItemPointer].image.sprite = item.sprite;
+                inventoryItemImages[inventoryItemPointer].amount = 1;
+                inventoryItemPointer++;
+            }
+        }
+
+        foreach(TizoInventoryItem tizoItem in inventoryItemImages) //show items, and amount if 2 or more
+        {
+            
+            if(tizoItem.amount > 1)
+            {
+                tizoItem.amountText.text = ""+tizoItem.amount;
+                tizoItem.amountText.gameObject.SetActive(true);
+                tizoItem.gameObject.SetActive(true);
+            } else if (tizoItem.amount == 1)
+            {
+                tizoItem.gameObject.SetActive(true);
+            } 
         }
 
         for (int i = 0; i < trades.Count && i < tizoTradeModules.Length; i++)
