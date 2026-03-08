@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
-using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
-using System.Linq;
 using UnityEngine.Localization;
 
 public class NpcManager : MonoBehaviour, IDataPersistence
@@ -12,7 +10,26 @@ public class NpcManager : MonoBehaviour, IDataPersistence
     public static NpcManager instance = null;
     [SerializeField] public SerializedDictionary<string, NpcData> npcData = new SerializedDictionary<string, NpcData>();
     [SerializeField, HideInInspector] private SerializedDictionary<string, NpcData> npcOriginalData = new SerializedDictionary<string, NpcData>();
-    
+
+    [Header("Quest Dialogues")]
+    [SerializeField] Dialogue williamBottlesAppear;
+
+    void Start()
+    {
+        GameManager.instance.onSpellUnlocked += BottleAdded;
+    }
+
+    void OnDisable()
+    {
+        GameManager.instance.onSpellUnlocked -= BottleAdded;
+    }
+
+    void BottleAdded(ColorSpell spell)
+    {
+        int unlockedBottles = GameManager.instance.GetInspiration();
+        if(unlockedBottles >= 4) npcData["William"].AddSpecialDialogue("CrystalHub", williamBottlesAppear); 
+    }
+
     public void Awake()
     {
         if(instance == null) instance = this;
@@ -91,6 +108,7 @@ public class NpcData
     [SerializeField] Dialogue defaultDialogue;
     [SerializeField] SerializedDictionary<string, Dialogue> regionalDefaultDialogues;
     [SerializeField] SerializedDictionary<string, List<Dialogue>> specificDialogues;
+    List<int> specialDialoguesAdded = new List<int>();
 
 
     public void UpdateDialogues(NpcData original)
@@ -164,10 +182,15 @@ public class NpcData
 
     public void AddSpecialDialogue (string level, Dialogue dialogue)
     {
+        if(specialDialoguesAdded.Contains(dialogue.id)) return;
+        Debug.Log("Adding dialogue with id " + dialogue.id);
         if(specificDialogues.ContainsKey(level))
+        {
             specificDialogues[level].Add(dialogue);
+        }
         else
             specificDialogues.Add(level, new List<Dialogue>{dialogue});
+        specialDialoguesAdded.Add(dialogue.id);
     }
 
     public void ChangeDefaultDialogue(Dialogue dialogue)
