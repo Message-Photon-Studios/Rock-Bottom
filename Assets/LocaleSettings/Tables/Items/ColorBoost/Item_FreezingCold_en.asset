@@ -16,19 +16,36 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 5fc971b15910b6446acb2518980a25b9, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999577
   m_TableData:
   - m_Id: 17461678080
     m_Localized: Freezing Cold
     m_Metadata:
       m_Items: []
   - m_Id: 20284444672
-    m_Localized: 'Buffs blue color with +30% power.
+    m_Localized: Increases the effectiveness of blue color with +{totbuff_0}% (+{buff_0}%
+      per item) but decreases the effectiveness of orange color with {totbuff_1}%
+      ({buff_1}% per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999577
+  - m_Id: 141793884010352640
+    m_Localized: 'Buffs blue color with +{buff_0}% power.
 
-      Reduces orange color with
-      -15% power.'
+      Reduces orange color
+      with {buff_1}% power."'
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999577
+  - m_Id: 141793921830391808
+    m_Localized: At these temperatures the flames are extinguished.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999577
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090c247c9c0f70100100cb904000000

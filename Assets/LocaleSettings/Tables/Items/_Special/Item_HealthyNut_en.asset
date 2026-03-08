@@ -16,18 +16,31 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 33c46e37a11fcca44948fae07bfab9b5, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999532
   m_TableData:
   - m_Id: 1083234324480
-    m_Localized: Healthy Nut
+    m_Localized: Healthy Acorn
     m_Metadata:
       m_Items: []
   - m_Id: 1094252761088
-    m_Localized: 'My favourite snack!
-
-      Heal 50 health when picked up.'
+    m_Localized: Heal {buff_0} health when picked up, does nothing after that.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999532
+  - m_Id: 141752770515603456
+    m_Localized: Heal {buff_0} health when picked up.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999532
+  - m_Id: 141752864300240896
+    m_Localized: My favourite snack!
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999532
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00108cc6fe000000009082cc649bf701

@@ -16,19 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: a0495bfa18a92534fa13c7c2c04e3379, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999580
   m_TableData:
   - m_Id: 4580970496
     m_Localized: Orange Flames
     m_Metadata:
       m_Items: []
   - m_Id: 7013666816
-    m_Localized: 'Excellent for keeping the house warm.
-
-      Buffs orange color
-      with +20%.'
+    m_Localized: Increases the effectiveness of orange colored spells with +{totbuff_0}%
+      (+{buff_0}% per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999580
+  - m_Id: 141789358104678400
+    m_Localized: Buffs orange color with +{buff_0}%.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999580
+  - m_Id: 141789373472608256
+    m_Localized: Excellent for keeping the house warm.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999580
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090c282abbcf70100100ca201000000

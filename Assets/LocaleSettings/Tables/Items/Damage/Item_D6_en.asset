@@ -16,16 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 9ffec281fe0964c4da4a677c877ef975, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999587
   m_TableData:
   - m_Id: 8614289408
     m_Localized: D6
     m_Metadata:
       m_Items: []
   - m_Id: 11365752832
-    m_Localized: Add 1 to 6 damage to every spell hit
+    m_Localized: Adds random damage ranging between +{buff_0} to +{buff_1} damage
+      to every spell hit.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999587
+  - m_Id: 125868505978540032
+    m_Localized: Add {buff_0} to {buff_1} damage to every spell hit
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999587
+  - m_Id: 125868519278678016
+    m_Localized: 'Carved out of my own tree. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999587
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a073a50200000000904243bd2cbf01

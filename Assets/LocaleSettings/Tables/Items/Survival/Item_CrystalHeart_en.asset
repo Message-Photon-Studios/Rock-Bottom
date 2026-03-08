@@ -16,19 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 16df55f3853da8047bd69f8dcff3c088, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999608
   m_TableData:
   - m_Id: 3859550208
     m_Localized: Crystal Heart
     m_Metadata:
       m_Items: []
   - m_Id: 6367744000
-    m_Localized: 'Strong and sturdy, just like me!
-
-      Adds 20 max health and
-      instantly heals the same amount.'
+    m_Localized: Adds +{totbuff_0} (+{buff_0} per item) max health and instantly
+      heals the same amount.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999608
+  - m_Id: 141441623870574592
+    m_Localized: Adds +{buff_0} max health and instantly heals the same amount.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999608
+  - m_Id: 141441638424809472
+    m_Localized: A heart from a stone. Why would a stone need a heart?
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999608
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009042536880f60100108c7b01000000

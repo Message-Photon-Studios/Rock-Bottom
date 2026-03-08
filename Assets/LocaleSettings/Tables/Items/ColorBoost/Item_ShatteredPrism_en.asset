@@ -16,27 +16,35 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: cf9cae669bf94a942a614b237762d130, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999551
   m_TableData:
   - m_Id: 14012358656
     m_Localized: Shattered Prism
     m_Metadata:
       m_Items: []
   - m_Id: 35478806528
-    m_Localized: 'Increases the effectiveness of rainbow color with 30%. Each time
-      a rainbow spell hits an enemy trigger another color effect from your other
-      bottles at 50% + half of any color bonus to that color.  '
+    m_Localized: 'Increases the effectiveness of rainbow color with +{buff_0}%. Each
+      time a rainbow spell hits an enemy also triggers another color effect randomly
+      selected from your other (non-empty) bottles at half the color power of that
+      color. '
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 6789064481223999551
   - m_Id: 8530747957248
     m_Localized: The last of its kind, broken...
     m_Metadata:
       m_Items: []
   - m_Id: 8474053550080
-    m_Localized: Buffs rainbow color with +30%. Each rainbow attack triggers another
-      color effect from your other bottles.
+    m_Localized: Buffs rainbow color with +{buff_0}%. Each rainbow attack triggers
+      another color effect from your other bottles.
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 6789064481223999551
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999551
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a0b3420800000000a0f304b5070000

@@ -16,17 +16,34 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: ce7fb609f79f8954786283a7fa066d10, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999550
   m_TableData:
   - m_Id: 11478999040
     m_Localized: Concentraded Color
     m_Metadata:
       m_Items: []
   - m_Id: 15945932800
-    m_Localized: 'Each spell gains a power buff for having less color in them. +15%
-      power below 75% filled, +30% power below 50% filled and +40% below 25% filled. '
+    m_Localized: "Each spell bottle gains a power buff for having less color in them.
+      \n<75% filled = +{totbuff_0}% (+{buff_0}% per item} spell power. \n<50% filled
+      = +{totbuff_1}% (+{buff_1}% per item) spell power. \n<25% filled = +{totbuff_2}%
+      (+{buff_2}% per item} spell power."
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999550
+  - m_Id: 125876562431217664
+    m_Localized: Each spell bottle gains a power buff for having less color in them.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999550
+  - m_Id: 125876609235456000
+    m_Localized: One drop last a long way.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999550
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a073b6030000000090420d1134bf01

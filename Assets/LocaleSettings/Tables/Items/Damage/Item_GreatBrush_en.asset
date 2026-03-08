@@ -16,18 +16,38 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 40f9c3bd272c1374a808b368a8a2f949, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999589
   m_TableData:
   - m_Id: 7252119552
     m_Localized: Great Brush
     m_Metadata:
       m_Items: []
   - m_Id: 38688428032
-    m_Localized: "Your extra damage from items now scales with your color power.
-      When hitting an enemy with >90% health remaining deal +15 damage. \nEnemies
-      with <50% health remaining deal slightly more damage!"
+    m_Localized: '"Extra item damage now scales with a spell''s spell power. When
+      hitting an enemy with >90% health remaining deal +{buff_0} damage.
+
+      Enemies
+      with <50% health remaining deal +{buff_1}% more damage!"'
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999589
+  - m_Id: 105144252648034304
+    m_Localized: Extra item damage now scales with a spell's spell power and you
+      deal +{buff_0} damage to high health enemies. Low health enemies deal slightly
+      more damage to you.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999589
+  - m_Id: 105144269077123072
+    m_Localized: When painting I always started using this brush. It is so large
+      that I could easily make a good base layer of paint.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999589
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00904205248c75010090020209000000

@@ -16,17 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 87f92bee5e5ad344595d713f583b9a38, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999572
   m_TableData:
   - m_Id: 5214310400
     m_Localized: Decorated Cap
     m_Metadata:
       m_Items: []
   - m_Id: 7084969984
-    m_Localized: 'Each full bottle provides an extra +20% color buff to their current
-      color. '
+    m_Localized: 'Each full bottle provides an extra +{totbuff_0}% (+{buff_0}% per
+      item) color power buff to the color that the bottle is filled with. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999572
+  - m_Id: 141462784503353344
+    m_Localized: 'Each full bottle provides an extra +{buff_0}% color buff to their
+      current color. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999572
+  - m_Id: 141462801343483904
+    m_Localized: Ohh, shiny! Wait, haven't I seen this item before?
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999572
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090422ba793f60100104ca601000000

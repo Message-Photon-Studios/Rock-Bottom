@@ -16,20 +16,36 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 07dc909a9a20cca42968cc080e4b3e7c, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999591
   m_TableData:
   - m_Id: 6182572032
     m_Localized: Painters Knife
     m_Metadata:
       m_Items: []
   - m_Id: 20845858816
-    m_Localized: 'Each time an enemy takes any damage reduce their armour with 5%.
-      Maximum armour reduction is 50% less armour.
+    m_Localized: 'Each time an enemy takes any damage reduce their armour with {buff_0}%.
+      Maximum armour reduction is {buff_1}% less armour.
 
-      Reducing their armour increases
-      damage to them from all sources.'
+      Reducing their armour
+      increases damage to them from all sources."'
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999591
+  - m_Id: 104907263826890752
+    m_Localized: Each time an enemy takes any damage reduce their armour with {buff_0}%.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999591
+  - m_Id: 104907281195503616
+    m_Localized: I often used a knife like this to remove unwanted paint. Wait...
+      doesn't that engraving to the handle seem familiar.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999591
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090c2c299b47401009082da04000000

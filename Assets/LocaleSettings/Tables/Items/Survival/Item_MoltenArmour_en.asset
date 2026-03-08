@@ -16,26 +16,34 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 0565335beb8e3894495a17082cdb83dc, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999602
   m_TableData:
   - m_Id: 7788011520
     m_Localized: Molten Armour
     m_Metadata:
       m_Items: []
   - m_Id: 11600633856
-    m_Localized: 'Block 20% of the damage taken from Red, Orange and Yellow colored
-      enemies. '
+    m_Localized: 'Block {totbuff_0}% (+{buff_0}% per item) of the damage taken from
+      Red, Orange and Yellow colored enemies. '
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 6789064481223999602
   - m_Id: 42042892288
-    m_Localized: 'Block 20% of the damage taken from Red, Orange and Yellow colored
-      enemies. '
+    m_Localized: 'Block {buff_0}% of the damage taken from Red, Orange and Yellow
+      colored enemies. '
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 6789064481223999602
   - m_Id: 77832888320
-    m_Localized: It radiates protection
+    m_Localized: This armour is so hot that it feels as if it was made in the earth
+      itself.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999602
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a0f3c90900000000a073b302000000

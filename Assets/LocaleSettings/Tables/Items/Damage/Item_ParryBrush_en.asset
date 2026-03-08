@@ -16,19 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 2f0e9660a5626224a97cca9266296c8d, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999596
   m_TableData:
   - m_Id: 3708555264
     m_Localized: Parry Brush
     m_Metadata:
       m_Items: []
   - m_Id: 5797318656
-    m_Localized: 'When you take damage, deal 20 damage to the attacker.
-
-      +10
-      per stack'
+    m_Localized: When you take damage, deal +{totbufff_0} (+{buff_0} per additional
+      item) damage to the attacker.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999596
+  - m_Id: 141451824245936128
+    m_Localized: 'When taken damage deal damage back to the attacker. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999596
+  - m_Id: 141451840012324864
+    m_Localized: 'This little brush is a useful tool to fix the mistakes. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999596
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00900249af89f60100108c5901000000

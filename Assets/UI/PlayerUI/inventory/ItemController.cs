@@ -322,14 +322,16 @@ public class ItemController : MonoBehaviour
         selectedItemContainer.SetActive(true);
         selectedImage.sprite = item.sprite;
         selectedName.text = item.GetName();
+        
+        if(item.GetLongDesc() != null)
+        {
+            selectedDesc.text = item.GetLongDesc();
+        } else selectedDesc.text = item.GetDesc(); 
 
-        //todo Uncomment this when translations are in
-        /*  
-        selectedDesc.text = item.GetLongDesc();
-        selectedDesc2.text = item.GetLoreDesc();
-        */
-
-        selectedDesc.text = item.GetDesc(); //TODO remove this when translations are in 
+        if(item.GetLoreDesc() != null)
+        {
+            selectedDesc2.text = item.GetLoreDesc();
+        }
         
         foreach(SelectedInventoryItem inventoryItem in items)
         {

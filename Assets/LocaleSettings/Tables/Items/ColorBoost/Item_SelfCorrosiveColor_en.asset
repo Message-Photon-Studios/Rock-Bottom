@@ -16,18 +16,38 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 923062efa1fa27e428fae27173cacb4f, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999584
   m_TableData:
   - m_Id: 7747670016
     m_Localized: Self Corrosive Color
     m_Metadata:
       m_Items: []
   - m_Id: 21647593472
-    m_Localized: "Spells are +50% more effective against same color enemies but different
-      colored enemies only take 75% of the damage. \nEach full bottle provides +20%
-      color buff to their current color. "
+    m_Localized: '"Spell power has {buff_0}% effectiveness towards same color enemies
+      but has only {buff_1}% effectiveness towards different colored enemies.
+
+      Each
+      full bottle provides +{buff_2}% color power buff to the color the bottle is
+      filled with."'
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999584
+  - m_Id: 141471258243141632
+    m_Localized: Spells are more effective towards same colored enemies but less
+      effective towards other enemies. Filled bottles buff their color with +{buff_2}%.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999584
+  - m_Id: 141471274668036096
+    m_Localized: This solution seems to attack and destroy itself. Strange, this
+      needs to be investigated further.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999584
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090821d5c9bf60100104c0a05000000
