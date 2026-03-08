@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using UnityEngine.Events;
+using System.Linq;
 /// <summary>
 /// This class checks if the player has a special key item, in that case the lock is opened.
 /// </summary>
@@ -11,6 +12,7 @@ public abstract class ItemLock : MonoBehaviour
 {
     [SerializeField] Item key;
     [SerializeField] bool consumeKeyOnUnlock;
+    [SerializeField] bool consumePermanentItem;
     [SerializeField] UIMenu lockedUI;
     [SerializeField] UIMenu unlockabelUI;
     [SerializeField] InputActionReference unlockAction;
@@ -85,13 +87,29 @@ public abstract class ItemLock : MonoBehaviour
             OpenLock();
             if(consumeKeyOnUnlock)
             {
+                if(consumePermanentItem)
+                {
+                    List<Item> permItems = PermanentUpgradeManager.instance.upgrades.GetPermanentItems().ToList<Item>();
+                    if(permItems.Contains(key))
+                    {
+                        permItems.Remove(key);
+                        PermanentUpgradeManager.instance.upgrades.SetPermanentItems(permItems);
+                        GameManager.instance.keepUnlocked =  true;
+                        DataPersistenceManager.instance.SaveGame();
+                    }
+                }
+
                 itemInventory.RemoveItemWithName(key.name);
             }
             unlockabelUI.CloseMenu();
         }
     }
 
-
+    public void SavedUnlock()
+    {
+        unlocked = true;
+        Unlock();
+    }
 
     /// <summary>
     /// Sets the lock as already being unlocked.

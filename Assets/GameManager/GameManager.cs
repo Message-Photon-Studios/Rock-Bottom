@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     public int levelNum {get; private set;} = 0;
     public int rerunNum {get; private set;} = 1;
+    public bool keepUnlocked = false;
 
     public List<string> areasVisited = new List<string>();
 
@@ -115,6 +116,12 @@ public class GameManager : MonoBehaviour, IDataPersistence
         DataPersistenceManager.instance.LoadGame();
 
         player = Player.instance.playerStats;
+
+        GameObject keep = GameObject.Find("KeepDoor");
+        if(keep != null && keepUnlocked == true)
+        {
+            keep.GetComponent<LockedDoor>().SavedUnlock();
+        }
 
         currentLevelManager = levelManager;
         hunterTimer = 0f;
@@ -210,6 +217,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
         inspirationPoints = data.inspirationPoints;
         areasVisited = data.areasVisited.ToList<string>();
+        keepUnlocked = data.keepUnlocked;
     }
 
     void IDataPersistence.SaveData(GameData data)
@@ -220,6 +228,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         data.petrifiedPigmentPickedUp = pickedUpPetrifiedPigment.ToArray();
         data.inspirationPoints = inspirationPoints;
         data.areasVisited = areasVisited.ToArray();
+        data.keepUnlocked = keepUnlocked;
     }
 
     public string GetStartScene()

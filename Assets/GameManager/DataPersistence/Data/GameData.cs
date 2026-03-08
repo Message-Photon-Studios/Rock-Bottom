@@ -17,6 +17,7 @@ public class GameData
     public SerializedDictionary<string, NpcData> npcData;
     public SerializedDictionary<string, int> permanentShopBuys; 
     public string[] areasVisited; 
+    public bool keepUnlocked;
 
     public string GetSaveFileVersion()
     {
@@ -39,5 +40,6 @@ public class GameData
         permanentShopBuys = new SerializedDictionary<string, int>();
         areasVisited = new string[0];
         newSaveFile = true;
+        keepUnlocked = false;
     }
 }
