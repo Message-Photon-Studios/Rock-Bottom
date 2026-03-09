@@ -45,10 +45,11 @@ public class NPCScript : UIMenu
 
     private void NextText(InputAction.CallbackContext ctx) {
 
-        if(!questNpc.Equals("")) NpcManager.instance.QuestUnlocked(questNpc, questLocation, questName);
-
         if(isInside)
         {
+
+            if(!questNpc.Equals("")) NpcManager.instance.QuestUnlocked(questNpc, questLocation, questName);
+            
             if(dialogue == null)
             {
                 dialogue = NpcManager.instance.GetDialogue(name);
