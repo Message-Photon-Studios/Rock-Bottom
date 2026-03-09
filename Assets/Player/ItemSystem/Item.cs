@@ -22,8 +22,8 @@ public class Item : ScriptableObject
     [SerializeField] public LocalizedString longDescription;
     [SerializeField] public LocalizedString loreDescription;
     public int itemCost;
-    [SerializeField] private IntVariable[] totbuffVariables;
-    [SerializeField] private IntVariable[] buffVariables;
+    [SerializeField] private IntVariable[] totbuffVariables = new IntVariable[0];
+    [SerializeField] private IntVariable[] buffVariables = new IntVariable[0];
     [SerializeReference] public List<ItemEffect> effects = new List<ItemEffect>(); 
     [SerializeField] public ItemCategory itemCategory;
     [SerializeField] public ItemRarity itemRarity;
