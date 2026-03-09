@@ -113,6 +113,8 @@ public class ItemController : MonoBehaviour
             }
         }
 
+        BottleChanged(0);
+        
         selectedItemContainer.SetActive(false);
         eventSystem.SetSelectedGameObject(null);
         if(items.Count < 1) {
