@@ -86,4 +86,10 @@ public class BackgroundMusicController : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+    public void StopMusic()
+    {
+        musicSourceStart.Stop();
+        musicSourceLoop.Stop();
+    }
 }

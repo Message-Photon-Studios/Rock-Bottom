@@ -151,15 +151,14 @@ public class LevelManager : MonoBehaviour
 
     void StartDeathVideo ()
     {
+        BackgroundMusicController.instance.StopMusic();
         GameManager.instance.disablePausing = true;
         backgroundMusic.SetActive(false);
         videoObjecCanvas.SetActive(true);
         videoOnPlayerDeath.Play();
         videoOnPlayerDeath.loopPointReached += DeathPlayerStopped;
     }
-
-
-
+ 
     public void ShowGame()
     {
 
