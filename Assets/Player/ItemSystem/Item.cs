@@ -7,7 +7,6 @@ using JetBrains.Annotations;
 using System;
 using UnityEngine.Localization;
 using Unity.VisualScripting;
-using UnityEditor.Localization.Editor;
 using UnityEngine.Localization.SmartFormat.PersistentVariables;
 
 /// <summary>

@@ -58,6 +58,13 @@ public class AchievementsManager : MonoBehaviour
         SteamUserStats.StoreStats();
     }
 
+    public void ResetStats()
+    {
+        SteamUserStats.SetStat("areas_found", 0);
+        SteamUserStats.SetStat("bottles_unlocked", 0);
+        SteamUserStats.StoreStats();
+    }
+
     public Action onHealingShrineUsed; 
 
     public Action onWillowCrateOpened;

@@ -65,6 +65,8 @@ public class DataPersistenceManager : MonoBehaviour
         {
             dataPersistenceObj.LoadData(gameData);
         }
+
+        AchievementsManager.instance?.ResetStats();
     }
 
     public void LoadGame()

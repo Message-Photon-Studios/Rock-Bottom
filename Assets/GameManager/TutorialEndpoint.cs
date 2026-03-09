@@ -35,6 +35,7 @@ public class TutorialEndpoint : MonoBehaviour
     {
         if(!enableExit) return;
         if(trailerStarted) return;
+        StartCoroutine(BackgroundMusicController.instance.FadeOutAndDie());
         trailerStarted = true;
         TutorialMusic bgMusic = GameObject.FindObjectOfType<TutorialMusic>();
         GameManager.instance.disablePausing = true;

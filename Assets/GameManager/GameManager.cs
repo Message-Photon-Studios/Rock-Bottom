@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
         levelNum++;
         if(levelManager.rerunStart && levelNum > 1) rerunNum++;
 
-        DataPersistenceManager.instance.LoadGame();
+        DataPersistenceManager.instance?.LoadGame();
 
         player = Player.instance.playerStats;
 

@@ -13,9 +13,28 @@ public class MiniBossSpawner : MonoBehaviour
     [SerializeField] float spawnTime;
     [SerializeField] GameObject bossEnemy;
 
+    [SerializeField] AudioClip startMusicOnDeath;
+    [SerializeField] AudioClip loopMusicOnDeath;
+
     float spawnTimer = 0;
 
-    List<EnemyStats> spawnedEnemies = new List<EnemyStats>();    
+    List<EnemyStats> spawnedEnemies = new List<EnemyStats>(); 
+
+    void Start()
+    {
+        bossEnemy.GetComponent<EnemyStats>().onEnemyDeath += BossDied;
+    }
+
+    void OnDisable()
+    {
+        bossEnemy.GetComponent<EnemyStats>().onEnemyDeath -= BossDied;
+    }
+
+    void BossDied(EnemyStats stats)
+    {
+        BackgroundMusicController.instance.SetNewMusicLoop(startMusicOnDeath, loopMusicOnDeath, 1f);
+    }
+
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>

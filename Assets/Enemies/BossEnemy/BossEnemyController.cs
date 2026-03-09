@@ -12,6 +12,8 @@ public class BossEnemyController : MonoBehaviour
     [SerializeField] GameObject[] spawnEnemies;
     [SerializeField] BossHandController[] hands;
     [SerializeField] GameObject[] hunters;
+    [SerializeField] AudioClip soundOnDeath;
+    [SerializeField] AudioClip musicOnDeath;
 
     public static Action onBossDefeated;
 
@@ -128,6 +130,8 @@ public class BossEnemyController : MonoBehaviour
             if(hunters[i] != null && hunters[i].gameObject.activeSelf)
                 hunters[i].GetComponent<EnemyStats>().KillEnemy();
         }
+
+        BackgroundMusicController.instance.SetNewMusicLoop(soundOnDeath, musicOnDeath, 0f);
         onBossDefeated?.Invoke();
     }
 
