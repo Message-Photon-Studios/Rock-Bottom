@@ -100,12 +100,14 @@ public class LevelManager : MonoBehaviour
 
     public IEnumerator EndLevelAsync()
     {
+        DataPersistenceManager.instance?.SaveGame();
         SceneManager.LoadSceneAsync(nextLevelName);
         yield break;
     }
 
     public void EndLevel(string specialLevel)
     {
+        DataPersistenceManager.instance?.SaveGame();
         Player player = Player.instance;
         if(!specialLevel.Equals("")) nextLevelName = specialLevel;
         if (!clearInventoryOnLevelEnd)
