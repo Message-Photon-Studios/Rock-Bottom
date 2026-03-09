@@ -21,8 +21,9 @@ public class BackgroundMusicController : MonoBehaviour
             DontDestroyOnLoad(this);
         } else if (takeOverMusic)
         {
-            StartCoroutine(instance.FadeOutAndDie());
+            instance.StartCoroutine(instance.FadeOutAndDie());
             instance = this;
+            DontDestroyOnLoad(this);
         } else
         {
             Destroy(gameObject);
@@ -46,6 +47,32 @@ public class BackgroundMusicController : MonoBehaviour
         musicSourceLoop.PlayScheduled(loopTime);
     }
 
+    public void SetNewMusicLoop(AudioClip music, float fadeTime) => SetNewMusicLoop(music, music, fadeTime);
+    public void SetNewMusicLoop(AudioClip startMusic, AudioClip loopMusic, float fadeTime)
+    {
+        StartCoroutine(FadeChangeMusic(startMusic, loopMusic, fadeTime));
+    }
+
+    IEnumerator FadeChangeMusic(AudioClip newStartMusic, AudioClip newLoopMusic, float fadeTime)
+    {
+        float time = 0;
+        while(time < fadeTime)
+        {
+            musicSourceStart.volume -= Time.deltaTime * (1/fadeOutTime);
+            musicSourceLoop.volume -= Time.deltaTime * (1/fadeOutTime);
+            time += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        musicSourceStart.Stop();
+        musicSourceLoop.Stop();
+        startingMusic = newStartMusic;
+        loopingMusic = newLoopMusic;
+        musicSourceStart.volume = 1;
+        musicSourceLoop.volume = 1;
+        Start();
+    }
+
     public IEnumerator FadeOutAndDie()
     {
         float time = 0;
@@ -53,7 +80,10 @@ public class BackgroundMusicController : MonoBehaviour
         {
             musicSourceStart.volume -= Time.deltaTime * (1/fadeOutTime);
             musicSourceLoop.volume -= Time.deltaTime * (1/fadeOutTime);
+            time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
+        Destroy(gameObject);
     }
 }
