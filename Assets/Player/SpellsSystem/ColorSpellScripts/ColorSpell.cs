@@ -13,6 +13,8 @@ public class ColorSpell : MonoBehaviour
 {
     [SerializeField] public LocalizedString bottleName;
     [SerializeField] public LocalizedString description;
+    [SerializeField] public LocalizedString shortDescription;
+    [SerializeField] public LocalizedString flavorDescription;
 
     public int spellCost;
     /// <summary>
@@ -366,6 +368,18 @@ public class ColorSpell : MonoBehaviour
     /// <returns>Localized ColorSpell description.</returns>
     public string GetDesc() {
         return description.GetLocalizedString();
+    }
+
+    public string GetShortDesc()
+    {
+        if(shortDescription.IsEmpty) return description.GetLocalizedString();
+        return shortDescription.GetLocalizedString();
+    }
+
+    public string GetFlavorDesc()
+    {
+        if(flavorDescription.IsEmpty) return null;
+        return flavorDescription.GetLocalizedString();
     }
 
     public void SetDir(int lookDir)
