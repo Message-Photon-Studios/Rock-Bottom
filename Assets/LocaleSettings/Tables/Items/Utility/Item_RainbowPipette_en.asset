@@ -16,17 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 95f9ac533b76b6647b9439c25c6ad69b, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999613
   m_TableData:
   - m_Id: 7617024000
     m_Localized: Rainbow Pipette
     m_Metadata:
       m_Items: []
   - m_Id: 19843420160
-    m_Localized: Each time an rainbow colored enemy dies it gives away +1 (+1 per
-      item) color to the player.
+    m_Localized: Each time a rainbow colored enemy dies it gives away +{totbuff_0}
+      (+{buff_0} per item) color to the player.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999613
+  - m_Id: 104874338448216064
+    m_Localized: Each time a rainbow colored enemy dies it gives away +{buff_0} color.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999613
+  - m_Id: 104874355128963072
+    m_Localized: Using this pipette I can sample more color from my paintings.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999613
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009042b9a79674010090c29e04000000

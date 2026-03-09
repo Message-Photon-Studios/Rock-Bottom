@@ -16,16 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 4000d0c040b389946afcf873f060a5cb, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999599
   m_TableData:
   - m_Id: 4425781248
     m_Localized: Spiked Cap
     m_Metadata:
       m_Items: []
   - m_Id: 6543904768
-    m_Localized: 'For each full bottle, deal an extra 5 damage. '
+    m_Localized: 'For each full bottle, deal an extra +{totbuff_0} damage (+{buff_0}
+      damage item) with all spells. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999599
+  - m_Id: 141447352056713216
+    m_Localized: 'For each full bottle, deal an extra +{buff_0} damage. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999599
+  - m_Id: 141447366967463936
+    m_Localized: 'Good that I have protective fur on my paws, otherwise opening this
+      cap would hurt. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999599
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090c2059e85f60100100c8601000000

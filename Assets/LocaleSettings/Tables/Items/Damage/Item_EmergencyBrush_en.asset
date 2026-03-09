@@ -16,17 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 706f167d85e295946aef7817873baff8, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999592
   m_TableData:
   - m_Id: 8517820416
     m_Localized: Emergency Brush
     m_Metadata:
       m_Items: []
   - m_Id: 11487387648
-    m_Localized: When at low HP each spell deals bonus damage. At 50% HP or less
-      deal an extra 5 damage. At 25% HP or less deal an extra 10 damage.
+    m_Localized: When at low HP, each spell deals bonus damage. At 50% HP or less
+      deal an extra +{totbuff_0} (+{buff_0} per item) damage. At 25% HP or less deal
+      an extra +{totbuff_1} (+{buff_1} per item) damage.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999592
+  - m_Id: 125883838558801920
+    m_Localized: When at low HP, each spell deals +{buff_0} to +{buff_1} more damage.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999592
+  - m_Id: 125883853909954560
+    m_Localized: Blue to the sky, brush to the thigh... or something like that
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999592
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00904228af3abf0100a0b3ac02000000

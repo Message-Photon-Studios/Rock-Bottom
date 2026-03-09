@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: d90cb4bc34e0e634b8fed8db86d463a6, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999588
   m_TableData:
   - m_Id: 6304206848
     m_Localized: Color Varnish
@@ -24,9 +25,25 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 20459982848
     m_Localized: If an enemy is hit with a different colored spell then deal extra
-      damage equal to the amount of color the enemy holds. Max extra damage is 20.
+      damage equal to the amount of color the enemy holds. (Each time an enemy is
+      hit with a spell their color increases). Max extra damage is {buff_0}.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999588
+  - m_Id: 104894694659624960
+    m_Localized: Attacking different colored enemies deals extra damage equal to
+      the amount of color on the enemy.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999588
+  - m_Id: 104894711327789056
+    m_Localized: I remember using similar varnish to preserve the wood in my treehouse.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999588
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009082c304000000009002462ba97401

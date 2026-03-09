@@ -16,19 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 5c8698de85c6ecd4fa7b322c5903c760, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999575
   m_TableData:
   - m_Id: 106263482368
     m_Localized: Flag part
     m_Metadata:
       m_Items: []
   - m_Id: 110998851584
-    m_Localized: 'A part of something bigger
-
-      Buffs the power of each color
-      with +5%'
+    m_Localized: Increases the effectiveness of each color with +{totbuff_0}% (+{buff_0}%
+      per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999575
+  - m_Id: 141462592978849792
+    m_Localized: Buffs the power of each color with +{buff_0}%.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999575
+  - m_Id: 141462613631602688
+    m_Localized: A part of something bigger. I wonder what the power would be if
+      all parts united?
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999575
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009082937a93f60100100cd819000000

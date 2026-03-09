@@ -16,16 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: e02352e14715d79448fa2d4859da30fc, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999600
   m_TableData:
   - m_Id: 9520259072
     m_Localized: False Heart
     m_Metadata:
       m_Items: []
   - m_Id: 12590489600
-    m_Localized: 'Prevents 10 Shield from draining over time. +10 per stack. '
+    m_Localized: Prevents {totbuff_0} (+{buff_0} per item) shield from draining over
+      time.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999600
+  - m_Id: 126273941013696512
+    m_Localized: Prevents {buff_0} shield from draining over time.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999600
+  - m_Id: 126273962916352000
+    m_Localized: Seems to be ... hollow. I wonder where the rest went.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999600
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a073ee02000000009082f67a9dc001

@@ -16,16 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 2749bcd947a23d544b14a1b477407640, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999609
   m_TableData:
   - m_Id: 6422269952
-    m_Localized: Extends invincibility after taking damage.
+    m_Localized: Extends invincibility after taking damage with +0.4.(+0.4 per item)
+      seconds.
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 6789064481223999609
   - m_Id: 4266397696
     m_Localized: Elusive Mantle
     m_Metadata:
       m_Items: []
+  - m_Id: 141443216745598976
+    m_Localized: Extends invincibility after taking damage.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999609
+  - m_Id: 141443232910446592
+    m_Localized: I look fabolus in this!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999609
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00900232db81f6010010cc7e01000000

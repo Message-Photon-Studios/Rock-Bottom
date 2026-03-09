@@ -16,19 +16,36 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: f40dc3256cd67ae44ab609d360d892bd, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999576
   m_TableData:
   - m_Id: 9832239104
     m_Localized: Flaming Heat
     m_Metadata:
       m_Items: []
   - m_Id: 23472115712
-    m_Localized: 'Buffs orange color with +30% power.
+    m_Localized: Increases the effectiveness of orange color with +{totbuff_0}% (+{buff_0}%
+      per item) but decreases the effectiveness of blue color with {totbuff_1}% ({buff_1}%
+      per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999576
+  - m_Id: 141793066548891648
+    m_Localized: 'Buffs orange color with +{buff_0}%.
 
       Reduces blue color with
-      -15% power.'
+      {buff_1}%.'
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999576
+  - m_Id: 141793085276459008
+    m_Localized: 'The heat of this charms burns away the cold. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999576
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009042f30ac0f70100100c7705000000

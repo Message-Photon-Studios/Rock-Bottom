@@ -25,6 +25,10 @@ public class NPCScript : UIMenu
 
     Dialogue dialogue;
 
+    [Header("Complete Quest on Interact")]
+    [SerializeField] string questNpc;
+    [SerializeField] string questLocation, questName;
+
     void Start()
     {
         nameUi.text = name;
@@ -43,6 +47,9 @@ public class NPCScript : UIMenu
 
         if(isInside)
         {
+
+            if(!questNpc.Equals("")) NpcManager.instance.QuestUnlocked(questNpc, questLocation, questName);
+            
             if(dialogue == null)
             {
                 dialogue = NpcManager.instance.GetDialogue(name);

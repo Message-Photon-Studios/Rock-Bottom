@@ -72,7 +72,7 @@ public class PickUpCanvasController : UIMenu
         if (spellPickup.GetNeedsPayement())
         {
             bool canBuy = Player.instance.playerInventory.HasEnoughCoins(spellPickup.GetSpell().spellCost);
-            SetBuy(spellPickup.GetSpell().GetName(), spellPickup.GetSpell().GetDesc(), spellPickup.GetSpell().spellCost, canBuy);
+            SetBuy(spellPickup.GetSpell().GetName(), spellPickup.GetSpell().GetShortDesc(), spellPickup.GetSpell().spellCost, canBuy);
             return;
         }
 

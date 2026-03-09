@@ -16,16 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 8ba4863b57e6ade4f9537bf4cac06bb9, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999573
   m_TableData:
   - m_Id: 8140333056
     m_Localized: Dusk Stone
     m_Metadata:
       m_Items: []
   - m_Id: 11185397760
-    m_Localized: Buffs red, orange and purple color with +10%.
+    m_Localized: Buffs red, orange and purple color with +{totbuff_0}% (+{buff_0}%
+      per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999573
+  - m_Id: 128735812224454656
+    m_Localized: Buffs red, orange and purple color with +{buff_0}%.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999573
+  - m_Id: 128735905094733824
+    m_Localized: It still radiates with warmth.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999573
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a0b39a02000000009082058a5cc901

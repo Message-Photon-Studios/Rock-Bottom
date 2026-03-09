@@ -16,19 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 8505d00df9d655d498e60a21f02e9738, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999616
   m_TableData:
   - m_Id: 3880521728
     m_Localized: Color Tubes
     m_Metadata:
       m_Items: []
   - m_Id: 5931536384
-    m_Localized: 'Everyone should paint.
-
-      Gain a +35% chance that coloring
-      an enemy also colors nearby enemies.'
+    m_Localized: 'Each time an enemy is colored all surrounding enemies have a {totbuff_0}%
+      (+{buff_0}% per item) chance of having that color be mixed into them as well. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999616
+  - m_Id: 141430748531036160
+    m_Localized: Gain a +{buff_0}% chance that coloring an enemy also colors nearby
+      enemies.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999616
+  - m_Id: 141430764704272384
+    m_Localized: These tubes are probably useful  somehow?
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999616
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009082368476f60100108c6101000000

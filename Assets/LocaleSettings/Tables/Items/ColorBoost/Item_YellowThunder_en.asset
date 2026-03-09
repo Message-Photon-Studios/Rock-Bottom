@@ -16,19 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: fe5899d08a332d547a20aca62c00200b, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999586
   m_TableData:
   - m_Id: 4144762880
     m_Localized: Yellow Thunder
     m_Metadata:
       m_Items: []
   - m_Id: 6711676928
-    m_Localized: 'Always made the nights more enjoyable with these shining around
+    m_Localized: Increases the effectiveness of yellow colored spells with +{totbuff_0}%
+      (+{buff_0}% per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999586
+  - m_Id: 141790492512915456
+    m_Localized: Buffs yellow color with +{buff_0}%.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999586
+  - m_Id: 141790511169179648
+    m_Localized: Always made the nights more enjoyable with these shining around
       the house.
-
-      Buffs yellow color with +20%.'
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999586
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00100c90010000000090c2a2b3bdf701

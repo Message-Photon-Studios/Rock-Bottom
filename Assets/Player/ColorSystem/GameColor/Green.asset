@@ -15,8 +15,10 @@ MonoBehaviour:
   colorMat: {fileID: 2100000, guid: fb05265df024c76489ab11918f4a68a3, type: 2}
   plainColor: {r: 0.32562226, g: 1, b: 0.28773582, a: 1}
   lightTintColor: {r: 0.70922095, g: 1, b: 0.7028302, a: 1}
-  description: Poisons the enemy which reduces their attack damage. If the enemy
-    dies the poison will spread to the closest enemy and increase in potency.
+  description: "Poisons the enemy which reduces their attack damage and deals damage
+    over time. \r\n\r\nIf the enemy dies the poison will spread to the closest enemy
+    and increase in potency.\r\n\r\nBase damage: 20 impact + 5 damage per poison
+    tick. \r"
   colorEffect: {fileID: 11400000, guid: cd60d40703d001f4e89f43326ace2bbf, type: 2}
   mixes:
   - mixWith: {fileID: 11400000, guid: aab7a3fd5f4b5c04fb45da55783d8aa1, type: 2}
@@ -31,3 +33,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f684aa04876576f4f9c4cea37a90b64a, type: 2}
   - {fileID: 11400000, guid: a5087b0e29c5b414795753d6fe24755a, type: 2}
   colorIcon: {fileID: 21300000, guid: 31df185ae1d293c4da49ebadad9d484f, type: 3}
+  canColorEnemies: 1

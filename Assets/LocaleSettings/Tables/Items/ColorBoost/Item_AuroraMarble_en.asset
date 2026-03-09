@@ -16,16 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: a9241236fb97d2e409e0af4afa0c2dab, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999549
   m_TableData:
   - m_Id: 12154281984
     m_Localized: Aurora Marble
     m_Metadata:
       m_Items: []
   - m_Id: 15069323264
-    m_Localized: Buffs green, blue and purple color with +10% power.
+    m_Localized: Buffs green, blue and purple color with +{totbuff_0}% (+{buff_0}%
+      per item) power.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999549
+  - m_Id: 128697771229351936
+    m_Localized: Buffs green, blue and purple color with +{buff_0}% power.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999549
+  - m_Id: 128697808206336000
+    m_Localized: Reminds me of a winter night.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999549
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a0338203000000009082e9f039c901

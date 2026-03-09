@@ -2,17 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
-using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
-using System.Linq;
 using UnityEngine.Localization;
+using System;
 
 public class NpcManager : MonoBehaviour, IDataPersistence
 {
     public static NpcManager instance = null;
     [SerializeField] public SerializedDictionary<string, NpcData> npcData = new SerializedDictionary<string, NpcData>();
     [SerializeField, HideInInspector] private SerializedDictionary<string, NpcData> npcOriginalData = new SerializedDictionary<string, NpcData>();
-    
+
+    [Header("Quest Dialogues")]
+    [SerializeField] Dialogue williamBottlesAppear;
+    [SerializeField] SerializedDictionary<string, Dialogue> questDefault;
+    [SerializeField] SerializedDictionary<string, Dialogue> questSpecial;
+
+    void Start()
+    {
+        GameManager.instance.onSpellUnlocked += BottleAdded;
+    }
+
+    void OnDisable()
+    {
+        GameManager.instance.onSpellUnlocked -= BottleAdded;
+    }
+
+    public void QuestUnlocked(string npc, string location, string quest)
+    {
+        if(!npcData.ContainsKey(npc)) return;
+        if(npcData[npc].IsQuestDone(quest)) return;
+
+        if(questDefault.ContainsKey(quest))
+        {
+            npcData[npc].ChangeDefaultDialogue(questDefault[quest]);
+        }
+
+        if(questSpecial.ContainsKey(quest))
+        {
+            npcData[npc].AddSpecialDialogue(location, questSpecial[quest]);
+        }
+    }
+
+    void BottleAdded(ColorSpell spell)
+    {
+        int unlockedBottles = GameManager.instance.GetInspiration();
+        if(unlockedBottles >= 3) npcData["William"].AddSpecialDialogue("CrystalHub", williamBottlesAppear); 
+        if(unlockedBottles >= 2) QuestUnlocked("Azula", "TheOutskirts", "azulaSomeBottles");
+        if(unlockedBottles >= 18) QuestUnlocked("Azula", "TheOutskirts", "azulaAllBottles");
+    }
+
     public void Awake()
     {
         if(instance == null) instance = this;
@@ -91,7 +129,13 @@ public class NpcData
     [SerializeField] Dialogue defaultDialogue;
     [SerializeField] SerializedDictionary<string, Dialogue> regionalDefaultDialogues;
     [SerializeField] SerializedDictionary<string, List<Dialogue>> specificDialogues;
+    List<int> specialDialoguesAdded = new List<int>();
+    List<string> questDone = new List<string>();
 
+    public bool IsQuestDone(string questName)
+    {
+        return questDone.Contains(questName);
+    }
 
     public void UpdateDialogues(NpcData original)
     {
@@ -164,10 +208,15 @@ public class NpcData
 
     public void AddSpecialDialogue (string level, Dialogue dialogue)
     {
+        if(specialDialoguesAdded.Contains(dialogue.id)) return;
+        Debug.Log("Adding dialogue with id " + dialogue.id);
         if(specificDialogues.ContainsKey(level))
+        {
             specificDialogues[level].Add(dialogue);
+        }
         else
             specificDialogues.Add(level, new List<Dialogue>{dialogue});
+        specialDialoguesAdded.Add(dialogue.id);
     }
 
     public void ChangeDefaultDialogue(Dialogue dialogue)
@@ -203,7 +252,7 @@ public class Dialogue
     {
         if(id == 0)
         {
-            id = Random.Range(0,1000000000);
+            id = UnityEngine.Random.Range(0,1000000000);
         }
     }
     [SerializeField] public int id = 0;

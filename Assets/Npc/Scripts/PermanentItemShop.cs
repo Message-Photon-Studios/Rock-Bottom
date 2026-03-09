@@ -9,6 +9,9 @@ public class PermanentItemShop : NpcUpgradeShop
     [SerializeField] SpriteRenderer displayImage;
     [SerializeField] TMP_Text itemDescription;
     [SerializeField] TMP_Text itemName;
+    [Header("Quest Info")]
+    [SerializeField] string npc;
+    [SerializeField] string location, questUnlock;
 
     protected override void Start()
     {
@@ -23,5 +26,6 @@ public class PermanentItemShop : NpcUpgradeShop
     {
         FindObjectOfType<ItemInventory>().AddItem(item);
         FindObjectOfType<ItemInventory>().SetPermanentItems();
+        NpcManager.instance.QuestUnlocked(npc, location, questUnlock);
     }
 }

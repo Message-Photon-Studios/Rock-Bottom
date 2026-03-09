@@ -16,17 +16,36 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 36586e16304158d4a80a88988288ecdb, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999612
   m_TableData:
   - m_Id: 8022892544
     m_Localized: Cracked Urn
     m_Metadata:
       m_Items: []
   - m_Id: 12703735808
-    m_Localized: "Cast spells for free but all bottles drain slowly. Cast all spells
-      50% faster. All half filled bottles are considered full bottles. \n"
+    m_Localized: Cast spells for without using any color but all bottles drain color
+      slowly over time. Cast all spells twice as fast. When having the urn in your
+      inventory all bottles that are at least filled halfway up with color are considered
+      as fully filled bottles.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999612
+  - m_Id: 127681343298637824
+    m_Localized: 'Cast spells for free but all bottles drain slowly over time. Cast
+      all spells twice as fast. All half filled bottles are considered full bottles. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999612
+  - m_Id: 127681361598386176
+    m_Localized: Looks like an old urn I once found when hiking in the forest. I
+      never understood that it could be a useful tool.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999612
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a033f5020000000090c257819dc501

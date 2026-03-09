@@ -16,17 +16,34 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 886cd31566a702a43b8bb0a0da638d65, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999618
   m_TableData:
   - m_Id: 3855355904
     m_Localized: Fill Bucket
     m_Metadata:
       m_Items: []
   - m_Id: 6288052224
-    m_Localized: When casting a spell at an enemy color that enemy to the same color
-      as the spell. Player gains some color when an enemy is colored to same color.
+    m_Localized: When casting a spell at an enemy color that enemy to exactly the
+      same color as the spell instead of mixing. Player gains some color when an
+      enemy is colored with the same color as it has.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999618
+  - m_Id: 141430752599511040
+    m_Localized: Spells override enemy color insted of mixing. Player gains some
+      color when an enemy is colored to same color.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999618
+  - m_Id: 141430777136189440
+    m_Localized: 'A usefull tool when I wanted to experiment with a specific color. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999618
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009002298576f6010010cc7601000000

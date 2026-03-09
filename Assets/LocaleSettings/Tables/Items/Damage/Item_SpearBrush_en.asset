@@ -16,16 +16,31 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 6c23394c0875fd141b3034a3a101328a, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999598
   m_TableData:
   - m_Id: 567183937536
     m_Localized: Spear Brush
     m_Metadata:
       m_Items: []
   - m_Id: 749556469760
-    m_Localized: Add 3 damage to all spell hits.
+    m_Localized: Add +{totbuff_0} damage (+{buff_0} per item) to all spell hits.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999598
+  - m_Id: 141451479100854272
+    m_Localized: Add +{buff_0} damage to all spell hits.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999598
+  - m_Id: 141451495018237952
+    m_Localized: This brush is suspectly familiar to my detail brush.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999598
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090c2ec5e89f60100100c85ae000000

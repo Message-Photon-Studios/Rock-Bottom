@@ -16,19 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: aea249761bec48d4589d0db6d6825603, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999582
   m_TableData:
   - m_Id: 7919636480
     m_Localized: Rainbow Charm
     m_Metadata:
       m_Items: []
   - m_Id: 10595602432
-    m_Localized: 'These always looked great on my fridge.
-
-      Buffs rainbow color
-      with +20%.'
+    m_Localized: Increases the effectiveness of rainbow colored spells with +{totbuff_0}%
+      (+{buff_0}% per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999582
+  - m_Id: 141789530524127232
+    m_Localized: Buffs rainbow color with +{buff_0}%.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999582
+  - m_Id: 141789545904640000
+    m_Localized: These always looked great on my fridge.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999582
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090c2a7d3bcf70100108c7702000000
