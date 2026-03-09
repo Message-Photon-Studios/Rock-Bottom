@@ -4,11 +4,30 @@ using UnityEngine;
 
 public class BackgroundMusicController : MonoBehaviour
 {
+    public static BackgroundMusicController instance = null;
+    [SerializeField] bool takeOverMusic = true;
+    [SerializeField] float fadeOutTime = 1f;
     [SerializeField] AudioClip startingMusic;
     [SerializeField] AudioClip loopingMusic;
 
     [SerializeField] AudioSource musicSourceStart;
     [SerializeField] AudioSource musicSourceLoop;
+
+    void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        } else if (takeOverMusic)
+        {
+            StartCoroutine(instance.FadeOutAndDie());
+            instance = this;
+        } else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -25,5 +44,16 @@ public class BackgroundMusicController : MonoBehaviour
         double loopTime = firstSongTime + startingTime;
         musicSourceStart.PlayScheduled(startingTime);
         musicSourceLoop.PlayScheduled(loopTime);
+    }
+
+    public IEnumerator FadeOutAndDie()
+    {
+        float time = 0;
+        while(time < fadeOutTime)
+        {
+            musicSourceStart.volume -= Time.deltaTime * (1/fadeOutTime);
+            musicSourceLoop.volume -= Time.deltaTime * (1/fadeOutTime);
+            yield return new WaitForEndOfFrame();
+        }
     }
 }
