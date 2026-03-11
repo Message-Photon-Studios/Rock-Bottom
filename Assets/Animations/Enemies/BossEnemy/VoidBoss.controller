@@ -176,17 +176,17 @@ AnimatorStateMachine:
     m_Position: {x: 380, y: 270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7265389493977131236}
-    m_Position: {x: -190, y: 270, z: 0}
+    m_Position: {x: -240, y: 210, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -2788744809517631620}
-    m_Position: {x: 90, y: 310, z: 0}
+    m_Position: {x: 80, y: 360, z: 0}
   m_AnyStateTransitions:
   - {fileID: -6715849966136937973}
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 420, y: 190, z: 0}
+  m_AnyStatePosition: {x: 400, y: 200, z: 0}
   m_EntryPosition: {x: 100, y: 140, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -325,6 +325,12 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: stonesAttack
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: sleep
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: dead
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7265389493977131236}

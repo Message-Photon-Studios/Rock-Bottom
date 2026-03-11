@@ -16,19 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 210ba6b1c8430c746b3052f4e9930832, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999595
   m_TableData:
   - m_Id: 4409004032
     m_Localized: Marker
     m_Metadata:
       m_Items: []
   - m_Id: 7571509248
-    m_Localized: 'This marker is great for fixing the edges.
-
-      When an enemy
-      is first colored to rainbow they take +10 (+10 per item)  damage.'
+    m_Localized: When an enemy is first colored to rainbow they take +{totbuff_0}
+      (+{buff_0} per item)  damage.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999595
+  - m_Id: 141448358765170688
+    m_Localized: When an enemy is first colored to rainbow they take +{buff_0} damage.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999595
+  - m_Id: 141448374573502464
+    m_Localized: This marker is great for fixing the edges.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999595
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090426a8886f60100104cc301000000

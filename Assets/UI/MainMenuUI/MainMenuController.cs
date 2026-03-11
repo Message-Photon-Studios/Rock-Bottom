@@ -62,6 +62,12 @@ public class MainMenuController : MonoBehaviour
         playing = false;
     }
 
+    public void HideContinueButton()
+    {
+        continueButton.gameObject.SetActive(false);
+        startButton.Select();
+    }
+
     public void StartNewGame()
     {
         DataPersistenceManager.instance.NewGame();
@@ -211,6 +217,23 @@ public class MainMenuController : MonoBehaviour
         settingsButton.Select();
 
         timeSinceLastInput = Time.time;
+    }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if(hasFocus && !settings.mainComponent.activeSelf)
+        {
+            StartCoroutine(FocusGained());
+        }
+    }
+
+    IEnumerator FocusGained()
+    {
+        yield return null;
+        if(continueButton.IsActive())
+            continueButton.Select();
+        else
+            startButton.Select();
     }
 
     /*

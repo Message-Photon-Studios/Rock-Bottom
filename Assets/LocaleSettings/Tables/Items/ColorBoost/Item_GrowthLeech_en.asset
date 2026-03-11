@@ -16,19 +16,36 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: d9ebd113418707047a3d09c3bcaa1e44, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999579
   m_TableData:
   - m_Id: 9324728320
     m_Localized: Growth Leech
     m_Metadata:
       m_Items: []
   - m_Id: 26672369664
-    m_Localized: 'Buffs red color with +30% power.
+    m_Localized: Increases the effectiveness of red color with +{totbuff_0}% (+{buff_0}%
+      per item) but decreases the effectiveness of green color with {totbuff_1}%
+      ({buff_1}% per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999579
+  - m_Id: 141791135126425600
+    m_Localized: 'Buffs red color with +{buff_0}%.
 
       Reduces green color with
-      -15% power.'
+      {buff_1}%.'
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999579
+  - m_Id: 141791149269618688
+    m_Localized: 'The leech seems to feed of the decay. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999579
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090824149bef7010010cc3506000000

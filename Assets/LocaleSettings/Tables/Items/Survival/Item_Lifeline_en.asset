@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 459c1c12aecce4744b8af5d631c8e031, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999601
   m_TableData:
   - m_Id: 7474417664
     m_Localized: Lifeline
@@ -24,9 +25,23 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 46405947392
     m_Localized: Protects you from dying once. Instead of dying the player is set
-      to 10 health. This removes the item.
+      to {buff_0} health. This removes the item.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999601
+  - m_Id: 104849007293140992
+    m_Localized: Protects you from dying once.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999601
+  - m_Id: 104849027232862208
+    m_Localized: 'Wow, I hope I never need to use this item. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999601
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090c2da9d7f7401009002ce0a000000

@@ -249,6 +249,7 @@ MonoBehaviour:
   spellCost: 10
   powerScale: 1
   coolDown: 0
+  customMinimunCoolDown: 0
   castWhenDamaged: 0
   castOnSpellImpact: 0
   castOnDash: 0
@@ -268,7 +269,7 @@ MonoBehaviour:
   triggerOnlyOncePerEnemy: 0
   attackAgainTimer: -1
   requirePlayerLOSonSpawn: 0
-  lifeTime: 10.1
+  lifeTime: 6.1
   animationTrigger: handSpell
   onImpact:
   - {fileID: 3321278458073070407}
@@ -315,7 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnOneInstantly: 0
-  spawnDelay: 1
+  spawnDelay: 0.5
   spawnAmount: 10
   spawnPrefabs:
   - {fileID: 3321278458073070463, guid: f3e8223d67e041f4780d894f9e156e40, type: 3}

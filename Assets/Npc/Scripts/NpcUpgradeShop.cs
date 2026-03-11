@@ -100,6 +100,7 @@ public abstract class NpcUpgradeShop : InteractionObject, IDataPersistence
     {
         if(this == null) return;
         if(data.permanentShopBuys == null) data.permanentShopBuys = new AYellowpaper.SerializedCollections.SerializedDictionary<string, int>();
+        
         if(data.permanentShopBuys.ContainsKey(name))
         {
             data.permanentShopBuys[name] = buys;

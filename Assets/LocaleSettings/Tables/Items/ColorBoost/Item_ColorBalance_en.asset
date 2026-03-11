@@ -16,21 +16,34 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: d3340dd3799c20d4f9eb2ba16972c336, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999569
   m_TableData:
   - m_Id: 4069265408
     m_Localized: Color Balance
     m_Metadata:
       m_Items: []
   - m_Id: 6879449088
-    m_Localized: 'Why choose a favorite?
-
-      Balances all color power and buffs
-      equally.
-
-      Increase power of all colors with 10%.'
+    m_Localized: 'Balances all color power and buffs equally between the colors.
+      Also adds +{buff_0}% power to all colors. Bottles still impact the color power
+      the same. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999569
+  - m_Id: 141444863014113280
+    m_Localized: Balances all color power equally and adds +{buff_0}% power to all
+      color.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999569
+  - m_Id: 141444933222567936
+    m_Localized: Why choose a favorite?
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999569
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090427f5a83f60100100c9a01000000

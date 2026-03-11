@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 44464677e971ee74388d8d1d1030df39, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999611
   m_TableData:
   - m_Id: 4807462912
     m_Localized: Routed Shield
@@ -24,9 +25,24 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6850088960
     m_Localized: Having a full bottle will block the next enemy attack if its color
-      matches with the bottle's. This drains color from the bottle.
+      matches with the bottle's. This drains {buff_0}% of the color in that bottle.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999611
+  - m_Id: 141441889403572224
+    m_Localized: Having a full bottle will block damage from similarly colored enemies.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999611
+  - m_Id: 141441905027354624
+    m_Localized: This contraption seems to route away danger. I actually haven't
+      seen such an item before.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999611
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00904226a680f60100104c9801000000

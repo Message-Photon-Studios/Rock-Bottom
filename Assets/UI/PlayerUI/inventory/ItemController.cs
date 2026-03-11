@@ -113,6 +113,8 @@ public class ItemController : MonoBehaviour
             }
         }
 
+        BottleChanged(0);
+        
         selectedItemContainer.SetActive(false);
         eventSystem.SetSelectedGameObject(null);
         if(items.Count < 1) {
@@ -322,14 +324,16 @@ public class ItemController : MonoBehaviour
         selectedItemContainer.SetActive(true);
         selectedImage.sprite = item.sprite;
         selectedName.text = item.GetName();
+        
+        if(item.GetLongDesc() != null)
+        {
+            selectedDesc.text = item.GetLongDesc();
+        } else selectedDesc.text = item.GetDesc(); 
 
-        //todo Uncomment this when translations are in
-        /*  
-        selectedDesc.text = item.GetLongDesc();
-        selectedDesc2.text = item.GetLoreDesc();
-        */
-
-        selectedDesc.text = item.GetDesc(); //TODO remove this when translations are in 
+        if(item.GetLoreDesc() != null)
+        {
+            selectedDesc2.text = item.GetLoreDesc();
+        }
         
         foreach(SelectedInventoryItem inventoryItem in items)
         {
@@ -365,7 +369,8 @@ public class ItemController : MonoBehaviour
         selectedItemContainer.SetActive(true);
         selectedImage.sprite =bottle.GetBottleSprite().bigSprite;
         selectedName.text = bottle.name;
-        selectedDesc.text = bottle.description.GetLocalizedString();
+        selectedDesc.text = bottle.GetDesc();
+        if(bottle.GetFlavorDesc() != null) selectedDesc2.text = bottle.GetFlavorDesc();
     }
 
     /// <summary>
@@ -379,5 +384,24 @@ public class ItemController : MonoBehaviour
         selectedDesc2.text = "";
 
         selectedAmount.gameObject.SetActive(false);
+    }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if(hasFocus && GetComponent<BigMenu>().mainComponent.activeSelf)
+        {
+            StartCoroutine(FocusGained());
+        }
+    }
+
+    IEnumerator FocusGained()
+    {
+        yield return null;
+        if(items.Count < 1) {
+            statColorList[0].GetComponent<Selectable>().Select();
+        } else
+        {
+            items[0].GetComponent<Selectable>().Select();
+        }
     }
 }

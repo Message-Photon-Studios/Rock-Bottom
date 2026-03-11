@@ -12,6 +12,10 @@ public class SceneLoadedAchievement : Achievement
         base.Start();
         SceneManager.sceneLoaded += LevelLoaded;
     }
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= LevelLoaded;
+    }
     void LevelLoaded(Scene scene, LoadSceneMode mode)
     {
         if(scene.name.Equals(sceneName)) RewardAchievement();

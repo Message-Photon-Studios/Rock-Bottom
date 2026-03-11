@@ -16,26 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 23bf0327218de4d4f9cb002da791cf05, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999605
   m_TableData:
   - m_Id: 32114974720
-    m_Localized: 'Block 20% of the damage taken from Yellow, Green and Blue colored
-      enemies. '
+    m_Localized: 'Block {buff_0}% of the damage taken from Yellow, Green and Blue
+      colored enemies. '
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 6789064481223999605
   - m_Id: 20698079232
-    m_Localized: 'Block 20% of the damage taken from Yellow, Green and Blue colored
-      enemies. '
+    m_Localized: 'Block {totbuff_0}% (+{buff_0}% per item) of the damage taken from
+      Yellow, Green and Blue colored enemies. '
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 6789064481223999605
   - m_Id: 7121117184
     m_Localized: Rose Armour
     m_Metadata:
       m_Items: []
   - m_Id: 50699935744
-    m_Localized: 'May nature protect me. '
+    m_Localized: It looks like this armour was grown from nature. It smells ...nice.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999605
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a0b3d10400000000a0337a07000000

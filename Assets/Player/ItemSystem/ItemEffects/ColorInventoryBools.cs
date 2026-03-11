@@ -26,7 +26,7 @@ public class ColorInventoryBools : ItemEffect
         if (crackedUrn) colorInv.crackedUrn = true;
         if (chaosBottle) colorInv.chaosEnabled = true;
         if (routedSheild) colorInv.routedSheild = true;
-        if (chaoticMixer) EnemyStats.chaoticMixer = true;
+        if (chaoticMixer) colorInv.chaoticMixer = true;
         if (shatteredPrism) colorInv.shatteredPrism = true;
         if (centrifuge) colorInv.centrifuge = true;
         if (enemyDontMix) colorInv.enemyDontMix = true;
@@ -46,7 +46,7 @@ public class ColorInventoryBools : ItemEffect
         if (crackedUrn) colorInv.crackedUrn = false;
         if (chaosBottle) colorInv.chaosEnabled = false;
         if (routedSheild) colorInv.routedSheild = false;
-        if (chaoticMixer) EnemyStats.chaoticMixer = false;
+        if (chaoticMixer) colorInv.chaoticMixer = false;
         if (shatteredPrism) colorInv.shatteredPrism = false;
         if (centrifuge) colorInv.centrifuge = false;
         if (enemyDontMix) colorInv.enemyDontMix = false;

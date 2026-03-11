@@ -16,17 +16,34 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 3cdfc048640faad468dcbf2ba5acc659, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999643
   m_TableData:
   - m_Id: 4643885056
     m_Localized: Crystalized Paint
     m_Metadata:
       m_Items: []
   - m_Id: 6728454144
+    m_Localized: Slows your spell casting speed, increases the power of all colors
+      with +{totbuff_0}% (+{buff_0}% per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999643
+  - m_Id: 141445224810582016
     m_Localized: Slows your spell casting speed, increases the power of each color
-      with +30%
+      with +{buff_0}%
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999643
+  - m_Id: 141445249116573696
+    m_Localized: 'This looks like the first magical paint I once found in a meteorite
+      crystal a long time ago. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999643
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00100c9101000000009002bcae83f601

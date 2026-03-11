@@ -16,17 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: d76b4aa6fe145ac44aec44a37b88441e, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999604
   m_TableData:
   - m_Id: 3473674240
     m_Localized: Portable Centrifuge
     m_Metadata:
       m_Items: []
   - m_Id: 6082531328
-    m_Localized: 'When collecting any color into a bottle, gain an equal amount of
-      shield. Prevents 10 Shield from draining over time. '
+    m_Localized: 'When a bottle is filled with color, gain an equal amount of shield.
+      Prevents {buff_0} Shield from draining over time. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999604
+  - m_Id: 141419935015538688
+    m_Localized: When you gain color also gain an equal amount of shield.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999604
+  - m_Id: 141419958218428416
+    m_Localized: I am not sure if that is how the centrifuge is supposed to work.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999604
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090c27eae6cf60100108c6a01000000

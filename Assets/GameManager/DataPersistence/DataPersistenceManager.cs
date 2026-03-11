@@ -10,7 +10,7 @@ public class DataPersistenceManager : MonoBehaviour
     [SerializeField] private string currentSaveFileVersion;
     [SerializeField] private string fileName;
     private GameData gameData;
-    private List<IDataPersistence> dataPersistenceObjects;
+    //private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
 
     public static DataPersistenceManager instance {get; private set;}
@@ -34,13 +34,22 @@ public class DataPersistenceManager : MonoBehaviour
         initiated = true;
         
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
-        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        //this.dataPersistenceObjects = FindAllDataPersistenceObjects();
         
         LoadGame();
+        if(gameData.newSaveFile)
+        {
+            MainMenuController menu = GameObject.FindObjectOfType<MainMenuController>();
+            if(menu != null)
+            {
+                menu.HideContinueButton();
+            }
+        }
     }   
 
     public bool SaveFileVersionOk()
     {
+        if(gameData == null) return false;
         if(gameData.GetSaveFileVersion() != null)
             return gameData.GetSaveFileVersion().Equals(currentSaveFileVersion);
         else return false;
@@ -52,10 +61,12 @@ public class DataPersistenceManager : MonoBehaviour
 
         dataHandler.Save(gameData);
         
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        foreach (IDataPersistence dataPersistenceObj in FindAllDataPersistenceObjects())
         {
             dataPersistenceObj.LoadData(gameData);
         }
+
+        AchievementsManager.instance?.ResetStats();
     }
 
     public void LoadGame()
@@ -71,7 +82,7 @@ public class DataPersistenceManager : MonoBehaviour
             NewGame();
         }
 
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        foreach (IDataPersistence dataPersistenceObj in FindAllDataPersistenceObjects())
         {
             dataPersistenceObj.LoadData(gameData);
         }
@@ -79,7 +90,8 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void SaveGame()
     {
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        gameData.newSaveFile = false;
+        foreach (IDataPersistence dataPersistenceObj in FindAllDataPersistenceObjects())
         {
             dataPersistenceObj.SaveData(gameData);
         }

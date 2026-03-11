@@ -100,12 +100,14 @@ public class LevelManager : MonoBehaviour
 
     public IEnumerator EndLevelAsync()
     {
+        DataPersistenceManager.instance?.SaveGame();
         SceneManager.LoadSceneAsync(nextLevelName);
         yield break;
     }
 
     public void EndLevel(string specialLevel)
     {
+        DataPersistenceManager.instance?.SaveGame();
         Player player = Player.instance;
         if(!specialLevel.Equals("")) nextLevelName = specialLevel;
         if (!clearInventoryOnLevelEnd)
@@ -151,15 +153,14 @@ public class LevelManager : MonoBehaviour
 
     void StartDeathVideo ()
     {
+        BackgroundMusicController.instance.StopMusic();
         GameManager.instance.disablePausing = true;
         backgroundMusic.SetActive(false);
         videoObjecCanvas.SetActive(true);
         videoOnPlayerDeath.Play();
         videoOnPlayerDeath.loopPointReached += DeathPlayerStopped;
     }
-
-
-
+ 
     public void ShowGame()
     {
 

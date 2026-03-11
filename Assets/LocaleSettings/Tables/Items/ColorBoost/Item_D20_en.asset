@@ -16,17 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: c3bd53fcbf902e64db64eb3964c6cb3e, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999570
   m_TableData:
   - m_Id: 11728064512
     m_Localized: D20
     m_Metadata:
       m_Items: []
   - m_Id: 14093651968
-    m_Localized: "My lucky dice! \nAdds a random buff to the power of each color
-      between -90% and 150% that changes with each spell you cast. "
+    m_Localized: Adds a random buff to the power of each color between {buff_0}%
+      and +{buff_1}% that changes with each spell you cast. Other color buffs still
+      also apply.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999570
+  - m_Id: 141465068138303488
+    m_Localized: Randomizes the power of each spell. It usually increases the  power.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999570
+  - m_Id: 141465141555400704
+    m_Localized: Is this my lucky die!?
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999570
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00100c4803000000009082deba95f601

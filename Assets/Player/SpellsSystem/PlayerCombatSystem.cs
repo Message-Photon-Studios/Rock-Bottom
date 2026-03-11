@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using UnityEngine.Events;
-using System.Linq;
 
 /// <summary>
 /// This class handles the players attack actions and spawn the color spells
@@ -16,16 +15,15 @@ public class PlayerCombatSystem : MonoBehaviour
     [SerializeField] ColorInventory colorInventory;
     [SerializeField] Animator animator;
     [SerializeField] PlayerSounds playerSounds;
-    [SerializeField] float bunnyCastTolerance;
     public int greyExtraDamage = 0;
-    private float bunnyCast = 0;
+    [SerializeField] float jumpAttackDrainBlockChance = .3f;
 
     /// <summary>
     /// Cascade damage will increase damage of spells each time a spell is cast, but will reset to zero when default attack is used.
     /// </summary>
     private int cascadeDamage = 0;
     public int maxCascadeDamage;
-    private string lastSpellCast = "";
+    private int lastSpellCast = -1;
     private int bonusDamage;
     private int spellSorting = 0;
     private int emergecyBonusDamageMin = 0;
@@ -37,6 +35,7 @@ public class PlayerCombatSystem : MonoBehaviour
     private bool attackDoubleJumped = false;
     public UnityAction<string> onRecast;
 
+    private int currentSlot = -1;
 
     public bool addColorMode {get; private set;} = false;
     public ColorWell colorWell {get; private set;}
@@ -45,6 +44,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     public Action<bool, ColorSpell> onSpellPickupMode;
     public Action<bool, GameColor> onColorPickupMode;
+    public Action<float, ColorSpell, GameColor> onSpellCast;
 
     #region Setup & Update
     private void OnEnable() {
@@ -75,9 +75,10 @@ public class PlayerCombatSystem : MonoBehaviour
     void Update()
     {
 
-        if (bunnyCast > 0 && bunnyCast >= Time.fixedTime)
+        if (bunnySpell > -1 && !attacking)
         {
-            AttackAnimation(activeSpellSlot);
+            AttackAnimation(bunnySpell);
+            bunnySpell = -1;
         }
     }
 
@@ -85,13 +86,13 @@ public class PlayerCombatSystem : MonoBehaviour
 
     #region Attacks
     private GameObject currentSpell = null;
-    private int activeSpellSlot = -1;   
+    private int bunnySpell = -1;   
     /// <summary>
     /// Plays the animation for the special attack
     /// </summary>
     public void AttackAnimation(int slotIndex)
     {
-        if(slotIndex >= colorInventory.colorSlots.Count) return;
+        if(slotIndex >= colorInventory.colorSlots.Count || slotIndex < 0) return;
         
         if(pickUpSpellMode)
         {
@@ -113,17 +114,18 @@ public class PlayerCombatSystem : MonoBehaviour
             SetBunnySpell(slotIndex);
             return;
         }*/
-        currentSpell= colorInventory.GetColorSpell(slotIndex).gameObject;
-        if(currentSpell == null) return;
+
+        //if(!colorInventory.CheckActveColor()) return;
+        if (!colorInventory.IsSpellReady(colorInventory.GetSlot(slotIndex))) return;
+
         if(attacking)
         {
             SetBunnySpell(slotIndex);
             return;
         }
-        //if(!colorInventory.CheckActveColor()) return;
-        if (!colorInventory.IsSpellReady(colorInventory.GetSlot(slotIndex))) return;
 
-
+        currentSpell = colorInventory.GetColorSpell(slotIndex).gameObject;
+        if(currentSpell == null) return;
 
         if(playerMovement.IsGrappeling())
         {
@@ -139,16 +141,19 @@ public class PlayerCombatSystem : MonoBehaviour
                 attackDoubleJumped = true;
             }
         }
-        activeSpellSlot = slotIndex;
+
         attacking = true;
         playerMovement.inAttackAnimation = true;
+        if (slotIndex != lastSpellCast) cascadeDamage = 0;
+        
+        lastSpellCast = slotIndex;
+        currentSlot = slotIndex;
         string anim = currentSpell.GetComponent<ColorSpell>().GetAnimationTrigger();
         animator.SetTrigger(anim);
         playerMovement.movementRoot.SetTotalRoot("attackRoot", true);
         body.constraints |= RigidbodyConstraints2D.FreezePositionY;
         playerSounds.PlayCastingSpell();
         colorInventory.DisableRotation();
-        bunnyCast = -1;
     }
 
     /// <summary>
@@ -156,7 +161,8 @@ public class PlayerCombatSystem : MonoBehaviour
     /// </summary>
     private void SpellAttack()
     {
-        SpellAttack(colorInventory.GetSlot(activeSpellSlot), CastType.NORMAL);
+        if(currentSlot < 0) return;
+        SpellAttack(colorInventory.GetSlot(currentSlot), CastType.NORMAL);
     }
 
     public void SpellAttack(ColorSlot slot, CastType castType)
@@ -164,9 +170,6 @@ public class PlayerCombatSystem : MonoBehaviour
         GameColor color = colorInventory.GetColorSlotColor(slot);
         ColorSpell spell = colorInventory.GetColorSpell(slot);
         if (spell == null || color == null) return;
-
-        if (!spell.name.Equals(lastSpellCast)) cascadeDamage = 0;
-        lastSpellCast = spell.name;
 
         Vector3 spawnPoint = new Vector3((spellSpawnPoint.localPosition.x + spell.gameObject.transform.position.x) * playerMovement.lookDir,
                                         spell.gameObject.transform.position.y + spellSpawnPoint.localPosition.y); //Creates spawn point for the spell
@@ -180,7 +183,10 @@ public class PlayerCombatSystem : MonoBehaviour
             
             ColorSpell spellStats = spellSpawn.GetComponent<ColorSpell>();
             spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, lookDir, GetExtraDamage(color)); //Sets all the stats for the spell
-            if (castType != CastType.EXTRA) colorInventory.UseColorSlot(slot); //Consumes the color after the spell has been spawned.
+            
+            if (castType != CastType.EXTRA && castType != CastType.JUMP) colorInventory.UseColorSlot(slot); //Consumes the color after the spell has been spawned.
+            else if(castType == CastType.JUMP && UnityEngine.Random.Range(0, 1f) > jumpAttackDrainBlockChance) colorInventory.UseColorSlot(slot);
+            
             spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++; //Makes sure that the spells arent Z fighting. 
             if (!spellStats.spawnKey.Equals("")) onRecast?.Invoke(spellStats.spawnKey); //Triggers all spells that have some recast behaviour. EX Flail's chain breaks
             if (castType != CastType.HURT && castType != CastType.HIT && castType != CastType.EXTRA) colorInventory.SetCoolDown(spell.GetComponent<ColorSpell>().coolDown, slot); //Consumes ones spell Charge and sets it on cooldown.
@@ -193,6 +199,7 @@ public class PlayerCombatSystem : MonoBehaviour
         if (cascadeDamage > maxCascadeDamage) cascadeDamage = maxCascadeDamage;
         transform.position = new Vector3(transform.position.x, transform.position.y - 0.001f, transform.position.z); //It aint broke, dont touch it (We dont know what this does)
 
+        currentSlot = -1;
     }
 
     public IEnumerator ExtraSpell(ColorSlot slot, CastType castType)
@@ -275,9 +282,7 @@ public class PlayerCombatSystem : MonoBehaviour
 
     private void SetBunnySpell(int spellSlot)
     {
-        if (bunnyCast > Time.fixedTime) return;
-        activeSpellSlot = spellSlot;
-        bunnyCast = Time.fixedTime + bunnyCastTolerance;
+        bunnySpell = spellSlot;
     }
 
     #endregion
@@ -336,6 +341,7 @@ public class PlayerCombatSystem : MonoBehaviour
     {
         addColorMode = false;
         playerMovement.movementRoot.SetTotalRoot("colorWellActivation", false);
+        playerMovement.movementRoot.UnrootCompletely();
         onColorPickupMode?.Invoke(false, null);
     }
     #endregion

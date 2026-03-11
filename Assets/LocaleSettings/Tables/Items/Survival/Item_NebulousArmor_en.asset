@@ -16,26 +16,34 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 9c30fa7a9b1437c49bbce66ee7347a71, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999603
   m_TableData:
   - m_Id: 13475487744
     m_Localized: Nebulous Armour
     m_Metadata:
       m_Items: []
   - m_Id: 10493337600
-    m_Localized: 'Block 20% of the damage taken from Blue, Purple and Red colored
-      enemies. '
+    m_Localized: 'Block {totbuff_0}% (+{buff_0}% per item)  of the damage taken from
+      Blue, Purple and Red colored enemies. '
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 6789064481223999603
   - m_Id: 94144536576
-    m_Localized: 'Block 20% of the damage taken from Blue, Purple and Red colored
+    m_Localized: 'Block {buff_0}% of the damage taken from Blue, Purple and Red colored
       enemies. '
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 6789064481223999603
   - m_Id: 16956760064
-    m_Localized: 'The swirling colors of the nebulas are truly inspiring. '
+    m_Localized: This item reflects the sky itself. Maybe it fell down like one of
+      those color meteorites?
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999603
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a073710200000000a073eb15000000

@@ -16,16 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 4ebfca471c0a25e49b2b9683125f77ac, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999574
   m_TableData:
   - m_Id: 25626386432
     m_Localized: Fall Leaf
     m_Metadata:
       m_Items: []
   - m_Id: 30605025280
-    m_Localized: Buff orange, yellow and green with +10%
+    m_Localized: Buff orange, yellow and green with +{totbuff_0}% (+{buff_0}% per
+      item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999574
+  - m_Id: 128735881665351680
+    m_Localized: Buff orange, yellow and green with +{buff_0}%.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999574
+  - m_Id: 128735899344343040
+    m_Localized: 'This leaf reminds me of how nice my home tree looks in autumn.
+      I wish I could get back home soon. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999574
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009082309a5cc90100a0332007000000

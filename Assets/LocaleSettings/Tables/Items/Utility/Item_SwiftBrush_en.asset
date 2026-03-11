@@ -16,16 +16,31 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 683246cc10e82704c9011866091f9da2, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999622
   m_TableData:
   - m_Id: 3851161600
     m_Localized: Swift Brush
     m_Metadata:
       m_Items: []
   - m_Id: 6107697152
-    m_Localized: Cast spells 20% faster
+    m_Localized: Cast all spells +{totbuff_0}% (+{buff_0}% per item) faster.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999622
+  - m_Id: 141431013703323648
+    m_Localized: Cast all spells +{buff_0}% faster.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999622
+  - m_Id: 141431028433719296
+    m_Localized: Good when making the first sketches.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999622
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009002f4c176f60100100c6c01000000

@@ -16,19 +16,36 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 97cceba5a6b5ca74abd614a1c6f3f0b9, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999585
   m_TableData:
   - m_Id: 4660662272
     m_Localized: Stormy Night
     m_Metadata:
       m_Items: []
   - m_Id: 7168856064
-    m_Localized: 'Buffs yelllow color with +30% power.
+    m_Localized: Increases the effectiveness of yellow color with +{totbuff_0}% (+{buff_0}%
+      per item) but decreases the effectiveness of purple color with {totbuff_1}%
+      ({buff_1}% per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999585
+  - m_Id: 141790370399948800
+    m_Localized: 'Buffs yelllow color with +{buff_0}%.
 
       Reduces purple color
-      with -15% power.'
+      with {buff_1}%.'
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999585
+  - m_Id: 141790385268756480
+    m_Localized: 'During the stormy nights I could feel my house shake in the wind. '
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999585
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00104cab010000000090423497bdf701

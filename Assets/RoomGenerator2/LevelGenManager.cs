@@ -17,7 +17,7 @@ public class LevelGenManager : MonoBehaviour
     public static int twoDoorRoomBias = 6;
     public static int threeDoorRoomBias = 2;
 
-    public static float cullDistance = 3.5f;
+    public static float cullDistance = 3;
     private LevelGenerator levelGen;
     public GameObject player;
     public SpriteRenderer endCircle;
@@ -133,6 +133,7 @@ public class LevelGenManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        levelGen?.minimap?.testPosition(player.gameObject.transform.position);
+        if(player != null)
+            levelGen?.minimap?.testPosition(player.gameObject.transform.position);
     }
 }

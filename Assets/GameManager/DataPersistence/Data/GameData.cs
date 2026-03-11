@@ -7,15 +7,17 @@ using AYellowpaper.SerializedCollections;
 public class GameData
 {
     [SerializeField] private string saveFileVersion;
+    public bool newSaveFile;
     public string startScene;
     public int petrifiedPigment;
     public int inspirationPoints;
     public string[] unlockedColorSpells;
     public string[] petrifiedPigmentPickedUp;
     public PermanentUpgrades permanentUpgrades;
-    public SerializedDictionary<string, Tips> tipsDictionary;
     public SerializedDictionary<string, NpcData> npcData;
-    public SerializedDictionary<string, int> permanentShopBuys = new SerializedDictionary<string, int>(); 
+    public SerializedDictionary<string, int> permanentShopBuys; 
+    public string[] areasVisited; 
+    public bool keepUnlocked;
 
     public string GetSaveFileVersion()
     {
@@ -33,9 +35,11 @@ public class GameData
         petrifiedPigment = 0;
         inspirationPoints = 0;
         petrifiedPigmentPickedUp = new string[0];
-        tipsDictionary = new SerializedDictionary<string, Tips>();
         npcData = null;
         permanentUpgrades = new PermanentUpgrades();
         permanentShopBuys = new SerializedDictionary<string, int>();
+        areasVisited = new string[0];
+        newSaveFile = true;
+        keepUnlocked = false;
     }
 }

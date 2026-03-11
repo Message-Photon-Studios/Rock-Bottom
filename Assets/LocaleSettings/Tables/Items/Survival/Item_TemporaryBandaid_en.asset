@@ -16,16 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 1cbaf47dd907d074d9771df5b93e775b, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999606
   m_TableData:
   - m_Id: 9184714752
     m_Localized: Temporary Bandaid
     m_Metadata:
       m_Items: []
   - m_Id: 12288499712
-    m_Localized: Whenever you lose HP gain 5 shield + 5 per stack.
+    m_Localized: 'Whenever you lose health gain +{totbuff_0} shield (+{buff_0} per
+      item). '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999606
+  - m_Id: 126279738791727104
+    m_Localized: Whenever you lose health gain +{buff_0} shield.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999606
+  - m_Id: 126279753442430976
+    m_Localized: Great to bring a few on these in case of emergencies
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999606
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 009002ddc0a2c00100a073dc02000000

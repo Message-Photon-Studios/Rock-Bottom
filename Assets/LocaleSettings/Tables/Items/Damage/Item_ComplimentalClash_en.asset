@@ -16,17 +16,34 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: b8c469a876b0ee24a874eafc4df3fdf6, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999594
   m_TableData:
   - m_Id: 22977187840
     m_Localized: Complimental Clash
     m_Metadata:
       m_Items: []
   - m_Id: 26257133568
-    m_Localized: 'When atacking an enemy with a complimentary color the spell does
-      an extra 10 damage. '
+    m_Localized: When hitting an enemy with a spell colored to the complementary
+      color of the enemy the enemy takes +{totbuff_0} (+{buff_0} per item) damage.
+      Complimentary colors are yellow-purple, red-green, and blue-orange.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999594
+  - m_Id: 141448679562317824
+    m_Localized: 'When attacking an enemy with a complimentary color the spell does
+      an extra +{buff_0} damage. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999594
+  - m_Id: 141448696909959168
+    m_Localized: Complimentary colors are always fun to paint with.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999594
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090421bd386f60100100c1d06000000

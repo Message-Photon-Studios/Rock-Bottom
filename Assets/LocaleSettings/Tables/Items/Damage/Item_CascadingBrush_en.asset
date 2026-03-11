@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 89fde91523eb9d2489c04c7abd4c5915, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999593
   m_TableData:
   - m_Id: 5277224960
     m_Localized: Cascading Brush
@@ -24,10 +25,25 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 7403737088
     m_Localized: Each time you cast a spell increase spell damage with +1 to a maximum
-      of +5 (+5 per item) damage. Casting a spell with a different type bottle will
-      reset the extra damage to 0.
+      of +{totbuff_0} (+{buff_0} per item) damage. Casting a spell with a different
+      type bottle will reset the extra damage to 0.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999593
+  - m_Id: 141450968867966976
+    m_Localized: 'Increases damage each time a spell is cast up to +{buff_0} damage. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999593
+  - m_Id: 141450983678054400
+    m_Localized: This is my favorite type of brush, it allowed me to paint with in
+      a flow without getting disturbed.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999593
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00908220e888f60100104cb901000000

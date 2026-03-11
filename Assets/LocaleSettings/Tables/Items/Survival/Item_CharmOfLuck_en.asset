@@ -16,19 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 3385123482382ca4b9b732ac9baf8f54, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999607
   m_TableData:
   - m_Id: 3649835008
     m_Localized: Charm of Luck
     m_Metadata:
       m_Items: []
   - m_Id: 10083897344
-    m_Localized: 'Protects the house from flies.
-
-      You have a +10% chance of
-      blocking the damage of an enemies attack.'
+    m_Localized: You have a {totbuff_0}% (+{buff_0}% per item) chance of blocking
+      incoming damage towards Sylvia.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999607
+  - m_Id: 141441591662514176
+    m_Localized: Get +{buff_0}% chance of blocking incoming damage.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999607
+  - m_Id: 141441606715871232
+    m_Localized: I once found a clover like this, it seemed to protect my house from
+      flies.
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999607
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00100c5902000000009082d36080f601

@@ -16,16 +16,32 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: b675053020917274e9aaa98c43a6f1da, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999610
   m_TableData:
   - m_Id: 30493380608
     m_Localized: Rainbow Armour
     m_Metadata:
       m_Items: []
   - m_Id: 40211582976
-    m_Localized: 'Block 10% of all damage from colored enemies. '
+    m_Localized: 'This item blocks {totbuff_0}% (+{buff_0}% per item) damage from
+      all enemies that are not uncolored. '
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999610
+  - m_Id: 141441785460330496
+    m_Localized: Gain +{buff_0}% armor towards colored enemies.
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999610
+  - m_Id: 141441799775490048
+    m_Localized: This looks like my most diverse protection gear!
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999610
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 0090c2f28d80f6010010cc5c09000000

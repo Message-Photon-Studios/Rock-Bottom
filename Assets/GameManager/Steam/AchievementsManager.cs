@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Steamworks;
+using System;
 
 public class AchievementsManager : MonoBehaviour
 {
@@ -35,10 +36,13 @@ public class AchievementsManager : MonoBehaviour
     /// Make progress on the specified achievement
     /// </summary>
     /// <param name="achievementId"></param>
-    public void ProgressAchievement(string achievementId)
+    public void ProgressAchievement(string achievementId, string progressStat)
     {
         if(!availableAchievements.ContainsKey(achievementId)) return;
-        availableAchievements[achievementId].ProgressAchievement();
+        int stat = 0;
+        SteamUserStats.GetStat(progressStat, out stat);
+        SteamUserStats.SetStat(progressStat,  stat + 1);
+        SteamUserStats.StoreStats();
     }
 
     /// <summary>
@@ -53,4 +57,17 @@ public class AchievementsManager : MonoBehaviour
         SteamUserStats.SetAchievement(achievementId);
         SteamUserStats.StoreStats();
     }
+
+    public void ResetStats()
+    {
+        SteamUserStats.SetStat("areas_found", 0);
+        SteamUserStats.SetStat("bottles_unlocked", 0);
+        SteamUserStats.StoreStats();
+    }
+
+    public Action onHealingShrineUsed; 
+
+    public Action onWillowCrateOpened;
+
+    public Action onDeathShrineUsed;
 }

@@ -2,22 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AstralCollectorAchievement : Achievement
+public class AstralCollectorAchievement : BeatGameAchievement
 {
     [SerializeField] int coinsNeeded;
-    protected override void Start()
-    {
-        base.Start();
-        BossEnemyController.onBossDefeated += BossDefeated;
-    }
 
-    void OnDisable()
+    protected override void BossDefeated()
     {
-        BossEnemyController.onBossDefeated -= BossDefeated;
-    }
-
-    void BossDefeated()
-    {
-        if(playerStats.gameObject.GetComponent<ItemInventory>().GetCoins() >= coinsNeeded) RewardAchievement();
+        if(Player.instance.playerInventory.GetCoins() >= coinsNeeded) RewardAchievement();
     }
 }

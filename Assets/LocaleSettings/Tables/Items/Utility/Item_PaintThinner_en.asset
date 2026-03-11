@@ -16,19 +16,33 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 098a635a7d181a94b9203423b27a22cb, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 6789064481223999619
   m_TableData:
   - m_Id: 3666612224
     m_Localized: Paint Thinner
     m_Metadata:
       m_Items: []
   - m_Id: 6032199680
-    m_Localized: 'Runnier paint means faster painting!
-
-      Massively increases
-      spell casting speed but decrease the power of each color with -15%'
+    m_Localized: Massively increases spell casting speed but decrease the effectiveness
+      of each color with {totbuff_0}% ({buff_0}% per item).
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999619
+  - m_Id: 141427723351527424
+    m_Localized: Increases spell casting speed but decrease the power of each color
+      with {buff_0}%
+    m_Metadata:
+      m_Items:
+      - rid: 6789064481223999619
+  - m_Id: 141427765223264256
+    m_Localized: Runnier paint means faster painting!
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6789064481223999619
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00108c67010000000090c2dbc373f601

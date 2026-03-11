@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 using JetBrains.Annotations;
 using System;
 using UnityEngine.Localization;
+using Unity.VisualScripting;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
 
 /// <summary>
 /// This is the base class for an item
@@ -19,6 +21,8 @@ public class Item : ScriptableObject
     [SerializeField] public LocalizedString longDescription;
     [SerializeField] public LocalizedString loreDescription;
     public int itemCost;
+    [SerializeField] private IntVariable[] totbuffVariables = new IntVariable[0];
+    [SerializeField] private IntVariable[] buffVariables = new IntVariable[0];
     [SerializeReference] public List<ItemEffect> effects = new List<ItemEffect>(); 
     [SerializeField] public ItemCategory itemCategory;
     [SerializeField] public ItemRarity itemRarity;
@@ -79,16 +83,37 @@ public class Item : ScriptableObject
     /// </summary>
     /// <returns>Localized description.</returns>
     public string GetDesc() {
+        for (int i = 0; i < totbuffVariables.Length; i++)
+        {
+            Variable<string> setter = new Variable<string>();
+            description.Add("totbuff_"+i, totbuffVariables[i]);
+        }
+
+        for (int i = 0; i < buffVariables.Length; i++)
+        {
+            description.Add("buff_"+i, buffVariables[i]);
+        }
         return description.GetLocalizedString();
     }
 
     public string GetLongDesc()
-    {
+    {        for (int i = 0; i < totbuffVariables.Length; i++)
+        {
+            Variable<string> setter = new Variable<string>();
+            longDescription.Add("totbuff_"+i, totbuffVariables[i]);
+        }
+
+        for (int i = 0; i < buffVariables.Length; i++)
+        {
+            longDescription.Add("buff_"+i, buffVariables[i]);
+        }
+        if(longDescription.IsEmpty) return null;
         return longDescription.GetLocalizedString();
     }
 
     public string GetLoreDesc()
     {
+        if(loreDescription.IsEmpty) return null;
         return loreDescription.GetLocalizedString();
     }
 
