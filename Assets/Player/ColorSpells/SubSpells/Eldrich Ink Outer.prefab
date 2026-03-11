@@ -15,13 +15,10 @@ GameObject:
   - component: {fileID: 6271258304019460346}
   - component: {fileID: -7692674297862362138}
   - component: {fileID: -547541886655672389}
-  - component: {fileID: -6780715156264448936}
-  - component: {fileID: 5687138472340331783}
   - component: {fileID: 7772049516936420691}
-  - component: {fileID: 7561780523477757499}
-  - component: {fileID: 2967550359452022741}
+  - component: {fileID: 429537854001251452}
   m_Layer: 8
-  m_Name: Eldrich Ink
+  m_Name: Eldrich Ink Outer
   m_TagString: Spell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +69,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -122,7 +119,7 @@ SpriteRenderer:
   m_SortingLayerID: 1866879663
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e2e872b0a64a5394da8d149eda400349, type: 3}
+  m_Sprite: {fileID: 573276276, guid: cff2cb79c1d8c6b44866d9f1b09894ce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -143,7 +140,7 @@ Animator:
   m_GameObject: {fileID: 3321278458073070463}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 82394b5a95b99814a8e475f9a997e957, type: 2}
+  m_Controller: {fileID: 9100000, guid: fbda50d494f987e4c89e935b43986741, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -226,9 +223,7 @@ MonoBehaviour:
   requirePlayerLOSonSpawn: 0
   lifeTime: 1.5
   animationTrigger: handSpell
-  onImpact:
-  - {fileID: -6780715156264448936}
-  - {fileID: 7561780523477757499}
+  onImpact: []
   spellSprite:
     bigSprite: {fileID: 21300000, guid: eb46bbc211a25b9499867ee955912f52, type: 3}
     bigSpriteMask: {fileID: 21300000, guid: 0dfa331a3ff2eb341b89a367e36301d6, type: 3}
@@ -255,42 +250,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetSpell: 0
---- !u!114 &-6780715156264448936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b60752d689d2eb44a9f5a5c46fa69b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPrefabs:
-  - {fileID: 3321278458073070463, guid: 9a87f3c4406d96c42bc7534d4f995aa0, type: 3}
-  spellImpacts:
-  - {fileID: 5687138472340331783}
-  playerDamage: 10
-  playerHeal: 2
-  startRange: 3
-  activeRange: 3
---- !u!114 &5687138472340331783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0900cb19f680a734ba6a9d1fcb2ffcdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forcePerspectivePlayer: 1
-  triggerImpactSpells: 1
-  requiresEnemyLOS: 0
-  onImpactParticles: {fileID: 6003583976257369962, guid: 2ab5ccc58353eab4ca195aba1a04b6cc, type: 3}
 --- !u!114 &7772049516936420691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,28 +262,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c1b0aa3935414408783fb1bb0b2334, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationSpeed: 100
-  InvertRotaion: 1
+  RotationSpeed: 50
+  InvertRotaion: 0
   PlayerDirection: 0
   startRoation: 0
---- !u!114 &7561780523477757499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3321278458073070463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5ed67004b5d1b149a373b86cb7e1aa6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnOneInstantly: 1
-  spawnDelay: 0
-  spawnAmount: 1
-  spawnPrefabs:
-  - {fileID: 3321278458073070463, guid: ba78db2796e5edf49abd388ba0c79574, type: 3}
---- !u!114 &2967550359452022741
+--- !u!114 &429537854001251452
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -337,7 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPrefabs:
-  - {fileID: 3321278458073070463, guid: 0b35d8150ed6f67469a1426cdabc4402, type: 3}
+  - {fileID: 3321278458073070463, guid: 2baad8c4bb3fb674db3504d0043fe6ef, type: 3}
 --- !u!1001 &3068050921329342166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -470,6 +412,10 @@ PrefabInstance:
     - target: {fileID: 2874147498126129466, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
       propertyPath: m_Name
       value: SpellLight Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874147498126129466, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2874147498126129467, guid: ff989ad7dfb170148b2d18dcc9519145, type: 3}
       propertyPath: m_RootOrder
