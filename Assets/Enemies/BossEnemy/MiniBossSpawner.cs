@@ -25,14 +25,10 @@ public class MiniBossSpawner : MonoBehaviour
         bossEnemy.GetComponent<EnemyStats>().onEnemyDeath += BossDied;
     }
 
-    void OnDisable()
-    {
-        bossEnemy.GetComponent<EnemyStats>().onEnemyDeath -= BossDied;
-    }
-
     void BossDied(EnemyStats stats)
     {
         BackgroundMusicController.instance.SetNewMusicLoop(startMusicOnDeath, loopMusicOnDeath, 1f);
+        bossEnemy.GetComponent<EnemyStats>().onEnemyDeath -= BossDied;
     }
 
     /// <summary>
