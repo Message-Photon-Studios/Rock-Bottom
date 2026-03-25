@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.Rendering.Universal;
 
@@ -28,6 +29,8 @@ public class ColorSpell : MonoBehaviour
     [SerializeField] public bool castOnDash;
     [SerializeField] public bool castOnDoubleJump;
     [SerializeField] public bool staggeredSpell;
+    [SerializeField] public bool castCopy;
+    [SerializeField] public bool canBeCopied;
 
     [SerializeField] public int storedSpells = 1;
     [SerializeField] public int colorCost = 1;
@@ -107,8 +110,11 @@ public class ColorSpell : MonoBehaviour
     
     protected int extraDamage;
     public int lookDir {get; protected set;}
+    public bool isCopy = false;
 
     private HashSet<Collider2D> objectsAlreadyHit = new HashSet<Collider2D>();
+
+    public UnityAction onSpellIniti;
 
     /// <summary>
     /// Needs to be called after the spell is instantiated
@@ -193,7 +199,7 @@ public class ColorSpell : MonoBehaviour
 
         if(requirePlayerLOSonSpawn)
         {
-            RaycastHit2D playerLOS = Physics2D.Raycast(transform.position, player.transform.position-transform.position, Vector2.Distance(transform.position, player.transform.position), GameManager.instance.maskLibrary.onlyGround);
+            RaycastHit2D playerLOS = Physics2D.Raycast(transform.position, Player.instance.transform.position-transform.position, Vector2.Distance(transform.position, Player.instance.transform.position), GameManager.instance.maskLibrary.onlyGround);
             if(playerLOS.collider != null) 
             {
                 if(impactOnNonEnemies) Impact(playerLOS.collider, transform.position);
@@ -201,10 +207,19 @@ public class ColorSpell : MonoBehaviour
                 return;
             }
         }
+
+        onSpellIniti?.Invoke();
+    }
+
+    public void InitiCopy(GameColor gameColor, float colorPower, GameObject player, int lookDir, int extraDamage)
+    {
+        isCopy = true;
+        Initi(gameColor, colorPower, player, lookDir, extraDamage);
     }
 
     void OnEnable()
     {
+        if(lifeTime >= 0)
         Destroy(gameObject, lifeTime);
     }
 
@@ -333,7 +348,7 @@ public class ColorSpell : MonoBehaviour
 
     public GameObject GetPlayerObj()
     {
-        return player;
+        return Player.instance.gameObject;
     }
 
     /// <summary>
@@ -408,7 +423,7 @@ public class ColorSpell : MonoBehaviour
 
     public void TriggerQueue()
     {
-        player.GetComponent<ColorInventory>().QuedSpells(spawnKey);
+        Player.instance?.colorInventory.QuedSpells(spawnKey);
     }
 
     public void DestroySpell()

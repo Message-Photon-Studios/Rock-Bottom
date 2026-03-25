@@ -184,7 +184,7 @@ public class PlayerCombatSystem : MonoBehaviour
             ColorSpell spellStats = spellSpawn.GetComponent<ColorSpell>();
             spellStats.Initi(color, colorInventory.GetColorBuff(color) + colorInventory.GetSlotBuff(slot), gameObject, lookDir, GetExtraDamage(color)); //Sets all the stats for the spell
             
-            if (castType != CastType.EXTRA && castType != CastType.JUMP) colorInventory.UseColorSlot(slot); //Consumes the color after the spell has been spawned.
+            if (castType != CastType.EXTRA && castType != CastType.JUMP && !spell.castCopy) colorInventory.UseColorSlot(slot); //Consumes the color after the spell has been spawned.
             else if(castType == CastType.JUMP && UnityEngine.Random.Range(0, 1f) > jumpAttackDrainBlockChance) colorInventory.UseColorSlot(slot);
             
             spellStats.GetComponent<SpriteRenderer>().sortingOrder = spellSorting++; //Makes sure that the spells arent Z fighting. 
@@ -436,5 +436,6 @@ public enum CastType
     JUMP, //The spell was cast when the player double jumped
     HURT, //The spell was cast when the player took damage
     HIT, //The spell was cast when another spell hit an enemy
+    MIRROR, //The spell is a mirror spell, casts a different spell than the assosiated spellslot.
     EXTRA //An additional spell that is casted for free (Both color and casting time/charge is free)
 }

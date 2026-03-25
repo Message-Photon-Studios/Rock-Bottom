@@ -207,6 +207,8 @@ MonoBehaviour:
   castOnDash: 0
   castOnDoubleJump: 0
   staggeredSpell: 0
+  castCopy: 0
+  canBeCopied: 1
   storedSpells: 1
   colorCost: 1
   maxSpawn: 0
@@ -235,6 +237,7 @@ MonoBehaviour:
     smallSprite: {fileID: 21300000, guid: bda43597a5daf1248b98c3765a107f7f, type: 3}
     smallSpriteMask: {fileID: 21300000, guid: 21cb5863e1f51c0459a50e2b0b039881, type: 3}
     smallSpriteCapMask: {fileID: 21300000, guid: db86681281ac0bb428e6f3d7ebe83efd, type: 3}
+  isCopy: 0
   references:
     version: 2
     RefIds: []
@@ -251,6 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetSpell: 0
+  flipWithPlayer: 0
 --- !u!114 &-6780715156264448936
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,12 +5,13 @@ using UnityEngine;
 public class SpellFollowPlayerScript : MonoBehaviour
 {
     [SerializeField] bool offsetSpell;
+    [SerializeField] bool flipWithPlayer;
     GameObject player;
     Vector3 offset;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GetComponent<ColorSpell>().GetPlayerObj();
         if (offsetSpell)
         {
             offset = transform.position - player.transform.position;
