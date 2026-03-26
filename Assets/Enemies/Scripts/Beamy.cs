@@ -28,11 +28,18 @@ public class Beamy : Enemy
                     new CheckBool("activateBeam", true),
                     new ParticlesPlay(attackOrb, true),
                     new ParticlesPlay(attackBeam, true),
-                    new SetParentVariable("activateBeam", false, 3)
+                    
+                    new Wait(laserDecaySpeed, 0.1f),
+                    new ParticlesPlay(attackOrb, false),
+                    new ParticlesPlay(attackBeam, false),
+                    new AnimationBool(animator, "attack", false),
+                    new ParticlesPlay(attackAim, false),
+                    new SetParentVariable("attack", false, 3),
+                    new SetParentVariable("activateBeam", false, 3),
                 }),
 
                 new Sequence(new List<Node>{
-                    new CheckBool("sleeping", false),
+                    new CheckBool("sleeping", false), 
                     new CheckPlayerArea(stats, player, attackTrigger),
                     new LookAtPlayer(stats, player),
                     new Selector(new List<Node>{ 
@@ -46,6 +53,7 @@ public class Beamy : Enemy
 
                 new Sequence(new List<Node> {
                     new CheckBool("attack", true),
+                    new CheckBool("attack", false),
                     new Wait(laserDecaySpeed, 0.1f),
                     new ParticlesPlay(attackOrb, false),
                     new ParticlesPlay(attackBeam, false),
@@ -75,6 +83,11 @@ public class Beamy : Enemy
     public void ChooseBeamTarget()
     {
         GetComponentInChildren<BeamyBeam>().TargetSet();
+    }
+
+    public void StartAim()
+    {
+        GetComponentInChildren<BeamyBeam>().EnableAim();
     }
 
 #if UNITY_EDITOR
