@@ -15,6 +15,7 @@ public class SettingsController : BigMenu
     [SerializeField] Selectable firstOption;
 
     public List<Resolution> resolutions = new List<Resolution>();
+    [SerializeField] Toggle fullScreenToggle;
     [SerializeField] TMP_Dropdown resolutionDropdown;
 
     void Start()
@@ -25,6 +26,7 @@ public class SettingsController : BigMenu
             screenSizeSlider.value = screenSize;
             screenSizeText.text = ((int)screenSizeSlider.value).ToString();
         }
+        if (PlayerPrefs.HasKey(SettingsManager.fullScreen)) if (PlayerPrefs.GetInt(SettingsManager.fullScreen) == 0) fullScreenToggle.isOn = false; else fullScreenToggle.isOn = true; else fullScreenToggle.isOn = true; 
         mainComponent.SetActive(false);
 
         resolutions = new List<Resolution>();
@@ -41,7 +43,13 @@ public class SettingsController : BigMenu
                 options.Add(option);
                 resolutions.Add(resolution);
 
-                if(resolution.width == Screen.currentResolution.width &&
+                if (PlayerPrefs.HasKey(SettingsManager.screenWidth))
+                {
+                    if (PlayerPrefs.GetInt(SettingsManager.screenWidth) == resolution.width && PlayerPrefs.GetInt(SettingsManager.screenHeight) == resolution.height)
+                    {
+                        currentResolutionIndex = resolutions.Count - 1;
+                    }
+                } else if(resolution.width == Screen.currentResolution.width &&
                 resolution.height == Screen.currentResolution.height)
                 {
                     currentResolutionIndex = resolutions.Count-1;
@@ -63,6 +71,7 @@ public class SettingsController : BigMenu
     public void ToggleFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
+        SettingsManager.instance.SetFullScreen(isFullscreen);
     }
 
     public void SetResolution (int resolutionIndex)
@@ -70,6 +79,7 @@ public class SettingsController : BigMenu
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         StartCoroutine(AdjustCameras());
+        SettingsManager.instance.SetScreenRes(resolution.width, resolution.height);
     }
 
     IEnumerator AdjustCameras()
