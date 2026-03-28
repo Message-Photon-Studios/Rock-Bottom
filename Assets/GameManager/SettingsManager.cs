@@ -6,6 +6,7 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.Localization.Settings;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private String[] soundGroups;
 
     public const string screenSizeKey = "screenSize";
+    public const string fullScreen = "fullScreen";
+    public const string screenWidth = "screenWidth";
+    public const string screenHeight = "screenHeight";
     private int selectedPixelSize = 100;
 
     void Awake()
@@ -36,6 +40,9 @@ public class SettingsManager : MonoBehaviour
         }
 
         LoadCameraSize();
+        LoadFullScreen();
+        LoadScreenRes();
+        StartCoroutine(InitiLoadLocale());
     }
 
     public void SetVolume(float volume, string group)
@@ -60,6 +67,43 @@ public class SettingsManager : MonoBehaviour
     {
         if(PlayerPrefs.HasKey(screenSizeKey) && SceneManager.GetActiveScene().name != "MainMenu")
             Camera.main.orthographicSize = PlayerPrefs.GetFloat(screenSizeKey);
+    }
+
+    public void SetFullScreen(bool toggle)
+    {
+        if (toggle) PlayerPrefs.SetInt(fullScreen, 1);
+        else PlayerPrefs.SetInt(fullScreen, 0);
+    }
+
+    public void LoadFullScreen()
+    {
+        if (PlayerPrefs.HasKey(fullScreen)) if (PlayerPrefs.GetInt(fullScreen) == 0) Screen.fullScreen = false;
+        else Screen.fullScreen = true;
+    }
+
+    public void SetScreenRes(int width, int height)
+    {
+        PlayerPrefs.SetInt(screenWidth, width);
+        PlayerPrefs.SetInt(screenHeight, height);
+    }
+
+    public void LoadScreenRes()
+    {
+        if (PlayerPrefs.HasKey(screenWidth) && PlayerPrefs.HasKey(screenHeight))
+        {
+            Screen.SetResolution(PlayerPrefs.GetInt(screenWidth), PlayerPrefs.GetInt(screenHeight), Screen.fullScreen);
+        }
+    }
+
+    private IEnumerator InitiLoadLocale()
+    {
+        yield return 0;
+        LoadLocale();
+    }
+
+    public void LoadLocale() //TODO when implementing selectable locale, make that selection here. 
+    {
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[0];
     }
 }
 
