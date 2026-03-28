@@ -26,7 +26,16 @@ public class SettingsController : BigMenu
             screenSizeSlider.value = screenSize;
             screenSizeText.text = ((int)screenSizeSlider.value).ToString();
         }
-        if (PlayerPrefs.HasKey(SettingsManager.fullScreen)) if (PlayerPrefs.GetInt(SettingsManager.fullScreen) == 0) fullScreenToggle.isOn = false; else fullScreenToggle.isOn = true; else fullScreenToggle.isOn = true; 
+        if (PlayerPrefs.HasKey(SettingsManager.fullScreen)) 
+        {
+            if (PlayerPrefs.GetInt(SettingsManager.fullScreen) == 0)
+            {
+                fullScreenToggle.isOn = false;
+            }   
+            else fullScreenToggle.isOn = true;
+        }  
+        else fullScreenToggle.isOn = true; 
+        
         mainComponent.SetActive(false);
 
         resolutions = new List<Resolution>();

@@ -6,6 +6,7 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.Localization.Settings;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -41,6 +42,7 @@ public class SettingsManager : MonoBehaviour
         LoadCameraSize();
         LoadFullScreen();
         LoadScreenRes();
+        StartCoroutine(InitiLoadLocale());
     }
 
     public void SetVolume(float volume, string group)
@@ -91,6 +93,17 @@ public class SettingsManager : MonoBehaviour
         {
             Screen.SetResolution(PlayerPrefs.GetInt(screenWidth), PlayerPrefs.GetInt(screenHeight), Screen.fullScreen);
         }
+    }
+
+    private IEnumerator InitiLoadLocale()
+    {
+        yield return 0;
+        LoadLocale();
+    }
+
+    public void LoadLocale() //TODO when implementing selectable locale, make that selection here. 
+    {
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[0];
     }
 }
 
