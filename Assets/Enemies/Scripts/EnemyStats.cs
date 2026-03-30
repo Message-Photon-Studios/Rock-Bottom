@@ -605,7 +605,7 @@ public class EnemyStats : MonoBehaviour
             connector.GetComponent<LightningAnimator>().SetWidth(lightningQueue[frame].power);
             Destroy(connector, 0.5f);
 
-            target.GetComponent<EnemyStats>().DealLightningDamage(frame);
+            target.GetComponent<EnemyStats>()?.DealLightningDamage(frame);
         }
         lightningQueue.Remove(frame);
     }
