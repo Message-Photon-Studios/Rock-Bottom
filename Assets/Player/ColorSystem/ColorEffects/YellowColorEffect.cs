@@ -10,7 +10,12 @@ public class YellowColorEffect : ColorEffect
     [SerializeField] float force;
     [SerializeField] int maxBounces;
     [SerializeField] GameObject lightning;
+
     public override void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage)
+    {
+        Apply(enemyObj, impactPoint, playerObj, power, forcePerspectivePlayer, extraDamage, false);
+    }
+    public void Apply(GameObject enemyObj, Vector2 impactPoint, GameObject playerObj, float power, bool forcePerspectivePlayer, int extraDamage, bool onlyDoExtraDamage)
     {
 
         bool ignoreImmunity = playerObj.GetComponent<PlayerStats>().corrosiveColor;
@@ -27,6 +32,7 @@ public class YellowColorEffect : ColorEffect
         }
 
         enemyObj.GetComponent<EnemyStats>().QueueLightning(frame, CalculateDamage(enemyObj), 0, power, lightning);
+        if (onlyDoExtraDamage) enemyObj.GetComponent<EnemyStats>().AddLightningTarget(frame, playerObj);
 
         SortDistanceFromTarget sorter = new SortDistanceFromTarget();
         sorter.SetTarget(enemyObj);
@@ -63,6 +69,7 @@ public class YellowColorEffect : ColorEffect
             float rangeScaling = (Vector3.Distance(target.transform.position, enemyObj.transform.position) / range);
             float rangeDamageScale = 1 - rangeScaling * 0.6f;
             float floatDamage = ((damage * power) + extraDamage) * rangeDamageScale;
+            if (onlyDoExtraDamage) floatDamage = extraDamage * rangeDamageScale;
             return Math.Max(Mathf.RoundToInt(floatDamage), 1);
         }
 

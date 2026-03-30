@@ -8,10 +8,14 @@ public class ParryBrush : CustomItem
     [SerializeField] string itemName;
     [SerializeField] int damage;
     [SerializeField] int damagePerStack;
+    [SerializeField] float power;
+    [SerializeField] float powerPerStack;
+    [SerializeField] float range;
+    [SerializeField] YellowColorEffect colorEffect;
 
     public override void AddEffect()
     {
-        PlayerStats player = GameObject.Find("Player").GetComponent<PlayerStats>();
+        PlayerStats player = Player.instance.playerStats;
         if (player.itemVaribles.ContainsKey(itemName))
         {
             player.itemVaribles[itemName]++;
@@ -24,8 +28,20 @@ public class ParryBrush : CustomItem
 
     public override void Effect(PlayerStats player, EnemyStats hit)
     {
-        if(hit == null) return;
-        hit.DamageEnemy(damage + player.itemVaribles[itemName] * damagePerStack);
+        if (hit == null)
+        {
+            float shortestDistanse = Mathf.Pow(range, 2);
+            EnemyStats[] enemies = FindObjectsOfType<EnemyStats>();
+            foreach (EnemyStats enemy in enemies)
+            {
+                float distance = (enemy.transform.position - player.transform.position).sqrMagnitude;
+                if (distance < shortestDistanse) shortestDistanse = distance; hit = enemy;
+            }
+        }
+        
+        if (hit == null) return;
+        //hit.DamageEnemy(damage + player.itemVaribles[itemName] * damagePerStack);
+        colorEffect.Apply(hit.gameObject, hit.transform.position, Player.instance.gameObject, (power + player.itemVaribles[itemName] * powerPerStack), true, (damage + player.itemVaribles[itemName] * damagePerStack), true);
     }
 
     public override void RemoveEffect()

@@ -10,6 +10,7 @@ public class WindBag : CustomItem
     [SerializeField] float rangePerStack;
     [SerializeField] float force;
     [SerializeField] float forcePerStack;
+    [SerializeField] BlueColorEffect colorEffect;
 
     public override void AddEffect()
     {
@@ -36,7 +37,8 @@ public class WindBag : CustomItem
             float distance = (enemy.transform.position - player.transform.position).sqrMagnitude;
             if ((distance < Mathf.Pow(currentRange , 2) || enemy == hit) && !enemy.IsKnockbackImune())
             {
-                enemy.GetComponent<Rigidbody2D>().AddForce(((enemy.transform.position - player.transform.position).normalized + new Vector3(0,1,0)).normalized * (force + forcePerStack* count));
+                colorEffect.Apply(enemy.gameObject, Player.instance.transform.position, Player.instance.gameObject, (force + forcePerStack * count), true, 0, false);
+                //enemy.GetComponent<Rigidbody2D>().AddForce(((enemy.transform.position - player.transform.position).normalized + new Vector3(0,1,0)).normalized * (force + forcePerStack* count));
             }
         }
     }
